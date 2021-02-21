@@ -1,6 +1,6 @@
 <h1 align="center">Hi 👋, I'm Railly Hugo</h1>  
 <p>😷 I'm studying Software Engineering at UNMSM from Peru. </p>
-<p>😎 I really enjoy learning new technologies. I'm currently learning React and NodeJS </p>
+<p>😎 I really enjoy learning new technologies. I'm currently learning React and NodeJS. </p>
 <p>✍ My personal blog: <a href="https://raillyhugo.com/">Railly Hugo's Blog</a></p>
 <p>📽 My Youtube Channel: <a href="https://www.youtube.com/channel/UCXc8NTy6st3o26kWX6tmX2A">Railly Hugo YT</a></p>
   
