@@ -1,8 +1,5 @@
 <h1 align="center">Hi there  <img src = "https://media.giphy.com/media/hvRJCLFzcasrR4ia7z/giphy.gif" width = "25px">, I'm Railly Hugo</h1>  
-<p>😷 I'm studying Software Engineering at <strong>UNMSM</strong> from Peru. </p>
-<p>😎 I really enjoy learning new technologies. I'm currently learning React and NodeJS. </p>
-<p>✍ My personal blog: ...
-<p>📽 My Youtube Channel: <a href="https://www.youtube.com/channel/UCXc8NTy6st3o26kWX6tmX2A" target="_blank">Railly Hugo YT</a></p>
+<p>😷 I'm studying Software Engineering at <strong>UNMSM</strong> from Peru. I'm working hard to become a Full Stack Developer. I do calisthenics regularly since 2020. Currently, I'm using Neovim as my main code editor.💚 </p>
   
 <h3 align="left">✔ Main Languages:</h3>
   <p align="left">
