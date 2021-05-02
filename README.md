@@ -32,4 +32,4 @@
   </a>
 <hr/> 
 <h3 align="left">✔ Some Stats:</h3>  
-<p><img align="left" src="https://github-readme-stats.vercel.app/api/top-langs?username=railly&theme=material-palenight&show_icons=true&locale=en&layout=compact" alt="railly" /></p>  
+<p><img align="left" src="https://github-readme-stats.vercel.app/api/top-langs?username=railly&theme=react&show_icons=true&locale=en&layout=compact" alt="railly" /></p>  
