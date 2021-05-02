@@ -24,10 +24,10 @@
   </p>
 <hr/>
 <h3 align="left">✔ Social Media:</h3>
- <a href="https://twitter.com/RaillyHugo">
+ <a href="https://twitter.com/RaillyHugo" target="_blank">
     <img src="https://raw.githubusercontent.com/Railly/ColoredBadges/01f2d70cc5f1936e0dcc5e566fa59eb7a95cd870/svg/social/twitter.svg" alt="twitter badge" style="vertical-align:top margin:6px 4px">
   </a>
-  <a href="https://www.youtube.com/channel/UCXc8NTy6st3o26kWX6tmX2A">
+  <a href="https://www.youtube.com/channel/UCXc8NTy6st3o26kWX6tmX2A" target="_blank">
     <img src="https://raw.githubusercontent.com/Railly/ColoredBadges/01f2d70cc5f1936e0dcc5e566fa59eb7a95cd870/svg/streaming/youtube.svg" alt="youtube badge" style="vertical-align:top margin:6px 4px">
   </a>
 <hr/> 
