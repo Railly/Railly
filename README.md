@@ -10,9 +10,12 @@
     <img src="https://raw.githubusercontent.com/MikeCodesDotNET/ColoredBadges/4a38660afb7be89a6032218589b4454a1285c7f8/svg/dev/languages/css3.svg" alt="css3 badge" style="vertical-align:top margin:6px 4px">
     <img src="https://raw.githubusercontent.com/MikeCodesDotNET/ColoredBadges/4a38660afb7be89a6032218589b4454a1285c7f8/svg/dev/languages/js.svg" alt="javascript badge" style="vertical-align:top margin:6px 4px">
   </p>
+<hr/>
 <h3 align="left">✔ Secondary Languages:</h3>
+<p align="left">
  <img src="https://raw.githubusercontent.com/Railly/ColoredBadges/01f2d70cc5f1936e0dcc5e566fa59eb7a95cd870/svg/dev/languages/cpp.svg" alt="c++ badge" style="vertical-align:top margin:6px 4px">
  <img src="https://raw.githubusercontent.com/Railly/ColoredBadges/01f2d70cc5f1936e0dcc5e566fa59eb7a95cd870/svg/dev/languages/java.svg" alt="java badge" style="vertical-align:top margin:6px 4px">
+  </p>
 <hr/>
 <h3 align="left">✔ Frameworks:</h3>
   <p align="left">
