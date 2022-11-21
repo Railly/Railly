@@ -1,9 +1,7 @@
 ### ▲ About me
 
-- Software Engineering student at [San Marcos University](https://unmsm.edu.pe/)
-
+- Software Engineering student (9th) at [San Marcos University](https://unmsm.edu.pe/)
 - Working at [ID BI](https://www.negocios.idbi.pe/) as Frontend Developer⭐
-
 - Developing [Next Viz](https://www.github.com/railly/next-viz) 🚀
 
 ### ▲ Programming Languages
