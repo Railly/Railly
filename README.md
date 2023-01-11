@@ -1,8 +1,8 @@
 ### ▲ About me
 
-- Software Engineering student (9th) at [San Marcos University](https://unmsm.edu.pe/)
-- Working at [ID BI](https://www.negocios.idbi.pe/) as Frontend Developer⭐
-- Developing [Next Viz](https://www.github.com/railly/next-viz) 🚀
+- Software Engineering student (10th) at [San Marcos University](https://unmsm.edu.pe/)
+- Working at [PCI Energy Solutions](https://www.pcienergysolutions.com/) as UI Developer⭐
+- Last release: [One Hunter Theme](https://github.com/Railly/one-hunter-vscode) 🚀
 
 ### ▲ Programming Languages
 
