@@ -6,4 +6,4 @@ Currently, I work at [PCI Energy Solutions](https://www.pcienergysolutions.com/)
 - [SVG Hunter](https://github.com/Railly/svg-hunter-vscode): Hunt SVGs without leaving your code editor ✨
 - [Personal Website](https://github.com/Railly/website-2022): Blog, About and Portfolio 😎
 
-You can find more about me on my personal site [raillhugo.com](https://raillyhugo.com) or follow me [@raillyhugo](https://twitter.com/RaillyHugo)
+You can find more about me on my personal site [raillyhugo.com](https://www.raillyhugo.com) or follow me [@raillyhugo](https://twitter.com/RaillyHugo)
