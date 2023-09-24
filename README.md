@@ -8,9 +8,6 @@ Currently working at [PCI Energy Solutions](https://www.pcienergysolutions.com/)
 - [Memora Date](https://github.com/Railly/memora-date): A Next.js 13 app that creates reminders for important dates in your life 🎉.
 - [SVG Hunter](https://github.com/Railly/svg-hunter-vscode): Hunt SVGs without leaving your code editor ✨.
 
-> [!NOTE]
-> Join our Open Source Organization 👉 [Crafter Station](https://github.com/crafter-station)
-
 ### ▲ Some Stats
 
 <table>
@@ -24,4 +21,8 @@ Currently working at [PCI Energy Solutions](https://www.pcienergysolutions.com/)
   </tr>
 </table>
 
-You can find more about me on my personal site [raillyhugo.com](https://www.raillyhugo.com) or follow me [@raillyhugo](https://twitter.com/RaillyHugo)
+> [!NOTE] 
+> ]You can find more about me on my personal site [raillyhugo.com](https://www.raillyhugo.com) or follow me [@raillyhugo](https://twitter.com/RaillyHugo)
+
+> [!IMPORTANT]
+> Join our Open Source Organization 👉 [Crafter Station](https://github.com/crafter-station)
