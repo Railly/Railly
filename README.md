@@ -22,7 +22,7 @@ Currently working at [PCI Energy Solutions](https://www.pcienergysolutions.com/)
 </table>
 
 > [!NOTE] 
-> ]You can find more about me on my personal site [raillyhugo.com](https://www.raillyhugo.com) or follow me [@raillyhugo](https://twitter.com/RaillyHugo)
+> You can find more about me on my personal site [raillyhugo.com](https://www.raillyhugo.com) or follow me [@raillyhugo](https://twitter.com/RaillyHugo)
 
 > [!IMPORTANT]
 > Join our Open Source Organization 👉 [Crafter Station](https://github.com/crafter-station)
