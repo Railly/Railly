@@ -7,7 +7,9 @@ Currently working at [PCI Energy Solutions](https://www.pcienergysolutions.com/)
 - [Spotigen](https://github.com/Railly/spotigen-chat-gpt-plugin): A ChatGPT Plugin that generates Spotify playlists 🎵 based on your prompts ✨.
 - [Memora Date](https://github.com/Railly/memora-date): A Next.js 13 app that creates reminders for important dates in your life 🎉.
 - [SVG Hunter](https://github.com/Railly/svg-hunter-vscode): Hunt SVGs without leaving your code editor ✨.
-- [Personal Website](https://github.com/Railly/website-2022): My digital space where I share my thoughts and journey 😎.
+
+> [!NOTE]
+> Join our Open Source Organization 👉 [Crafter Station](https://github.com/crafter-station)
 
 ### ▲ Some Stats
 
