@@ -1,7 +1,8 @@
 ### ▲ About me
 
-Hi, I'm Railly Hugo, a software engineer based in Peru. Ever wondered how the foundations of tech tick? I do, every day.  
-Currently working at [PCI Energy Solutions](https://www.pcienergysolutions.com/) as a UI Developer. Besides that, I maintain a few open-source projects:
+Hi, I'm Railly Hugo, a software engineer based in Peru who loves OSS🤍. Currently, pursuing a Master's Degree in Artificial Intelligence ✨, and building top user interfaces at [PCI Energy Solutions](https://www.pcienergysolutions.com/). 
+
+Besides that, I maintain a few open-source projects:
 
 - [One Hunter Theme](https://github.com/Railly/one-hunter-vscode): A stylish theme inspired by Vercel Theme ▲ and One Dark Pro 🎨.
 - [Tinte](https://github.com/Railly/tinte): An opinionated multi-platform color theme generator 🎨
