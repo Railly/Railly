@@ -1,13 +1,12 @@
 ### ▲ About me
 
-Hi, I'm Railly Hugo, a software engineer based in Peru who loves OSS🤍. Currently, pursuing a Master's Degree in Artificial Intelligence ✨, and building top user interfaces at [PCI Energy Solutions](https://www.pcienergysolutions.com/). 
+Hi, I'm Railly Hugo, a software engineer based in Peru who loves OSS🤍. Currently, pursuing a Master's Degree in Artificial Intelligence ✨, and building the future at [Globant](https://www.globant.com/). 
 
 Besides that, I maintain a few open-source projects:
 
 - [One Hunter Theme](https://github.com/Railly/one-hunter-vscode): A stylish theme inspired by Vercel Theme ▲ and One Dark Pro 🎨.
 - [Tinte](https://github.com/Railly/tinte): An opinionated multi-platform color theme generator 🎨
 - [Spotigen](https://github.com/Railly/spotigen-chat-gpt-plugin): A ChatGPT Plugin that generates Spotify playlists 🎵 based on your prompts ✨.
-- [Memora Date](https://github.com/Railly/memora-date): A Next.js 13 app that creates reminders for important dates in your life 🎉.
 
 ### ▲ Some Stats
 
