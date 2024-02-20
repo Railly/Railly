@@ -1,6 +1,7 @@
 ### ▲ About me
 
-Hi, I'm Railly Hugo, a software engineer based in Peru who loves OSS🤍. Currently, pursuing a Master's Degree in Artificial Intelligence ✨, and building the future at [Globant](https://www.globant.com/). 
+Hi, I'm Railly Hugo, a software engineer based in Peru who loves OSS🤍.
+Currently, pursuing a Master's Degree in Artificial Intelligence ✨, and building the future at [Globant](https://www.globant.com/). 
 
 Besides that, I maintain a few open-source projects:
 
