@@ -15,4 +15,4 @@ I like to build developer tools for myself and make them open source for the com
 
 - [Blog](https://railly.dev) - railly.dev
 - [Twitter / 𝕏](https://twitter.com/RaillyHugo) - @raillyhugo
-- [Crafter Station](https://github.com/crafter-station) - business intent
+- [Crafter Station](https://github.com/crafter-station) - business / oss org intent
