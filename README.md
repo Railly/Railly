@@ -6,13 +6,13 @@ I like to build developer tools for myself and make them open source for the com
 
 ### Projects
 
-- [One Hunter](https://github.com/Railly/one-hunter-vscode) 🎨 - stylish vscode theme inspired by vercel ▲ and one-dark-pro
+- [one-hunter](https://github.com/Railly/one-hunter-vscode) 🎨 - stylish vscode theme inspired by vercel ▲ and one-dark-pro
 - [shadcn-ui-customizer](https://github.com/Railly/one-hunter-vscode) 🎨 - extension of shadcn-ui with color pickers
-- [Tinte](https://github.com/Railly/tinte) 🖌️ - create your own beautiful vscode themes with ease
-- [Simple Flashcards](https://github.com/Railly/obsidian-simple-flashcards) ♦️ - obsidian plugin that allows you to study with markdown flashcards
+- [tinte](https://github.com/Railly/tinte) 🖌️ - create your own beautiful vscode themes with ease
+- [simple-flashcards](https://github.com/Railly/obsidian-simple-flashcards) ♦️ - obsidian plugin that allows you to study with markdown flashcards
 
 ### Links
 
-- [Blog](https://railly.dev) - railly.dev
-- [Twitter / 𝕏](https://twitter.com/RaillyHugo) - @raillyhugo
-- [Crafter Station](https://github.com/crafter-station) - business / oss org intent
+- [blog](https://railly.dev) - railly.dev
+- [twitter / 𝕏](https://twitter.com/RaillyHugo) - @raillyhugo
+- [crafter-station](https://github.com/crafter-station) - business / oss org intent
