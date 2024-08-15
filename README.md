@@ -1,5 +1,5 @@
 ## Railly Hugo ~ Hunter
-### Software Engineer ~ Pursuing a MS in AI
+### Software Engineer ~ AI Master's Student
 
 I work as a full-stack engineer at [Globant](https://www.globant.com), contributing to [Disney Streaming Engineering Team](https://jobs.disneycareers.com/our-work). <br/>
 I like to build developer tools for myself and make them open source for the community.
