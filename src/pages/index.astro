@@ -1,11 +1,96 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout>
-	<Welcome />
+  <main
+    class="flex flex-col min-h-screen bg-[var(--color-flexoki-bg)] text-[var(--color-flexoki-tx)]"
+  >
+    <!-- Hero Section - Refined Introduction -->
+    <section class="w-full max-w-[1600px] mx-auto px-6 md:px-12 pt-12">
+      <p class="text-[var(--color-flexoki-cyan)] text-sm mb-8">Hunter Railly</p>
+
+      <h1
+        class="text-4xl md:text-6xl lg:text-7xl font-extralight tracking-tight leading-[1.1] mb-6"
+      >
+        Engineering Intelligent <br /> Systems and Developer Tools
+      </h1>
+
+      <p
+        class="text-[var(--color-flexoki-tx-2)] text-base md:text-lg leading-relaxed max-w-lg mb-16"
+      >
+        I specialize in building <span class="text-[var(--color-flexoki-tx)]"
+          >AI-powered learning systems, developer tooling, and high-performance
+          software</span
+        >. My work explores the intersection of <span
+          class="text-[var(--color-flexoki-tx)]"
+          >automation, adaptability, and usability</span
+        >, focusing on
+        <span class="text-[var(--color-flexoki-tx)]"
+          >Rust, AI-driven workflows, and interactive design</span
+        >. I'm driven by the idea that software should <span
+          class="text-[var(--color-flexoki-tx)]"
+          >not only be efficient, but also intuitive and empowering</span
+        >.
+      </p>
+    </section>
+
+    <!-- Innovation Sections - No Traditional Cards -->
+    <section class="w-full max-w-[1600px] mx-auto px-6 md:px-12">
+      <div class="border-t border-[var(--color-flexoki-ui-2)]/10 py-8">
+        <div class="flex items-baseline gap-4">
+          <span class="text-[var(--color-flexoki-cyan)] font-mono text-sm"
+            >01</span
+          >
+          <h2 class="text-2xl font-extralight">Tinte</h2>
+        </div>
+        <p class="text-[var(--color-flexoki-tx-2)] mt-2 ml-10 text-sm">
+          Advanced VS Code theme customization engine.
+        </p>
+      </div>
+
+      <div class="border-t border-[var(--color-flexoki-ui-2)]/10 py-8">
+        <div class="flex items-baseline gap-4">
+          <span class="text-[var(--color-flexoki-cyan)] font-mono text-sm"
+            >02</span
+          >
+          <h2 class="text-2xl font-extralight">Gradual</h2>
+        </div>
+        <p class="text-[var(--color-flexoki-tx-2)] mt-2 ml-10 text-sm">
+          Self-evolving learning platform with AI integration.
+        </p>
+      </div>
+
+      <div class="border-t border-[var(--color-flexoki-ui-2)]/10 py-8">
+        <div class="flex items-baseline gap-4">
+          <span class="text-[var(--color-flexoki-cyan)] font-mono text-sm"
+            >03</span
+          >
+          <h2 class="text-2xl font-extralight">Research</h2>
+        </div>
+        <p class="text-[var(--color-flexoki-tx-2)] mt-2 ml-10 text-sm">
+          Exploring <span class="text-[var(--color-flexoki-tx)]"
+            >DSLs, proofs, and high-performance computing in Rust</span
+          >.
+        </p>
+      </div>
+
+      <div class="border-t border-[var(--color-flexoki-ui-2)]/10 py-8">
+        <div class="flex items-baseline gap-4">
+          <span class="text-[var(--color-flexoki-cyan)] font-mono text-sm"
+            >04</span
+          >
+          <h2 class="text-2xl font-extralight">Connect</h2>
+        </div>
+        <p class="text-[var(--color-flexoki-tx-2)] mt-2 ml-10 text-sm">
+          <a
+            href="mailto:hunter@railly.dev"
+            class="hover:text-[var(--color-flexoki-cyan)] transition-colors"
+          >
+            hunter@railly.dev
+          </a>
+        </p>
+      </div>
+    </section>
+  </main>
 </Layout>

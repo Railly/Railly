@@ -1,0 +1,100 @@
+---
+
+---
+
+<canvas class="block" id="canvas"></canvas>
+
+<script>
+  const canvas = document.getElementById("canvas") as HTMLCanvasElement;
+  const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
+
+  // Add interface for point structure
+  interface Point {
+    x: number;
+    y: number;
+    z: number;
+    digit: number;
+  }
+
+  let centerX = window.innerWidth / 2;
+  let centerY = window.innerHeight / 2;
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  // Config
+  const fov = 300; // Focal length for perspective
+  const sphereRadius = 100; // Sphere scaling factor
+  const numPhi = 9; // Vertical segments
+  const numTheta = 9; // Horizontal segments
+
+  // Generate sphere points with random ASCII digits [0-9]
+  let idx = 0;
+  const points: Point[] = [];
+  const n = numPhi * numTheta; // total number of points
+
+  for (let i = 0; i < n; i++) {
+    // Use golden ratio for uniform distribution
+    const phi = Math.acos(1 - (2 * (i + 0.5)) / n);
+    const theta = Math.PI * (1 + Math.sqrt(5)) * i;
+
+    const x = Math.sin(phi) * Math.cos(theta);
+    const y = Math.sin(phi) * Math.sin(theta);
+    const z = Math.cos(phi);
+    const digit = Math.floor(Math.random() * 10);
+    points.push({ x, y, z, digit });
+  }
+
+  let angleX = 0;
+  let angleY = 0;
+
+  function render(): void {
+    // Clear canvas efficiently
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    angleX += 0.01;
+    angleY += 0.02;
+
+    // Precompute sin and cos for both angles
+    const sinX = Math.sin(angleX),
+      cosX = Math.cos(angleX);
+    const sinY = Math.sin(angleY),
+      cosY = Math.cos(angleY);
+
+    const len = points.length;
+    for (let i = 0; i < len; i++) {
+      const p = points[i];
+
+      // Rotate around X axis
+      const y = p.y * cosX - p.z * sinX;
+      const z = p.y * sinX + p.z * cosX;
+      // Rotate around Y axis (using precomputed values)
+      const x = p.x;
+      const x2 = x * cosY + z * sinY;
+      const z2 = -x * sinY + z * cosY;
+
+      // Perspective projection
+      const scale = fov / (fov + z2 * sphereRadius);
+      const x2d = centerX + x2 * sphereRadius * scale;
+      const y2d = centerY + y * sphereRadius * scale;
+
+      // Depth-based brightness mapping: closest => white, farthest => gray
+      const brightness = Math.floor(128 + ((z2 + 1) / 2) * 127);
+      ctx.fillStyle = `rgb(${brightness},${brightness},${brightness})`;
+
+      // Scale font for depth effect
+      const fontSize = 14 * scale;
+      ctx.font = `${fontSize}px monospace`;
+      ctx.fillText(p.digit.toString(), x2d, y2d);
+    }
+    requestAnimationFrame(render);
+  }
+  render();
+
+  // Resize handler
+  window.addEventListener("resize", (): void => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    centerX = canvas.width / 2;
+    centerY = canvas.height / 2;
+  });
+</script>
