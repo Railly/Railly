@@ -1,96 +1,319 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import GradualLogo from "../components/GradualLogo.astro";
+import TinteLogo from "../components/TinteLogo.astro";
+import DisneyLogo from "../components/DisneyLogo.astro";
+import Card from "../components/Card.astro";
+import CardIcon from "../components/CardIcon.astro";
+import { getCollection } from "astro:content";
+
+const posts = await getCollection("blog", ({ data }) => {
+  return import.meta.env.PROD ? data.status === "published" : true;
+});
+
+const sortedPosts = posts.sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
 ---
 
 <Layout>
   <main
-    class="flex flex-col min-h-screen bg-[var(--color-flexoki-bg)] text-[var(--color-flexoki-tx)]"
+    class="flex flex-col gap-12 items-center justify-center min-h-screen max-w-2xl mx-auto text-flexoki-tx animate-fade-slower px-6 py-12"
   >
-    <!-- Hero Section - Refined Introduction -->
-    <section class="w-full max-w-[1600px] mx-auto px-6 md:px-12 pt-12">
-      <p class="text-[var(--color-flexoki-cyan)] text-sm mb-8">Hunter Railly</p>
-
-      <h1
-        class="text-4xl md:text-6xl lg:text-7xl font-extralight tracking-tight leading-[1.1] mb-6"
-      >
-        Engineering Intelligent <br /> Systems and Developer Tools
+    <header
+      class="flex flex-col gap-3 items-center justify-center animate-slide-up-fade text-center"
+    >
+      <h1 class="text-3xl tracking-tight font-medium text-flexoki-tx">
+        Railly Hugo
       </h1>
-
-      <p
-        class="text-[var(--color-flexoki-tx-2)] text-base md:text-lg leading-relaxed max-w-lg mb-16"
-      >
-        I specialize in building <span class="text-[var(--color-flexoki-tx)]"
-          >AI-powered learning systems, developer tooling, and high-performance
-          software</span
-        >. My work explores the intersection of <span
-          class="text-[var(--color-flexoki-tx)]"
-          >automation, adaptability, and usability</span
-        >, focusing on
-        <span class="text-[var(--color-flexoki-tx)]"
-          >Rust, AI-driven workflows, and interactive design</span
-        >. I'm driven by the idea that software should <span
-          class="text-[var(--color-flexoki-tx)]"
-          >not only be efficient, but also intuitive and empowering</span
-        >.
+      <p class="text-lg text-flexoki-tx-2 max-w-md font-light">
+        Software Engineer ~ Experience Creator
       </p>
+    </header>
+
+    <section
+      class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full animate-slide-up-fade [animation-delay:100ms]"
+    >
+      <div class="flex flex-col gap-5">
+        <h2
+          class="text-sm font-medium text-flexoki-tx-2 uppercase tracking-wider"
+        >
+          Present
+        </h2>
+        <div class="space-y-4">
+          <Card color="blue">
+            <div
+              class="absolute inset-0 bg-gradient-to-tr from-flexoki-blue/[0.03] to-transparent opacity-80 [mask-image:linear-gradient(45deg,#000_25%,transparent_25%,transparent_50%,#000_50%,#000_75%,transparent_75%,transparent)] [mask-size:8px_8px] pointer-events-none"
+            >
+            </div>
+            <div class="flex items-start gap-4">
+              <CardIcon color="blue" padding="p-2.5">
+                <DisneyLogo size={28} />
+              </CardIcon>
+              <div>
+                <h3
+                  class="text-flexoki-tx font-medium group-hover:text-flexoki-blue transition-colors"
+                >
+                  Disney Streaming
+                </h3>
+                <p class="text-sm text-flexoki-tx-2 mt-1">
+                  Developing analytic tools.
+                </p>
+              </div>
+            </div>
+          </Card>
+
+          <Card color="teal">
+            <div
+              class="absolute inset-0 bg-gradient-to-tr from-flexoki-teal/[0.03] to-transparent opacity-80 [mask-image:linear-gradient(45deg,#000_25%,transparent_25%,transparent_50%,#000_50%,#000_75%,transparent_75%,transparent)] [mask-size:8px_8px] pointer-events-none"
+            >
+            </div>
+            <div class="flex items-start gap-4">
+              <CardIcon color="teal" padding="p-2.5">
+                <img
+                  src="/src/assets/images/midudev-logo.webp"
+                  alt="Midudev Team"
+                  class="w-full h-full object-cover"
+                />
+              </CardIcon>
+              <div>
+                <h3
+                  class="text-flexoki-tx font-medium group-hover:text-flexoki-teal transition-colors"
+                >
+                  Midudev Team
+                </h3>
+                <p class="text-sm text-flexoki-tx-2 mt-1">
+                  The leading Hispanic streamer
+                </p>
+              </div>
+            </div>
+          </Card>
+
+          <Card color="yellow">
+            <div
+              class="absolute inset-0 bg-gradient-to-tr from-flexoki-yellow/[0.03] to-transparent opacity-80 [mask-image:linear-gradient(45deg,#000_25%,transparent_25%,transparent_50%,#000_50%,#000_75%,transparent_75%,transparent)] [mask-size:8px_8px] pointer-events-none"
+            >
+            </div>
+            <div class="flex items-start gap-4">
+              <CardIcon color="yellow" padding="p-3">
+                <img
+                  src="/src/assets/images/unmsm-logo.webp"
+                  alt="UNMSM Research"
+                  class="w-full h-full object-cover"
+                />
+              </CardIcon>
+              <div>
+                <h3
+                  class="text-flexoki-tx font-medium group-hover:text-flexoki-yellow transition-colors"
+                >
+                  UNMSM
+                </h3>
+                <p class="text-sm text-flexoki-tx-2 mt-1">Researching MAS</p>
+              </div>
+            </div>
+          </Card>
+        </div>
+      </div>
+
+      <div class="flex flex-col gap-5">
+        <h2
+          class="text-sm font-medium text-flexoki-tx-2 uppercase tracking-wider"
+        >
+          Projects
+        </h2>
+        <div class="space-y-4">
+          <Card href="https://gradual.com" color="cyan">
+            <div
+              class="absolute inset-0 bg-gradient-to-tr from-flexoki-cyan/[0.03] to-transparent opacity-80 [mask-image:linear-gradient(45deg,#000_25%,transparent_25%,transparent_50%,#000_50%,#000_75%,transparent_75%,transparent)] [mask-size:8px_8px] pointer-events-none"
+            >
+            </div>
+            <div class="flex items-start gap-4">
+              <CardIcon color="cyan">
+                <GradualLogo
+                  size={28}
+                  class="text-flexoki-tx-3 group-hover:text-flexoki-cyan transition-colors duration-300"
+                />
+              </CardIcon>
+              <div class="flex-grow">
+                <div class="flex items-center justify-between">
+                  <h3
+                    class="text-flexoki-tx font-medium group-hover:text-flexoki-cyan transition-colors"
+                  >
+                    Gradual
+                  </h3>
+                  <span
+                    class="text-flexoki-tx-3 group-hover:translate-x-1 transition-transform"
+                    >→</span
+                  >
+                </div>
+                <p class="text-sm text-flexoki-tx-2 mt-1">
+                  All-in-one learning platform.
+                </p>
+              </div>
+            </div>
+          </Card>
+
+          <Card href="https://tinte.railly.dev" color="purple">
+            <div
+              class="absolute inset-0 bg-gradient-to-tr from-flexoki-purple/[0.03] to-transparent opacity-80 [mask-image:linear-gradient(45deg,#000_25%,transparent_25%,transparent_50%,#000_50%,#000_75%,transparent_75%,transparent)] [mask-size:8px_8px] pointer-events-none"
+            >
+            </div>
+            <div class="flex items-start gap-4">
+              <CardIcon color="purple">
+                <TinteLogo
+                  size={28}
+                  class="text-flexoki-tx-3 group-hover:text-flexoki-purple transition-colors duration-300"
+                />
+              </CardIcon>
+              <div class="flex-grow">
+                <div class="flex items-center justify-between">
+                  <h3
+                    class="text-flexoki-tx font-medium group-hover:text-flexoki-purple transition-colors"
+                  >
+                    Tinte
+                  </h3>
+                  <span
+                    class="text-flexoki-tx-3 group-hover:translate-x-1 transition-transform"
+                    >→</span
+                  >
+                </div>
+                <p class="text-sm text-flexoki-tx-2 mt-1">
+                  Vercel hackathon winner.
+                </p>
+              </div>
+            </div>
+          </Card>
+
+          <Card
+            href="https://marketplace.visualstudio.com/items?itemName=RaillyHugo.one-hunter"
+            color="magenta"
+          >
+            <div
+              class="absolute inset-0 bg-gradient-to-tr from-flexoki-magenta/[0.03] to-transparent opacity-80 [mask-image:linear-gradient(45deg,#000_25%,transparent_25%,transparent_50%,#000_50%,#000_75%,transparent_75%,transparent)] [mask-size:8px_8px] pointer-events-none"
+            >
+            </div>
+            <div class="flex items-start gap-4">
+              <CardIcon color="magenta" padding="p-2.5">
+                <img
+                  src="/src/assets/images/one-hunter-logo.webp"
+                  alt="One Hunter Theme"
+                  class="w-full h-full object-cover"
+                />
+              </CardIcon>
+              <div class="flex-grow">
+                <div class="flex items-center justify-between">
+                  <h3
+                    class="text-flexoki-tx font-medium group-hover:text-flexoki-magenta transition-colors"
+                  >
+                    One Hunter Theme
+                  </h3>
+                  <span
+                    class="text-flexoki-tx-3 group-hover:translate-x-1 transition-transform"
+                    >→</span
+                  >
+                </div>
+                <p class="text-sm text-flexoki-tx-2 mt-1">
+                  26k+ VSCode downloads.
+                </p>
+              </div>
+            </div>
+          </Card>
+        </div>
+      </div>
     </section>
 
-    <!-- Innovation Sections - No Traditional Cards -->
-    <section class="w-full max-w-[1600px] mx-auto px-6 md:px-12">
-      <div class="border-t border-[var(--color-flexoki-ui-2)]/10 py-8">
-        <div class="flex items-baseline gap-4">
-          <span class="text-[var(--color-flexoki-cyan)] font-mono text-sm"
-            >01</span
-          >
-          <h2 class="text-2xl font-extralight">Tinte</h2>
-        </div>
-        <p class="text-[var(--color-flexoki-tx-2)] mt-2 ml-10 text-sm">
-          Advanced VS Code theme customization engine.
-        </p>
-      </div>
-
-      <div class="border-t border-[var(--color-flexoki-ui-2)]/10 py-8">
-        <div class="flex items-baseline gap-4">
-          <span class="text-[var(--color-flexoki-cyan)] font-mono text-sm"
-            >02</span
-          >
-          <h2 class="text-2xl font-extralight">Gradual</h2>
-        </div>
-        <p class="text-[var(--color-flexoki-tx-2)] mt-2 ml-10 text-sm">
-          Self-evolving learning platform with AI integration.
-        </p>
-      </div>
-
-      <div class="border-t border-[var(--color-flexoki-ui-2)]/10 py-8">
-        <div class="flex items-baseline gap-4">
-          <span class="text-[var(--color-flexoki-cyan)] font-mono text-sm"
-            >03</span
-          >
-          <h2 class="text-2xl font-extralight">Research</h2>
-        </div>
-        <p class="text-[var(--color-flexoki-tx-2)] mt-2 ml-10 text-sm">
-          Exploring <span class="text-[var(--color-flexoki-tx)]"
-            >DSLs, proofs, and high-performance computing in Rust</span
-          >.
-        </p>
-      </div>
-
-      <div class="border-t border-[var(--color-flexoki-ui-2)]/10 py-8">
-        <div class="flex items-baseline gap-4">
-          <span class="text-[var(--color-flexoki-cyan)] font-mono text-sm"
-            >04</span
-          >
-          <h2 class="text-2xl font-extralight">Connect</h2>
-        </div>
-        <p class="text-[var(--color-flexoki-tx-2)] mt-2 ml-10 text-sm">
-          <a
-            href="mailto:hunter@railly.dev"
-            class="hover:text-[var(--color-flexoki-cyan)] transition-colors"
-          >
-            hunter@railly.dev
-          </a>
-        </p>
+    <section class="w-full animate-slide-up-fade [animation-delay:200ms]">
+      <h2
+        class="text-sm font-medium text-flexoki-tx-2 uppercase tracking-wider mb-4"
+      >
+        Writing
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {
+          sortedPosts.map((post) => (
+            <Card href={`/blog/${post.slug}`} color="purple">
+              <div class="absolute inset-0 bg-gradient-to-tr from-flexoki-purple/[0.03] to-transparent opacity-80 [mask-image:linear-gradient(45deg,#000_25%,transparent_25%,transparent_50%,#000_50%,#000_75%,transparent_75%,transparent)] [mask-size:8px_8px] pointer-events-none" />
+              <div class="relative z-10">
+                <h3 class="font-serif text-flexoki-tx group-hover:text-flexoki-purple transition-colors mb-2 font-medium">
+                  {post.data.title}
+                </h3>
+                <p class="text-sm text-flexoki-tx-2">{post.data.description}</p>
+              </div>
+            </Card>
+          ))
+        }
+        {
+          sortedPosts.length < 2 && (
+            <Card className="!cursor-default" href="#" color="yellow">
+              <div class="absolute inset-0 bg-gradient-to-tr from-flexoki-yellow/[0.03] to-transparent opacity-80 [mask-image:linear-gradient(45deg,#000_25%,transparent_25%,transparent_50%,#000_50%,#000_75%,transparent_75%,transparent)] [mask-size:8px_8px] pointer-events-none" />
+              <div class="relative z-10">
+                <h3 class="font-serif text-flexoki-tx group-hover:text-flexoki-yellow transition-colors mb-2 font-medium">
+                  Coming soon
+                </h3>
+                <p class="text-sm text-flexoki-tx-2">I'm working on it.</p>
+              </div>
+            </Card>
+          )
+        }
       </div>
     </section>
+
+    <footer
+      class="flex flex-col items-center gap-3 animate-slide-up-fade [animation-delay:250ms]"
+    >
+      <h2
+        class="text-sm font-medium text-flexoki-tx-2 uppercase tracking-wider"
+      >
+        Connect
+      </h2>
+      <div class="flex items-center gap-6 text-flexoki-tx-2">
+        <a
+          href="https://x.com/raillyhugo"
+          class="group flex items-center gap-2 hover:text-flexoki-blue transition-colors"
+        >
+          <span class="text-lg">𝕏</span>
+          <span class="text-sm group-hover:underline">raillyhugo</span>
+        </a>
+        <a
+          href="mailto:hi@railly.dev"
+          class="group flex items-center gap-2 hover:text-flexoki-purple transition-colors"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="size-5"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75"
+            ></path>
+          </svg>
+
+          <span class="text-sm group-hover:underline">hi@railly.dev</span>
+        </a>
+        <a
+          href="https://github.com/railly"
+          class="group flex items-center gap-2 hover:text-flexoki-yellow transition-colors"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            x="0px"
+            y="0px"
+            viewBox="0 0 30 30"
+            fill="currentColor"
+            class="size-5"
+          >
+            <path
+              d="M15,3C8.373,3,3,8.373,3,15c0,5.623,3.872,10.328,9.092,11.63C12.036,26.468,12,26.28,12,26.047v-2.051 c-0.487,0-1.303,0-1.508,0c-0.821,0-1.551-0.353-1.905-1.009c-0.393-0.729-0.461-1.844-1.435-2.526 c-0.289-0.227-0.069-0.486,0.264-0.451c0.615,0.174,1.125,0.596,1.605,1.222c0.478,0.627,0.703,0.769,1.596,0.769 c0.433,0,1.081-0.025,1.691-0.121c0.328-0.833,0.895-1.6,1.588-1.962c-3.996-0.411-5.903-2.399-5.903-5.098 c0-1.162,0.495-2.286,1.336-3.233C9.053,10.647,8.706,8.73,9.435,8c1.798,0,2.885,1.166,3.146,1.481C13.477,9.174,14.461,9,15.495,9 c1.036,0,2.024,0.174,2.922,0.483C18.675,9.17,19.763,8,21.565,8c0.732,0.731,0.381,2.656,0.102,3.594 c0.836,0.945,1.328,2.066,1.328,3.226c0,2.697-1.904,4.684-5.894,5.097C18.199,20.49,19,22.1,19,23.313v2.734 c0,0.104-0.023,0.179-0.035,0.268C23.641,24.676,27,20.236,27,15C27,8.373,21.627,3,15,3z"
+            ></path>
+          </svg>
+          <span class="text-sm group-hover:underline">railly</span>
+        </a>
+      </div>
+    </footer>
   </main>
 </Layout>

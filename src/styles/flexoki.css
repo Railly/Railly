@@ -1,5 +1,6 @@
 @theme {
   /* Base Colors */
+  --color-paper: #fffcf0;
   --color-base-50: #f2f0e5;
   --color-base-100: #e6e4d9;
   --color-base-150: #dad8ce;
@@ -13,6 +14,7 @@
   --color-base-850: #343331;
   --color-base-900: #282726;
   --color-base-950: #1c1b1a;
+  --color-black: #100F0F;
 
   /* Red */
   --color-red-50: #ffe1d5;

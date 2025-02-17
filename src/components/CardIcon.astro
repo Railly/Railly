@@ -1,0 +1,37 @@
+---
+type ColorName =
+    | "blue"
+    | "teal"
+    | "yellow"
+    | "cyan"
+    | "purple"
+    | "magenta"
+    | "orange";
+
+interface Props {
+    color?: ColorName;
+    padding?: "p-2.5" | "p-3";
+}
+
+const { color = "blue", padding = "" } = Astro.props;
+
+const colorMap = {
+    blue: "group-hover:bg-flexoki-blue/10",
+    teal: "group-hover:bg-flexoki-teal/10",
+    yellow: "group-hover:bg-flexoki-yellow/10",
+    cyan: "group-hover:bg-flexoki-cyan/10",
+    purple: "group-hover:bg-flexoki-purple/10",
+    magenta: "group-hover:bg-flexoki-magenta/10",
+    orange: "group-hover:bg-flexoki-orange/10",
+} as const;
+---
+
+<div
+    class:list={[
+        "flex-shrink-0 w-12 h-12 rounded-lg bg-flexoki-tx-3/5 transition-colors duration-300 flex items-center justify-center",
+        colorMap[color],
+        padding,
+    ]}
+>
+    <slot />
+</div>

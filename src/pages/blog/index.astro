@@ -1,0 +1,35 @@
+---
+import { getCollection, type CollectionEntry } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import Card from "../../components/Card.astro";
+
+const posts = await getCollection("blog", ({ data }) => {
+    return import.meta.env.PROD ? data.status === "published" : true;
+});
+
+const sortedPosts = posts.sort(
+    (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+---
+
+<Layout>
+    <main class="max-w-2xl mx-auto px-6 py-12">
+        <h1 class="text-3xl font-medium text-flexoki-tx mb-8">Writing</h1>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {
+                sortedPosts.map((post) => (
+                    <Card href={`/blog/${post.slug}`} color="purple">
+                        <div class="relative z-10">
+                            <h3 class="font-serif text-flexoki-tx group-hover:text-flexoki-purple transition-colors mb-2 font-medium">
+                                {post.data.title}
+                            </h3>
+                            <p class="text-sm text-flexoki-tx-2">
+                                {post.data.description}
+                            </p>
+                        </div>
+                    </Card>
+                ))
+            }
+        </div>
+    </main>
+</Layout>

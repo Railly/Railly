@@ -1,0 +1,140 @@
+---
+import { getCollection, type CollectionEntry } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("blog", ({ data }) => {
+    return import.meta.env.PROD ? data.status === "published" : true;
+  });
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+interface Props {
+  post: CollectionEntry<"blog">;
+}
+
+const { post } = Astro.props;
+const { Content } = await post.render();
+
+// Format dates
+const publishedDate = post.data.pubDate.toLocaleDateString("en-US", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+});
+
+const updatedDate = post.data.updatedDate
+  ? post.data.updatedDate.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+    })
+  : null;
+---
+
+<Layout title={post.data.title} description={post.data.description}>
+  <main class="max-w-3xl mx-auto px-4 sm:px-6 py-12">
+    <article class="relative">
+      <!-- Article Header -->
+      <header class="space-y-4 mb-8 max-w-2xl text-left">
+        {
+          post.data.category && (
+            <div class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-muted text-muted-foreground">
+              {post.data.category}
+            </div>
+          )
+        }
+        <h1
+          class="font-serif text-3xl sm:text-4xl font-bold text-foreground tracking-tight"
+        >
+          {post.data.title}
+        </h1>
+        {
+          post.data.description && (
+            <p class="text-lg text-flexoki-tx-2">{post.data.description}</p>
+          )
+        }
+
+        <div class="flex justify-between items-center">
+          <!-- Tags -->
+          {
+            post.data.tags.length > 0 && (
+              <div class="flex flex-wrap gap-2">
+                {post.data.tags.map((tag) => (
+                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-flexoki-bg-2 text-flexoki-tx-2">
+                    #{tag}
+                  </span>
+                ))}
+              </div>
+            )
+          }
+
+          <!-- Metadata -->
+          <time
+            class="text-sm text-flexoki-tx-2"
+            datetime={post.data.pubDate.toISOString()}
+          >
+            {publishedDate}
+          </time>
+        </div>
+      </header>
+
+      <!-- Hero Image -->
+      {
+        post.data.heroImage && (
+          <div class="relative w-full aspect-[2/1] mb-10 rounded-lg overflow-hidden bg-muted">
+            <img
+              src={post.data.heroImage.src}
+              alt={post.data.heroImage.alt}
+              class="object-cover w-full h-full"
+            />
+          </div>
+        )
+      }
+
+      <!-- Content -->
+      <div
+        class:list={[
+          "prose prose-flexoki max-w-none",
+          "prose-headings:text-flexoki-tx prose-headings:font-bold",
+          "prose-p:text-flexoki-tx prose-p:leading-relaxed",
+          "prose-a:text-flexoki-tx prose-a:no-underline hover:prose-a:underline",
+          "prose-strong:text-flexoki-tx prose-strong:font-medium",
+          "prose-li:text-flexoki-tx prose-li:leading-relaxed",
+          "prose-li:marker:text-flexoki-tx-2",
+          "prose-table:text-flexoki-tx prose-table:border-flexoki-ui prose-table:border prose-table:rounded-lg",
+          "prose-tr:border-flexoki-ui prose-tr:border-b",
+          "prose-td:border-flexoki-ui prose-td:border-r",
+          "prose-td:p-2 prose-td:text-flexoki-tx-2",
+          "prose-th:p-2 prose-th:text-flexoki-tx",
+          "prose-img:rounded-lg",
+          "prose-blockquote:border-l-cyan-500 prose-blockquote:text-flexoki-tx-2",
+          "dark:prose-invert",
+        ]}
+      >
+        <Content />
+      </div>
+
+      <!-- Updated Date Notice -->
+      {
+        updatedDate && (
+          <div class="mt-8 text-sm text-muted-foreground border-t border-border pt-4">
+            <p>Last updated on {updatedDate}</p>
+          </div>
+        )
+      }
+    </article>
+  </main>
+</Layout>
+
+<style>
+  /* Smooth anchor offset for header links */
+  :target {
+    scroll-margin-top: 2rem;
+  }
+</style>

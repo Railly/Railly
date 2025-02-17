@@ -1,0 +1,151 @@
+---
+interface Props {
+  title?: string;
+  rawContent: string;
+}
+
+const { title = "Example Content:", rawContent } = Astro.props;
+
+// Process the content through markdown and KaTeX
+import { marked } from "marked";
+import katex from "katex";
+import CustomCode from "./CustomCode.astro";
+
+// Configure marked to handle KaTeX
+const renderer = new marked.Renderer();
+renderer.paragraph = (text: string) => `<p>${text}</p>`;
+
+marked.setOptions({
+  renderer,
+  pedantic: false,
+  gfm: true,
+});
+
+// Process KaTeX
+const processKatex = (content: string) => {
+  return content
+    .replace(/\$\$(.*?)\$\$/g, (_, tex) =>
+      katex.renderToString(tex, { displayMode: true }),
+    )
+    .replace(/\$(.*?)\$/g, (_, tex) =>
+      katex.renderToString(tex, { displayMode: false }),
+    );
+};
+
+const renderedContent = processKatex(await marked.parse(rawContent));
+---
+
+<div class="toggleable-content space-y-4">
+  <div class="flex justify-between items-center">
+    <h2 class="text-lg font-medium text-foreground my-0">{title}</h2>
+    <button
+      class="toggle-button inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-flexoki-tx-2 hover:text-foreground transition-colors rounded-full border border-flexoki-ui hover:border-flexoki-tx-2 bg-background/50 hover:bg-background cursor-pointer"
+      type="button"
+    >
+      <span class="toggle-label">View Raw</span>
+    </button>
+  </div>
+
+  <div class="relative overflow-hidden">
+    <div class="code-block markdown-view hidden">
+      <CustomCode
+        code={rawContent}
+        lang="markdown"
+        wrap={false}
+        inline={false}
+      />
+    </div>
+    <!-- Rendered view (initially hidden) -->
+    <div
+      class="rendered-view border border-flexoki-ui rounded-lg markdown-view w-full flex-1 p-6 [font-size:85%] prose-flexoki prose !max-w-none prose-pre:!w-full prose-pre:!max-w-none prose-pre:!overflow-x-auto"
+      set:html={renderedContent}
+    />
+    <div
+      class="pattern absolute inset-0 bg-gradient-to-tr from-flexoki-purple/[0.03] to-transparent opacity-50 pointer-events-none"
+    >
+    </div>
+  </div>
+</div>
+
+<style>
+  .hidden {
+    display: none;
+  }
+  .pattern {
+    content: "" !important;
+    position: absolute !important;
+    inset: 0 !important;
+    background-image: linear-gradient(
+      45deg,
+      var(--color-flexoki-purple) 25%,
+      transparent 25%,
+      transparent 50%,
+      var(--color-flexoki-purple) 50%,
+      var(--color-flexoki-purple) 75%,
+      transparent 75%,
+      transparent
+    ) !important;
+    background-size: 8px 8px !important;
+    opacity: 0.02 !important;
+    z-index: -1 !important;
+    pointer-events: none !important;
+  }
+  .markdown-view {
+    transition: opacity 200ms ease-in-out;
+  }
+  .rendered-view {
+    width: 100% !important;
+    max-width: none !important;
+  }
+
+  .rendered-view :global(pre) {
+    width: 100% !important;
+    max-width: none !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  .rendered-view :global(code) {
+    width: 100% !important;
+  }
+</style>
+
+<script>
+  function setupToggle(container: HTMLElement) {
+    const button = container.querySelector(
+      ".toggle-button",
+    ) as HTMLButtonElement;
+    const toggleLabel = button.querySelector(".toggle-label") as HTMLElement;
+    const rawBlock = container.querySelector(".code-block") as HTMLElement;
+    const renderedBlock = container.querySelector(
+      ".rendered-view",
+    ) as HTMLElement;
+
+    let showingRendered = false;
+
+    button.addEventListener("click", () => {
+      showingRendered = !showingRendered;
+      if (showingRendered) {
+        rawBlock.classList.remove("hidden");
+        renderedBlock.classList.add("hidden");
+        toggleLabel.textContent = "View Rendered";
+      } else {
+        rawBlock.classList.add("hidden");
+        renderedBlock.classList.remove("hidden");
+        toggleLabel.textContent = "View Raw";
+      }
+    });
+  }
+
+  // Setup on initial load
+  document.querySelectorAll(".toggleable-content").forEach((container) => {
+    setupToggle(container as HTMLElement);
+  });
+
+  // Setup on client-side navigation
+  document.addEventListener("astro:page-load", () => {
+    document.querySelectorAll(".toggleable-content").forEach((container) => {
+      setupToggle(container as HTMLElement);
+    });
+  });
+</script>
