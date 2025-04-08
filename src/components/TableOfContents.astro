@@ -1,0 +1,99 @@
+---
+interface Props {
+  headings: { depth: number; slug: string; text: string }[];
+}
+
+const { headings } = Astro.props;
+
+// Filter only main headings (h1 and h2)
+const mainHeadings = headings.filter((heading) => heading.depth <= 2);
+---
+
+<nav class="sticky top-24 w-64 hidden lg:block">
+  <a
+    href="/"
+    class="block text-sm mb-6 text-flexoki-tx-2 hover:text-flexoki-tx transition-colors duration-200"
+    >← Home</a
+  >
+  <ul class="space-y-1.5 text-[13px]">
+    {
+      mainHeadings.map((heading) => (
+        <li>
+          <a
+            href={`#${heading.slug}`}
+            class="toc-link block py-0.5 text-flexoki-tx-2 hover:text-flexoki-tx transition-colors duration-200"
+            data-heading={heading.slug}
+          >
+            {heading.text}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</nav>
+
+<script>
+  function setupTableOfContents() {
+    const toc = document.querySelector("nav");
+    if (!toc) return;
+
+    const tocLinks = toc.querySelectorAll(".toc-link");
+    const sections = Array.from(tocLinks)
+      .map((link) => {
+        const slug = link.getAttribute("data-heading");
+        return slug ? document.getElementById(slug) : null;
+      })
+      .filter(Boolean);
+
+    const observerOptions = {
+      rootMargin: "-20% 0px -60% 0px",
+      threshold: 0,
+    };
+
+    const intersectionCallback = (entries: IntersectionObserverEntry[]) => {
+      entries.forEach((entry) => {
+        const slug = entry.target.id;
+        const link = toc.querySelector(`[data-heading="${slug}"]`);
+
+        if (entry.isIntersecting) {
+          // Remove active class from all links
+          tocLinks.forEach((l) =>
+            l.classList.remove(
+              "active",
+              "text-flexoki-tx",
+              "font-semibold",
+              "after:content-['•']",
+              "after:ml-1",
+            ),
+          );
+          // Add active class to current link
+          link?.classList.add(
+            "active",
+            "text-flexoki-tx",
+            "font-semibold",
+            "after:content-['•']",
+            "after:ml-1",
+          );
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(
+      intersectionCallback,
+      observerOptions,
+    );
+    sections.forEach((section) => section && observer.observe(section));
+
+    // Cleanup function
+    return () => {
+      sections.forEach((section) => section && observer.unobserve(section));
+      observer.disconnect();
+    };
+  }
+
+  // Setup on initial load
+  setupTableOfContents();
+
+  // Setup on client-side navigation
+  document.addEventListener("astro:page-load", setupTableOfContents);
+</script>

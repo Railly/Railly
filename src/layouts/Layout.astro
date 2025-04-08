@@ -1,5 +1,23 @@
 ---
+import { siteConfig } from "../config/site";
 import "../styles/global.css";
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  article?: boolean;
+}
+
+const {
+  title = siteConfig.name,
+  description = siteConfig.description,
+  image = siteConfig.ogImage,
+  article = false,
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, siteConfig.url);
+const socialImageURL = new URL(image, siteConfig.url);
 ---
 
 <!doctype html>
@@ -7,9 +25,65 @@ import "../styles/global.css";
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="generator" content={Astro.generator} />
-    <title>Astro Basics</title>
+    <link rel="canonical" href={canonicalURL} />
+
+    {/* Primary Meta Tags */}
+    <title>{title}</title>
+    <meta name="title" content={title} />
+    <meta name="description" content={description} />
+    <meta name="author" content={siteConfig.author} />
+    <meta name="keywords" content={siteConfig.keywords.join(", ")} />
+
+    {/* Theme Color */}
+    <meta
+      name="theme-color"
+      content={siteConfig.themeColor.light}
+      media="(prefers-color-scheme: light)"
+    />
+    <meta
+      name="theme-color"
+      content={siteConfig.themeColor.dark}
+      media="(prefers-color-scheme: dark)"
+    />
+
+    {/* Open Graph / Facebook */}
+    <meta property="og:type" content={article ? "article" : "website"} />
+    <meta property="og:site_name" content={siteConfig.name} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={socialImageURL} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content={siteConfig.locale} />
+
+    {/* Twitter */}
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content={canonicalURL} />
+    <meta property="twitter:title" content={title} />
+    <meta property="twitter:description" content={description} />
+    <meta property="twitter:image" content={socialImageURL} />
+    <meta property="twitter:creator" content="@raillyhugo" />
+
+    {/* Favicons */}
+    <link rel="icon" type="image/x-icon" href={siteConfig.icons.icon} />
+    <link
+      rel="shortcut icon"
+      type="image/png"
+      href={siteConfig.icons.shortcut}
+    />
+    <link rel="apple-touch-icon" href={siteConfig.icons.apple} />
+    <link rel="manifest" href={siteConfig.manifest} />
+
+    {/* RSS Feed */}
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title={`RSS Feed for ${siteConfig.name}`}
+      href="/rss.xml"
+    />
+
+    <slot name="head" />
   </head>
   <body class="min-h-screen bg-flexoki-bg text-flexoki-tx">
     <slot />

@@ -12,9 +12,11 @@ const { title = "Preview:", content, previewHeight = "250px" } = Astro.props;
 
 <div class="content-preview relative pt-[2em]">
     <div class="flex justify-between items-center mb-4">
-        <h2 class="text-lg font-medium text-flexoki-tx my-0">{title}</h2>
+        <h2 class="text-lg font-medium text-flexoki-tx my-0 text-shadow-sm">
+            {title}
+        </h2>
         <button
-            class="toggle-button inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-flexoki-tx-2 hover:text-foreground transition-colors rounded-full border border-flexoki-ui hover:border-flexoki-tx-2 bg-background/50 hover:bg-background cursor-pointer"
+            class="toggle-button inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium text-flexoki-tx-2/70 hover:text-flexoki-tx transition-colors rounded-full border border-flexoki-ui hover:border-flexoki-tx-2 bg-background/50 hover:bg-background cursor-pointer"
         >
             <svg
                 class="w-3.5 h-3.5 transition-transform duration-200"
@@ -29,11 +31,11 @@ const { title = "Preview:", content, previewHeight = "250px" } = Astro.props;
                     stroke-width="2"
                     d="M4 6h16M4 12h16m-7 6h7"></path>
             </svg>
-            <span class="hidden md:inline">View Full</span>
+            <span class="hidden md:inline text-[13px]">View Full</span>
         </button>
     </div>
     <div
-        class="preview-wrapper relative overflow-hidden rounded-lg border border-flexoki-ui"
+        class="preview-wrapper relative overflow-hidden rounded-lg border border-flexoki-ui mask-b-from-20% mask-b-to-80%"
         style={`max-height: ${previewHeight};`}
     >
         <CustomCode
@@ -43,34 +45,17 @@ const { title = "Preview:", content, previewHeight = "250px" } = Astro.props;
             wrap={false}
             inline={false}
         />
-        <div
-            class="fade-overlay absolute bottom-0 left-0 right-0 h-32 pointer-events-none"
-        >
-        </div>
     </div>
 </div>
 
 <style>
-    .fade-overlay {
-        background: linear-gradient(
-            to bottom,
-            transparent,
-            var(--color-flexoki-bg) 70%
-        );
-        opacity: 0.8;
-        transition: opacity 300ms ease-in-out;
-    }
-
-    .preview-wrapper.expanded .fade-overlay {
-        opacity: 0;
-    }
-
     .preview-wrapper {
         transition: max-height 300ms cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .preview-wrapper.expanded {
         max-height: none !important;
+        mask-image: none !important;
     }
 
     /* Gradient animation on hover */

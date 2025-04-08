@@ -2,9 +2,14 @@
 interface Props {
   title?: string;
   rawContent: string;
+  previewHeight?: string;
 }
 
-const { title = "Example Content:", rawContent } = Astro.props;
+const {
+  title = "Example Content:",
+  rawContent,
+  previewHeight = "250px",
+} = Astro.props;
 
 // Process the content through markdown and KaTeX
 import { marked } from "marked";
@@ -37,17 +42,42 @@ const renderedContent = processKatex(await marked.parse(rawContent));
 
 <div class="toggleable-content space-y-4">
   <div class="flex justify-between items-center">
-    <h2 class="text-lg font-medium text-foreground my-0">{title}</h2>
-    <button
-      class="toggle-button inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-flexoki-tx-2 hover:text-foreground transition-colors rounded-full border border-flexoki-ui hover:border-flexoki-tx-2 bg-background/50 hover:bg-background cursor-pointer"
-      type="button"
-    >
-      <span class="toggle-label">View Raw</span>
-    </button>
+    <h2 class="text-lg font-medium text-foreground my-0 text-shadow-sm">
+      {title}
+    </h2>
+    <div class="flex gap-2">
+      <button
+        class="toggle-button inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium text-flexoki-tx-2/70 hover:text-flexoki-tx transition-colors rounded-full border border-flexoki-ui hover:border-flexoki-tx-2 bg-background/50 hover:bg-background cursor-pointer"
+        type="button"
+      >
+        <span class="toggle-label text-[13px]">View Raw</span>
+      </button>
+      <button
+        class="expand-button inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium text-flexoki-tx-2/70 hover:text-flexoki-tx transition-colors rounded-full border border-flexoki-ui hover:border-flexoki-tx-2 bg-background/50 hover:bg-background cursor-pointer"
+      >
+        <svg
+          class="w-3.5 h-3.5 transition-transform duration-200"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M4 6h16M4 12h16m-7 6h7"></path>
+        </svg>
+        <span class="expand-label text-[13px]">View Full</span>
+      </button>
+    </div>
   </div>
 
   <div class="relative overflow-hidden">
-    <div class="code-block markdown-view hidden">
+    <div
+      class="code-block markdown-view hidden preview-wrapper mask-b-from-20% mask-b-to-80%"
+      style={`max-height: ${previewHeight};`}
+    >
       <CustomCode
         code={rawContent}
         lang="markdown"
@@ -57,7 +87,8 @@ const renderedContent = processKatex(await marked.parse(rawContent));
     </div>
     <!-- Rendered view (initially hidden) -->
     <div
-      class="rendered-view border border-flexoki-ui rounded-lg markdown-view w-full flex-1 p-6 [font-size:85%] prose-flexoki prose !max-w-none prose-pre:!w-full prose-pre:!max-w-none prose-pre:!overflow-x-auto"
+      class="rendered-view border border-flexoki-ui rounded-lg markdown-view w-full flex-1 p-6 [font-size:85%] prose-flexoki prose !max-w-none prose-pre:!w-full prose-pre:!max-w-none prose-pre:!overflow-x-auto preview-wrapper mask-b-from-20% mask-b-to-80%"
+      style={`max-height: ${previewHeight};`}
       set:html={renderedContent}
     />
     <div
@@ -108,6 +139,15 @@ const renderedContent = processKatex(await marked.parse(rawContent));
   .rendered-view :global(code) {
     width: 100% !important;
   }
+
+  .preview-wrapper {
+    transition: max-height 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .preview-wrapper.expanded {
+    max-height: none !important;
+    mask-image: none !important;
+  }
 </style>
 
 <script>
@@ -120,19 +160,85 @@ const renderedContent = processKatex(await marked.parse(rawContent));
     const renderedBlock = container.querySelector(
       ".rendered-view",
     ) as HTMLElement;
+    const expandButton = container.querySelector(
+      ".expand-button",
+    ) as HTMLButtonElement;
+    const expandLabel = expandButton.querySelector(
+      ".expand-label",
+    ) as HTMLElement;
+    const expandIcon = expandButton.querySelector("svg") as SVGElement;
 
-    let showingRendered = false;
+    let showingRendered = true; // Start with rendered view visible
+    let isExpanded = false;
+
+    // Function to update expand button state
+    const updateExpandButton = () => {
+      if (isExpanded) {
+        expandLabel.textContent = "View Less";
+        expandIcon.style.transform = "rotate(180deg)";
+      } else {
+        expandLabel.textContent = "View Full";
+        expandIcon.style.transform = "";
+      }
+    };
+
+    // Function to update preview wrapper state
+    const updatePreviewWrapper = () => {
+      const activeBlock = showingRendered ? renderedBlock : rawBlock;
+      if (isExpanded) {
+        activeBlock.classList.add("expanded");
+      } else {
+        activeBlock.classList.remove("expanded");
+      }
+    };
+
+    // Initialize the view state
+    const initializeView = () => {
+      if (showingRendered) {
+        rawBlock.classList.add("hidden");
+        renderedBlock.classList.remove("hidden");
+        toggleLabel.textContent = "View Raw";
+      } else {
+        rawBlock.classList.remove("hidden");
+        renderedBlock.classList.add("hidden");
+        toggleLabel.textContent = "View Rendered";
+      }
+      updatePreviewWrapper();
+    };
+
+    // Initialize the view
+    initializeView();
 
     button.addEventListener("click", () => {
       showingRendered = !showingRendered;
       if (showingRendered) {
-        rawBlock.classList.remove("hidden");
-        renderedBlock.classList.add("hidden");
-        toggleLabel.textContent = "View Rendered";
-      } else {
         rawBlock.classList.add("hidden");
         renderedBlock.classList.remove("hidden");
         toggleLabel.textContent = "View Raw";
+      } else {
+        rawBlock.classList.remove("hidden");
+        renderedBlock.classList.add("hidden");
+        toggleLabel.textContent = "View Rendered";
+      }
+
+      // Update the expand state for the active block
+      updatePreviewWrapper();
+    });
+
+    // Setup expand button
+    expandButton.addEventListener("click", () => {
+      isExpanded = !isExpanded;
+      updateExpandButton();
+      updatePreviewWrapper();
+
+      if (isExpanded) {
+        const activeBlock = showingRendered ? renderedBlock : rawBlock;
+        requestAnimationFrame(() => {
+          activeBlock.scrollIntoView({
+            behavior: "smooth",
+            block: "nearest",
+          });
+        });
       }
     });
   }
