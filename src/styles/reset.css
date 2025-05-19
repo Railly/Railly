@@ -19,7 +19,9 @@
 
   p {
     text-wrap: pretty;
+    margin-block: 1lh;
   }
+
   h1,
   h2,
   h3,

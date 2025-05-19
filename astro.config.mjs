@@ -5,8 +5,8 @@ import remarkMath from "remark-math";
 import oneHunterThemeLight2024 from "./public/themes/one-hunter-light.json";
 import oneHunterThemeDark2024 from "./public/themes/one-hunter-dark.json";
 import tailwindcss from "@tailwindcss/vite";
-
 import mdx from "@astrojs/mdx";
+import react from "@astrojs/react";
 
 // https://astro.build/config
 export default defineConfig({
@@ -15,12 +15,13 @@ export default defineConfig({
     plugins: [tailwindcss()],
   },
 
-  integrations: [mdx(
-    {
+  integrations: [
+    mdx({
       remarkPlugins: [remarkMath],
       rehypePlugins: [rehypeKatex],
-    }
-  )],
+    }),
+    react()
+  ],
   markdown: {
     shikiConfig: {
       themes: {

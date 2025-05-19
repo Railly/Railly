@@ -12,7 +12,7 @@ const { title = "Preview:", content, previewHeight = "250px" } = Astro.props;
 
 <div class="content-preview relative pt-[2em]">
     <div class="flex justify-between items-center mb-4">
-        <h2 class="text-lg font-medium text-flexoki-tx my-0 text-shadow-sm">
+        <h2 class="text-lg font-medium text-flexoki-tx my-0">
             {title}
         </h2>
         <button
@@ -78,28 +78,52 @@ const { title = "Preview:", content, previewHeight = "250px" } = Astro.props;
 
 <script>
     function setupToggle(container: HTMLElement) {
-        const button = container.querySelector(".toggle-button");
-        const wrapper = container.querySelector(".preview-wrapper");
-        const buttonText = button?.querySelector(".md\\:inline");
-        const buttonIcon = button?.querySelector("svg");
+        const button = container.querySelector(
+            ".toggle-button",
+        ) as HTMLButtonElement;
+        const wrapper = container.querySelector(
+            ".preview-wrapper",
+        ) as HTMLElement;
+        const buttonText = button?.querySelector("span") as HTMLElement;
+        const buttonIcon = button?.querySelector("svg") as SVGElement;
 
-        if (!button || !wrapper || !buttonText || !buttonIcon) return;
+        if (!button || !wrapper || !buttonText || !buttonIcon) {
+            console.error("Required elements not found:", {
+                button,
+                wrapper,
+                buttonText,
+                buttonIcon,
+            });
+            return;
+        }
 
         let isExpanded = false;
 
         const toggle = () => {
             isExpanded = !isExpanded;
-            wrapper.classList.toggle("expanded");
+
+            // Force reflow to ensure CSS transitions work properly
+            void wrapper.offsetWidth;
+
+            wrapper.classList.toggle("expanded", isExpanded);
             buttonText.textContent = isExpanded ? "View Less" : "View Full";
             buttonIcon.style.transform = isExpanded ? "rotate(180deg)" : "";
 
             if (isExpanded) {
+                // Remove any mask when expanded
+                wrapper.style.maskImage = "none";
+                wrapper.style.webkitMaskImage = "none";
+
                 requestAnimationFrame(() => {
                     wrapper.scrollIntoView({
                         behavior: "smooth",
                         block: "nearest",
                     });
                 });
+            } else {
+                // Restore default mask settings when collapsed
+                wrapper.style.maskImage = "";
+                wrapper.style.webkitMaskImage = "";
             }
         };
 
@@ -110,10 +134,19 @@ const { title = "Preview:", content, previewHeight = "250px" } = Astro.props;
     const init = () => {
         document
             .querySelectorAll<HTMLElement>(".content-preview")
-            .forEach(setupToggle);
+            .forEach((container) => {
+                setupToggle(container);
+                console.log("Toggle setup complete for", container);
+            });
     };
 
     // Setup on both initial load and page transitions
     document.addEventListener("astro:page-load", init);
-    init();
+
+    // Also run on immediate load to handle non-Astro navigation cases
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", init);
+    } else {
+        init();
+    }
 </script>

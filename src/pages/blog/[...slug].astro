@@ -2,6 +2,9 @@
 import { getCollection, type CollectionEntry } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
 import TableOfContents from "../../components/TableOfContents.astro";
+import Linkedin from "../../assets/svgs/linkedin.svg";
+import Github from "../../assets/svgs/github.svg";
+import X from "../../assets/svgs/x.svg";
 
 export async function getStaticPaths() {
   const posts = await getCollection("blog", ({ data }) => {
@@ -19,6 +22,22 @@ interface Props {
 
 const { post } = Astro.props;
 const { Content, headings } = await post.render();
+
+// Get all posts and sort them by date
+const allPosts = await getCollection("blog", ({ data }) => {
+  return import.meta.env.PROD ? data.status === "published" : true;
+});
+const sortedPosts = allPosts.sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+
+// Find current post index
+const currentIndex = sortedPosts.findIndex((p) => p.slug === post.slug);
+
+// Get previous and next posts
+const previousPost =
+  currentIndex < sortedPosts.length - 1 ? sortedPosts[currentIndex + 1] : null;
+const nextPost = currentIndex > 0 ? sortedPosts[currentIndex - 1] : null;
 
 // Format dates
 const publishedDate = post.data.pubDate.toLocaleDateString("en-US", {
@@ -39,7 +58,7 @@ const updatedDate = post.data.updatedDate
 ---
 
 <Layout title={post.data.title} description={post.data.description}>
-  <main class="max-w-[83rem] mx-auto px-4 sm:px-6 py-12">
+  <main class="max-w-[83rem] mx-auto px-4 sm:px-6 py-12 sm:py-24">
     <div class="lg:grid lg:grid-cols-[1fr_minmax(0,_2.5fr)_1fr] lg:gap-8">
       <!-- Left Sidebar - Table of Contents -->
       <div class="lg:col-start-1">
@@ -49,7 +68,11 @@ const updatedDate = post.data.updatedDate
       <!-- Main Content -->
       <article class="relative lg:col-start-2">
         <!-- Article Header -->
-        <header class="space-y-2 mb-8 max-w-2xl text-left">
+        <header
+          class="space-y-2 mb-8 max-w-2xl text-left"
+          transition:name={`blog-card-${post.slug}`}
+          transition:animate="fade"
+        >
           {
             post.data.category && (
               <div class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-muted text-muted-foreground">
@@ -79,7 +102,11 @@ const updatedDate = post.data.updatedDate
         <!-- Hero Image -->
         {
           post.data.heroImage && (
-            <div class="relative w-full aspect-[2/1] mb-10 rounded-lg overflow-hidden bg-muted">
+            <div
+              class="relative w-full aspect-[2/1] mb-10 rounded-lg overflow-hidden bg-muted"
+              transition:name={`blog-hero-${post.slug}`}
+              transition:animate="fade"
+            >
               <img
                 src={post.data.heroImage.src}
                 alt={post.data.heroImage.alt}
@@ -94,10 +121,10 @@ const updatedDate = post.data.updatedDate
           class:list={[
             "prose prose-flexoki max-w-none",
             "prose-headings:text-flexoki-tx prose-headings:text-base prose-headings:font-semibold",
-            "prose-p:text-flexoki-tx prose-p:text-base prose-p:leading-relaxed",
+            "prose-p:text-flexoki-tx/85 prose-p:text-base prose-p:leading-7",
             "prose-a:text-flexoki-tx prose-a:no-underline hover:prose-a:underline",
             "prose-strong:text-flexoki-tx prose-strong:text-base prose-strong:font-semibold",
-            "prose-li:text-flexoki-tx prose-li:leading-relaxed",
+            "prose-li:text-flexoki-tx prose-li:leading-7",
             "prose-li:marker:text-flexoki-tx-2",
             "prose-table:text-flexoki-tx prose-table:border-flexoki-ui prose-table:border prose-table:rounded-lg",
             "prose-tr:border-flexoki-ui prose-tr:border-b",
@@ -122,15 +149,163 @@ const updatedDate = post.data.updatedDate
         }
       </article>
 
+      <footer class="lg:col-start-2 mt-8 sm:mt-12">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <!-- Previous Post -->
+          <div class="space-y-2">
+            <h3
+              class="text-sm font-medium text-flexoki-tx-2 uppercase tracking-wider"
+            >
+              Previous Post
+            </h3>
+            {
+              previousPost ? (
+                <a
+                  href={`/blog/${previousPost.slug}`}
+                  class="group block p-4 rounded-lg border border-flexoki-ui hover:border-flexoki-purple/30 transition-colors duration-300"
+                >
+                  <h4 class="font-serif text-flexoki-tx group-hover:text-flexoki-purple transition-colors mb-2 font-medium">
+                    {previousPost.data.title}
+                  </h4>
+                  <p class="text-sm text-flexoki-tx-2">
+                    {previousPost.data.description}
+                  </p>
+                  <time class="text-xs font-mono text-flexoki-tx-2 mt-2 block">
+                    {previousPost.data.pubDate.toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })}
+                  </time>
+                </a>
+              ) : (
+                <div class="p-4 rounded-lg border border-flexoki-ui bg-flexoki-bg/50">
+                  <h4 class="font-serif text-flexoki-tx-2 mb-2 font-medium">
+                    You've reached the beginning
+                  </h4>
+                  <p class="text-sm text-flexoki-tx-2">Thanks for reading!</p>
+                </div>
+              )
+            }
+          </div>
+
+          <!-- Next Post -->
+          <div class="space-y-2">
+            <h3
+              class="text-sm font-medium text-flexoki-tx-2 uppercase tracking-wider"
+            >
+              Next Post
+            </h3>
+            {
+              nextPost ? (
+                <a
+                  href={`/blog/${nextPost.slug}`}
+                  class="group block p-4 rounded-lg border border-flexoki-ui hover:border-flexoki-purple/30 transition-colors duration-300"
+                >
+                  <h4 class="font-serif text-flexoki-tx group-hover:text-flexoki-purple transition-colors mb-2 font-medium">
+                    {nextPost.data.title}
+                  </h4>
+                  <p class="text-sm text-flexoki-tx-2">
+                    {nextPost.data.description}
+                  </p>
+                  <time class="text-xs font-mono text-flexoki-tx-2 mt-2 block">
+                    {nextPost.data.pubDate.toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })}
+                  </time>
+                </a>
+              ) : (
+                <div class="p-4 rounded-lg border border-flexoki-ui bg-flexoki-bg/50">
+                  <h4 class="font-serif text-flexoki-tx-2 mb-2 font-medium">
+                    You're up to date!
+                  </h4>
+                  <p class="text-sm text-flexoki-tx-2">Stay tuned for more!</p>
+                </div>
+              )
+            }
+          </div>
+        </div>
+      </footer>
+
       <!-- Right Sidebar (empty for balance) -->
       <div class="lg:col-start-3"></div>
     </div>
   </main>
-</Layout>
 
-<style>
-  /* Smooth anchor offset for header links */
-  :target {
-    scroll-margin-top: 2rem;
-  }
-</style>
+  <!-- New Social Media Footer -->
+  <footer class="py-8">
+    <div
+      class="max-w-2xl mx-auto flex flex-wrap justify-between items-center px-6 md:px-0 gap-y-4 gap-x-6"
+    >
+      <div
+        class="flex justify-center items-center flex-wrap gap-5 text-flexoki-tx-2"
+      >
+        <a
+          href="https://x.com/raillyhugo"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Railly Hugo on X"
+          class="group flex items-center gap-2 hover:text-flexoki-blue transition-colors"
+        >
+          <X class="size-4" />
+          <span class="text-sm group-hover:underline">raillyhugo</span>
+        </a>
+        <a
+          href="https://github.com/railly"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Railly Hugo on GitHub"
+          class="group flex items-center gap-2 hover:text-flexoki-yellow transition-colors"
+        >
+          <Github class="size-4" />
+          <span class="text-sm group-hover:underline">railly</span>
+        </a>
+        <a
+          href="https://linkedin.com/in/raillyhugo"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Railly Hugo on LinkedIn"
+          class="group flex items-center gap-2 hover:text-flexoki-cyan transition-colors"
+        >
+          <Linkedin class="size-4" />
+          <span class="text-sm group-hover:underline">railly-hugo</span>
+        </a>
+        <a
+          href="mailto:hi@railly.dev"
+          aria-label="Email Railly Hugo"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="group flex items-center gap-2 hover:text-flexoki-purple transition-colors"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="size-4"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75"
+            ></path>
+          </svg>
+          <span class="text-sm group-hover:underline">hi@railly.dev</span>
+        </a>
+      </div>
+      <p class="text-sm text-center w-full sm:w-auto text-flexoki-tx-2">
+        &copy; {new Date().getFullYear()} Railly Hugo
+      </p>
+    </div>
+  </footer>
+
+  <style>
+    /* Smooth anchor offset for header links */
+    :target {
+      scroll-margin-top: 2rem;
+    }
+  </style>
+</Layout>

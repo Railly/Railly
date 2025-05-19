@@ -12,6 +12,7 @@
   --font-serif: "IBM Plex Serif", "serif";
   --font-mono: "IBM Plex Mono", "monospace";
 
+  --color-crafter-yellow: #E2A719;
   /* Base Colors */
   --color-flexoki-bg: var(--color-paper);
   --color-flexoki-bg-2: var(--color-base-50);
@@ -50,6 +51,7 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
+    --color-crafter-yellow: #fed400;
     /* Base Colors */
     --color-flexoki-bg: var(--color-black);
     --color-flexoki-bg-2: var(--color-base-950);
@@ -84,5 +86,17 @@
     --color-flexoki-zinc: var(--color-zinc-400);
     --color-flexoki-neutral: var(--color-neutral-400);
     --color-flexoki-stone: var(--color-stone-400);
+  }
+}
+
+.underline {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--color-flexoki-tx-3);
+  transition: text-decoration-color 0.2s ease-in-out;
+
+  &:hover {
+    text-decoration-color: var(--color-flexoki-tx);
   }
 }

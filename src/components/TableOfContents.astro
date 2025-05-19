@@ -32,6 +32,14 @@ const mainHeadings = headings.filter((heading) => heading.depth <= 2);
   </ul>
 </nav>
 
+<nav class="sticky top-24 w-64 block lg:hidden">
+  <a
+    href="/"
+    class="block text-sm mb-6 text-flexoki-tx-2 hover:text-flexoki-tx transition-colors duration-200"
+    >← Home</a
+  >
+</nav>
+
 <script>
   function setupTableOfContents() {
     const toc = document.querySelector("nav");

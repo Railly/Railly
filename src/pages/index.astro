@@ -2,10 +2,12 @@
 import Layout from "../layouts/Layout.astro";
 import GradualLogo from "../components/GradualLogo.astro";
 import TinteLogo from "../components/TinteLogo.astro";
-import DisneyLogo from "../components/DisneyLogo.astro";
 import Card from "../components/Card.astro";
 import CardIcon from "../components/CardIcon.astro";
 import { getCollection } from "astro:content";
+import CrafterIcon from "../assets/svgs/crafter.svg";
+import Text0Logo from "../assets/svgs/t0-logo.svg";
+import Linkedin from "../assets/svgs/linkedin.svg";
 
 const posts = await getCollection("blog", ({ data }) => {
   return import.meta.env.PROD ? data.status === "published" : true;
@@ -18,213 +20,525 @@ const sortedPosts = posts.sort(
 
 <Layout>
   <main
-    class="flex flex-col gap-12 items-center justify-center min-h-screen max-w-2xl mx-auto text-flexoki-tx animate-fade-slower px-6 py-12"
+    class="flex flex-col gap-12 items-center justify-center min-h-screen max-w-2xl mx-auto text-flexoki-tx px-6 py-12"
   >
-    <header
-      class="flex flex-col gap-3 items-center justify-center animate-slide-up-fade text-center"
-    >
-      <h1 class="text-3xl tracking-tight font-medium text-flexoki-tx">
+    <header class="flex gap-2 items-center justify-start w-full">
+      <h1 class="text-lg tracking-tight font-medium text-flexoki-tx">
         Railly Hugo
       </h1>
-      <p class="text-lg font-serif text-flexoki-tx-2 max-w-md font-light">
-        Software Engineer ~ Tool Tinkerer
-      </p>
+      <span class="text-sm text-flexoki-tx-2"> ~ </span>
+      <span class="text-base font-serif text-flexoki-tx-2 font-light">
+        Hunter
+      </span>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 900 900"
+        class="size-4 rounded-full border border-flexoki-red"
+      >
+        <rect width="900" height="900" fill="var(--color-flexoki-red)"></rect>
+        <rect x="250" width="400" height="900" fill="#fff"></rect>
+      </svg>
     </header>
 
-    <section
-      class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full animate-slide-up-fade [animation-delay:100ms]"
-    >
-      <div class="flex flex-col gap-5">
-        <h2
-          class="text-sm font-medium text-flexoki-tx-2 uppercase tracking-wider"
-        >
-          Present
-        </h2>
-        <div class="space-y-4">
-          <Card color="blue">
-            <div
-              class="absolute inset-0 bg-gradient-to-tr from-flexoki-blue/[0.03] to-transparent opacity-80 [mask-image:linear-gradient(45deg,#000_25%,transparent_25%,transparent_50%,#000_50%,#000_75%,transparent_75%,transparent)] [mask-size:8px_8px] pointer-events-none"
-            >
-            </div>
-            <div class="flex items-start gap-4">
-              <CardIcon color="blue" padding="p-2.5">
-                <DisneyLogo size={28} />
-              </CardIcon>
-              <div>
-                <h3
-                  class="text-flexoki-tx font-medium group-hover:text-flexoki-blue transition-colors"
-                >
-                  Disney Streaming
-                </h3>
-                <p class="text-sm text-flexoki-tx-2 mt-1">
-                  Developing analytic tools.
-                </p>
-              </div>
-            </div>
-          </Card>
+    <section class="flex flex-col gap-2">
+      <p class="text-base text-flexoki-tx !m-0">
+        I work as a <i>design engineer</i> at <a
+          href="https://yavendio.com"
+          target="_blank"
+          class="text-flexoki-tx underline">Yavendi&oacute;</a
+        >. I also create open-source tools and projects that push the boundaries
+        of UI and developer experience.
+      </p>
 
-          <Card color="teal">
-            <div
-              class="absolute inset-0 bg-gradient-to-tr from-flexoki-teal/[0.03] to-transparent opacity-80 [mask-image:linear-gradient(45deg,#000_25%,transparent_25%,transparent_50%,#000_50%,#000_75%,transparent_75%,transparent)] [mask-size:8px_8px] pointer-events-none"
-            >
-            </div>
-            <div class="flex items-start gap-4">
-              <CardIcon color="teal" padding="p-2.5">
-                <img
-                  src="/src/assets/images/midudev-logo.webp"
-                  alt="Midudev Team"
-                  class="w-full h-full object-cover"
-                />
-              </CardIcon>
-              <div>
-                <h3
-                  class="text-flexoki-tx font-medium group-hover:text-flexoki-teal transition-colors"
-                >
-                  Midudev Team
-                </h3>
-                <p class="text-sm text-flexoki-tx-2 mt-1">
-                  The leading Hispanic streamer
-                </p>
-              </div>
-            </div>
-          </Card>
+      <p class="text-base text-flexoki-tx !m-0">
+        Find my work on <a
+          href="https://github.com/railly"
+          target="_blank"
+          class="text-flexoki-tx underline">GitHub</a
+        > and <a
+          href="https://x.com/raillyhugo"
+          target="_blank"
+          class="text-flexoki-tx underline">𝕏</a
+        >.
+      </p>
+    </section>
 
-          <Card color="yellow">
-            <div
-              class="absolute inset-0 bg-gradient-to-tr from-flexoki-yellow/[0.03] to-transparent opacity-80 [mask-image:linear-gradient(45deg,#000_25%,transparent_25%,transparent_50%,#000_50%,#000_75%,transparent_75%,transparent)] [mask-size:8px_8px] pointer-events-none"
-            >
-            </div>
-            <div class="flex items-start gap-4">
-              <CardIcon color="yellow" padding="p-3">
-                <img
-                  src="/src/assets/images/unmsm-logo.webp"
-                  alt="UNMSM Research"
-                  class="w-full h-full object-cover"
+    <section class="flex flex-col gap-8 w-full">
+      <h2
+        class="text-sm font-medium text-flexoki-tx-2 uppercase tracking-wider"
+      >
+        Present
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <Card color="blue">
+          <div
+            class="absolute inset-0 bg-gradient-to-tr from-flexoki-blue/[0.03] to-transparent opacity-80 [mask-image:linear-gradient(45deg,#000_25%,transparent_25%,transparent_50%,#000_50%,#000_75%,transparent_75%,transparent)] [mask-size:8px_8px] pointer-events-none"
+          >
+          </div>
+          <div class="flex items-start gap-4">
+            <CardIcon color="blue">
+              <picture>
+                <source
+                  srcset="/src/assets/images/ya-vendio-logo-dark.webp"
+                  media="(prefers-color-scheme: dark)"
                 />
-              </CardIcon>
-              <div>
+                <img
+                  src="/src/assets/images/ya-vendio-logo-light.webp"
+                  alt="Yavendió"
+                  height="100%"
+                />
+              </picture>
+            </CardIcon>
+            <div>
+              <h3
+                class="text-flexoki-tx font-medium group-hover:text-flexoki-blue transition-colors"
+              >
+                Yavendió
+              </h3>
+              <p class="text-sm text-flexoki-tx-2 !m-0">
+                Crafting AI Sales Journeys
+              </p>
+            </div>
+          </div>
+        </Card>
+
+        <Card href="https://tinte.dev" color="orange">
+          <div
+            class="absolute inset-0 bg-gradient-to-tr from-flexoki-orange/[0.03] to-transparent opacity-80 [mask-image:linear-gradient(45deg,#000_25%,transparent_25%,transparent_50%,#000_50%,#000_75%,transparent_75%,transparent)] [mask-size:8px_8px] pointer-events-none"
+          >
+          </div>
+          <div class="flex items-start gap-4">
+            <CardIcon color="orange">
+              <CrafterIcon class="size-6 text-flexoki-orange" />
+            </CardIcon>
+            <div class="flex-grow">
+              <div class="flex items-center justify-between">
+                <h3
+                  class="text-flexoki-tx font-medium group-hover:text-flexoki-orange transition-colors"
+                >
+                  Crafter Station
+                </h3>
+                <span
+                  class="text-flexoki-tx-3 group-hover:translate-x-1 transition-transform"
+                  >→</span
+                >
+              </div>
+              <p class="text-sm text-flexoki-tx-2 !m-0">
+                Open-source organization
+              </p>
+            </div>
+          </div>
+        </Card>
+
+        <Card color="yellow">
+          <div
+            class="absolute inset-0 bg-gradient-to-tr from-flexoki-yellow/[0.03] to-transparent opacity-80 [mask-image:linear-gradient(45deg,#000_25%,transparent_25%,transparent_50%,#000_50%,#000_75%,transparent_75%,transparent)] [mask-size:8px_8px] pointer-events-none"
+          >
+          </div>
+          <div class="flex items-start gap-4">
+            <CardIcon color="yellow" padding="p-3">
+              <img
+                src="/src/assets/images/unmsm-logo.webp"
+                alt="UNMSM Research"
+                class="w-full h-full object-cover"
+              />
+            </CardIcon>
+            <div>
+              <h3
+                class="text-flexoki-tx font-medium group-hover:text-flexoki-yellow transition-colors"
+              >
+                UNMSM
+              </h3>
+              <p class="text-sm text-flexoki-tx-2 !m-0">
+                Teaching & Researching
+              </p>
+            </div>
+          </div>
+        </Card>
+        <Card color="teal">
+          <div
+            class="absolute inset-0 bg-gradient-to-tr from-flexoki-teal/[0.03] to-transparent opacity-80 [mask-image:linear-gradient(45deg,#000_25%,transparent_25%,transparent_50%,#000_50%,#000_75%,transparent_75%,transparent)] [mask-size:8px_8px] pointer-events-none"
+          >
+          </div>
+          <div class="flex items-start gap-4">
+            <CardIcon color="teal" padding="p-2.5">
+              <img
+                src="/src/assets/images/midudev-logo.webp"
+                alt="Midudev Team"
+                class="w-full h-full object-cover"
+              />
+            </CardIcon>
+            <div>
+              <h3
+                class="text-flexoki-tx font-medium group-hover:text-flexoki-teal transition-colors"
+              >
+                Midudev Team
+              </h3>
+              <p class="text-sm text-flexoki-tx-2 !m-0">
+                The leading Hispanic streamer
+              </p>
+            </div>
+          </div>
+        </Card>
+      </div>
+    </section>
+    <section class="flex flex-col gap-8 w-full">
+      <h2
+        class="text-sm font-medium text-flexoki-tx-2 uppercase tracking-wider"
+      >
+        Projects
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <Card href="https://trygradual.com" color="cyan">
+          <div
+            class="absolute inset-0 bg-gradient-to-tr from-flexoki-cyan/[0.03] to-transparent opacity-80 [mask-image:linear-gradient(45deg,#000_25%,transparent_25%,transparent_50%,#000_50%,#000_75%,transparent_75%,transparent)] [mask-size:8px_8px] pointer-events-none"
+          >
+          </div>
+          <div class="flex items-start gap-4">
+            <CardIcon color="cyan">
+              <GradualLogo
+                size={28}
+                class="text-flexoki-tx-3 group-hover:text-flexoki-cyan transition-colors duration-300"
+              />
+            </CardIcon>
+            <div class="flex-grow">
+              <div class="flex items-center justify-between">
+                <h3
+                  class="text-flexoki-tx font-medium group-hover:text-flexoki-cyan transition-colors"
+                >
+                  Gradual
+                </h3>
+                <span
+                  class="text-flexoki-tx-3 group-hover:translate-x-1 transition-transform"
+                  >→</span
+                >
+              </div>
+              <p class="text-sm text-flexoki-tx-2 !m-0">
+                All-in-one learning platform.
+              </p>
+            </div>
+          </div>
+        </Card>
+
+        <Card href="https://text0.dev" color="yellow">
+          <div
+            class="absolute inset-0 bg-gradient-to-tr from-flexoki-yellow/[0.03] to-transparent opacity-80 [mask-image:linear-gradient(45deg,#000_25%,transparent_25%,transparent_50%,#000_50%,#000_75%,transparent_75%,transparent)] [mask-size:8px_8px] pointer-events-none"
+          >
+          </div>
+          <div class="flex items-start gap-4">
+            <CardIcon color="yellow">
+              <Text0Logo
+                width={28}
+                height={28}
+                class="text-flexoki-tx-3 rounded-sm group-hover:text-flexoki-yellow transition-colors duration-300"
+              />
+            </CardIcon>
+            <div class="flex-grow">
+              <div class="flex items-center justify-between">
                 <h3
                   class="text-flexoki-tx font-medium group-hover:text-flexoki-yellow transition-colors"
                 >
-                  UNMSM
+                  text0
                 </h3>
-                <p class="text-sm text-flexoki-tx-2 mt-1">
-                  Teaching & Researching
-                </p>
+                <span
+                  class="text-flexoki-tx-3 group-hover:translate-x-1 transition-transform"
+                  >→</span
+                >
               </div>
+              <p class="text-sm text-flexoki-tx-2 !m-0">
+                AI-powered text editor.
+              </p>
             </div>
-          </Card>
-        </div>
-      </div>
+          </div>
+        </Card>
 
-      <div class="flex flex-col gap-5">
-        <h2
-          class="text-sm font-medium text-flexoki-tx-2 uppercase tracking-wider"
-        >
-          Projects
-        </h2>
-        <div class="space-y-4">
-          <Card href="https://trygradual.com" color="cyan">
-            <div
-              class="absolute inset-0 bg-gradient-to-tr from-flexoki-cyan/[0.03] to-transparent opacity-80 [mask-image:linear-gradient(45deg,#000_25%,transparent_25%,transparent_50%,#000_50%,#000_75%,transparent_75%,transparent)] [mask-size:8px_8px] pointer-events-none"
-            >
-            </div>
-            <div class="flex items-start gap-4">
-              <CardIcon color="cyan">
-                <GradualLogo
-                  size={28}
-                  class="text-flexoki-tx-3 group-hover:text-flexoki-cyan transition-colors duration-300"
-                />
-              </CardIcon>
-              <div class="flex-grow">
-                <div class="flex items-center justify-between">
-                  <h3
-                    class="text-flexoki-tx font-medium group-hover:text-flexoki-cyan transition-colors"
-                  >
-                    Gradual
-                  </h3>
-                  <span
-                    class="text-flexoki-tx-3 group-hover:translate-x-1 transition-transform"
-                    >→</span
-                  >
-                </div>
-                <p class="text-sm text-flexoki-tx-2 mt-1">
-                  All-in-one learning platform.
-                </p>
-              </div>
-            </div>
-          </Card>
-
-          <Card href="https://tinte.railly.dev" color="purple">
-            <div
-              class="absolute inset-0 bg-gradient-to-tr from-flexoki-purple/[0.03] to-transparent opacity-80 [mask-image:linear-gradient(45deg,#000_25%,transparent_25%,transparent_50%,#000_50%,#000_75%,transparent_75%,transparent)] [mask-size:8px_8px] pointer-events-none"
-            >
-            </div>
-            <div class="flex items-start gap-4">
-              <CardIcon color="purple">
-                <TinteLogo
-                  size={28}
-                  class="text-flexoki-tx-3 group-hover:text-flexoki-purple transition-colors duration-300"
-                />
-              </CardIcon>
-              <div class="flex-grow">
-                <div class="flex items-center justify-between">
-                  <h3
-                    class="text-flexoki-tx font-medium group-hover:text-flexoki-purple transition-colors"
-                  >
-                    Tinte
-                  </h3>
-                  <span
-                    class="text-flexoki-tx-3 group-hover:translate-x-1 transition-transform"
-                    >→</span
-                  >
-                </div>
-                <p class="text-sm text-flexoki-tx-2 mt-1">
-                  Vercel hackathon winner.
-                </p>
-              </div>
-            </div>
-          </Card>
-
-          <Card
-            href="https://marketplace.visualstudio.com/items?itemName=RaillyHugo.one-hunter"
-            color="magenta"
+        <Card href="https://tinte.dev" color="purple">
+          <div
+            class="absolute inset-0 bg-gradient-to-tr from-flexoki-purple/[0.03] to-transparent opacity-80 [mask-image:linear-gradient(45deg,#000_25%,transparent_25%,transparent_50%,#000_50%,#000_75%,transparent_75%,transparent)] [mask-size:8px_8px] pointer-events-none"
           >
-            <div
-              class="absolute inset-0 bg-gradient-to-tr from-flexoki-magenta/[0.03] to-transparent opacity-80 [mask-image:linear-gradient(45deg,#000_25%,transparent_25%,transparent_50%,#000_50%,#000_75%,transparent_75%,transparent)] [mask-size:8px_8px] pointer-events-none"
-            >
-            </div>
-            <div class="flex items-start gap-4">
-              <CardIcon color="magenta" padding="p-2.5">
-                <img
-                  src="/src/assets/images/one-hunter-logo.webp"
-                  alt="One Hunter Theme"
-                  class="w-full h-full object-cover"
-                />
-              </CardIcon>
-              <div class="flex-grow">
-                <div class="flex items-center justify-between">
-                  <h3
-                    class="text-flexoki-tx font-medium group-hover:text-flexoki-magenta transition-colors"
-                  >
-                    One Hunter Theme
-                  </h3>
-                  <span
-                    class="text-flexoki-tx-3 group-hover:translate-x-1 transition-transform"
-                    >→</span
-                  >
-                </div>
-                <p class="text-sm text-flexoki-tx-2 mt-1">
-                  28k+ VSCode downloads.
-                </p>
+          </div>
+          <div class="flex items-start gap-4">
+            <CardIcon color="purple">
+              <TinteLogo
+                size={28}
+                class="text-flexoki-tx-3 group-hover:text-flexoki-purple transition-colors duration-300"
+              />
+            </CardIcon>
+            <div class="flex-grow">
+              <div class="flex items-center justify-between">
+                <h3
+                  class="text-flexoki-tx font-medium group-hover:text-flexoki-purple transition-colors"
+                >
+                  Tinte
+                </h3>
+                <span
+                  class="text-flexoki-tx-3 group-hover:translate-x-1 transition-transform"
+                  >→</span
+                >
               </div>
+              <p class="text-sm text-flexoki-tx-2 !m-0">
+                Multiplatform theme builder
+              </p>
             </div>
-          </Card>
-        </div>
+          </div>
+        </Card>
+
+        <Card
+          href="https://marketplace.visualstudio.com/items?itemName=RaillyHugo.one-hunter"
+          color="magenta"
+        >
+          <div
+            class="absolute inset-0 bg-gradient-to-tr from-flexoki-magenta/[0.03] to-transparent opacity-80 [mask-image:linear-gradient(45deg,#000_25%,transparent_25%,transparent_50%,#000_50%,#000_75%,transparent_75%,transparent)] [mask-size:8px_8px] pointer-events-none"
+          >
+          </div>
+          <div class="flex items-start gap-4">
+            <CardIcon color="magenta" padding="p-2.5">
+              <img
+                src="/src/assets/images/one-hunter-logo.webp"
+                alt="One Hunter Theme"
+                class="w-full h-full object-cover"
+              />
+            </CardIcon>
+            <div class="flex-grow">
+              <div class="flex items-center justify-between">
+                <h3
+                  class="text-flexoki-tx font-medium group-hover:text-flexoki-magenta transition-colors"
+                >
+                  One Hunter Theme
+                </h3>
+                <span
+                  class="text-flexoki-tx-3 group-hover:translate-x-1 transition-transform"
+                  >→</span
+                >
+              </div>
+              <p class="text-sm text-flexoki-tx-2 !m-0">
+                ~30k VSCode downloads.
+              </p>
+            </div>
+          </div>
+        </Card>
       </div>
     </section>
+    <section class="flex flex-col gap-8 w-full">
+      <h2
+        class="text-sm font-medium text-flexoki-tx-2 uppercase tracking-wider"
+      >
+        Achievements
+      </h2>
+      <div class="flex flex-col gap-4">
+        <Card
+          color="cyan"
+          className="achievement-card relative"
+          data-target="text0-embed"
+        >
+          <div
+            class="absolute inset-0 bg-gradient-to-tr from-flexoki-cyan/[0.03] to-transparent opacity-80 [mask-image:linear-gradient(45deg,#000_25%,transparent_25%,transparent_50%,#000_50%,#000_75%,transparent_75%,transparent)] [mask-size:8px_8px] pointer-events-none"
+          >
+          </div>
+          <div class="flex flex-col gap-2 pb-6">
+            <div class="flex items-start justify-between">
+              <div>
+                <h3 class="text-flexoki-tx font-medium">
+                  🏆 Overall Winner — First Ever Next.js Global Hackathon
+                </h3>
+                <div class="flex items-center gap-2 mt-1">
+                  <span class="text-xs text-flexoki-tx-2">hosted by</span>
+                  <div class="flex items-center gap-1">
+                    <svg viewBox="0 0 76 65" fill="none" class="h-4 w-4">
+                      <path
+                        d="M37.5274 0L75.0548 65H0L37.5274 0Z"
+                        fill="currentColor"
+                        class="text-flexoki-tx"></path>
+                    </svg>
+                    <span class="text-sm">Vercel</span>
+                  </div>
+                  <span class="text-xs text-flexoki-tx-2 ml-2">project:</span>
+                  <span class="text-sm text-flexoki-tx">text0</span>
+                </div>
+              </div>
+              <span
+                class="text-xs text-flexoki-tx-3 font-medium px-2 py-0.5 rounded-full border border-flexoki-tx-3/30"
+              >
+                2025
+              </span>
+            </div>
+            <div
+              id="text0-embed"
+              class="py-4 w-full overflow-hidden rounded-md embed-container hidden transition-all duration-300 max-h-0 opacity-0"
+            >
+              <iframe
+                width="100%"
+                height="400"
+                src="https://www.youtube.com/embed/KDRwgbwq0_c?start=1142"
+                frameborder="0"
+                allowfullscreen
+                title="Next.js Hackathon"></iframe>
+            </div>
+            <button
+              class="expand-btn cursor-pointer group-hover:bg-flexoki-cyan/5 hover:bg-current/10 absolute bottom-0 left-0 right-0 w-full py-2 text-xs flex items-center justify-center text-flexoki-tx-2 hover:text-flexoki-cyan transition-colors"
+              aria-label="Toggle video"
+              data-target="text0-embed"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="w-3 h-3"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M19.5 8.25l-7.5 7.5-7.5-7.5"></path>
+              </svg>
+            </button>
+          </div>
+        </Card>
 
-    <section class="w-full animate-slide-up-fade [animation-delay:200ms]">
+        <Card
+          color="magenta"
+          className="achievement-card relative"
+          data-target="tinte-embed"
+        >
+          <div
+            class="absolute inset-0 bg-gradient-to-tr from-flexoki-magenta/[0.03] to-transparent opacity-80 [mask-image:linear-gradient(45deg,#000_25%,transparent_25%,transparent_50%,#000_50%,#000_75%,transparent_75%,transparent)] [mask-size:8px_8px] pointer-events-none"
+          >
+          </div>
+          <div class="flex flex-col gap-2 pb-6">
+            <div class="flex items-start justify-between">
+              <div>
+                <h3 class="text-flexoki-tx font-medium">
+                  🥉 3rd Place — Vercel × Midudev Hackathon
+                </h3>
+                <div class="flex items-center gap-2 mt-1">
+                  <span class="text-xs text-flexoki-tx-2">hosted by</span>
+                  <div class="flex items-center gap-1.5">
+                    <div class="flex items-center gap-1">
+                      <svg viewBox="0 0 76 65" fill="none" class="h-4 w-4">
+                        <path
+                          d="M37.5274 0L75.0548 65H0L37.5274 0Z"
+                          fill="currentColor"
+                          class="text-flexoki-tx"></path>
+                      </svg>
+                      <span class="text-sm">Vercel</span>
+                    </div>
+                    <span>×</span>
+                    <div class="flex items-center gap-1">
+                      <img
+                        src="/src/assets/images/midudev-logo.webp"
+                        alt="Midudev"
+                        class="h-4 w-4"
+                      />
+                      <span class="text-sm">Midudev</span>
+                    </div>
+                  </div>
+                  <span class="text-xs text-flexoki-tx-2 ml-2">project:</span>
+                  <span class="text-sm text-flexoki-tx">Tinte</span>
+                </div>
+              </div>
+              <span
+                class="text-xs text-flexoki-tx-3 font-medium px-2 py-0.5 rounded-full border border-flexoki-tx-3/30"
+              >
+                2024
+              </span>
+            </div>
+            <div
+              id="tinte-embed"
+              class="py-4 w-full overflow-hidden rounded-md embed-container hidden transition-all duration-300 max-h-0 opacity-0"
+            >
+              <iframe
+                src="https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7232743944592240640?compact=1"
+                height="400"
+                width="100%"
+                frameborder="0"
+                allowfullscreen=""
+                title="Midudev Vercel Hackathon"></iframe>
+            </div>
+            <button
+              class="expand-btn cursor-pointer group-hover:bg-flexoki-magenta/5 hover:bg-current/10 absolute bottom-0 left-0 right-0 w-full py-2 text-xs flex items-center justify-center text-flexoki-tx-2 hover:text-flexoki-magenta transition-colors"
+              aria-label="Toggle video"
+              data-target="tinte-embed"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="w-3 h-3"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M19.5 8.25l-7.5 7.5-7.5-7.5"></path>
+              </svg>
+            </button>
+          </div>
+        </Card>
+
+        <Card
+          color="yellow"
+          className="achievement-card relative"
+          data-target="githunter-embed"
+        >
+          <div
+            class="absolute inset-0 bg-gradient-to-tr from-flexoki-yellow/[0.03] to-transparent opacity-80 [mask-image:linear-gradient(45deg,#000_25%,transparent_25%,transparent_50%,#000_50%,#000_75%,transparent_75%,transparent)] [mask-size:8px_8px] pointer-events-none"
+          >
+          </div>
+          <div class="flex flex-col gap-2 pb-6">
+            <div class="flex items-start justify-between">
+              <div>
+                <h3 class="text-flexoki-tx font-medium">
+                  🎖️ Finalist — IA Hackathon LATAM
+                </h3>
+                <div class="flex items-center gap-2 mt-1">
+                  <span class="text-xs text-flexoki-tx-2">project:</span>
+                  <span class="text-sm text-flexoki-tx">GitHunter</span>
+                </div>
+              </div>
+              <span
+                class="text-xs text-flexoki-tx-3 font-medium px-2 py-0.5 rounded-full border border-flexoki-tx-3/30"
+              >
+                2025
+              </span>
+            </div>
+            <div
+              id="githunter-embed"
+              class="py-4 w-full overflow-hidden rounded-md embed-container hidden transition-all duration-300 max-h-0 opacity-0"
+            >
+              <iframe
+                src="https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7328521111485243393?compact=1"
+                height="400"
+                width="100%"
+                frameborder="0"
+                allowfullscreen=""
+                title="GitHunter Hackathon"></iframe>
+            </div>
+            <button
+              class="expand-btn cursor-pointer group-hover:bg-flexoki-yellow/5 hover:bg-current/10 absolute bottom-0 left-0 right-0 w-full py-2 text-xs flex items-center justify-center text-flexoki-tx-2 hover:text-flexoki-yellow transition-colors"
+              aria-label="Toggle video"
+              data-target="githunter-embed"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="w-3 h-3"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M19.5 8.25l-7.5 7.5-7.5-7.5"></path>
+              </svg>
+            </button>
+          </div>
+        </Card>
+      </div>
+    </section>
+    <section class="w-full">
       <h2
         class="text-sm font-medium text-flexoki-tx-2 uppercase tracking-wider mb-4"
       >
@@ -233,10 +547,10 @@ const sortedPosts = posts.sort(
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         {
           sortedPosts.map((post) => (
-            <Card href={`/blog/${post.slug}`} color="purple">
+            <Card href={`/blog/${post.slug}`} target="_self" color="purple">
               <div class="absolute inset-0 bg-gradient-to-tr from-flexoki-purple/[0.03] to-transparent opacity-80 [mask-image:linear-gradient(45deg,#000_25%,transparent_25%,transparent_50%,#000_50%,#000_75%,transparent_75%,transparent)] [mask-size:8px_8px] pointer-events-none" />
               <div class="relative z-10">
-                <h3 class="font-serif text-flexoki-tx group-hover:text-flexoki-purple transition-colors mb-2 font-medium">
+                <h3 class="font-serif text-flexoki-tx group-hover:text-flexoki-purple transition-colors font-medium">
                   {post.data.title}
                 </h3>
                 <p class="text-sm text-flexoki-tx-2">{post.data.description}</p>
@@ -246,10 +560,10 @@ const sortedPosts = posts.sort(
         }
         {
           sortedPosts.length < 2 && (
-            <Card className="!cursor-default" href="#" color="yellow">
+            <Card className="!cursor-default" color="yellow">
               <div class="absolute inset-0 bg-gradient-to-tr from-flexoki-yellow/[0.03] to-transparent opacity-80 [mask-image:linear-gradient(45deg,#000_25%,transparent_25%,transparent_50%,#000_50%,#000_75%,transparent_75%,transparent)] [mask-size:8px_8px] pointer-events-none" />
               <div class="relative z-10">
-                <h3 class="font-serif text-flexoki-tx group-hover:text-flexoki-yellow transition-colors mb-2 font-medium">
+                <h3 class="font-serif text-flexoki-tx group-hover:text-flexoki-yellow transition-colors font-medium">
                   Coming soon
                 </h3>
                 <p class="text-sm text-flexoki-tx-2">I'm working on it.</p>
@@ -259,23 +573,54 @@ const sortedPosts = posts.sort(
         }
       </div>
     </section>
-
-    <footer
-      class="flex flex-col items-center gap-3 animate-slide-up-fade [animation-delay:250ms]"
-    >
+    <footer class="flex flex-col items-center gap-3">
       <h2
         class="text-sm font-medium text-flexoki-tx-2 uppercase tracking-wider"
       >
         Connect
       </h2>
-      <div class="flex items-center gap-6 text-flexoki-tx-2">
+      <div
+        class="flex justify-center flex-wrap items-center gap-6 text-flexoki-tx-2"
+      >
         <a
           href="https://x.com/raillyhugo"
+          target="_blank"
           class="group flex items-center gap-2 hover:text-flexoki-blue transition-colors"
         >
           <span class="text-lg">𝕏</span>
           <span class="text-sm group-hover:underline">raillyhugo</span>
         </a>
+        <a
+          href="https://github.com/railly"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="group flex items-center gap-2 hover:text-flexoki-yellow transition-colors"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            x="0px"
+            y="0px"
+            viewBox="0 0 30 30"
+            fill="currentColor"
+            class="size-4"
+          >
+            <path
+              d="M15,3C8.373,3,3,8.373,3,15c0,5.623,3.872,10.328,9.092,11.63C12.036,26.468,12,26.28,12,26.047v-2.051 c-0.487,0-1.303,0-1.508,0c-0.821,0-1.551-0.353-1.905-1.009c-0.393-0.729-0.461-1.844-1.435-2.526 c-0.289-0.227-0.069-0.486,0.264-0.451c0.615,0.174,1.125,0.596,1.605,1.222c0.478,0.627,0.703,0.769,1.596,0.769 c0.433,0,1.081-0.025,1.691-0.121c0.328-0.833,0.895-1.6,1.588-1.962c-3.996-0.411-5.903-2.399-5.903-5.098 c0-1.162,0.495-2.286,1.336-3.233C9.053,10.647,8.706,8.73,9.435,8c1.798,0,2.885,1.166,3.146,1.481C13.477,9.174,14.461,9,15.495,9 c1.036,0,2.024,0.174,2.922,0.483C18.675,9.17,19.763,8,21.565,8c0.732,0.731,0.381,2.656,0.102,3.594 c0.836,0.945,1.328,2.066,1.328,3.226c0,2.697-1.904,4.684-5.894,5.097C18.199,20.49,19,22.1,19,23.313v2.734 c0,0.104-0.023,0.179-0.035,0.268C23.641,24.676,27,20.236,27,15C27,8.373,21.627,3,15,3z"
+            ></path>
+          </svg>
+          <span class="text-sm group-hover:underline">railly</span>
+        </a>
+        <a
+          href="https://linkedin.com/in/raillyhugo"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Railly Hugo on LinkedIn"
+          class="group flex items-center gap-2 hover:text-flexoki-cyan transition-colors"
+        >
+          <Linkedin class="size-4 fill-current" />
+          <span class="text-sm group-hover:underline">railly-hugo</span>
+        </a>
+
         <a
           href="mailto:hi@railly.dev"
           class="group flex items-center gap-2 hover:text-flexoki-purple transition-colors"
@@ -286,7 +631,7 @@ const sortedPosts = posts.sort(
             viewBox="0 0 24 24"
             stroke-width="1.5"
             stroke="currentColor"
-            class="size-5"
+            class="size-4"
           >
             <path
               stroke-linecap="round"
@@ -297,25 +642,67 @@ const sortedPosts = posts.sort(
 
           <span class="text-sm group-hover:underline">hi@railly.dev</span>
         </a>
-        <a
-          href="https://github.com/railly"
-          class="group flex items-center gap-2 hover:text-flexoki-yellow transition-colors"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            x="0px"
-            y="0px"
-            viewBox="0 0 30 30"
-            fill="currentColor"
-            class="size-5"
-          >
-            <path
-              d="M15,3C8.373,3,3,8.373,3,15c0,5.623,3.872,10.328,9.092,11.63C12.036,26.468,12,26.28,12,26.047v-2.051 c-0.487,0-1.303,0-1.508,0c-0.821,0-1.551-0.353-1.905-1.009c-0.393-0.729-0.461-1.844-1.435-2.526 c-0.289-0.227-0.069-0.486,0.264-0.451c0.615,0.174,1.125,0.596,1.605,1.222c0.478,0.627,0.703,0.769,1.596,0.769 c0.433,0,1.081-0.025,1.691-0.121c0.328-0.833,0.895-1.6,1.588-1.962c-3.996-0.411-5.903-2.399-5.903-5.098 c0-1.162,0.495-2.286,1.336-3.233C9.053,10.647,8.706,8.73,9.435,8c1.798,0,2.885,1.166,3.146,1.481C13.477,9.174,14.461,9,15.495,9 c1.036,0,2.024,0.174,2.922,0.483C18.675,9.17,19.763,8,21.565,8c0.732,0.731,0.381,2.656,0.102,3.594 c0.836,0.945,1.328,2.066,1.328,3.226c0,2.697-1.904,4.684-5.894,5.097C18.199,20.49,19,22.1,19,23.313v2.734 c0,0.104-0.023,0.179-0.035,0.268C23.641,24.676,27,20.236,27,15C27,8.373,21.627,3,15,3z"
-            ></path>
-          </svg>
-          <span class="text-sm group-hover:underline">railly</span>
-        </a>
       </div>
     </footer>
   </main>
 </Layout>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const expandButtons = document.querySelectorAll(".expand-btn");
+
+    // Function to toggle embed visibility
+    const toggleEmbed = (targetId: string, button: Element) => {
+      const targetContainer = document.getElementById(targetId);
+
+      if (targetContainer && button) {
+        const isHidden = targetContainer.classList.contains("hidden");
+
+        // Toggle visibility with animation
+        if (isHidden) {
+          // Show embed
+          targetContainer.classList.remove("hidden");
+          setTimeout(() => {
+            targetContainer.classList.remove("max-h-0", "opacity-0");
+            targetContainer.classList.add("max-h-[600px]", "opacity-100");
+          }, 10);
+
+          const buttonIconEl = button.querySelector("svg");
+          if (buttonIconEl) {
+            buttonIconEl.innerHTML = `
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+            `;
+          }
+          button.setAttribute("aria-label", "Hide video");
+        } else {
+          // Hide embed
+          targetContainer.classList.add("max-h-0", "opacity-0");
+          targetContainer.classList.remove("max-h-[600px]", "opacity-100");
+
+          setTimeout(() => {
+            targetContainer.classList.add("hidden");
+          }, 300);
+
+          const buttonIconEl = button.querySelector("svg");
+          if (buttonIconEl) {
+            buttonIconEl.innerHTML = `
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+            `;
+          }
+          button.setAttribute("aria-label", "Show video");
+        }
+      }
+    };
+
+    // Add click event to buttons
+    expandButtons.forEach((button) => {
+      button.addEventListener("click", (event) => {
+        // Prevent the click from bubbling up to the card if the card itself also has a click listener (it doesn't currently, but good practice)
+        event.stopPropagation();
+        const targetId = button.getAttribute("data-target");
+        if (!targetId) return;
+        toggleEmbed(targetId, button);
+      });
+    });
+  });
+</script>

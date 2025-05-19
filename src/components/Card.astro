@@ -10,11 +10,19 @@ type ColorName =
 
 interface Props {
   href?: string;
+  target?: "_blank" | "_self";
   color?: ColorName;
   className?: string;
+  transitionName?: string;
 }
 
-const { href, color = "blue", className } = Astro.props;
+const {
+  href,
+  target = "_blank",
+  color = "blue",
+  className,
+  transitionName,
+} = Astro.props;
 
 const colorMap = {
   blue: {
@@ -67,13 +75,15 @@ const styles = colorMap[color];
 
 <Component
   href={href}
-  target="_blank"
+  target={target}
   class:list={[
-    "group relative overflow-hidden rounded-lg border border-flexoki-ui transition-all duration-300",
+    "group relative overflow-hidden rounded-lg border border-flexoki-ui transition-all",
     styles.border,
     href && "block",
     className,
   ]}
+  transition:name={transitionName}
+  transition:animate="fade"
 >
   <div
     class:list={[
@@ -87,7 +97,7 @@ const styles = colorMap[color];
   </div>
   <div
     class:list={[
-      "absolute inset-0 bg-gradient-to-r from-transparent to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-[1300ms] ease-out pointer-events-none opacity-0 group-hover:opacity-100",
+      "not-sr-only absolute inset-0 bg-gradient-to-r from-transparent to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-[1300ms] ease-out pointer-events-none opacity-0 group-hover:opacity-100",
       styles.shine,
     ]}
   >
