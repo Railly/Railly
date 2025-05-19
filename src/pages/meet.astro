@@ -11,18 +11,29 @@ Astro.response.headers.set("Refresh", `0;url=${redirectUrl}`);
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Meet Railly Hugo</title>
-    <meta name="description" content="Book a time to meet with Railly Hugo." />
-    <!-- Open Graph tags -->
-    <meta property="og:title" content="Meet Railly Hugo" />
+    <title>Railly Hugo</title>
+    <meta
+      name="description"
+      content="Software Engineer and UI Developer from Lima. Dive into my projects, tutorials, and digital explorations. Always learning, always crafting."
+    />
+    <!-- Open Graph tags for rich preview -->
+    <meta property="og:title" content="Railly Hugo" />
     <meta
       property="og:description"
-      content="Book a time to meet with Railly Hugo."
+      content="Software Engineer and UI Developer from Lima. Dive into my projects, tutorials, and digital explorations. Always learning, always crafting."
     />
     <meta property="og:image" content={ogImageUrl} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
+    <meta property="og:type" content="website" />
     <meta property="og:url" content="https://railly.dev/meet" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Railly Hugo" />
+    <meta
+      name="twitter:description"
+      content="Software Engineer and UI Developer from Lima. Dive into my projects, tutorials, and digital explorations. Always learning, always crafting."
+    />
+    <meta name="twitter:image" content={ogImageUrl} />
     <meta http-equiv="refresh" content={`0;url=${redirectUrl}`} />
   </head>
   <body>
