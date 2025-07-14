@@ -1,7 +1,8 @@
 ## Railly Hugo ~ Hunter
+
 ### Design Engineer ~ Master's in AI ~ Open Source
 
-I work as a <i>design engineer</i> at [yavendió](https://yavendio.com). <br /> 
+I work as a <i>design engineer</i> at [The Agile Monkeys](https://theagilemonkeys.com). <br />
 I also create open-source tools at [crafter-station](https:/crafter-station.com), pushing the boundaries of UI and developer experience.
 
 ### Projects

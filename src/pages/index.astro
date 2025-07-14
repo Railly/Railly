@@ -8,13 +8,14 @@ import { getCollection } from "astro:content";
 import CrafterIcon from "../assets/svgs/crafter.svg";
 import Text0Logo from "../assets/svgs/t0-logo.svg";
 import Linkedin from "../assets/svgs/linkedin.svg";
+import TheAgileMonkeysLogo from "../assets/svgs/the-agile-monkeys.svg";
 
 const posts = await getCollection("blog", ({ data }) => {
   return import.meta.env.PROD ? data.status === "published" : true;
 });
 
 const sortedPosts = posts.sort(
-  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
 );
 ---
 
@@ -43,9 +44,9 @@ const sortedPosts = posts.sort(
     <section class="flex flex-col gap-2">
       <p class="text-base text-flexoki-tx !m-0">
         I work as a <i>design engineer</i> at <a
-          href="https://yavendio.com"
+          href="https://theagilemonkeys.com"
           target="_blank"
-          class="text-flexoki-tx underline">Yavendi&oacute;</a
+          class="text-flexoki-tx underline">The Agile Monkeys</a
         >. I also create open-source tools and projects that push the boundaries
         of UI and developer experience.
       </p>
@@ -77,27 +78,15 @@ const sortedPosts = posts.sort(
           </div>
           <div class="flex items-start gap-4">
             <CardIcon color="blue">
-              <picture>
-                <source
-                  srcset="/images/ya-vendio-logo-dark.webp"
-                  media="(prefers-color-scheme: dark)"
-                />
-                <img
-                  src="/images/ya-vendio-logo-light.webp"
-                  alt="Yavendió"
-                  height="100%"
-                />
-              </picture>
+              <TheAgileMonkeysLogo class="size-6 text-flexoki-tx" />
             </CardIcon>
             <div>
               <h3
                 class="text-flexoki-tx font-medium group-hover:text-flexoki-blue transition-colors"
               >
-                Yavendió
+                The Agile Monkeys
               </h3>
-              <p class="text-sm text-flexoki-tx-2 !m-0">
-                Crafting AI Sales Journeys
-              </p>
+              <p class="text-sm text-flexoki-tx-2 !m-0">AI prototyping unit</p>
             </div>
           </div>
         </Card>
