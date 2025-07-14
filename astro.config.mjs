@@ -7,10 +7,12 @@ import oneHunterThemeDark2024 from "./public/themes/one-hunter-dark.json";
 import tailwindcss from "@tailwindcss/vite";
 import mdx from "@astrojs/mdx";
 import react from "@astrojs/react";
+import vercel from "@astrojs/vercel";
 
 // https://astro.build/config
 export default defineConfig({
   site: "https://www.railly.dev",
+
   vite: {
     plugins: [tailwindcss()],
   },
@@ -20,8 +22,9 @@ export default defineConfig({
       remarkPlugins: [remarkMath],
       rehypePlugins: [rehypeKatex],
     }),
-    react()
+    react(),
   ],
+
   markdown: {
     shikiConfig: {
       themes: {
@@ -42,4 +45,9 @@ export default defineConfig({
       ],
     },
   },
+  adapter: vercel({
+    webAnalytics: {
+      enabled: true,
+    },
+  }),
 });
