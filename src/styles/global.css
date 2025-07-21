@@ -1,18 +1,19 @@
 @import "tailwindcss";
-@plugin "@midudev/tailwind-animations";
-@plugin "@tailwindcss/typography";
-@import 'katex/dist/katex.min.css';
+@import "katex/dist/katex.min.css";
 @import "./flexoki.css";
 @import "./reset.css";
 @import "./fonts.css";
 @import "./code.css";
+
+@plugin "@midudev/tailwind-animations";
+@plugin "@tailwindcss/typography";
 
 @theme {
   --font-sans: "IBM Plex Sans", "sans-serif";
   --font-serif: "IBM Plex Serif", "serif";
   --font-mono: "IBM Plex Mono", "monospace";
 
-  --color-crafter-yellow: #E2A719;
+  --color-primary: oklch(0.9084 0.2171 105.88);
   /* Base Colors */
   --color-flexoki-bg: var(--color-paper);
   --color-flexoki-bg-2: var(--color-base-50);
@@ -51,7 +52,7 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --color-crafter-yellow: #fed400;
+    --color-primary: #fed400;
     /* Base Colors */
     --color-flexoki-bg: var(--color-black);
     --color-flexoki-bg-2: var(--color-base-950);
@@ -91,12 +92,13 @@
 
 .underline {
   text-decoration: underline;
-  text-underline-offset: 2px;
+  text-underline-offset: 4px;
   text-decoration-thickness: 1px;
-  text-decoration-color: var(--color-flexoki-tx-3);
+  text-decoration-color: var(--color-primary);
   transition: text-decoration-color 0.2s ease-in-out;
 
   &:hover {
-    text-decoration-color: var(--color-flexoki-tx);
+    color: var(--color-flexoki-bg);
+    background-color: var(--color-primary);
   }
 }

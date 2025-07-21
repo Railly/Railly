@@ -1,0 +1,125 @@
+---
+interface Props {
+  embedId: string;
+  embedSrc: string;
+  embedType: "youtube" | "linkedin";
+}
+
+const { embedId, embedSrc, embedType } = Astro.props;
+---
+
+<div
+  id={embedId}
+  class="py-4 w-full overflow-hidden rounded-md embed-container hidden transition-all duration-300 max-h-0 opacity-0"
+  data-embed-src={embedSrc}
+  data-embed-type={embedType}
+>
+  <!-- Placeholder that will be replaced with the actual iframe when expanded -->
+  <div class="loading-placeholder bg-flexoki-ui/10 rounded-md h-[400px] flex items-center justify-center text-flexoki-tx-2">
+    <span class="text-sm">Click to load content...</span>
+  </div>
+</div>
+
+<script>
+  interface EmbedContainer extends HTMLElement {
+    dataset: {
+      embedSrc?: string;
+      embedType?: string;
+    };
+  }
+
+  // Function to create iframe when needed
+  const createIframe = (container: EmbedContainer) => {
+    const { embedSrc, embedType } = container.dataset;
+    if (!embedSrc || !embedType) return;
+
+    const iframe = document.createElement('iframe');
+    iframe.width = '100%';
+    iframe.height = '400';
+    iframe.src = embedSrc;
+    iframe.frameBorder = '0';
+    iframe.allowFullscreen = true;
+    
+    if (embedType === 'youtube') {
+      iframe.title = 'YouTube video';
+    } else if (embedType === 'linkedin') {
+      iframe.title = 'LinkedIn post';
+    }
+
+    // Replace placeholder with iframe
+    const placeholder = container.querySelector('.loading-placeholder');
+    if (placeholder) {
+      container.removeChild(placeholder);
+    }
+    container.appendChild(iframe);
+  };
+
+  // Set up the embed container functionality
+  const setupEmbedContainer = () => {
+    const expandButtons = document.querySelectorAll('.expand-btn');
+
+    const toggleEmbed = (targetId: string, button: Element) => {
+      const targetContainer = document.getElementById(targetId) as EmbedContainer;
+
+      if (targetContainer && button) {
+        const isHidden = targetContainer.classList.contains('hidden');
+
+        if (isHidden) {
+          // Create iframe only when expanding for the first time
+          const hasIframe = targetContainer.querySelector('iframe');
+          if (!hasIframe) {
+            createIframe(targetContainer);
+          }
+
+          // Show embed
+          targetContainer.classList.remove('hidden');
+          setTimeout(() => {
+            targetContainer.classList.remove('max-h-0', 'opacity-0');
+            targetContainer.classList.add('max-h-[600px]', 'opacity-100');
+          }, 10);
+
+          const buttonIconEl = button.querySelector('svg');
+          if (buttonIconEl) {
+            buttonIconEl.innerHTML = `
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+            `;
+          }
+          button.setAttribute('aria-label', 'Hide video');
+        } else {
+          // Hide embed
+          targetContainer.classList.add('max-h-0', 'opacity-0');
+          targetContainer.classList.remove('max-h-[600px]', 'opacity-100');
+
+          setTimeout(() => {
+            targetContainer.classList.add('hidden');
+          }, 300);
+
+          const buttonIconEl = button.querySelector('svg');
+          if (buttonIconEl) {
+            buttonIconEl.innerHTML = `
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+            `;
+          }
+          button.setAttribute('aria-label', 'Show video');
+        }
+      }
+    };
+
+    // Add click event to buttons
+    expandButtons.forEach((button) => {
+      button.addEventListener('click', (event) => {
+        event.stopPropagation();
+        const targetId = button.getAttribute('data-target');
+        if (!targetId) return;
+        toggleEmbed(targetId, button);
+      });
+    });
+  };
+
+  // Initialize when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupEmbedContainer);
+  } else {
+    setupEmbedContainer();
+  }
+</script>

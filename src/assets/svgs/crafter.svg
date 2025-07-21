@@ -5,7 +5,7 @@
   />
   <style>
     #crafter-icon {
-    fill: var(--color-crafter-yellow);
+    fill: var(--color-primary);
     }
 </style>
 </svg>
