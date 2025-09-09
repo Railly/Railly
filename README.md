@@ -8,8 +8,8 @@ I also create open-source tools at [crafter-station](https:/crafter-station.com)
 ### Projects
 
 - [elements](https://github.com/crafter-station/elements) ⊞ - full-stack shadcn/ui components - trusted registry
-- [text0](https://github.com/crafter-station/text0) ✍️ - absurdly smart (and personal) autocomplete - 🥇 Vercel Hackathon 25'
-- [tinte](https://github.com/Railly/tinte) 🖌️ - create your own beautiful themes (vscode, shadcn) - 🥉 Vercel Hackathon 24'
+- [text0](https://github.com/crafter-station/text0) ✍️ - absurdly smart (and personal) autocomplete - 🥇 Next.js Global Hackathon 25'
+- [tinte](https://github.com/Railly/tinte) 🖌️ - create your own beautiful themes (vscode, shadcn) - 🥉 Vercel + [Midu](https://midu.dev) Hackathon 24'
 - [one-hunter](https://github.com/Railly/one-hunter-vscode) 🎨 - stylish vscode theme inspired by vercel ▲ and one-dark-pro
 
 ### Links
