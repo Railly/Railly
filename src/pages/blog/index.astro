@@ -1,7 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
-import Card from "../../components/Card.astro";
+import Card from "../../components/ui/Card.astro";
 
 const posts = await getCollection("blog", ({ data }) => {
   return import.meta.env.PROD ? data.status === "published" : true;
