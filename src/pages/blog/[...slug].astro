@@ -103,7 +103,11 @@ const updatedDate = post.data.updatedDate
                             {publishedDate}
                         </time>
                         <span>·</span>
-                        <ViewCounter slug={post.slug} client:load />
+                        <ViewCounter
+                            slug={post.slug}
+                            increment={true}
+                            client:load
+                        />
                     </div>
                 </header>
 

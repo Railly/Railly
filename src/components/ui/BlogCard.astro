@@ -2,6 +2,7 @@
 import Card from "./Card.astro";
 import ClerkLogo from "../brand/ClerkLogo.astro";
 import CrafterIcon from "../../assets/svgs/crafter.svg";
+import ViewCounter from "../blog/ViewCounter";
 
 type ColorName =
     | "blue"
@@ -23,6 +24,7 @@ interface Props {
     imageDark?: string;
     date?: string;
     tag?: string;
+    slug?: string;
 }
 
 const {
@@ -36,6 +38,7 @@ const {
     imageDark,
     date,
     tag,
+    slug,
 } = Astro.props;
 ---
 
@@ -132,7 +135,23 @@ const {
                 <p class="text-sm text-flexoki-tx-2 mt-1">{description}</p>
             )
         }
-        {date && <p class="text-sm text-flexoki-tx-3 !my-0">{date}</p>}
+        {
+            date && (
+                <div class="flex items-center gap-2 text-sm text-flexoki-tx-3 !my-0">
+                    <span>{date}</span>
+                    {slug && (
+                        <>
+                            <span>·</span>
+                            <ViewCounter
+                                slug={slug}
+                                client:load
+                                className="text-xs text-flexoki-tx-3"
+                            />
+                        </>
+                    )}
+                </div>
+            )
+        }
     </div>
     {
         !image && (
