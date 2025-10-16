@@ -25,7 +25,6 @@ export const GET: APIRoute = async ({ url }) => {
   }
 
   try {
-    // Initialize KV client with environment variables
     const kv = createClient({
       url: import.meta.env.KV_REST_API_URL!,
       token: import.meta.env.KV_REST_API_TOKEN!,
@@ -34,10 +33,8 @@ export const GET: APIRoute = async ({ url }) => {
     let views: number;
 
     if (incr) {
-      // Increment view count
       views = await kv.hincrby("views", id, Number(incr));
     } else {
-      // Just fetch view count
       const result = await kv.hget("views", id);
       views = result ? Number(result) : 0;
     }

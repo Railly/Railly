@@ -6,7 +6,6 @@ interface ViewCounterProps {
   className?: string;
 }
 
-// Track which slugs have been incremented in this session to prevent double counting
 const incrementedSlugs = new Set<string>();
 
 export default function ViewCounter({
@@ -18,20 +17,17 @@ export default function ViewCounter({
   const hasFetchedRef = useRef(false);
 
   useEffect(() => {
-    // Prevent double fetching in development (React StrictMode)
     if (!slug || hasFetchedRef.current) {
       return;
     }
 
     hasFetchedRef.current = true;
 
-    // Check if we already incremented this slug in this session
     const shouldIncrement = increment && !incrementedSlugs.has(slug);
     if (shouldIncrement) {
       incrementedSlugs.add(slug);
     }
 
-    // Build URL with increment parameter only if we should increment
     const params = new URLSearchParams({ id: slug });
     if (shouldIncrement) {
       params.append("incr", "1");
@@ -68,7 +64,6 @@ export default function ViewCounter({
     };
   }, [slug, increment]);
 
-  // Don't render anything until we have data
   if (views === null) {
     return null;
   }
