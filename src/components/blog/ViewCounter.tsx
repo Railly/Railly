@@ -6,26 +6,39 @@ interface ViewCounterProps {
   className?: string;
 }
 
+// Track which slugs have been incremented in this session to prevent double counting
+const incrementedSlugs = new Set<string>();
+
 export default function ViewCounter({
   slug,
   increment = false,
   className = "text-sm text-flexoki-tx-2",
 }: ViewCounterProps) {
   const [views, setViews] = useState<number | null>(null);
-  const didLogViewRef = useRef(false);
+  const hasFetchedRef = useRef(false);
 
   useEffect(() => {
-    // Make sure we have a slug before making the request
-    if (!slug || didLogViewRef.current) {
+    // Prevent double fetching in development (React StrictMode)
+    if (!slug || hasFetchedRef.current) {
       return;
     }
 
-    // Build URL with increment parameter if needed
+    hasFetchedRef.current = true;
+
+    // Check if we already incremented this slug in this session
+    const shouldIncrement = increment && !incrementedSlugs.has(slug);
+    if (shouldIncrement) {
+      incrementedSlugs.add(slug);
+    }
+
+    // Build URL with increment parameter only if we should increment
     const params = new URLSearchParams({ id: slug });
-    if (increment) {
+    if (shouldIncrement) {
       params.append("incr", "1");
     }
     const url = `/api/views?${params.toString()}`;
+
+    let isMounted = true;
 
     fetch(url)
       .then((res) => {
@@ -35,18 +48,24 @@ export default function ViewCounter({
         return res.json();
       })
       .then((data) => {
-        if (data.views != null) {
-          setViews(data.views);
-        } else {
-          setViews(0);
+        if (isMounted) {
+          if (data.views != null) {
+            setViews(data.views);
+          } else {
+            setViews(0);
+          }
         }
       })
       .catch((error) => {
-        console.error("Error fetching views:", error);
-        setViews(0);
+        if (isMounted) {
+          console.error("Error fetching views:", error);
+          setViews(0);
+        }
       });
 
-    didLogViewRef.current = true;
+    return () => {
+      isMounted = false;
+    };
   }, [slug, increment]);
 
   // Don't render anything until we have data
