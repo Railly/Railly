@@ -2,6 +2,7 @@
 import { getCollection, type CollectionEntry } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
 import TableOfContents from "../../components/content/TableOfContents.astro";
+import ViewCounter from "../../components/blog/ViewCounter";
 import Linkedin from "../../assets/svgs/linkedin.svg";
 import Github from "../../assets/svgs/github.svg";
 import X from "../../assets/svgs/x.svg";
@@ -95,12 +96,15 @@ const updatedDate = post.data.updatedDate
                         )
                     }
 
-                    <time
-                        class="text-sm font-mono text-flexoki-tx-2"
-                        datetime={post.data.pubDate.toISOString()}
+                    <div
+                        class="flex items-center gap-3 text-sm font-mono text-flexoki-tx-2"
                     >
-                        {publishedDate}
-                    </time>
+                        <time datetime={post.data.pubDate.toISOString()}>
+                            {publishedDate}
+                        </time>
+                        <span>·</span>
+                        <ViewCounter slug={post.slug} client:load />
+                    </div>
                 </header>
 
                 <!-- Hero Image -->
