@@ -1,6 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import GradualLogo from "../components/brand/GradualLogo.astro";
+import ElementsLogo from "../components/brand/ElementsLogo.astro";
 import TinteLogo from "../components/brand/TinteLogo.astro";
 import AchievementCard from "../components/ui/AchievementCard.astro";
 import PresentCard from "../components/ui/PresentCard.astro";
@@ -12,243 +12,307 @@ import SectionHeader from "../components/layout/SectionHeader.astro";
 import { getCollection } from "astro:content";
 import Text0Logo from "../assets/svgs/t0-logo.svg";
 import CrafterIcon from "../assets/svgs/crafter.svg";
-import TheAgileMonkeysLogo from "../assets/svgs/the-agile-monkeys.svg";
+import ClerkLogo from "../components/brand/ClerkLogo.astro";
 
 const posts = await getCollection("blog", ({ data }) => {
-  return import.meta.env.PROD ? data.status === "published" : true;
+    return import.meta.env.PROD ? data.status === "published" : true;
 });
 
 const sortedPosts = posts.sort(
-  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+    (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
 
 // Data objects for all sections
 const heroData = {
-  name: "Railly Hugo",
-  title: "Hunter"
+    name: "Railly Hugo",
+    title: "Hunter",
 };
 
 const presentData = [
-  {
-    title: "The Agile Monkeys",
-    description: "AI prototyping unit",
-    color: "blue" as const,
-    icon: "theagilemonkeys" as IconKey
-  },
-  {
-    title: "Crafter Station", 
-    description: "Open-source organization",
-    color: "orange" as const,
-    href: "https://tinte.dev",
-    icon: "crafter" as IconKey
-  },
-  {
-    title: "UNMSM",
-    description: "Teaching & Researching", 
-    color: "yellow" as const,
-    iconPadding: "p-3",
-    isImage: true,
-    imageSrc: "/images/unmsm-logo.webp",
-    imageAlt: "UNMSM Research"
-  },
-  {
-    title: "Midudev Team",
-    description: "The leading Hispanic streamer",
-    color: "teal" as const, 
-    iconPadding: "p-2.5",
-    isImage: true,
-    imageSrc: "/images/midudev-logo.webp",
-    imageAlt: "Midudev Team"
-  }
+    {
+        title: "Clerk",
+        description: "AI Enablement Team",
+        color: "blue" as const,
+        href: "https://clerk.com",
+        icon: "clerk" as IconKey,
+    },
+    {
+        title: "Crafter Station",
+        description: "Open-source organization",
+        color: "orange" as const,
+        href: "https://tinte.dev",
+        icon: "crafter" as IconKey,
+    },
+    {
+        title: "UNMSM",
+        description: "Teaching & Researching",
+        color: "yellow" as const,
+        iconPadding: "p-3",
+        isImage: true,
+        imageSrc: "/images/unmsm-logo.webp",
+        imageAlt: "UNMSM Research",
+    },
+    {
+        title: "Midudev Team",
+        description: "The leading Hispanic streamer",
+        color: "teal" as const,
+        iconPadding: "p-2.5",
+        isImage: true,
+        imageSrc: "/images/midudev-logo.webp",
+        imageAlt: "Midudev Team",
+    },
 ];
 
 const projectsData = [
-  {
-    title: "Gradual",
-    description: "All-in-one learning platform.",
-    color: "cyan" as const,
-    href: "https://trygradual.com",
-    icon: "gradual" as IconKey
-  },
-  {
-    title: "text0",
-    description: "AI-powered text editor.",
-    color: "yellow" as const,
-    href: "https://text0.dev", 
-    icon: "text0" as IconKey
-  },
-  {
-    title: "Tinte",
-    description: "Multiplatform theme builder",
-    color: "purple" as const,
-    href: "https://tinte.dev",
-    icon: "tinte" as IconKey
-  },
-  {
-    title: "One Hunter Theme",
-    description: "~30k VSCode downloads.",
-    color: "magenta" as const,
-    href: "https://marketplace.visualstudio.com/items?itemName=RaillyHugo.one-hunter",
-    isImage: true,
-    imageSrc: "/images/one-hunter-logo.webp",
-    imageAlt: "One Hunter Theme", 
-    iconPadding: "p-2.5"
-  }
+    {
+        title: "Elements",
+        description: "Full-stack shadcn components",
+        color: "cyan" as const,
+        href: "https://tryelements.dev",
+        icon: "elements" as IconKey,
+    },
+    {
+        title: "text0",
+        description: "AI-powered text editor.",
+        color: "yellow" as const,
+        href: "https://text0.dev",
+        icon: "text0" as IconKey,
+    },
+    {
+        title: "Tinte",
+        description: "Multiplatform theme builder",
+        color: "purple" as const,
+        href: "https://tinte.dev",
+        icon: "tinte" as IconKey,
+    },
+    {
+        title: "One Hunter Theme",
+        description: "Stylish VS Code theme",
+        color: "magenta" as const,
+        href: "https://marketplace.visualstudio.com/items?itemName=RaillyHugo.one-hunter",
+        isImage: true,
+        imageSrc: "/images/one-hunter-logo.webp",
+        imageAlt: "One Hunter Theme",
+        iconPadding: "p-2.5",
+    },
 ];
 
 const achievementsData = [
-  {
-    title: "🏆 Overall Winner — First Ever Next.js Global Hackathon",
-    year: "2025",
-    color: "cyan" as const,
-    embedId: "text0-embed",
-    embedSrc: "https://www.youtube.com/embed/KDRwgbwq0_c?start=1142",
-    embedType: "youtube" as const,
-    project: "text0",
-    hosts: ["vercel"]
-  },
-  {
-    title: "🥉 3rd Place — Vercel × Midudev Hackathon",
-    year: "2024", 
-    color: "magenta" as const,
-    embedId: "tinte-embed",
-    embedSrc: "https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7232743944592240640?compact=1",
-    embedType: "linkedin" as const,
-    project: "Tinte",
-    hosts: ["vercel", "midudev"]
-  },
-  {
-    title: "🎖️ Finalist — IA Hackathon LATAM",
-    year: "2025",
-    color: "yellow" as const,
-    embedId: "githunter-embed", 
-    embedSrc: "https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7328521111485243393?compact=1",
-    embedType: "linkedin" as const,
-    project: "GitHunter"
-  }
+    {
+        title: "🏆 Overall Winner — First Ever Next.js Global Hackathon",
+        year: "2025",
+        color: "cyan" as const,
+        embedId: "text0-embed",
+        embedSrc: "https://www.youtube.com/embed/KDRwgbwq0_c?start=1142",
+        embedType: "youtube" as const,
+        project: "text0",
+        hosts: ["vercel"],
+    },
+    {
+        title: "👨‍⚖️ Judge & Mentor — IA Hackathon Colombia Tech Fest",
+        year: "2025",
+        color: "orange" as const,
+        embedId: "colombia-judge-embed",
+        embedSrc:
+            "https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7369217715481362432-XgLj?compact=1",
+        embedType: "linkedin" as const,
+        project: "Colombia Tech Fest",
+    },
+    {
+        title: "🎖️ Finalist — IA Hackathon LATAM",
+        year: "2025",
+        color: "yellow" as const,
+        embedId: "githunter-embed",
+        embedSrc:
+            "https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7328521111485243393?compact=1",
+        embedType: "linkedin" as const,
+        project: "GitHunter",
+    },
+    {
+        title: "🥉 3rd Place — Vercel × Midudev Hackathon",
+        year: "2024",
+        color: "magenta" as const,
+        embedId: "tinte-embed",
+        embedSrc:
+            "https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7232743944592240640?compact=1",
+        embedType: "linkedin" as const,
+        project: "Tinte",
+        hosts: ["vercel", "midudev"],
+    },
 ];
 
 // Icon mapping for components
 const iconMap = {
-  theagilemonkeys: TheAgileMonkeysLogo,
-  crafter: CrafterIcon,
-  gradual: GradualLogo,
-  text0: Text0Logo,
-  tinte: TinteLogo
+    clerk: ClerkLogo,
+    crafter: CrafterIcon,
+    elements: ElementsLogo,
+    text0: Text0Logo,
+    tinte: TinteLogo,
 } as const;
 
 type IconKey = keyof typeof iconMap;
 ---
 
 <Layout>
-  <main
-    class="flex flex-col gap-12 items-center justify-center min-h-screen max-w-2xl mx-auto text-flexoki-tx px-6 py-12"
-  >
-    <HeroSection name={heroData.name} title={heroData.title} />
+    <main
+        class="flex flex-col gap-12 items-center justify-center min-h-screen max-w-2xl mx-auto text-flexoki-tx px-6 py-12"
+    >
+        <HeroSection name={heroData.name} title={heroData.title} />
 
-    <section class="flex flex-col gap-8 w-full">
-      <SectionHeader title="Present" />
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {presentData.map((item) => {
-          const IconComponent = item.icon && item.icon in iconMap ? iconMap[item.icon as IconKey] : null;
-          return (
-            <PresentCard
-              title={item.title}
-              description={item.description}
-              color={item.color}
-              href={item.href}
-              iconPadding={item.iconPadding}
-              isImage={item.isImage}
-              imageSrc={item.imageSrc}
-              imageAlt={item.imageAlt}
-            >
-              {IconComponent && (
-                <IconComponent 
-                  slot="icon" 
-                  class={`size-6 text-flexoki-${item.color === 'blue' ? 'tx' : item.color}`} 
-                />
-              )}
-            </PresentCard>
-          );
-        })}
-      </div>
-    </section>
-    <section class="flex flex-col gap-8 w-full">
-      <SectionHeader title="Projects" />
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {projectsData.map((project) => {
-          const IconComponent = project.icon && project.icon in iconMap ? iconMap[project.icon as IconKey] : null;
-          return (
-            <ProjectCard
-              title={project.title}
-              description={project.description}
-              color={project.color}
-              href={project.href}
-              isImage={project.isImage}
-              imageSrc={project.imageSrc}
-              imageAlt={project.imageAlt}
-              iconPadding={project.iconPadding}
-            >
-              {IconComponent && (
-                <IconComponent
-                  slot="icon"
-                  size={project.icon === 'text0' ? undefined : 28}
-                  width={project.icon === 'text0' ? 28 : undefined}
-                  height={project.icon === 'text0' ? 28 : undefined}
-                  class={`text-flexoki-tx-3 group-hover:text-flexoki-${project.color} transition-colors duration-300 ${project.icon === 'text0' ? 'rounded-sm' : ''}`}
-                />
-              )}
-            </ProjectCard>
-          );
-        })}
-      </div>
-    </section>
-    <section class="flex flex-col gap-8 w-full">
-      <SectionHeader title="Achievements" />
-      <div class="flex flex-col gap-4">
-        {achievementsData.map((achievement) => (
-          <AchievementCard
-            title={achievement.title}
-            year={achievement.year}
-            color={achievement.color}
-            embedId={achievement.embedId}
-            embedSrc={achievement.embedSrc}
-            embedType={achievement.embedType}
-            project={achievement.project}
-            hosts={achievement.hosts}
-          />
-        ))}
-      </div>
-    </section>
-    <section class="w-full">
-      <SectionHeader title="Writing" className="mb-4" />
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {
-          sortedPosts.map((post) => (
-            <BlogCard
-              href={`/blog/${post.slug}`}
-              target="_self"
-              color="purple"
-              title={post.data.title}
-              description={post.data.description}
-            />
-          ))
-        }
-        {
-          sortedPosts.length < 2 && (
-            <BlogCard
-              className="!cursor-default"
-              color="yellow"
-              title="Coming soon"
-              description="I'm working on it."
-            />
-          )
-        }
-      </div>
-    </section>
-    <footer class="flex flex-col items-center gap-3">
-      <SectionHeader title="Connect" />
-      <ConnectLinks />
-    </footer>
-  </main>
+        <section class="flex flex-col gap-8 w-full">
+            <SectionHeader title="Present" />
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {
+                    presentData.map((item) => {
+                        const IconComponent =
+                            item.icon && item.icon in iconMap
+                                ? iconMap[item.icon as IconKey]
+                                : null;
+                        return (
+                            <PresentCard
+                                title={item.title}
+                                description={item.description}
+                                color={item.color}
+                                href={item.href}
+                                iconPadding={item.iconPadding}
+                                isImage={item.isImage}
+                                imageSrc={item.imageSrc}
+                                imageAlt={item.imageAlt}
+                            >
+                                {IconComponent && (
+                                    <IconComponent
+                                        slot="icon"
+                                        class={`size-9 text-flexoki-${item.color === "blue" ? "tx" : item.color}`}
+                                    />
+                                )}
+                            </PresentCard>
+                        );
+                    })
+                }
+            </div>
+        </section>
+        <section class="flex flex-col gap-8 w-full">
+            <SectionHeader title="Projects" />
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {
+                    projectsData.map((project) => {
+                        const IconComponent =
+                            project.icon && project.icon in iconMap
+                                ? iconMap[project.icon as IconKey]
+                                : null;
+                        return (
+                            <ProjectCard
+                                title={project.title}
+                                description={project.description}
+                                color={project.color}
+                                href={project.href}
+                                isImage={project.isImage}
+                                imageSrc={project.imageSrc}
+                                imageAlt={project.imageAlt}
+                                iconPadding={project.iconPadding}
+                            >
+                                {IconComponent && (
+                                    <IconComponent
+                                        slot="icon"
+                                        size={
+                                            project.icon === "text0"
+                                                ? undefined
+                                                : 28
+                                        }
+                                        width={
+                                            project.icon === "text0"
+                                                ? 28
+                                                : undefined
+                                        }
+                                        height={
+                                            project.icon === "text0"
+                                                ? 28
+                                                : undefined
+                                        }
+                                        class={`text-flexoki-tx-3 group-hover:text-flexoki-${project.color} transition-colors duration-300 ${project.icon === "text0" ? "rounded-sm" : ""}`}
+                                    />
+                                )}
+                            </ProjectCard>
+                        );
+                    })
+                }
+            </div>
+        </section>
+        <section class="flex flex-col gap-8 w-full">
+            <SectionHeader title="Achievements" />
+            <div class="flex flex-col gap-4">
+                {
+                    achievementsData.map((achievement) => (
+                        <AchievementCard
+                            title={achievement.title}
+                            year={achievement.year}
+                            color={achievement.color}
+                            embedId={achievement.embedId}
+                            embedSrc={achievement.embedSrc}
+                            embedType={achievement.embedType}
+                            project={achievement.project}
+                            hosts={achievement.hosts}
+                        />
+                    ))
+                }
+            </div>
+        </section>
+        <section class="w-full">
+            <SectionHeader title="Writing" className="mb-4" />
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {
+                    sortedPosts.map((post) => (
+                        <BlogCard
+                            href={`/blog/${post.slug}`}
+                            target="_self"
+                            color="purple"
+                            title={post.data.title}
+                            image={post.data.image}
+                            imageDark={post.data.imageDark}
+                            date={post.data.pubDate.toLocaleDateString(
+                                "en-US",
+                                {
+                                    year: "numeric",
+                                    month: "long",
+                                    day: "numeric",
+                                },
+                            )}
+                            tag={post.data.tags?.[0]}
+                        />
+                    ))
+                }
+                {
+                    sortedPosts.length < 2 && (
+                        <div class="group relative overflow-hidden rounded-lg border border-flexoki-ui transition-all hover:border-flexoki-yellow/30 flex items-center justify-center min-h-[200px]">
+                            <div class="absolute inset-0 bg-gradient-to-tr from-flexoki-yellow/[0.03] to-transparent opacity-80 [mask-image:linear-gradient(45deg,#000_25%,transparent_25%,transparent_50%,#000_50%,#000_75%,transparent_75%,transparent)] [mask-size:8px_8px] pointer-events-none" />
+                            <div class="relative z-10 text-center p-8">
+                                <div class="mb-3 flex justify-center">
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="24"
+                                        height="24"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        class="size-8 fill-flexoki-yellow/50"
+                                    >
+                                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+                                    </svg>
+                                </div>
+                                <h3 class="font-serif text-flexoki-tx font-medium text-lg mb-2">
+                                    More stories coming soon
+                                </h3>
+                                <p class="text-sm text-flexoki-tx-2">
+                                    Currently crafting new content
+                                </p>
+                            </div>
+                        </div>
+                    )
+                }
+            </div>
+        </section>
+        <footer class="flex flex-col items-center gap-3">
+            <SectionHeader title="Connect" />
+            <ConnectLinks />
+        </footer>
+    </main>
 </Layout>

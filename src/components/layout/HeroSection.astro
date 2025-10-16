@@ -1,49 +1,50 @@
 ---
+import PeruFlag from "../brand/PeruFlag.astro";
+import ClerkLogo from "../brand/ClerkLogo.astro";
+
 interface Props {
-  name: string;
-  title: string;
+    name: string;
+    title: string;
 }
 
 const { name, title } = Astro.props;
 ---
 
 <header class="flex gap-2 items-center justify-start w-full">
-  <h1 class="text-lg tracking-tight font-medium text-flexoki-tx">
-    {name}
-  </h1>
-  <span class="text-sm text-flexoki-tx-2"> ~ </span>
-  <span class="text-base font-serif text-flexoki-tx-2 font-light">
-    {title}
-  </span>
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 900 900"
-    class="size-4 rounded-full border border-flexoki-red"
-  >
-    <rect width="900" height="900" fill="var(--color-flexoki-red)"></rect>
-    <rect x="250" width="400" height="900" fill="#fff"></rect>
-  </svg>
+    <h1 class="text-lg tracking-tight font-medium text-flexoki-tx">
+        {name}
+    </h1>
+    <span class="text-sm text-flexoki-tx-2"> ~ </span>
+    <span class="text-base font-serif text-flexoki-tx-2 font-light">
+        {title}
+    </span>
+    <PeruFlag />
 </header>
 
 <section class="flex flex-col gap-2">
-  <p class="text-base text-flexoki-tx !m-0">
-    I work as a <i>design engineer</i> at <a
-      href="https://theagilemonkeys.com"
-      target="_blank"
-      class="text-flexoki-tx underline">The Agile Monkeys</a
-    >. I also create open-source tools and projects that push the boundaries
-    of UI and developer experience.
-  </p>
+    <p class="text-base text-flexoki-tx !m-0">
+        I work as a <i>software engineer</i> at <ClerkLogo
+            width={16}
+            height={16}
+            class="inline-block mb-0.5 align-text-bottom"
+        />
+        <a
+            href="https://clerk.com"
+            target="_blank"
+            class="text-flexoki-tx underline">Clerk</a
+        >. I also create open-source tools and projects that push the boundaries
+        of UI and developer experience.
+    </p>
 
-  <p class="text-base text-flexoki-tx !m-0">
-    Find my work on <a
-      href="https://github.com/railly"
-      target="_blank"
-      class="text-flexoki-tx underline">GitHub</a
-    > and <a
-      href="https://x.com/raillyhugo"
-      target="_blank"
-      class="text-flexoki-tx underline">𝕏 / Twitter</a
-    >.
-  </p>
+    <p class="text-base text-flexoki-tx !m-0">
+        Find my work on <a
+            href="https://github.com/railly"
+            target="_blank"
+            class="text-flexoki-tx underline">GitHub</a
+        > and <a
+            href="https://x.com/raillyhugo"
+            target="_blank"
+            class="text-flexoki-tx underline">𝕏 / Twitter</a
+        >.
+    </p>
 </section>

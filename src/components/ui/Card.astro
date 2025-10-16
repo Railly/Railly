@@ -1,72 +1,74 @@
 ---
 type ColorName =
-  | "blue"
-  | "teal"
-  | "yellow"
-  | "cyan"
-  | "purple"
-  | "magenta"
-  | "orange";
+    | "blue"
+    | "teal"
+    | "yellow"
+    | "cyan"
+    | "purple"
+    | "magenta"
+    | "orange";
 
 interface Props {
-  href?: string;
-  target?: "_blank" | "_self";
-  color?: ColorName;
-  className?: string;
-  transitionName?: string;
+    href?: string;
+    target?: "_blank" | "_self";
+    color?: ColorName;
+    className?: string;
+    transitionName?: string;
+    padding?: string;
 }
 
 const {
-  href,
-  target = "_blank",
-  color = "blue",
-  className,
-  transitionName,
+    href,
+    target = "_blank",
+    color = "blue",
+    className,
+    transitionName,
+    padding = "p-4",
 } = Astro.props;
 
 const colorMap = {
-  blue: {
-    border: "hover:border-flexoki-blue/30",
-    text: "group-hover:text-flexoki-blue",
-    gradient: "from-flexoki-blue/[0.05]",
-    shine: "via-flexoki-blue/10",
-  },
-  teal: {
-    border: "hover:border-flexoki-teal/30",
-    text: "group-hover:text-flexoki-teal",
-    gradient: "from-flexoki-teal/[0.05]",
-    shine: "via-flexoki-teal/10",
-  },
-  yellow: {
-    border: "hover:border-flexoki-yellow/30",
-    text: "group-hover:text-flexoki-yellow",
-    gradient: "from-flexoki-yellow/[0.05]",
-    shine: "via-flexoki-yellow/10",
-  },
-  cyan: {
-    border: "hover:border-flexoki-cyan/30",
-    text: "group-hover:text-flexoki-cyan",
-    gradient: "from-flexoki-cyan/[0.05]",
-    shine: "via-flexoki-cyan/10",
-  },
-  purple: {
-    border: "hover:border-flexoki-purple/30",
-    text: "group-hover:text-flexoki-purple",
-    gradient: "from-flexoki-purple/[0.05]",
-    shine: "via-flexoki-purple/10",
-  },
-  magenta: {
-    border: "hover:border-flexoki-magenta/30",
-    text: "group-hover:text-flexoki-magenta",
-    gradient: "from-flexoki-magenta/[0.05]",
-    shine: "via-flexoki-magenta/10",
-  },
-  orange: {
-    border: "hover:border-flexoki-orange/30",
-    text: "group-hover:text-flexoki-orange",
-    gradient: "from-flexoki-orange/[0.05]",
-    shine: "via-flexoki-orange/10",
-  },
+    blue: {
+        border: "hover:border-flexoki-blue/30",
+        text: "group-hover:text-flexoki-blue",
+        gradient: "from-flexoki-blue/[0.05]",
+        shine: "via-flexoki-blue/10",
+    },
+    teal: {
+        border: "hover:border-flexoki-teal/30",
+        text: "group-hover:text-flexoki-teal",
+        gradient: "from-flexoki-teal/[0.05]",
+        shine: "via-flexoki-teal/10",
+    },
+    yellow: {
+        border: "hover:border-flexoki-yellow/30",
+        text: "group-hover:text-flexoki-yellow",
+        gradient: "from-flexoki-yellow/[0.05]",
+        shine: "via-flexoki-yellow/10",
+    },
+    cyan: {
+        border: "hover:border-flexoki-cyan/30",
+        text: "group-hover:text-flexoki-cyan",
+        gradient: "from-flexoki-cyan/[0.05]",
+        shine: "via-flexoki-cyan/10",
+    },
+    purple: {
+        border: "hover:border-flexoki-purple/30",
+        text: "group-hover:text-flexoki-purple",
+        gradient: "from-flexoki-purple/[0.05]",
+        shine: "via-flexoki-purple/10",
+    },
+    magenta: {
+        border: "hover:border-flexoki-magenta/30",
+        text: "group-hover:text-flexoki-magenta",
+        gradient: "from-flexoki-magenta/[0.05]",
+        shine: "via-flexoki-magenta/10",
+    },
+    orange: {
+        border: "hover:border-flexoki-orange/30",
+        text: "group-hover:text-flexoki-orange",
+        gradient: "from-flexoki-orange/[0.05]",
+        shine: "via-flexoki-orange/10",
+    },
 } as const;
 
 const Component = href ? "a" : "div";
@@ -74,37 +76,40 @@ const styles = colorMap[color];
 ---
 
 <Component
-  href={href}
-  target={target}
-  class:list={[
-    "group relative overflow-hidden rounded-lg border border-flexoki-ui transition-all",
-    styles.border,
-    href && "block",
-    className,
-  ]}
-  transition:name={transitionName}
-  transition:animate="fade"
+    href={href}
+    target={target}
+    class:list={[
+        "group relative overflow-hidden rounded-lg border border-flexoki-ui transition-all",
+        styles.border,
+        href && "block",
+        className,
+    ]}
+    transition:name={transitionName}
+    transition:animate="fade"
 >
-  <div
-    class:list={[
-      "absolute inset-0 bg-gradient-to-tr opacity-0 group-hover:opacity-100 transition-opacity",
-      styles.gradient,
-      "to-transparent",
-      "[mask-image:linear-gradient(45deg,#000_25%,transparent_25%,transparent_50%,#000_50%,#000_75%,transparent_75%,transparent)]",
-      "[mask-size:8px_8px]",
-    ]}
-  >
-  </div>
-  <div
-    class:list={[
-      "not-sr-only absolute inset-0 bg-gradient-to-r from-transparent to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-[1300ms] ease-out pointer-events-none opacity-0 group-hover:opacity-100",
-      styles.shine,
-    ]}
-  >
-  </div>
-  <div
-    class="relative flex-1 h-full p-4 hover:bg-flexoki-tx-3/[0.02] transition-colors duration-300"
-  >
-    <slot />
-  </div>
+    <div
+        class:list={[
+            "absolute inset-0 bg-gradient-to-tr opacity-0 group-hover:opacity-100 transition-opacity",
+            styles.gradient,
+            "to-transparent",
+            "[mask-image:linear-gradient(45deg,#000_25%,transparent_25%,transparent_50%,#000_50%,#000_75%,transparent_75%,transparent)]",
+            "[mask-size:8px_8px]",
+        ]}
+    >
+    </div>
+    <div
+        class:list={[
+            "not-sr-only absolute inset-0 bg-gradient-to-r from-transparent to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-[1300ms] ease-out pointer-events-none opacity-0 group-hover:opacity-100",
+            styles.shine,
+        ]}
+    >
+    </div>
+    <div
+        class:list={[
+            "relative flex-1 h-full hover:bg-flexoki-tx-3/[0.02]",
+            padding,
+        ]}
+    >
+        <slot />
+    </div>
 </Component>

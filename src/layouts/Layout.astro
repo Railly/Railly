@@ -4,17 +4,17 @@ import { ClientRouter } from "astro:transitions";
 import "../styles/global.css";
 
 interface Props {
-  title?: string;
-  description?: string;
-  image?: string;
-  article?: boolean;
+    title?: string;
+    description?: string;
+    image?: string;
+    article?: boolean;
 }
 
 const {
-  title = siteConfig.name,
-  description = siteConfig.description,
-  image = siteConfig.ogImage,
-  article = false,
+    title = siteConfig.name,
+    description = siteConfig.description,
+    image = siteConfig.ogImage,
+    article = false,
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, siteConfig.url);
@@ -23,75 +23,75 @@ const socialImageURL = new URL(image, siteConfig.url);
 
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
-    <link rel="canonical" href={canonicalURL} />
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width" />
+        <link rel="canonical" href={canonicalURL} />
 
-    {/* Primary Meta Tags */}
-    <title>{title}</title>
-    <meta name="title" content={title} />
-    <meta name="description" content={description} />
-    <meta name="author" content={siteConfig.author} />
-    <meta name="keywords" content={siteConfig.keywords.join(", ")} />
+        {/* Primary Meta Tags */}
+        <title>{title}</title>
+        <meta name="title" content={title} />
+        <meta name="description" content={description} />
+        <meta name="author" content={siteConfig.author} />
+        <meta name="keywords" content={siteConfig.keywords.join(", ")} />
 
-    {/* Theme Color */}
-    <meta
-      name="theme-color"
-      content={siteConfig.themeColor.light}
-      media="(prefers-color-scheme: light)"
-    />
-    <meta
-      name="theme-color"
-      content={siteConfig.themeColor.dark}
-      media="(prefers-color-scheme: dark)"
-    />
+        {/* Theme Color */}
+        <meta
+            name="theme-color"
+            content={siteConfig.themeColor.light}
+            media="(prefers-color-scheme: light)"
+        />
+        <meta
+            name="theme-color"
+            content={siteConfig.themeColor.dark}
+            media="(prefers-color-scheme: dark)"
+        />
 
-    {/* Open Graph / Facebook */}
-    <meta property="og:type" content={article ? "article" : "website"} />
-    <meta property="og:site_name" content={siteConfig.name} />
-    <meta property="og:url" content={canonicalURL} />
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
-    <meta property="og:image" content={socialImageURL} />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-    <meta property="og:locale" content={siteConfig.locale} />
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content={article ? "article" : "website"} />
+        <meta property="og:site_name" content={siteConfig.name} />
+        <meta property="og:url" content={canonicalURL} />
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={description} />
+        <meta property="og:image" content={socialImageURL} />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:locale" content={siteConfig.locale} />
 
-    {/* Twitter */}
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content={canonicalURL} />
-    <meta property="twitter:title" content={title} />
-    <meta property="twitter:description" content={description} />
-    <meta property="twitter:image" content={socialImageURL} />
-    <meta property="twitter:creator" content="@raillyhugo" />
+        {/* Twitter */}
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:url" content={canonicalURL} />
+        <meta property="twitter:title" content={title} />
+        <meta property="twitter:description" content={description} />
+        <meta property="twitter:image" content={socialImageURL} />
+        <meta property="twitter:creator" content="@raillyhugo" />
 
-    {/* Favicons */}
-    <link rel="icon" type="image/x-icon" href={siteConfig.icons.icon} />
-    <link
-      rel="shortcut icon"
-      type="image/png"
-      href={siteConfig.icons.shortcut}
-    />
-    <link rel="apple-touch-icon" href={siteConfig.icons.apple} />
-    <link rel="manifest" href={siteConfig.manifest} />
+        {/* Favicons */}
+        <link rel="icon" type="image/x-icon" href={siteConfig.icons.icon} />
+        <link
+            rel="shortcut icon"
+            type="image/png"
+            href={siteConfig.icons.shortcut}
+        />
+        <link rel="apple-touch-icon" href={siteConfig.icons.apple} />
+        <link rel="manifest" href={siteConfig.manifest} />
 
-    {/* RSS Feed */}
-    <link
-      rel="alternate"
-      type="application/rss+xml"
-      title={`RSS Feed for ${siteConfig.name}`}
-      href="/rss.xml"
-    />
+        {/* RSS Feed */}
+        <link
+            rel="alternate"
+            type="application/rss+xml"
+            title={`RSS Feed for ${siteConfig.name}`}
+            href="/rss.xml"
+        />
 
-    {/* View Transitions */}
-    <ClientRouter />
+        {/* View Transitions */}
+        <ClientRouter />
 
-    <slot name="head" />
-  </head>
-  <body
-    class="min-h-screen bg-flexoki-bg text-flexoki-tx selection:text-primary selection:bg-flexoki-bg-2"
-  >
-    <slot />
-  </body>
+        <slot name="head" />
+    </head>
+    <body
+        class="min-h-screen bg-flexoki-bg text-flexoki-tx selection:text-primary selection:bg-flexoki-bg-2"
+    >
+        <slot />
+    </body>
 </html>
