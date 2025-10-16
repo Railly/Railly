@@ -20,6 +20,7 @@
     "@tailwindcss/vite": "^4.0.6",
     "@types/react": "^19.1.4",
     "@types/react-dom": "^19.1.5",
+    "@vercel/kv": "^3.0.0",
     "astro": "5.14.5",
     "katex": "^0.16.21",
     "marked": "^12.0.0",

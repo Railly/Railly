@@ -16,20 +16,30 @@ export default function ViewCounter({
 
   useEffect(() => {
     if (!didLogViewRef.current) {
-      // Increment view count only if increment prop is true
-      const url = increment
-        ? `https://raillyhugo.com/api/views?type=blog&incr=1&id=${encodeURIComponent(slug)}`
-        : `https://raillyhugo.com/api/views?type=blog&id=${encodeURIComponent(slug)}`;
+      // Build URL with increment parameter if needed
+      const params = new URLSearchParams({ id: slug });
+      if (increment) {
+        params.append("incr", "1");
+      }
+      const url = `/api/views?${params.toString()}`;
 
       fetch(url)
-        .then((res) => res.json())
+        .then((res) => {
+          if (!res.ok) {
+            throw new Error(`HTTP error! status: ${res.status}`);
+          }
+          return res.json();
+        })
         .then((data) => {
           if (data.views != null) {
             setViews(data.views);
+          } else {
+            setViews(0);
           }
         })
         .catch((error) => {
           console.error("Error fetching views:", error);
+          setViews(0);
         });
 
       didLogViewRef.current = true;
