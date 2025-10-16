@@ -310,6 +310,35 @@ type IconKey = keyof typeof iconMap;
                 }
             </div>
         </section>
+        <section class="flex flex-col gap-4 w-full">
+            <SectionHeader title="More" />
+            <div class="flex flex-col gap-2">
+                <a
+                    href="/about"
+                    class="text-flexoki-tx-2 hover:text-flexoki-blue transition-colors text-sm"
+                >
+                    → About
+                </a>
+                <a
+                    href="/people"
+                    class="text-flexoki-tx-2 hover:text-flexoki-purple transition-colors text-sm"
+                >
+                    → People I admire
+                </a>
+                <a
+                    href="/flights"
+                    class="text-flexoki-tx-2 hover:text-flexoki-cyan transition-colors text-sm"
+                >
+                    → Flights
+                </a>
+                <a
+                    href="/gallery"
+                    class="text-flexoki-tx-2 hover:text-flexoki-magenta transition-colors text-sm"
+                >
+                    → Gallery
+                </a>
+            </div>
+        </section>
         <footer class="flex flex-col items-center gap-3">
             <SectionHeader title="Connect" />
             <ConnectLinks />

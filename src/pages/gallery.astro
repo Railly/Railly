@@ -1,0 +1,76 @@
+---
+import Layout from "../layouts/Layout.astro";
+import SectionHeader from "../components/layout/SectionHeader.astro";
+
+// Placeholder for future photos - you can add your images here
+const photos = [
+    {
+        src: "/images/photo-1.jpg",
+        alt: "Photo 1",
+        caption: "Add your photos here",
+    },
+    // Add more photos as needed
+];
+---
+
+<Layout>
+    <main
+        class="flex flex-col gap-12 items-center justify-center min-h-screen max-w-2xl mx-auto text-flexoki-tx px-6 py-12"
+    >
+        <div class="flex flex-col gap-8 w-full">
+            <div class="flex items-center justify-between">
+                <SectionHeader title="Gallery" />
+                <a
+                    href="/"
+                    class="text-flexoki-tx-2 hover:text-flexoki-blue transition-colors text-sm"
+                >
+                    ← Back
+                </a>
+            </div>
+            {
+                photos.length > 0 ? (
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {photos.map((photo) => (
+                            <div class="group relative overflow-hidden rounded-lg border border-flexoki-ui hover:border-flexoki-magenta/30 transition-all">
+                                <img
+                                    src={photo.src}
+                                    alt={photo.alt}
+                                    class="w-full h-auto object-cover"
+                                    loading="lazy"
+                                />
+                                {photo.caption && (
+                                    <p class="absolute bottom-0 left-0 right-0 bg-black/50 text-white p-2 text-sm opacity-0 group-hover:opacity-100 transition-opacity">
+                                        {photo.caption}
+                                    </p>
+                                )}
+                            </div>
+                        ))}
+                    </div>
+                ) : (
+                    <div class="flex items-center justify-center min-h-[300px] border border-flexoki-ui rounded-lg">
+                        <div class="text-center p-8">
+                            <div class="mb-3 flex justify-center">
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="24"
+                                    height="24"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    class="size-8 fill-flexoki-magenta/50"
+                                >
+                                    <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z" />
+                                </svg>
+                            </div>
+                            <h3 class="font-serif text-flexoki-tx font-medium text-lg mb-2">
+                                Gallery coming soon
+                            </h3>
+                            <p class="text-sm text-flexoki-tx-2">
+                                Photos will be added here
+                            </p>
+                        </div>
+                    </div>
+                )
+            }
+        </div>
+    </main>
+</Layout>

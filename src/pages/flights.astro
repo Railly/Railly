@@ -1,0 +1,54 @@
+---
+import Layout from "../layouts/Layout.astro";
+import SectionHeader from "../components/layout/SectionHeader.astro";
+
+const flights = [
+    {
+        location: "Lima, Peru",
+        year: "Home",
+        color: "yellow",
+    },
+    {
+        location: "Cusco, Peru",
+        year: "2024",
+        color: "orange",
+    },
+    {
+        location: "Bogotá, Colombia",
+        year: "2025",
+        color: "cyan",
+    },
+];
+---
+
+<Layout>
+    <main
+        class="flex flex-col gap-12 items-center justify-center min-h-screen max-w-2xl mx-auto text-flexoki-tx px-6 py-12"
+    >
+        <div class="flex flex-col gap-8 w-full">
+            <div class="flex items-center justify-between">
+                <SectionHeader title="Flights" />
+                <a
+                    href="/"
+                    class="text-flexoki-tx-2 hover:text-flexoki-blue transition-colors text-sm"
+                >
+                    ← Back
+                </a>
+            </div>
+            <div class="flex flex-col gap-3">
+                {
+                    flights.map((flight) => (
+                        <div class={`group flex items-center justify-between p-4 rounded-lg border border-flexoki-ui hover:border-flexoki-${flight.color}/30 transition-all`}>
+                            <h3 class={`font-medium text-flexoki-tx group-hover:text-flexoki-${flight.color} transition-colors`}>
+                                {flight.location}
+                            </h3>
+                            <span class="text-sm text-flexoki-tx-2">
+                                {flight.year}
+                            </span>
+                        </div>
+                    ))
+                }
+            </div>
+        </div>
+    </main>
+</Layout>

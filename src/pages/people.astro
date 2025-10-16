@@ -1,0 +1,74 @@
+---
+import Layout from "../layouts/Layout.astro";
+import SectionHeader from "../components/layout/SectionHeader.astro";
+
+const people = [
+    {
+        name: "Midudev",
+        description: "Leading Hispanic tech streamer",
+        url: "https://midu.dev",
+        color: "teal",
+    },
+    {
+        name: "Theo Browne",
+        description: "Developer advocate & content creator",
+        url: "https://t3.gg",
+        color: "blue",
+    },
+    {
+        name: "Lee Robinson",
+        description: "VP of Product at Vercel",
+        url: "https://leerob.io",
+        color: "purple",
+    },
+    {
+        name: "Anthony Fu",
+        description: "Core team member of Vue, Vite & Nuxt",
+        url: "https://antfu.me",
+        color: "cyan",
+    },
+    {
+        name: "Guillermo Rauch",
+        description: "CEO of Vercel",
+        url: "https://rauchg.com",
+        color: "yellow",
+    },
+];
+---
+
+<Layout>
+    <main
+        class="flex flex-col gap-12 items-center justify-center min-h-screen max-w-2xl mx-auto text-flexoki-tx px-6 py-12"
+    >
+        <div class="flex flex-col gap-8 w-full">
+            <div class="flex items-center justify-between">
+                <SectionHeader title="People I Admire" />
+                <a
+                    href="/"
+                    class="text-flexoki-tx-2 hover:text-flexoki-blue transition-colors text-sm"
+                >
+                    ← Back
+                </a>
+            </div>
+            <div class="flex flex-col gap-3">
+                {
+                    people.map((person) => (
+                        <a
+                            href={person.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class={`group flex flex-col gap-1 p-4 rounded-lg border border-flexoki-ui hover:border-flexoki-${person.color}/30 transition-all`}
+                        >
+                            <h3 class={`font-medium text-flexoki-tx group-hover:text-flexoki-${person.color} transition-colors`}>
+                                {person.name}
+                            </h3>
+                            <p class="text-sm text-flexoki-tx-2">
+                                {person.description}
+                            </p>
+                        </a>
+                    ))
+                }
+            </div>
+        </div>
+    </main>
+</Layout>
