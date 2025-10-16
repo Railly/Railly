@@ -48,18 +48,18 @@ const {
 >
     {
         image && (
-            <div class="relative w-full overflow-hidden rounded-lg mb-2">
+            <div class="relative w-full aspect-video overflow-hidden rounded-lg mb-2 flex items-center justify-center bg-flexoki-bg-2">
                 <img
                     src={image}
                     alt={title}
-                    class="w-full h-auto object-contain block dark:hidden"
+                    class="max-w-[60%] max-h-[60%] object-contain block dark:hidden"
                     loading="lazy"
                 />
                 {imageDark && (
                     <img
                         src={imageDark}
                         alt={title}
-                        class="w-full h-auto object-contain hidden dark:block"
+                        class="max-w-[60%] max-h-[60%] object-contain hidden dark:block"
                         loading="lazy"
                     />
                 )}
@@ -67,7 +67,7 @@ const {
                     <img
                         src={image}
                         alt={title}
-                        class="w-full h-auto object-contain hidden dark:block"
+                        class="max-w-[60%] max-h-[60%] object-contain hidden dark:block"
                         loading="lazy"
                     />
                 )}
