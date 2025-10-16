@@ -137,17 +137,14 @@ const {
         }
         {
             date && (
-                <div class="flex items-center gap-2 text-sm text-flexoki-tx-3 !my-0">
+                <div class="flex items-center justify-between gap-2 text-sm text-flexoki-tx-3 !my-0 !mt-3">
                     <span>{date}</span>
                     {slug && (
-                        <>
-                            <span>·</span>
-                            <ViewCounter
-                                slug={slug}
-                                client:load
-                                className="text-xs text-flexoki-tx-3"
-                            />
-                        </>
+                        <ViewCounter
+                            slug={slug}
+                            client:only="react"
+                            className="text-xs text-flexoki-tx-3"
+                        />
                     )}
                 </div>
             )

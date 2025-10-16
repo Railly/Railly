@@ -84,7 +84,7 @@ const updatedDate = post.data.updatedDate
                         )
                     }
                     <h1
-                        class="font-sans text-base font-semibold text-foreground tracking-tight"
+                        class="font-sans text-lg font-semibold text-foreground tracking-tight"
                     >
                         {post.data.title}
                     </h1>
@@ -106,7 +106,7 @@ const updatedDate = post.data.updatedDate
                         <ViewCounter
                             slug={post.slug}
                             increment={true}
-                            client:load
+                            client:only="react"
                         />
                     </div>
                 </header>
