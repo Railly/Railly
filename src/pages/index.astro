@@ -238,25 +238,6 @@ type IconKey = keyof typeof iconMap;
                 }
             </div>
         </section>
-        <section class="flex flex-col gap-8 w-full">
-            <SectionHeader title="Achievements" />
-            <div class="flex flex-col gap-4">
-                {
-                    achievementsData.map((achievement) => (
-                        <AchievementCard
-                            title={achievement.title}
-                            year={achievement.year}
-                            color={achievement.color}
-                            embedId={achievement.embedId}
-                            embedSrc={achievement.embedSrc}
-                            embedType={achievement.embedType}
-                            project={achievement.project}
-                            hosts={achievement.hosts}
-                        />
-                    ))
-                }
-            </div>
-        </section>
         <section class="w-full">
             <SectionHeader title="Writing" className="mb-4" />
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -307,6 +288,25 @@ type IconKey = keyof typeof iconMap;
                             </div>
                         </div>
                     )
+                }
+            </div>
+        </section>
+        <section class="flex flex-col gap-8 w-full">
+            <SectionHeader title="Achievements" />
+            <div class="flex flex-col gap-4">
+                {
+                    achievementsData.map((achievement) => (
+                        <AchievementCard
+                            title={achievement.title}
+                            year={achievement.year}
+                            color={achievement.color}
+                            embedId={achievement.embedId}
+                            embedSrc={achievement.embedSrc}
+                            embedType={achievement.embedType}
+                            project={achievement.project}
+                            hosts={achievement.hosts}
+                        />
+                    ))
                 }
             </div>
         </section>

@@ -1,5 +1,7 @@
 ---
 import Card from "./Card.astro";
+import ClerkLogo from "../brand/ClerkLogo.astro";
+import CrafterIcon from "../../assets/svgs/crafter.svg";
 
 type ColorName =
     | "blue"
@@ -85,7 +87,7 @@ const {
                     <div
                         class={`flex items-center justify-center size-6 shrink-0`}
                     >
-                        {tag === "Math" && (
+                        {tag === "math" && (
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 width="24"
@@ -100,6 +102,26 @@ const {
                                     d="M3.5 5.5C3.5 3.84315 4.84315 2.5 6.5 2.5H17.5C19.1569 2.5 20.5 3.84315 20.5 5.5V18.5C20.5 20.1569 19.1569 21.5 17.5 21.5H6.5C4.84315 21.5 3.5 20.1569 3.5 18.5V5.5ZM8 8C8 7.44772 8.44772 7 9 7H15C15.5523 7 16 7.44772 16 8C16 8.55228 15.5523 9 15 9H9C8.44772 9 8 8.55228 8 8ZM8 12C8 11.4477 8.44772 11 9 11H12C12.5523 11 13 11.4477 13 12C13 12.5523 12.5523 13 12 13H9C8.44772 13 8 12.5523 8 12Z"
                                 />
                             </svg>
+                        )}
+                        {tag === "midudev" && (
+                            <img
+                                src="/images/midudev-logo.webp"
+                                alt="Midudev"
+                                class="size-5"
+                            />
+                        )}
+                        {tag === "clerk" && (
+                            <ClerkLogo width={20} height={20} />
+                        )}
+                        {tag === "crafter-station" && (
+                            <CrafterIcon class="size-5" />
+                        )}
+                        {tag === "unmsm" && (
+                            <img
+                                src="/images/unmsm-logo.webp"
+                                alt="UNMSM"
+                                class="size-5"
+                            />
                         )}
                     </div>
                 )
