@@ -14,13 +14,17 @@ import Text0Logo from "../assets/svgs/t0-logo.svg";
 import CrafterIcon from "../assets/svgs/crafter.svg";
 import ClerkLogo from "../components/brand/ClerkLogo.astro";
 
-const posts = await getCollection("blog", ({ data }) => {
-    return import.meta.env.PROD ? data.status === "published" : true;
+const allPosts = await getCollection("blog", ({ data }) => {
+    return import.meta.env.PROD ? data.status !== "draft" : true;
 });
 
-const sortedPosts = posts.sort(
-    (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
-);
+const activePosts = allPosts
+    .filter(({ data }) => data.status === "published")
+    .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const archivedPosts = allPosts
+    .filter(({ data }) => data.status === "archived")
+    .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
 // Data objects for all sections
 const heroData = {
@@ -109,14 +113,24 @@ const achievementsData = [
         hosts: ["vercel"],
     },
     {
+        title: "🥇 1st Place — Vercel AI Gateway Hackathon",
+        year: "2025",
+        color: "blue" as const,
+        embedId: "ai-gateway-embed",
+        embedSrc: "https://www.youtube.com/embed/yKzXoJgPenw?start=28889",
+        embedType: "youtube" as const,
+        project: "Chess Battle",
+        hosts: ["vercel"],
+    },
+    {
         title: "👨‍⚖️ Judge & Mentor — IA Hackathon Colombia Tech Fest",
         year: "2025",
         color: "orange" as const,
         embedId: "colombia-judge-embed",
-        embedSrc:
-            "https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7369217715481362432-XgLj?compact=1",
-        embedType: "linkedin" as const,
+        embedSrc: "",
+        embedType: "image" as const,
         project: "Colombia Tech Fest",
+        imageUrl: "/images/colombia-hackathon.webp",
     },
     {
         title: "🎖️ Finalist — IA Hackathon LATAM",
@@ -239,10 +253,38 @@ type IconKey = keyof typeof iconMap;
             </div>
         </section>
         <section class="w-full">
-            <SectionHeader title="Writing" className="mb-4" />
+            <div class="flex items-center justify-between mb-4">
+                <SectionHeader title="Writing" className="mb-0" />
+                {
+                    archivedPosts.length > 0 && (
+                        <button
+                            id="archive-toggle"
+                            class="group text-xs px-2.5 py-1 rounded-md border border-flexoki-ui/50 text-flexoki-tx-2 hover:border-flexoki-ui hover:text-flexoki-tx transition-all duration-200"
+                        >
+                            <span class="flex items-center gap-1.5">
+                                <span>Archive</span>
+                                <svg
+                                    width="12"
+                                    height="12"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    class="transition-transform duration-200"
+                                    id="archive-icon"
+                                >
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </span>
+                        </button>
+                    )
+                }
+            </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {
-                    sortedPosts.map((post) => (
+                    activePosts.map((post) => (
                         <BlogCard
                             href={`/blog/${post.slug}`}
                             target="_self"
@@ -264,7 +306,7 @@ type IconKey = keyof typeof iconMap;
                     ))
                 }
                 {
-                    sortedPosts.length < 2 && (
+                    activePosts.length < 2 && (
                         <div class="group relative overflow-hidden rounded-lg border border-flexoki-ui transition-all hover:border-flexoki-yellow/30 flex items-center justify-center min-h-[200px]">
                             <div class="absolute inset-0 bg-gradient-to-tr from-flexoki-yellow/[0.03] to-transparent opacity-80 [mask-image:linear-gradient(45deg,#000_25%,transparent_25%,transparent_50%,#000_50%,#000_75%,transparent_75%,transparent)] [mask-size:8px_8px] pointer-events-none" />
                             <div class="relative z-10 text-center p-8">
@@ -291,6 +333,40 @@ type IconKey = keyof typeof iconMap;
                     )
                 }
             </div>
+            {
+                archivedPosts.length > 0 && (
+                    <div
+                        id="archived-posts"
+                        class="hidden mt-8 pt-6 border-t border-flexoki-ui/30"
+                    >
+                        <p class="text-xs text-flexoki-tx-3 mb-4 font-mono">
+                            Older writings — kept for reference
+                        </p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 opacity-60">
+                            {archivedPosts.map((post) => (
+                                <BlogCard
+                                    href={`/blog/${post.slug}`}
+                                    target="_self"
+                                    color="purple"
+                                    title={post.data.title}
+                                    image={post.data.image}
+                                    imageDark={post.data.imageDark}
+                                    date={post.data.pubDate.toLocaleDateString(
+                                        "en-US",
+                                        {
+                                            year: "numeric",
+                                            month: "long",
+                                            day: "numeric",
+                                        },
+                                    )}
+                                    tag={post.data.tags?.[0]}
+                                    slug={post.slug}
+                                />
+                            ))}
+                        </div>
+                    </div>
+                )
+            }
         </section>
         <section class="flex flex-col gap-8 w-full">
             <SectionHeader title="Achievements" />
@@ -306,6 +382,9 @@ type IconKey = keyof typeof iconMap;
                             embedType={achievement.embedType}
                             project={achievement.project}
                             hosts={achievement.hosts}
+                            linkedinUrl={achievement.linkedinUrl}
+                            imageUrl={achievement.imageUrl}
+                            embedDescription={achievement.embedDescription}
                         />
                     ))
                 }
@@ -316,4 +395,22 @@ type IconKey = keyof typeof iconMap;
             <ConnectLinks />
         </footer>
     </main>
+
+    <script>
+        const archiveToggle = document.getElementById('archive-toggle');
+        const archivedPosts = document.getElementById('archived-posts');
+        const archiveIcon = document.getElementById('archive-icon');
+
+        archiveToggle?.addEventListener('click', () => {
+            const isHidden = archivedPosts?.classList.contains('hidden');
+
+            if (isHidden) {
+                archivedPosts?.classList.remove('hidden');
+                archiveIcon?.classList.add('rotate-180');
+            } else {
+                archivedPosts?.classList.add('hidden');
+                archiveIcon?.classList.remove('rotate-180');
+            }
+        });
+    </script>
 </Layout>

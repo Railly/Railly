@@ -1,6 +1,8 @@
 ---
 import PeruFlag from "../brand/PeruFlag.astro";
 import ClerkLogo from "../brand/ClerkLogo.astro";
+import V0Logo from "../brand/V0Logo.astro";
+import VercelLogo from "../brand/VercelLogo.astro";
 
 interface Props {
     name: string;
@@ -11,6 +13,11 @@ const { name, title } = Astro.props;
 ---
 
 <header class="flex gap-2 items-center justify-start w-full">
+    <img
+        src="/favicon/favicon-32x32.png"
+        alt="Railly Hugo favicon"
+        class="size-5"
+    />
     <h1 class="text-lg tracking-tight font-medium text-flexoki-tx">
         {name}
     </h1>
@@ -47,4 +54,29 @@ const { name, title } = Astro.props;
             class="text-flexoki-tx underline">𝕏 / Twitter</a
         >.
     </p>
+
+    <div class="flex flex-wrap gap-2 mt-3">
+        <a
+            href="https://v0.app/@railly"
+            target="_blank"
+            class="group inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md border border-flexoki-ui/50 hover:border-flexoki-ui transition-all duration-200"
+        >
+            <V0Logo width={16} height={16} class="text-flexoki-tx" />
+            <span
+                class="text-xs text-flexoki-tx-2 group-hover:text-flexoki-tx transition-colors"
+                >Ambassador</span
+            >
+        </a>
+        <a
+            href="https://github.com/Railly/tinte"
+            target="_blank"
+            class="group inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md border border-flexoki-ui/50 hover:border-flexoki-ui transition-all duration-200"
+        >
+            <VercelLogo width={10} height={10} class="text-flexoki-tx" />
+            <span
+                class="text-xs text-flexoki-tx-2 group-hover:text-flexoki-tx transition-colors"
+                >Vercel OSS Fall 2025</span
+            >
+        </a>
+    </div>
 </section>

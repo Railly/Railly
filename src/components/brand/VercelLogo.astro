@@ -1,0 +1,21 @@
+---
+interface Props {
+    width?: number;
+    height?: number;
+    class?: string;
+}
+
+const { width = 16, height = 16, class: className } = Astro.props;
+---
+
+<svg
+    width={width}
+    height={height}
+    viewBox="0 0 256 222"
+    xmlns="http://www.w3.org/2000/svg"
+    preserveAspectRatio="xMidYMid"
+    class={className}
+>
+    <title>Vercel</title>
+    <path fill="currentColor" d="m128 0 128 221.705H0z" />
+</svg>

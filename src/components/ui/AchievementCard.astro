@@ -17,13 +17,27 @@ interface Props {
     color: ColorName;
     embedId: string;
     embedSrc: string;
-    embedType: "youtube" | "linkedin";
+    embedType: "youtube" | "linkedin" | "linkedin-link" | "image";
     project?: string;
     hosts?: string[];
+    linkedinUrl?: string;
+    imageUrl?: string;
+    embedDescription?: string;
 }
 
-const { title, year, color, embedId, embedSrc, embedType, project, hosts } =
-    Astro.props;
+const {
+    title,
+    year,
+    color,
+    embedId,
+    embedSrc,
+    embedType,
+    project,
+    hosts,
+    linkedinUrl,
+    imageUrl,
+    embedDescription,
+} = Astro.props;
 
 // Host mapping for logos and SVGs
 const hostMap = {
@@ -66,7 +80,7 @@ const hostMap = {
                                                         <svg
                                                             viewBox="0 0 76 65"
                                                             fill="none"
-                                                            class="h-4 w-4"
+                                                            class="size-3"
                                                         >
                                                             <path
                                                                 d={host.svgPath}
@@ -121,6 +135,9 @@ const hostMap = {
             embedId={embedId}
             embedSrc={embedSrc}
             embedType={embedType}
+            linkedinUrl={linkedinUrl}
+            imageUrl={imageUrl}
+            embedDescription={embedDescription}
         />
 
         <button
