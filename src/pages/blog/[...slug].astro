@@ -46,7 +46,6 @@ const nextPost = currentIndex > 0 ? sortedPosts[currentIndex - 1] : null;
 const publishedDate = post.data.pubDate.toLocaleDateString("en-US", {
     year: "numeric",
     month: "long",
-    day: "numeric",
 });
 
 const updatedDate = post.data.updatedDate
@@ -188,7 +187,6 @@ const updatedDate = post.data.updatedDate
                                             {
                                                 year: "numeric",
                                                 month: "long",
-                                                day: "numeric",
                                             },
                                         )}
                                     </time>
@@ -231,7 +229,6 @@ const updatedDate = post.data.updatedDate
                                             {
                                                 year: "numeric",
                                                 month: "long",
-                                                day: "numeric",
                                             },
                                         )}
                                     </time>
