@@ -23,7 +23,7 @@ const {
     color = "blue",
     className,
     transitionName,
-    padding = "p-4",
+    padding = "p-3",
 } = Astro.props;
 
 const colorMap = {
@@ -89,7 +89,7 @@ const styles = colorMap[color];
 >
     <div
         class:list={[
-            "absolute inset-0 bg-gradient-to-tr opacity-0 group-hover:opacity-100 transition-opacity",
+            "absolute inset-0 bg-gradient-to-tr opacity-80 group-hover:opacity-100 transition-opacity",
             styles.gradient,
             "to-transparent",
             "[mask-image:linear-gradient(45deg,#000_25%,transparent_25%,transparent_50%,#000_50%,#000_75%,transparent_75%,transparent)]",
@@ -109,6 +109,7 @@ const styles = colorMap[color];
             "relative flex-1 h-full hover:bg-flexoki-tx-3/[0.02]",
             padding,
         ]}
+        data-card-content="true"
     >
         <slot />
     </div>

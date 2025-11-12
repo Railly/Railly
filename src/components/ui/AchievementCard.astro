@@ -52,112 +52,193 @@ const hostMap = {
 };
 ---
 
-<Card color={color} className="achievement-card relative" data-target={embedId}>
-    <div
-        class={`absolute inset-0 bg-gradient-to-tr from-flexoki-${color}/[0.03] to-transparent opacity-80 [mask-image:linear-gradient(45deg,#000_25%,transparent_25%,transparent_50%,#000_50%,#000_75%,transparent_75%,transparent)] [mask-size:8px_8px] pointer-events-none`}
-    >
-    </div>
-    <div class="flex flex-col gap-2 pb-6">
-        <div class="flex items-start justify-between">
-            <div>
-                <h3 class="text-flexoki-tx font-medium">
-                    {title}
-                </h3>
-                <div class="flex items-center gap-2 mt-1">
-                    {
-                        hosts && hosts.length > 0 && (
-                            <>
-                                <span class="text-xs text-flexoki-tx-2">
-                                    hosted by
-                                </span>
-                                <div class="flex items-center gap-1.5">
-                                    {hosts.map((hostKey, index) => {
-                                        const host = hostMap[hostKey];
-                                        return (
-                                            <>
-                                                <div class="flex items-center gap-1">
-                                                    {host.svgPath && (
-                                                        <svg
-                                                            viewBox="0 0 76 65"
-                                                            fill="none"
-                                                            class="size-3"
-                                                        >
-                                                            <path
-                                                                d={host.svgPath}
-                                                                fill="currentColor"
-                                                                class="text-flexoki-tx"
-                                                            />
-                                                        </svg>
-                                                    )}
-                                                    {host.logo && (
-                                                        <img
-                                                            src={host.logo}
-                                                            alt={host.name}
-                                                            class="h-4 w-4"
-                                                        />
-                                                    )}
-                                                    <span class="text-sm">
-                                                        {host.name}
-                                                    </span>
-                                                </div>
-                                                {index < hosts.length - 1 && (
-                                                    <span>×</span>
-                                                )}
-                                            </>
-                                        );
-                                    })}
-                                </div>
-                            </>
-                        )
-                    }
-                    {
-                        project && (
-                            <>
-                                <span class="text-xs text-flexoki-tx-2 ml-2">
-                                    project:
-                                </span>
-                                <span class="text-sm text-flexoki-tx">
-                                    {project}
-                                </span>
-                            </>
-                        )
-                    }
+<achievement-toggle data-embed-id={embedId}>
+    <Card color={color} className="relative cursor-pointer" padding="p-4">
+        <div class="flex flex-col gap-2">
+            <div class="flex items-start justify-between gap-3">
+                <div class="flex items-start gap-2 min-w-0 flex-1">
+                    <span class="text-base flex-shrink-0 mt-0.5"
+                        >{title.split(" ")[0]}</span
+                    >
+                    <div class="min-w-0">
+                        <h3
+                            class="text-sm font-medium text-flexoki-tx leading-tight"
+                        >
+                            {title.split(" ").slice(1).join(" ")}
+                        </h3>
+                        <div
+                            class="flex flex-wrap items-center gap-x-2 gap-y-0.5 mt-2 text-[11px] font-mono text-flexoki-tx-3"
+                        >
+                            {
+                                hosts && hosts.length > 0 && (
+                                    <>
+                                        <span>hosted by</span>
+                                        <div class="flex items-center gap-1">
+                                            {hosts.map((hostKey, index) => {
+                                                const host = hostMap[hostKey];
+                                                return (
+                                                    <>
+                                                        <div class="flex items-center gap-0.5">
+                                                            {host.svgPath && (
+                                                                <svg
+                                                                    viewBox="0 0 76 65"
+                                                                    fill="none"
+                                                                    class="size-2.5"
+                                                                >
+                                                                    <path
+                                                                        d={
+                                                                            host.svgPath
+                                                                        }
+                                                                        fill="currentColor"
+                                                                        class="text-flexoki-tx-2"
+                                                                    />
+                                                                </svg>
+                                                            )}
+                                                            {host.logo && (
+                                                                <img
+                                                                    src={
+                                                                        host.logo
+                                                                    }
+                                                                    alt={
+                                                                        host.name
+                                                                    }
+                                                                    class="h-3 w-3"
+                                                                />
+                                                            )}
+                                                            <span class="text-flexoki-tx-2">
+                                                                {host.name}
+                                                            </span>
+                                                        </div>
+                                                        {index <
+                                                            hosts.length -
+                                                                1 && (
+                                                            <span>×</span>
+                                                        )}
+                                                    </>
+                                                );
+                                            })}
+                                        </div>
+                                    </>
+                                )
+                            }
+                            {
+                                project && (
+                                    <>
+                                        {hosts && hosts.length > 0 && (
+                                            <span>·</span>
+                                        )}
+                                        <span>project:</span>
+                                        <span class="text-flexoki-tx-2">
+                                            {project}
+                                        </span>
+                                    </>
+                                )
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span
+                        class="text-[10px] text-flexoki-tx-3 font-mono font-medium px-1.5 py-0.5 rounded border border-flexoki-tx-3/30 flex-shrink-0"
+                    >
+                        {year}
+                    </span>
+                    <div
+                        class={`expand-btn size-6 rounded-md bg-flexoki-tx-3/10 hover:bg-flexoki-${color}/20 backdrop-blur-sm flex items-center justify-center text-flexoki-tx-2 hover:text-flexoki-${color} transition-all pointer-events-none`}
+                        aria-label="Toggle content"
+                        data-target={embedId}
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke-width="2"
+                            stroke="currentColor"
+                            class="w-3 h-3 expand-icon transition-transform duration-200"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M19.5 8.25l-7.5 7.5-7.5-7.5"></path>
+                        </svg>
+                    </div>
                 </div>
             </div>
-            <span
-                class="text-xs text-flexoki-tx-3 font-medium px-2 py-0.5 rounded-full border border-flexoki-tx-3/30"
-            >
-                {year}
-            </span>
+
+            <EmbedContainer
+                embedId={embedId}
+                embedSrc={embedSrc}
+                embedType={embedType}
+                linkedinUrl={linkedinUrl}
+                imageUrl={imageUrl}
+                embedDescription={embedDescription}
+            />
         </div>
+    </Card>
+</achievement-toggle>
 
-        <EmbedContainer
-            embedId={embedId}
-            embedSrc={embedSrc}
-            embedType={embedType}
-            linkedinUrl={linkedinUrl}
-            imageUrl={imageUrl}
-            embedDescription={embedDescription}
-        />
+<script>
+    class AchievementToggle extends HTMLElement {
+        connectedCallback() {
+            const embedId = this.dataset.embedId;
+            if (!embedId) return;
 
-        <button
-            class={`expand-btn cursor-pointer group-hover:bg-flexoki-${color}/5 hover:bg-current/10 absolute bottom-0 left-0 right-0 w-full py-2 text-xs flex items-center justify-center text-flexoki-tx-2 hover:text-flexoki-${color} transition-colors`}
-            aria-label="Toggle video"
-            data-target={embedId}
-        >
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke-width="1.5"
-                stroke="currentColor"
-                class="w-3 h-3"
-            >
-                <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M19.5 8.25l-7.5 7.5-7.5-7.5"></path>
-            </svg>
-        </button>
-    </div>
-</Card>
+            const container = document.getElementById(embedId);
+            const icon = this.querySelector(".expand-icon");
+
+            // Click handler for the entire custom element
+            this.addEventListener("click", (event) => {
+                const target = event.target as HTMLElement;
+
+                // Ignore clicks on links or inside embed containers
+                if (target.closest("a") || target.closest(".embed-container")) {
+                    return;
+                }
+
+                if (container) {
+                    const isHidden = container.classList.contains("hidden");
+
+                    if (isHidden) {
+                        // Dispatch custom event to create iframe if needed
+                        window.dispatchEvent(
+                            new CustomEvent("achievement-expanded", {
+                                detail: { embedId },
+                            }),
+                        );
+
+                        // Show embed
+                        container.classList.remove("hidden");
+                        setTimeout(() => {
+                            container.classList.remove("max-h-0", "opacity-0");
+                            container.classList.add(
+                                "max-h-[600px]",
+                                "opacity-100",
+                            );
+                        }, 10);
+
+                        if (icon) {
+                            icon.classList.add("rotate-180");
+                        }
+                    } else {
+                        // Hide embed
+                        container.classList.add("max-h-0", "opacity-0");
+                        container.classList.remove(
+                            "max-h-[600px]",
+                            "opacity-100",
+                        );
+
+                        setTimeout(() => {
+                            container.classList.add("hidden");
+                        }, 300);
+
+                        if (icon) {
+                            icon.classList.remove("rotate-180");
+                        }
+                    }
+                }
+            });
+        }
+    }
+
+    customElements.define("achievement-toggle", AchievementToggle);
+</script>

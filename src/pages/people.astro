@@ -40,7 +40,7 @@ const people = [
     <main
         class="flex flex-col gap-12 items-center justify-center min-h-screen max-w-2xl mx-auto text-flexoki-tx px-6 py-12"
     >
-        <div class="flex flex-col gap-8 w-full">
+        <div class="flex flex-col gap-4 w-full">
             <div class="flex items-center justify-between">
                 <SectionHeader title="People I Admire" />
                 <a
@@ -59,7 +59,9 @@ const people = [
                             rel="noopener noreferrer"
                             class={`group flex flex-col gap-1 p-4 rounded-lg border border-flexoki-ui hover:border-flexoki-${person.color}/30 transition-all`}
                         >
-                            <h3 class={`font-medium text-flexoki-tx group-hover:text-flexoki-${person.color} transition-colors`}>
+                            <h3
+                                class={`font-medium text-flexoki-tx group-hover:text-flexoki-${person.color} transition-colors`}
+                            >
                                 {person.name}
                             </h3>
                             <p class="text-sm text-flexoki-tx-2">

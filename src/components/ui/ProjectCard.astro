@@ -35,10 +35,6 @@ const {
 ---
 
 <Card href={href} color={color}>
-  <div
-    class={`absolute inset-0 bg-gradient-to-tr from-flexoki-${color}/[0.03] to-transparent opacity-80 [mask-image:linear-gradient(45deg,#000_25%,transparent_25%,transparent_50%,#000_50%,#000_75%,transparent_75%,transparent)] [mask-size:8px_8px] pointer-events-none`}
-  >
-  </div>
   <div class="flex items-start gap-4">
     <CardIcon color={color} padding={iconPadding}>
       {isImage ? (
@@ -58,9 +54,9 @@ const {
         >
           {title}
         </h3>
-        <span
-          class="text-flexoki-tx-3 group-hover:translate-x-1 transition-transform"
-        >→</span>
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" class="text-flexoki-tx-3 group-hover:translate-x-1 transition-transform">
+          <path d='M4.5 12h15m0 0-5.625-6m5.625 6-5.625 6'/>
+        </svg>
       </div>
       <p class="text-sm text-flexoki-tx-2 !m-0">
         {description}

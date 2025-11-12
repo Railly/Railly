@@ -43,14 +43,14 @@ function isActive(href: string): boolean {
 </nav>
 
 <!-- Mobile Navigation -->
-<nav class="block lg:hidden mb-8 pb-6 border-b border-flexoki-ui/20">
+<nav class="block lg:hidden mb-8 pb-2 border-b border-flexoki-ui/20">
     <ul class="flex gap-2 justify-end text-[13px] lowercase">
         {
             navItems.map((item) => (
                 <li>
                     <a
                         class:list={[
-                            "block px-2 py-1 transition-colors duration-200",
+                            "font-serif block px-2 py-1 transition-colors duration-200",
                             isActive(item.href)
                                 ? "text-flexoki-tx font-semibold"
                                 : "text-flexoki-tx-2 hover:text-flexoki-tx",
