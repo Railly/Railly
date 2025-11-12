@@ -5,7 +5,7 @@ import SectionHeader from "../components/layout/SectionHeader.astro";
 const flights = [
     {
         location: "Lima, Peru",
-        year: "Home",
+        year: "home",
         color: "yellow",
     },
     {
@@ -38,8 +38,12 @@ const flights = [
             <div class="flex flex-col gap-3">
                 {
                     flights.map((flight) => (
-                        <div class={`group flex items-center justify-between p-4 rounded-lg border border-flexoki-ui hover:border-flexoki-${flight.color}/30 transition-all`}>
-                            <h3 class={`font-medium text-flexoki-tx group-hover:text-flexoki-${flight.color} transition-colors`}>
+                        <div
+                            class={`group flex items-center justify-between p-4 rounded-lg border border-flexoki-ui hover:border-flexoki-${flight.color}/30 transition-all`}
+                        >
+                            <h3
+                                class={`font-medium text-flexoki-tx group-hover:text-flexoki-${flight.color} transition-colors`}
+                            >
                                 {flight.location}
                             </h3>
                             <span class="text-sm text-flexoki-tx-2">

@@ -1,0 +1,66 @@
+---
+interface NavItem {
+    href: string;
+    label: string;
+}
+
+const navItems: NavItem[] = [
+    { href: "/", label: "home" },
+    { href: "/about", label: "about" },
+    { href: "/writing", label: "writing" },
+];
+
+const { pathname } = Astro.url;
+
+function isActive(href: string): boolean {
+    if (href === "/") {
+        return pathname === "/";
+    }
+    return pathname.startsWith(href);
+}
+---
+
+<nav class="sticky top-24 w-64 hidden lg:block">
+    <ul class="space-y-1.5 text-[13px] lowercase">
+        {
+            navItems.map((item) => (
+                <li>
+                    <a
+                        class:list={[
+                            "block py-0.5 transition-colors duration-200",
+                            isActive(item.href)
+                                ? "text-flexoki-tx font-semibold"
+                                : "text-flexoki-tx-2 hover:text-flexoki-tx",
+                        ]}
+                        href={item.href}
+                    >
+                        {item.label}
+                    </a>
+                </li>
+            ))
+        }
+    </ul>
+</nav>
+
+<!-- Mobile Navigation -->
+<nav class="block lg:hidden mb-6">
+    <ul class="flex gap-2 justify-center text-[13px] lowercase">
+        {
+            navItems.map((item) => (
+                <li>
+                    <a
+                        class:list={[
+                            "block px-3 py-1.5 transition-colors duration-200",
+                            isActive(item.href)
+                                ? "text-flexoki-tx font-semibold"
+                                : "text-flexoki-tx-2 hover:text-flexoki-tx",
+                        ]}
+                        href={item.href}
+                    >
+                        {item.label}
+                    </a>
+                </li>
+            ))
+        }
+    </ul>
+</nav>

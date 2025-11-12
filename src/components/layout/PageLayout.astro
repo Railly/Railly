@@ -1,0 +1,26 @@
+---
+import Navigation from "./Navigation.astro";
+
+interface Props {
+    class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<main class="max-w-[83rem] mx-auto px-4 sm:px-6 py-12 sm:py-24 text-flexoki-tx">
+    <div class="lg:grid lg:grid-cols-[1fr_minmax(0,_2.5fr)_1fr] lg:gap-8">
+        <!-- Left Sidebar - Navigation -->
+        <div class="lg:col-start-1">
+            <Navigation />
+        </div>
+
+        <!-- Main Content -->
+        <div class:list={["lg:col-start-2 w-full", className]}>
+            <slot />
+        </div>
+
+        <!-- Right Sidebar (empty for balance) -->
+        <div class="lg:col-start-3"></div>
+    </div>
+</main>
