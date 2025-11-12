@@ -254,30 +254,23 @@ type IconKey = keyof typeof iconMap;
                 <section class="w-full">
                     <div class="flex items-center justify-between mb-4">
                         <SectionHeader title="Writing" className="mb-0" />
-                        {
-                            archivedPosts.length > 0 && (
-                                <archive-toggle>
-                                    <button class="group text-xs px-2.5 py-1 rounded-md border border-flexoki-ui/50 text-flexoki-tx-2 hover:border-flexoki-ui hover:text-flexoki-tx transition-all duration-200">
-                                        <span class="flex items-center gap-1.5">
-                                            <span>Archive</span>
-                                            <svg
-                                                width="12"
-                                                height="12"
-                                                viewBox="0 0 24 24"
-                                                fill="none"
-                                                stroke="currentColor"
-                                                stroke-width="2"
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                                class="archive-icon transition-transform duration-200"
-                                            >
-                                                <polyline points="6 9 12 15 18 9" />
-                                            </svg>
-                                        </span>
-                                    </button>
-                                </archive-toggle>
-                            )
-                        }
+                        <a href="/writing" class="group text-xs text-flexoki-tx-3 hover:text-flexoki-tx-2 transition-colors duration-200">
+                            <span class="flex items-center gap-1">
+                                <span>view all</span>
+                                <svg
+                                    width="10"
+                                    height="10"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                >
+                                    <polyline points="9 18 15 12 9 6" />
+                                </svg>
+                            </span>
+                        </a>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         {
