@@ -31,8 +31,8 @@ export const siteConfig: SiteConfig = {
   ],
   locale: "en_US",
   themeColor: {
-    light: "white",
-    dark: "black",
+    light: "#fffcf0", // flexoki paper
+    dark: "#100F0F", // flexoki black
   },
   icons: {
     icon: "/favicon/favicon.ico",
