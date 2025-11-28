@@ -3,6 +3,8 @@ import { getCollection, type CollectionEntry } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
 import TableOfContents from "../../components/content/TableOfContents.astro";
 import ViewCounter from "../../components/blog/ViewCounter";
+import Quote from "../../components/content/Quote.astro";
+import Link from "../../components/content/Link.astro";
 import Linkedin from "../../assets/svgs/linkedin.svg";
 import Github from "../../assets/svgs/github.svg";
 import X from "../../assets/svgs/x.svg";
@@ -133,7 +135,7 @@ const updatedDate = post.data.updatedDate
                         "prose prose-flexoki max-w-none",
                         "prose-headings:text-flexoki-tx prose-headings:text-base prose-headings:font-semibold",
                         "prose-p:text-flexoki-tx/85 prose-p:text-base prose-p:leading-7",
-                        "prose-a:text-flexoki-tx prose-a:no-underline hover:prose-a:underline",
+                        "prose-a:text-primary prose-a:underline prose-a:decoration-flexoki-tx-3 dark:prose-a:decoration-primary/50 prose-a:underline-offset-2 prose-a:decoration-1 prose-a:hover:decoration-primary prose-a:transition-colors",
                         "prose-strong:text-flexoki-tx prose-strong:text-base prose-strong:font-semibold",
                         "prose-li:text-flexoki-tx prose-li:leading-7",
                         "prose-li:marker:text-flexoki-tx-2",
@@ -143,11 +145,11 @@ const updatedDate = post.data.updatedDate
                         "prose-td:p-2 prose-td:text-flexoki-tx-2",
                         "prose-th:p-2 prose-th:text-flexoki-tx",
                         "prose-img:rounded-xl prose-img:border-flexoki-ui prose-img:border prose-img:p-1.5",
-                        "prose-blockquote:border-l-blue-500 prose-blockquote:text-flexoki-tx-2 prose-blockquote:text-lg prose-blockquote:font-medium prose-blockquote:italic prose-blockquote:font-serif",
+                        "prose-blockquote:border-none prose-blockquote:not-italic prose-blockquote:p-0 prose-blockquote:m-0",
                         "dark:prose-invert",
                     ]}
                 >
-                    <Content />
+                    <Content components={{ blockquote: Quote, a: Link }} />
                 </div>
 
                 <!-- Updated Date Notice -->
