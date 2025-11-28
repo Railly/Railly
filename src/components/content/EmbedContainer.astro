@@ -6,9 +6,10 @@ interface Props {
   linkedinUrl?: string;
   imageUrl?: string;
   embedDescription?: string;
+  embedTitle?: string;
 }
 
-const { embedId, embedSrc, embedType, linkedinUrl, imageUrl, embedDescription } = Astro.props;
+const { embedId, embedSrc, embedType, linkedinUrl, imageUrl, embedDescription, embedTitle } = Astro.props;
 ---
 
 {embedType === "image" ? (
@@ -25,7 +26,7 @@ const { embedId, embedSrc, embedType, linkedinUrl, imageUrl, embedDescription } 
       />
       {/* Center external link button */}
       <a
-        href="https://www.linkedin.com/posts/railly-hugo_de-vuelta-en-lima-despu%C3%A9s-de-una-experiencia-activity-7369217715481362432-XgLj"
+        href={linkedinUrl}
         target="_blank"
         rel="noopener noreferrer"
         class="absolute inset-0 flex items-center justify-center cursor-pointer"
@@ -37,9 +38,7 @@ const { embedId, embedSrc, embedType, linkedinUrl, imageUrl, embedDescription } 
       </a>
       {/* Top gradient overlay with title */}
       <div class="absolute inset-x-0 top-0 bg-gradient-to-b from-black/80 via-black/40 to-transparent pt-3 pb-20 px-3 select-none pointer-events-none">
-        <p class="text-white font-medium leading-relaxed !my-0 line-clamp-1">
-          🇨🇴✨ De vuelta en Lima después de una experiencia brutal en la <span class="font-bold">IA Hackathon del Colombia Tech Fest</span>
-        </p>
+        <p class="text-white font-medium leading-relaxed !my-0 line-clamp-2" set:html={embedTitle} />
       </div>
       {/* Bottom gradient overlay with LinkedIn link */}
       <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent pt-16 pb-3 px-3 pointer-events-none">
@@ -49,10 +48,10 @@ const { embedId, embedSrc, embedType, linkedinUrl, imageUrl, embedDescription } 
             <p class="text-white/80 text-sm !my-0">design engineer | v0 ambassador | 🇵🇪</p>
           </div>
           <a
-            href="https://www.linkedin.com/posts/railly-hugo_de-vuelta-en-lima-despu%C3%A9s-de-una-experiencia-activity-7369217715481362432-XgLj"
+            href={linkedinUrl}
             target="_blank"
             rel="noopener noreferrer"
-            class="shrink-0 hover:scale-110 transition-transform"
+            class="shrink-0 hover:scale-110 transition-transform pointer-events-auto"
             aria-label="View on LinkedIn"
           >
             <svg class="w-6 h-6 fill-white" viewBox="0 0 24 24">

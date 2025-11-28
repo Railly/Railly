@@ -23,6 +23,8 @@ interface Props {
     linkedinUrl?: string;
     imageUrl?: string;
     embedDescription?: string;
+    embedTitle?: string;
+    scope?: string;
 }
 
 const {
@@ -37,6 +39,8 @@ const {
     linkedinUrl,
     imageUrl,
     embedDescription,
+    embedTitle,
+    scope,
 } = Astro.props;
 
 // Host mapping for logos and SVGs
@@ -139,8 +143,9 @@ const hostMap = {
                 </div>
                 <div class="flex items-center gap-2">
                     <span
-                        class="text-[10px] text-flexoki-tx-3 font-mono font-medium px-1.5 py-0.5 rounded border border-flexoki-tx-3/30 flex-shrink-0"
+                        class="text-[10px] text-flexoki-tx-3 font-mono font-medium px-1.5 py-0.5 rounded border border-flexoki-tx-3/30 flex-shrink-0 flex items-center gap-1"
                     >
+                        {scope && <span class="text-sm">{scope}</span>}
                         {year}
                     </span>
                     <div
@@ -172,6 +177,7 @@ const hostMap = {
                 linkedinUrl={linkedinUrl}
                 imageUrl={imageUrl}
                 embedDescription={embedDescription}
+                embedTitle={embedTitle}
             />
         </div>
     </Card>

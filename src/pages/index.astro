@@ -112,6 +112,7 @@ const achievementsData = [
         embedType: "youtube" as const,
         project: "text0",
         hosts: ["vercel"],
+        scope: "🌎",
     },
     {
         title: "🥇 1st Place — Vercel AI Gateway Hackathon",
@@ -122,6 +123,7 @@ const achievementsData = [
         embedType: "youtube" as const,
         project: "Chess Battle",
         hosts: ["vercel"],
+        scope: "🌎",
     },
     {
         title: "👨‍⚖️ Judge & Mentor — IA Hackathon Colombia Tech Fest",
@@ -132,6 +134,26 @@ const achievementsData = [
         embedType: "image" as const,
         project: "Colombia Tech Fest",
         imageUrl: "/images/colombia-hackathon.webp",
+        linkedinUrl:
+            "https://www.linkedin.com/posts/railly-hugo_de-vuelta-en-lima-despu%C3%A9s-de-una-experiencia-activity-7369217715481362432-XgLj",
+        embedTitle:
+            "🇨🇴✨ De vuelta en Lima después de una experiencia brutal en la <span class='font-bold'>IA Hackathon del Colombia Tech Fest</span>",
+        scope: "🇨🇴",
+    },
+    {
+        title: "🎖️ Finalist — Platanus Hack 25'",
+        year: "2025",
+        color: "teal" as const,
+        embedId: "scrapi-platanus-embed",
+        embedSrc: "",
+        embedType: "image" as const,
+        project: "Scrapi",
+        imageUrl: "/images/platanus-hack.webp",
+        linkedinUrl:
+            "https://www.linkedin.com/posts/railly-hugo_gran-experiencia-en-la-platanus-hack-25-activity-7400005671913684992-A1WW",
+        embedTitle:
+            "🇨🇱⚡ Gran experiencia en la <span class='font-bold'>Platanus Hack 25' ft. Buk</span> en Chile. Llegamos a la final con Scrapi.",
+        scope: "🇨🇱",
     },
     {
         title: "🎖️ Finalist — IA Hackathon LATAM",
@@ -142,6 +164,7 @@ const achievementsData = [
             "https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7328521111485243393?compact=1",
         embedType: "linkedin" as const,
         project: "GitHunter",
+        scope: "🌎",
     },
     {
         title: "🥉 3rd Place — Vercel × Midudev Hackathon",
@@ -153,6 +176,7 @@ const achievementsData = [
         embedType: "linkedin" as const,
         project: "Tinte",
         hosts: ["vercel", "midudev"],
+        scope: "🌎",
     },
 ];
 
@@ -260,8 +284,19 @@ type IconKey = keyof typeof iconMap;
                 >
                     <span class="flex items-center gap-1">
                         <span>view all</span>
-                        <svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
-                            <path d='M4.5 12h15m0 0-5.625-6m5.625 6-5.625 6'/>
+                        <svg
+                            width="10"
+                            height="10"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.5"
+                            viewBox="0 0 24 24"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <path d="M4.5 12h15m0 0-5.625-6m5.625 6-5.625 6"
+                            ></path>
                         </svg>
                     </span>
                 </a>
@@ -364,6 +399,8 @@ type IconKey = keyof typeof iconMap;
                             linkedinUrl={achievement.linkedinUrl}
                             imageUrl={achievement.imageUrl}
                             embedDescription={achievement.embedDescription}
+                            embedTitle={achievement.embedTitle}
+                            scope={achievement.scope}
                         />
                     ))
                 }
