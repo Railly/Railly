@@ -1,58 +1,563 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import PageLayout from "../components/layout/PageLayout.astro";
 import SectionHeader from "../components/layout/SectionHeader.astro";
+import Footer from "../components/layout/Footer.astro";
+import FlightMap from "../components/flights/FlightMap";
+import MiniMap from "../components/flights/MiniMap";
+import PeruMap from "../components/flights/PeruMap";
 
-const flights = [
+interface Flight {
+    from: string;
+    to: string;
+    date: string;
+    year: string;
+    purpose: string;
+    highlights: string[];
+    color: string;
+    continent: string;
+}
+
+const flights: Flight[] = [
     {
-        location: "Lima, Peru",
-        year: "home",
-        color: "yellow",
+        from: "Lima, Peru",
+        to: "Buenos Aires, Argentina",
+        date: "2023",
+        year: "2023",
+        purpose: "Exploring the Paris of South America",
+        highlights: [
+            "Walked through colorful La Boca",
+            "Experienced tango culture",
+            "Enjoyed world-class steak"
+        ],
+        color: "blue",
+        continent: "South America",
     },
     {
-        location: "Cusco, Peru",
+        from: "Lima, Peru",
+        to: "Bariloche, Argentina",
+        date: "2023",
+        year: "2023",
+        purpose: "Adventure in Patagonia",
+        highlights: [
+            "Hiked in the Andes",
+            "Explored Nahuel Huapi Lake",
+            "Discovered chocolate shops"
+        ],
+        color: "purple",
+        continent: "South America",
+    },
+    {
+        from: "Lima, Peru",
+        to: "Iguazú, Argentina",
+        date: "2023",
+        year: "2023",
+        purpose: "Natural wonder exploration",
+        highlights: [
+            "Witnessed Iguazú Falls",
+            "Walked through rainforest trails",
+            "Crossed to Brazil side"
+        ],
+        color: "green",
+        continent: "South America",
+    },
+    {
+        from: "Lima, Peru",
+        to: "Santiago, Chile",
+        date: "2024",
         year: "2024",
-        color: "orange",
+        purpose: "Discovering Chilean culture",
+        highlights: [
+            "Explored Valparaíso streets",
+            "Tasted Chilean wine",
+            "Visited Andes viewpoints"
+        ],
+        color: "magenta",
+        continent: "South America",
     },
     {
-        location: "Bogotá, Colombia",
+        from: "Lima, Peru",
+        to: "Cusco, Peru",
+        date: "March 2024",
+        year: "2024",
+        purpose: "Exploring ancient Incan heritage",
+        highlights: [
+            "Visited Machu Picchu",
+            "Explored Sacred Valley",
+            "Experienced local culture"
+        ],
+        color: "orange",
+        continent: "South America",
+    },
+    {
+        from: "Lima, Peru",
+        to: "Bogotá, Colombia",
+        date: "January 2025",
         year: "2025",
+        purpose: "Judge & Mentor - Colombia Tech Fest",
+        highlights: [
+            "Judged AI Hackathon",
+            "Met incredible developers",
+            "Shared knowledge on AI"
+        ],
         color: "cyan",
+        continent: "South America",
+    },
+];
+
+const visitedCountries = new Set(flights.map(f => f.to.split(", ")[1]));
+const totalSouthAmericanCountries = 12; // Total countries in South America
+
+const stats = {
+    totalFlights: flights.length,
+    countries: visitedCountries.size,
+    continents: new Set(flights.map(f => f.continent)).size,
+    homeBase: "Lima, Peru",
+};
+
+// Peru domestic visits
+const peruVisits = [
+    {
+        city: "Lima",
+        department: "Lima",
+        highlights: [
+            "Home sweet home",
+            "Coastal views and ceviche",
+            "Tech hub of Peru"
+        ]
+    },
+    {
+        city: "Cusco",
+        department: "Cusco",
+        highlights: [
+            "Gateway to Machu Picchu",
+            "Incan architecture",
+            "Sacred Valley exploration"
+        ]
+    },
+    {
+        city: "Huaraz",
+        department: "Ancash",
+        highlights: [
+            "Cordillera Blanca mountains",
+            "Laguna 69 trek",
+            "Adventure capital"
+        ]
+    },
+    {
+        city: "Huancayo",
+        department: "Junín",
+        highlights: [
+            "Central Highlands culture",
+            "Traditional markets",
+            "Valle del Mantaro"
+        ]
+    },
+    {
+        city: "Paracas",
+        department: "Ica",
+        highlights: [
+            "Ballestas Islands",
+            "Desert oasis",
+            "Wildlife sanctuary"
+        ]
     },
 ];
 ---
 
-<Layout>
-    <main
-        class="flex flex-col gap-12 items-center justify-center min-h-screen max-w-2xl mx-auto text-flexoki-tx px-6 py-12"
-    >
-        <div class="flex flex-col gap-4 w-full">
-            <div class="flex items-center justify-between">
-                <SectionHeader title="Flights" />
-                <a
-                    href="/"
-                    class="text-flexoki-tx-2 hover:text-flexoki-blue transition-colors text-sm"
-                >
-                    ← Back
-                </a>
+<Layout title="Flights - Railly Hugo" description="My travel journey around the world">
+    <PageLayout class="flex flex-col" style="gap: 3rem;">
+        <!-- Header -->
+        <div class="flex items-center justify-between">
+            <SectionHeader title="Flights" className="mb-0" />
+            <a
+                href="/"
+                class="text-xs text-flexoki-tx-3 hover:text-flexoki-tx-2 transition-colors duration-200 flex items-center"
+                style="gap: 0.25rem;"
+            >
+                <svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+                    <path d='M19.5 12h-15m0 0 5.625 6m-5.625-6 5.625-6'/>
+                </svg>
+                <span>home</span>
+            </a>
+        </div>
+
+        <!-- Mini Map Widget -->
+        <MiniMap
+            totalCountries={totalSouthAmericanCountries}
+            visitedCountries={stats.countries}
+            totalFlights={stats.totalFlights}
+            client:load
+        />
+
+        <!-- Stats Dashboard -->
+        <div class="grid grid-cols-2 md:grid-cols-4" style="gap: 1rem;">
+            <div class="stat-card group">
+                <div class="stat-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                        <polyline points="7.5 4.21 12 6.81 16.5 4.21"></polyline>
+                        <polyline points="7.5 19.79 7.5 14.6 3 12"></polyline>
+                        <polyline points="21 12 16.5 14.6 16.5 19.79"></polyline>
+                        <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                        <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                    </svg>
+                </div>
+                <span class="stat-value">{stats.totalFlights}</span>
+                <span class="stat-label">flights</span>
             </div>
-            <div class="flex flex-col gap-3">
-                {
-                    flights.map((flight) => (
-                        <div
-                            class={`group flex items-center justify-between p-4 rounded-lg border border-flexoki-ui hover:border-flexoki-${flight.color}/30 transition-all`}
-                        >
-                            <h3
-                                class={`font-medium text-flexoki-tx group-hover:text-flexoki-${flight.color} transition-colors`}
-                            >
-                                {flight.location}
-                            </h3>
-                            <span class="text-sm text-flexoki-tx-2">
-                                {flight.year}
-                            </span>
-                        </div>
-                    ))
-                }
+
+            <div class="stat-card group">
+                <div class="stat-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="2" y1="12" x2="22" y2="12"></line>
+                        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                    </svg>
+                </div>
+                <span class="stat-value">{stats.countries}</span>
+                <span class="stat-label">countries</span>
+            </div>
+
+            <div class="stat-card group">
+                <div class="stat-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="3 11 22 2 13 21 11 13 3 11"></polygon>
+                    </svg>
+                </div>
+                <span class="stat-value">{stats.continents}</span>
+                <span class="stat-label">continents</span>
+            </div>
+
+            <div class="stat-card group">
+                <div class="stat-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                        <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                    </svg>
+                </div>
+                <span class="stat-value text-xs whitespace-nowrap overflow-hidden">Lima</span>
+                <span class="stat-label">home base</span>
             </div>
         </div>
-    </main>
+
+        <!-- Interactive Map -->
+        <div class="flex flex-col" style="gap: 1rem;">
+            <SectionHeader title="Journey Map" className="mb-0" />
+            <FlightMap flights={flights} client:load />
+        </div>
+
+        <!-- Peru Exploration Section -->
+        <div class="flex flex-col" style="gap: 1rem;">
+            <div class="flex items-center" style="gap: 0.75rem;">
+                <SectionHeader title="Explorando Perú" className="mb-0" />
+                <span class="text-2xl">🇵🇪</span>
+            </div>
+            <p class="text-sm text-flexoki-tx-2 font-serif italic -mt-2">
+                Recorriendo mi país, descubriendo su diversidad
+            </p>
+            <PeruMap visits={peruVisits} client:load />
+        </div>
+
+        <!-- Flights List -->
+        <div class="flex flex-col" style="gap: 1.5rem;">
+            {flights.map((flight, index) => (
+                <div class="flight-card" style={`--delay: ${index * 0.1}s; --color: var(--color-flexoki-${flight.color})`}>
+                    <!-- Flight Path Visual -->
+                    <div class="flight-path">
+                        <div class="path-dot path-start"></div>
+                        <div class="path-line"></div>
+                        <div class="path-plane">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"></path>
+                            </svg>
+                        </div>
+                        <div class="path-dot path-end"></div>
+                    </div>
+
+                    <!-- Flight Info -->
+                    <div class="flight-info">
+                        <div class="flex items-start justify-between mb-3" style="gap: 1rem;">
+                            <div class="flex-1">
+                                <div class="flex items-center mb-1" style="gap: 0.5rem;">
+                                    <span class="text-xs font-mono text-flexoki-tx-3">{flight.date}</span>
+                                    <span class="continent-badge">{flight.continent}</span>
+                                </div>
+                                <div class="flight-route">
+                                    <span class="route-from">{flight.from}</span>
+                                    <svg class="route-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M5 12h14m0 0l-6-6m6 6l-6 6"/>
+                                    </svg>
+                                    <span class="route-to">{flight.to}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <p class="flight-purpose">{flight.purpose}</p>
+
+                        <!-- Highlights -->
+                        <div class="flight-highlights">
+                            {flight.highlights.map((highlight) => (
+                                <div class="highlight-item">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                    <span>{highlight}</span>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            ))}
+        </div>
+
+        <Footer />
+    </PageLayout>
 </Layout>
+
+<style>
+    /* Stats Cards */
+    .stat-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+        border-radius: 0.5rem;
+        border: 1px solid var(--color-flexoki-ui);
+        background-color: var(--color-flexoki-bg);
+        transition: all 300ms;
+        gap: 0.5rem;
+    }
+
+    .stat-card:hover {
+        border-color: var(--color-flexoki-ui-2);
+        background-color: var(--color-flexoki-bg-2);
+    }
+
+    .stat-icon {
+        color: var(--color-flexoki-tx-3);
+        transition: color 300ms;
+    }
+
+    .stat-card:hover .stat-icon {
+        color: var(--color-flexoki-tx-2);
+    }
+
+    .stat-value {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: var(--color-flexoki-tx);
+        font-family: var(--font-mono);
+    }
+
+    .stat-label {
+        font-size: 0.75rem;
+        color: var(--color-flexoki-tx-3);
+        text-transform: lowercase;
+        font-family: var(--font-serif);
+        font-style: italic;
+    }
+
+    /* Flight Cards */
+    .flight-card {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        padding: 1.5rem;
+        border-radius: 0.5rem;
+        border: 1px solid var(--color-flexoki-ui);
+        background-color: var(--color-flexoki-bg);
+        transition: all 500ms;
+        gap: 1.5rem;
+        animation: slideIn 0.6s ease-out both;
+        animation-delay: var(--delay);
+    }
+
+    @media (min-width: 768px) {
+        .flight-card {
+            flex-direction: row;
+        }
+    }
+
+    .flight-card:hover {
+        border-color: var(--color-flexoki-ui-2);
+        box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        transform: translateY(-2px);
+    }
+
+    @keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Flight Path Visualization */
+    .flight-path {
+        position: relative;
+        display: flex;
+        align-items: center;
+        min-width: 120px;
+        gap: 0.75rem;
+    }
+
+    @media (min-width: 768px) {
+        .flight-path {
+            flex-direction: column;
+            min-width: 80px;
+            height: 100%;
+            justify-content: center;
+        }
+    }
+
+    .path-dot {
+        width: 0.75rem;
+        height: 0.75rem;
+        border-radius: 9999px;
+        border: 2px solid var(--color-flexoki-tx-3);
+        background-color: var(--color-flexoki-bg);
+        flex-shrink: 0;
+        transition: all 300ms;
+    }
+
+    .flight-card:hover .path-start {
+        border-color: var(--color-flexoki-tx-2);
+        background-color: var(--color-flexoki-tx-2);
+    }
+
+    .flight-card:hover .path-end {
+        border-color: var(--color);
+        background-color: var(--color);
+    }
+
+    .path-line {
+        flex: 1;
+        height: 2px;
+        background: linear-gradient(to right, var(--color-flexoki-tx-3), var(--color-flexoki-ui-2));
+        position: relative;
+    }
+
+    @media (min-width: 768px) {
+        .path-line {
+            height: 100%;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--color-flexoki-tx-3), var(--color-flexoki-ui-2));
+        }
+    }
+
+    .path-plane {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        color: var(--color-flexoki-tx-3);
+        transition: all 500ms;
+        transform: rotate(90deg) translate(-50%, -50%);
+    }
+
+    @media (min-width: 768px) {
+        .path-plane {
+            transform: rotate(180deg) translate(50%, -50%);
+        }
+    }
+
+    .flight-card:hover .path-plane {
+        color: var(--color);
+        animation: fly 2s ease-in-out infinite;
+    }
+
+    @keyframes fly {
+        0%, 100% {
+            transform: rotate(90deg) translate(-50%, -50%) translateY(0);
+        }
+        50% {
+            transform: rotate(90deg) translate(-50%, -50%) translateY(-4px);
+        }
+    }
+
+    @media (min-width: 768px) {
+        @keyframes fly {
+            0%, 100% {
+                transform: rotate(180deg) translate(50%, -50%) translateX(0);
+            }
+            50% {
+                transform: rotate(180deg) translate(50%, -50%) translateX(-4px);
+            }
+        }
+    }
+
+    /* Flight Info */
+    .flight-info {
+        flex: 1;
+    }
+
+    .continent-badge {
+        font-size: 10px;
+        padding: 0.125rem 0.5rem;
+        border-radius: 9999px;
+        background-color: var(--color-flexoki-ui);
+        color: var(--color-flexoki-tx-2);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        font-family: var(--font-mono);
+    }
+
+    .flight-route {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .route-from,
+    .route-to {
+        font-weight: 500;
+        color: var(--color-flexoki-tx);
+    }
+
+    .route-to {
+        color: var(--color);
+    }
+
+    .route-arrow {
+        color: var(--color-flexoki-tx-3);
+        flex-shrink: 0;
+    }
+
+    .flight-purpose {
+        font-size: 0.875rem;
+        color: var(--color-flexoki-tx-2);
+        margin-bottom: 0.75rem;
+        font-family: var(--font-serif);
+        font-style: italic;
+    }
+
+    /* Highlights */
+    .flight-highlights {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .highlight-item {
+        display: flex;
+        align-items: center;
+        font-size: 0.75rem;
+        color: var(--color-flexoki-tx-3);
+        gap: 0.5rem;
+    }
+
+    .highlight-item svg {
+        flex-shrink: 0;
+        transition: color 300ms;
+        color: var(--color);
+    }
+
+    .flight-card:hover .highlight-item {
+        color: var(--color-flexoki-tx-2);
+    }
+</style>

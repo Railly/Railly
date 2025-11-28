@@ -9,9 +9,9 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/mdx": "4.3.7",
-    "@astrojs/react": "4.4.0",
-    "@astrojs/vercel": "8.2.10",
+    "@astrojs/mdx": "4.3.11",
+    "@astrojs/react": "4.4.2",
+    "@astrojs/vercel": "9.0.1",
     "@fontsource/ibm-plex-mono": "^5.1.1",
     "@fontsource/ibm-plex-sans": "^5.1.1",
     "@fontsource/ibm-plex-serif": "^5.1.1",
@@ -21,7 +21,7 @@
     "@types/react": "^19.1.4",
     "@types/react-dom": "^19.1.5",
     "@vercel/kv": "^3.0.0",
-    "astro": "5.14.5",
+    "astro": "5.15.9",
     "katex": "^0.16.21",
     "marked": "^12.0.0",
     "motion": "^12.12.1",
