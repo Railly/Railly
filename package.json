@@ -8,10 +8,16 @@
     "preview": "astro preview",
     "astro": "astro"
   },
+  "overrides": {
+    "estree-walker": "2.0.2"
+  },
+  "resolutions": {
+    "estree-walker": "2.0.2"
+  },
   "dependencies": {
     "@astrojs/mdx": "4.3.11",
     "@astrojs/react": "4.4.2",
-    "@astrojs/vercel": "9.0.1",
+    "@astrojs/vercel": "9.0.2",
     "@fontsource/ibm-plex-mono": "^5.2.7",
     "@fontsource/ibm-plex-sans": "^5.2.8",
     "@fontsource/ibm-plex-serif": "^5.2.7",
