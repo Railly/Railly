@@ -61,7 +61,14 @@ const updatedDate = post.data.updatedDate
     : null;
 ---
 
-<Layout title={post.data.title} description={post.data.description}>
+<Layout
+    title={post.data.title}
+    description={post.data.description}
+    image={post.data.image || post.data.heroImage?.src}
+    article={true}
+    publishedTime={post.data.pubDate}
+    modifiedTime={post.data.updatedDate}
+>
     <main class="max-w-[83rem] mx-auto px-4 sm:px-6 py-12 sm:py-24">
         <div class="lg:grid lg:grid-cols-[1fr_minmax(0,_2.5fr)_1fr] lg:gap-8">
             <!-- Left Sidebar - Table of Contents -->
