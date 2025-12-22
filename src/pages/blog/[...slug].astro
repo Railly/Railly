@@ -5,9 +5,6 @@ import TableOfContents from "../../components/content/TableOfContents.astro";
 import ViewCounter from "../../components/blog/ViewCounter";
 import Quote from "../../components/content/Quote.astro";
 import Link from "../../components/content/Link.astro";
-import Linkedin from "../../assets/svgs/linkedin.svg";
-import Github from "../../assets/svgs/github.svg";
-import X from "../../assets/svgs/x.svg";
 
 export async function getStaticPaths() {
     const posts = await getCollection("blog", ({ data }) => {
@@ -26,7 +23,6 @@ interface Props {
 const { post } = Astro.props;
 const { Content, headings } = await post.render();
 
-// Get all posts and sort them by date
 const allPosts = await getCollection("blog", ({ data }) => {
     return import.meta.env.PROD ? data.status === "published" : true;
 });
@@ -34,20 +30,18 @@ const sortedPosts = allPosts.sort(
     (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
 
-// Find current post index
 const currentIndex = sortedPosts.findIndex((p) => p.slug === post.slug);
 
-// Get previous and next posts
 const previousPost =
     currentIndex < sortedPosts.length - 1
         ? sortedPosts[currentIndex + 1]
         : null;
 const nextPost = currentIndex > 0 ? sortedPosts[currentIndex - 1] : null;
 
-// Format dates
 const publishedDate = post.data.pubDate.toLocaleDateString("en-US", {
     year: "numeric",
     month: "long",
+    day: "numeric",
 });
 
 const updatedDate = post.data.updatedDate
@@ -55,8 +49,6 @@ const updatedDate = post.data.updatedDate
           year: "numeric",
           month: "long",
           day: "numeric",
-          hour: "numeric",
-          minute: "numeric",
       })
     : null;
 ---
@@ -69,53 +61,69 @@ const updatedDate = post.data.updatedDate
     publishedTime={post.data.pubDate}
     modifiedTime={post.data.updatedDate}
 >
-    <main class="max-w-[83rem] mx-auto px-4 sm:px-6 py-12 sm:py-24">
-        <div class="lg:grid lg:grid-cols-[1fr_minmax(0,_2.5fr)_1fr] lg:gap-8">
+    <div class="w-full mx-auto py-12 sm:py-24">
+        <!-- Main Content Grid - TOC aligned with content -->
+        <div
+            class="max-w-[83rem] mx-auto px-4 sm:px-6 lg:grid lg:grid-cols-[1fr_minmax(0,_2.5fr)_1fr] lg:gap-8"
+        >
             <!-- Left Sidebar - Table of Contents -->
             <div class="lg:col-start-1">
                 <TableOfContents headings={headings} />
             </div>
 
-            <!-- Main Content -->
-            <article class="relative lg:col-start-2">
-                <!-- Article Header -->
-                <header
-                    class="space-y-2 mb-8 max-w-2xl text-left"
-                    transition:name={`blog-card-${post.slug}`}
-                    transition:animate="fade"
-                >
-                    {
-                        post.data.category && (
-                            <div class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-muted text-muted-foreground">
-                                {post.data.category}
-                            </div>
-                        )
-                    }
+            <!-- Main Column -->
+            <div class="lg:col-start-2">
+                <!-- Title Section -->
+                <header class="mb-10">
                     <h1
-                        class="font-sans text-lg font-semibold text-foreground tracking-tight"
+                        class="text-3xl font-semibold tracking-tight mb-6 text-flexoki-tx"
+                        style="text-wrap: balance;"
+                        transition:name={`blog-card-${post.slug}`}
+                        transition:animate="fade"
                     >
                         {post.data.title}
                     </h1>
+
                     {
                         post.data.description && (
-                            <p class="text-sm text-flexoki-tx-2">
+                            <p class="text-base leading-7 mb-6 text-flexoki-tx-2" style="text-wrap: pretty;">
                                 {post.data.description}
                             </p>
                         )
                     }
 
-                    <div
-                        class="flex items-center gap-3 text-sm font-mono text-flexoki-tx-2"
-                    >
+                    <!-- Metadata -->
+                    <div class="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-flexoki-tx-3">
                         <time datetime={post.data.pubDate.toISOString()}>
                             {publishedDate}
                         </time>
-                        <span>·</span>
+                        {
+                            updatedDate && (
+                                <span class="text-flexoki-tx-3">
+                                    · Updated {updatedDate}
+                                </span>
+                            )
+                        }
+                        <span class="text-flexoki-tx-3">·</span>
                         <ViewCounter
                             slug={post.slug}
                             increment={true}
                             client:only="react"
                         />
+                        {
+                            post.data.tags && post.data.tags.length > 0 && (
+                                <>
+                                    <span class="text-flexoki-tx-3">·</span>
+                                    <div class="flex flex-wrap gap-1.5">
+                                        {post.data.tags.slice(0, 3).map((tag) => (
+                                            <span class="text-flexoki-tx-3">
+                                                #{tag}
+                                            </span>
+                                        ))}
+                                    </div>
+                                </>
+                            )
+                        }
                     </div>
                 </header>
 
@@ -123,222 +131,181 @@ const updatedDate = post.data.updatedDate
                 {
                     post.data.heroImage && (
                         <div
-                            class="relative w-full aspect-[2/1] mb-10 rounded-lg overflow-hidden bg-muted"
+                            class="mb-12"
                             transition:name={`blog-hero-${post.slug}`}
                             transition:animate="fade"
                         >
-                            <img
-                                src={post.data.heroImage.src}
-                                alt={post.data.heroImage.alt}
-                                class="object-cover w-full h-full"
-                            />
+                            <div class="relative w-full aspect-[2/1] rounded-lg overflow-hidden bg-muted border border-flexoki-ui">
+                                <img
+                                    src={post.data.heroImage.src}
+                                    alt={post.data.heroImage.alt}
+                                    class="object-cover w-full h-full"
+                                />
+                            </div>
                         </div>
                     )
                 }
 
-                <!-- Content -->
-                <div
-                    class:list={[
-                        "prose prose-flexoki max-w-none",
-                        "prose-headings:text-flexoki-tx prose-headings:text-base prose-headings:font-semibold",
-                        "prose-p:text-flexoki-tx/85 prose-p:text-base prose-p:leading-7",
-                        "prose-a:text-primary prose-a:underline prose-a:decoration-flexoki-tx-3 dark:prose-a:decoration-primary/50 prose-a:underline-offset-2 prose-a:decoration-1 prose-a:hover:decoration-primary prose-a:transition-colors",
-                        "prose-strong:text-flexoki-tx prose-strong:text-base prose-strong:font-semibold",
-                        "prose-li:text-flexoki-tx prose-li:leading-7",
-                        "prose-li:marker:text-flexoki-tx-2",
-                        "prose-table:text-flexoki-tx prose-table:border-flexoki-ui prose-table:border prose-table:rounded-lg",
-                        "prose-tr:border-flexoki-ui prose-tr:border-b",
-                        "prose-td:border-flexoki-ui prose-td:border-r",
-                        "prose-td:p-2 prose-td:text-flexoki-tx-2",
-                        "prose-th:p-2 prose-th:text-flexoki-tx",
-                        "prose-img:rounded-xl prose-img:border-flexoki-ui prose-img:border prose-img:p-1.5",
-                        "prose-blockquote:border-none prose-blockquote:not-italic prose-blockquote:p-0 prose-blockquote:m-0",
-                        "dark:prose-invert",
-                    ]}
-                >
-                    <Content components={{ blockquote: Quote, a: Link }} />
-                </div>
-
-                <!-- Updated Date Notice -->
-                {
-                    updatedDate && (
-                        <div class="mt-8 text-sm text-muted-foreground border-t border-border pt-4">
-                            <p>Last updated on {updatedDate}</p>
-                        </div>
-                    )
-                }
-            </article>
-
-            <footer class="lg:col-start-2 mt-8 sm:mt-12">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <!-- Previous Post -->
-                    <div class="space-y-2">
-                        <h3
-                            class="text-sm font-medium text-flexoki-tx-2 uppercase tracking-wider"
-                        >
-                            Previous Post
-                        </h3>
-                        {
-                            previousPost ? (
-                                <a
-                                    href={`/blog/${previousPost.slug}`}
-                                    class="group block p-4 rounded-lg border border-flexoki-ui hover:border-flexoki-purple/30 transition-colors duration-300"
-                                >
-                                    <h4 class="font-serif text-flexoki-tx group-hover:text-flexoki-purple transition-colors mb-2 font-medium">
-                                        {previousPost.data.title}
-                                    </h4>
-                                    <p class="text-sm text-flexoki-tx-2">
-                                        {previousPost.data.description}
-                                    </p>
-                                    <time class="text-xs font-mono text-flexoki-tx-2 mt-2 block">
-                                        {previousPost.data.pubDate.toLocaleDateString(
-                                            "en-US",
-                                            {
-                                                year: "numeric",
-                                                month: "long",
-                                            },
-                                        )}
-                                    </time>
-                                </a>
-                            ) : (
-                                <div class="p-4 rounded-lg border border-flexoki-ui">
-                                    <h4 class="font-serif text-flexoki-tx-2 mb-2 font-medium">
-                                        You've reached the beginning
-                                    </h4>
-                                    <p class="text-sm text-flexoki-tx-2">
-                                        Thanks for reading!
-                                    </p>
-                                </div>
-                            )
-                        }
+                <!-- Article Content -->
+                <article class="blog-content">
+                    <div
+                        class:list={[
+                            "prose prose-flexoki max-w-none",
+                            "prose-headings:text-flexoki-tx prose-headings:font-semibold prose-headings:scroll-mt-10",
+                            "prose-h2:text-base prose-h2:mt-14 prose-h2:mb-4 prose-h2:tracking-tight",
+                            "prose-h3:text-base prose-h3:mt-10 prose-h3:mb-3 prose-h3:font-medium",
+                            "prose-p:text-flexoki-tx-2 prose-p:text-base prose-p:leading-7 prose-p:[text-wrap:pretty]",
+                            "prose-a:text-flexoki-tx-2 prose-a:underline prose-a:decoration-flexoki-tx-3/50 prose-a:underline-offset-2 prose-a:decoration-1 prose-a:hover:text-flexoki-tx prose-a:hover:decoration-flexoki-tx prose-a:transition-colors",
+                            "prose-strong:text-flexoki-tx/90 prose-strong:font-medium",
+                            "prose-li:text-flexoki-tx-2 prose-li:leading-relaxed",
+                            "prose-li:marker:text-flexoki-tx-3",
+                            "prose-ul:my-4 prose-ul:space-y-2",
+                            "prose-ol:my-4 prose-ol:space-y-2",
+                            "prose-code:before:content-none prose-code:after:content-none",
+                            "prose-table:text-flexoki-tx prose-table:border-flexoki-ui prose-table:border prose-table:rounded-lg",
+                            "prose-tr:border-flexoki-ui prose-tr:border-b",
+                            "prose-td:border-flexoki-ui prose-td:border-r",
+                            "prose-td:p-2 prose-td:text-flexoki-tx-2",
+                            "prose-th:p-2 prose-th:text-flexoki-tx",
+                            "prose-img:rounded-xl prose-img:border-flexoki-ui/50 prose-img:border",
+                            "prose-blockquote:border-none prose-blockquote:not-italic prose-blockquote:p-0 prose-blockquote:m-0",
+                            "prose-hr:border-flexoki-ui/50 prose-hr:my-12",
+                            "dark:prose-invert",
+                        ]}
+                    >
+                        <Content components={{ blockquote: Quote, a: Link }} />
                     </div>
-
-                    <!-- Next Post -->
-                    <div class="space-y-2">
-                        <h3
-                            class="text-sm font-medium text-flexoki-tx-2 uppercase tracking-wider"
-                        >
-                            Next Post
-                        </h3>
-                        {
-                            nextPost ? (
-                                <a
-                                    href={`/blog/${nextPost.slug}`}
-                                    class="group block p-4 rounded-lg border border-flexoki-ui hover:border-flexoki-purple/30 transition-colors duration-300"
-                                >
-                                    <h4 class="font-serif text-flexoki-tx group-hover:text-flexoki-purple transition-colors mb-2 font-medium">
-                                        {nextPost.data.title}
-                                    </h4>
-                                    <p class="text-sm text-flexoki-tx-2">
-                                        {nextPost.data.description}
-                                    </p>
-                                    <time class="text-xs font-mono text-flexoki-tx-2 mt-2 block">
-                                        {nextPost.data.pubDate.toLocaleDateString(
-                                            "en-US",
-                                            {
-                                                year: "numeric",
-                                                month: "long",
-                                            },
-                                        )}
-                                    </time>
-                                </a>
-                            ) : (
-                                <div class="p-4 rounded-lg border border-flexoki-ui">
-                                    <h4 class="font-serif text-flexoki-tx-2 mb-2 font-medium">
-                                        You're up to date!
-                                    </h4>
-                                    <p class="text-sm text-flexoki-tx-2">
-                                        Stay tuned for more!
-                                    </p>
-                                </div>
-                            )
-                        }
-                    </div>
-                </div>
-            </footer>
+                </article>
+            </div>
 
             <!-- Right Sidebar (empty for balance) -->
             <div class="lg:col-start-3"></div>
         </div>
-    </main>
 
-    <!-- New Social Media Footer -->
-    <footer class="py-8">
-        <div
-            class="max-w-2xl mx-auto flex flex-wrap justify-between items-center px-6 md:px-0 gap-y-4 gap-x-6"
-        >
-            <div
-                class="flex justify-center items-center flex-wrap gap-5 text-flexoki-tx-2"
-            >
+        <!-- Navigation Footer -->
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 mt-20 pt-8 border-t border-flexoki-ui/50">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Previous Post -->
+                <div>
+                    {
+                        previousPost ? (
+                            <a
+                                href={`/blog/${previousPost.slug}`}
+                                class="group block"
+                            >
+                                <span class="text-xs text-flexoki-tx-3 uppercase tracking-wider">
+                                    ← Previous
+                                </span>
+                                <h4 class="mt-2 text-flexoki-tx-2 group-hover:text-flexoki-tx transition-colors leading-snug">
+                                    {previousPost.data.title}
+                                </h4>
+                            </a>
+                        ) : (
+                            <div>
+                                <span class="text-xs text-flexoki-tx-3 uppercase tracking-wider">
+                                    ← Previous
+                                </span>
+                                <p class="mt-2 text-sm text-flexoki-tx-3">
+                                    You've reached the beginning
+                                </p>
+                            </div>
+                        )
+                    }
+                </div>
+
+                <!-- Next Post -->
+                <div class="md:text-right">
+                    {
+                        nextPost ? (
+                            <a
+                                href={`/blog/${nextPost.slug}`}
+                                class="group block"
+                            >
+                                <span class="text-xs text-flexoki-tx-3 uppercase tracking-wider">
+                                    Next →
+                                </span>
+                                <h4 class="mt-2 text-flexoki-tx-2 group-hover:text-flexoki-tx transition-colors leading-snug">
+                                    {nextPost.data.title}
+                                </h4>
+                            </a>
+                        ) : (
+                            <div>
+                                <span class="text-xs text-flexoki-tx-3 uppercase tracking-wider">
+                                    Next →
+                                </span>
+                                <p class="mt-2 text-sm text-flexoki-tx-3">
+                                    You're up to date
+                                </p>
+                            </div>
+                        )
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="mt-20 max-w-3xl mx-auto px-4 sm:px-6">
+            <p class="text-sm text-flexoki-tx-3/60">
+                © {new Date().getFullYear()} Railly Hugo ·{" "}
                 <a
                     href="https://x.com/raillyhugo"
                     target="_blank"
                     rel="noopener noreferrer"
-                    aria-label="Railly Hugo on X"
-                    class="group flex items-center gap-2 hover:text-flexoki-blue transition-colors"
+                    class="underline decoration-flexoki-tx-3/30 underline-offset-2 hover:text-flexoki-tx-2 hover:decoration-flexoki-tx-3/50 transition-colors"
                 >
-                    <X class="size-4" />
-                    <span class="text-sm group-hover:underline">raillyhugo</span
-                    >
-                </a>
+                    X
+                </a>{" "}·{" "}
                 <a
                     href="https://github.com/railly"
                     target="_blank"
                     rel="noopener noreferrer"
-                    aria-label="Railly Hugo on GitHub"
-                    class="group flex items-center gap-2 hover:text-flexoki-yellow transition-colors"
+                    class="underline decoration-flexoki-tx-3/30 underline-offset-2 hover:text-flexoki-tx-2 hover:decoration-flexoki-tx-3/50 transition-colors"
                 >
-                    <Github class="size-4" />
-                    <span class="text-sm group-hover:underline">railly</span>
-                </a>
+                    GitHub
+                </a>{" "}·{" "}
                 <a
                     href="https://linkedin.com/in/raillyhugo"
                     target="_blank"
                     rel="noopener noreferrer"
-                    aria-label="Railly Hugo on LinkedIn"
-                    class="group flex items-center gap-2 hover:text-flexoki-cyan transition-colors"
+                    class="underline decoration-flexoki-tx-3/30 underline-offset-2 hover:text-flexoki-tx-2 hover:decoration-flexoki-tx-3/50 transition-colors"
                 >
-                    <Linkedin class="size-4" />
-                    <span class="text-sm group-hover:underline"
-                        >railly-hugo</span
-                    >
+                    LinkedIn
                 </a>
-                <a
-                    href="mailto:hi@railly.dev"
-                    aria-label="Email Railly Hugo"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="group flex items-center gap-2 hover:text-flexoki-purple transition-colors"
-                >
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke-width="1.5"
-                        stroke="currentColor"
-                        class="size-4"
-                    >
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75"
-                        ></path>
-                    </svg>
-                    <span class="text-sm group-hover:underline"
-                        >hi@railly.dev</span
-                    >
-                </a>
-            </div>
-            <p class="text-sm text-center w-full sm:w-auto text-flexoki-tx-2">
-                &copy; {new Date().getFullYear()} Railly Hugo
             </p>
-        </div>
-    </footer>
+        </footer>
+    </div>
 
     <style>
-        /* Smooth anchor offset for header links */
         :target {
-            scroll-margin-top: 2rem;
+            scroll-margin-top: 2.5rem;
+        }
+
+        .blog-content :global(h2),
+        .blog-content :global(h3) {
+            scroll-margin-top: 2.5rem;
+        }
+
+        .blog-content :global(h2:target),
+        .blog-content :global(h3:target) {
+            scroll-margin-top: 2.5rem;
+        }
+
+        .blog-content :global(p + p) {
+            margin-top: 1rem;
+        }
+
+        .blog-content :global(h2 + p),
+        .blog-content :global(h3 + p) {
+            margin-top: 0;
+        }
+
+        /* Inline code only (not code inside pre blocks) */
+        .blog-content :global(:not(pre) > code) {
+            background-color: var(--color-flexoki-bg-2);
+            padding: 0.125rem 0.375rem;
+            font-size: 0.875rem;
+            border-radius: 0.25rem;
+            color: var(--color-flexoki-tx);
         }
     </style>
 </Layout>
