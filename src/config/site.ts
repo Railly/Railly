@@ -1,7 +1,7 @@
 import type { SiteConfig } from "@/types";
 
 const BASE_URL = import.meta.env.PROD
-	? "https://raillyhugo.com"
+	? "https://www.railly.dev"
 	: "http://localhost:4321";
 
 export const siteConfig: SiteConfig = {
@@ -11,7 +11,7 @@ export const siteConfig: SiteConfig = {
 	url: BASE_URL,
 	ogImage: `${BASE_URL}/images/og.png`,
 	author: "Railly Hugo",
-	email: "contact@raillyhugo.com",
+	email: "contact@railly.dev",
 	links: {
 		twitter: "https://twitter.com/raillyhugo",
 		github: "https://github.com/Railly/website",

@@ -51,12 +51,14 @@ const updatedDate = post.data.updatedDate
           day: "numeric",
       })
     : null;
+
+const ogImage = `/api/og?title=${encodeURIComponent(post.data.title)}&description=${encodeURIComponent(post.data.description || "")}`;
 ---
 
 <Layout
     title={post.data.title}
     description={post.data.description}
-    image={post.data.image || post.data.heroImage?.src}
+    image={ogImage}
     article={true}
     publishedTime={post.data.pubDate}
     modifiedTime={post.data.updatedDate}
