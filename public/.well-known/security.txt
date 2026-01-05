@@ -1,0 +1,6 @@
+# Security contact for railly.dev
+Contact: mailto:railly@crafterstation.com
+Contact: https://x.com/raillyhugo
+Expires: 2026-12-31T23:59:59.000Z
+Preferred-Languages: en, es
+Canonical: https://www.railly.dev/.well-known/security.txt
