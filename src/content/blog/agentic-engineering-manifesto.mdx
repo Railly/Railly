@@ -1,0 +1,71 @@
+---
+title: "Agentic Engineering Manifesto"
+description: "The new baseline for software engineering in the age of AI agents, MCP servers, and human-machine collaboration"
+pubDate: "2026-01-02"
+slug: "agentic-engineering-manifesto"
+tags: ["ai", "engineering", "manifesto", "agents", "mcp"]
+category: "thoughts"
+image: "/images/agentic-engineering-light.webp"
+imageDark: "/images/agentic-engineering-dark.webp"
+status: "published"
+---
+
+So here's where we are: AI agents can use tools now. They coordinate with each other through protocols like MCP and A2A. They make decisions. The infrastructure exists. I've been building with these systems for a while and wanted to write down what I think I've learned.
+
+## 1. Context Engineering is the New Programming
+
+**Context is your most valuable resource.**
+
+Last month I was three hours into a refactor with Claude. Complex stuff, touching maybe fifteen files. Somewhere around hour two, the agent started contradicting its earlier decisions. Not hallucinating exactly, just... forgetting the constraints we'd established. I had to restart the session and lost most of that context.
+
+The fix wasn't better prompting. It was better infrastructure. I started keeping a `CLAUDE.md` at the project root. File structure, architectural decisions, the non-obvious stuff. But more importantly, I started putting `AGENTS.md` files in directories that hold complex logic. The auth folder has one. The billing integration has one. These capture the things that would take an agent three back-and-forths to figure out.
+
+Write it down once.
+
+I also started asking agents to maintain their own changelogs. After each significant change: *What just changed? Why did we do it this way?* This becomes context for future sessions. Pre-computed reasoning, so the next thread doesn't start from zero.
+
+## 2. Documentation as Infrastructure
+
+Documentation used to be for humans. Now it's for agents too.
+
+I keep hitting the same failure mode: not enough docs, agents rediscovering the same constraints every session. The fix is obvious but tedious. Let agents document as they work. Log decisions. Record the why, not just the what.
+
+## 3. Taste Cannot Be Outsourced
+
+AI can generate and optimize. Taste is still human.
+
+You can feed an agent screenshots, Tailwind classes, component libraries. You'll get something decent. Decent isn't enough. The gap between good and great lives in details no prompt captures.
+
+What actually helps:
+- Know what good looks like. Curate references.
+- If you can't articulate the experience in words, the agent can't build it.
+- Show, don't just tell. Screenshots, code samples.
+- Include the exact docs you would need as a human.
+
+UI development is becoming a commodity. Vision is the differentiator.
+
+## 4. The Protocol Layer
+
+MCP and A2A let agents use tools and talk to each other.
+
+This unlocks specialized agents (auth, payments, design), composable workflows where one agent's output feeds another, and external integrations with databases and APIs.
+
+Not every problem needs an agent swarm. Most don't. But for the right problems, this changes what's possible.
+
+## 5. UI-First System Design
+
+You can have the best backend in the world. If the interface sucks, you've failed.
+
+Start with the interface. What's the ideal flow? What would actually delight users? Write down your most ambitious version. Over iterations, you'll converge on something real.
+
+A junior blueprint produces a junior building. Doesn't matter how good the builders are.
+
+## 6. The Agentic Engineer
+
+The role is changing. Less time on boilerplate, more time on architecture and decisions. This doesn't mean less skill. It means different skills: orchestration, verification, knowing when to intervene.
+
+You need to understand more to orchestrate well. You can't direct what you don't comprehend.
+
+---
+
+Anyway, that's where I'm at. These ideas will probably look different in six months. Some might be wrong now. But I wanted to write them down while they still feel fresh.

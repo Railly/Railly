@@ -75,6 +75,35 @@ const ogImage = `/api/og?title=${encodeURIComponent(post.data.title)}&descriptio
 
             <!-- Main Column -->
             <div class="lg:col-start-2">
+                <!-- Cover Image (with dark mode support) -->
+                {
+                    post.data.image && (
+                        <div
+                            class="mb-10"
+                            transition:name={`blog-cover-${post.slug}`}
+                            transition:animate="fade"
+                        >
+                            <div class="relative w-full aspect-[2/1] rounded-lg overflow-hidden bg-flexoki-bg-2 border border-flexoki-ui">
+                                <img
+                                    src={post.data.image}
+                                    alt={post.data.title}
+                                    class:list={[
+                                        "object-cover w-full h-full",
+                                        post.data.imageDark ? "dark:hidden" : ""
+                                    ]}
+                                />
+                                {post.data.imageDark && (
+                                    <img
+                                        src={post.data.imageDark}
+                                        alt={post.data.title}
+                                        class="object-cover w-full h-full hidden dark:block"
+                                    />
+                                )}
+                            </div>
+                        </div>
+                    )
+                }
+
                 <!-- Title Section -->
                 <header class="mb-10">
                     <h1

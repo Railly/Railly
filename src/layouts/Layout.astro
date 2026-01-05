@@ -116,6 +116,18 @@ const socialImageURL = new URL(image, siteConfig.url);
         <ClientRouter />
 
         <slot name="head" />
+        <script is:inline>
+            (function() {
+                const stored = localStorage.getItem('theme');
+                if (stored === 'dark') {
+                    document.documentElement.classList.add('dark');
+                } else if (stored === 'light') {
+                    document.documentElement.classList.remove('dark');
+                } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                    document.documentElement.classList.add('dark');
+                }
+            })();
+        </script>
     </head>
     <body
         class="min-h-screen bg-flexoki-bg text-flexoki-tx selection:text-primary selection:bg-flexoki-bg-2"

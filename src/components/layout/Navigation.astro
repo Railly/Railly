@@ -1,4 +1,6 @@
 ---
+import { ThemeToggle } from "../ui/ThemeToggle";
+
 interface NavItem {
     href: string;
     label: string;
@@ -21,7 +23,7 @@ function isActive(href: string): boolean {
 ---
 
 <nav class="sticky top-24 w-64 hidden lg:block">
-    <ul class="space-y-1.5 text-sm lowercase">
+    <ul class="space-y-1.5 text-sm lowercase mb-4">
         {
             navItems.map((item) => (
                 <li>
@@ -40,11 +42,13 @@ function isActive(href: string): boolean {
             ))
         }
     </ul>
+    <ThemeToggle client:load />
 </nav>
 
 <!-- Mobile Navigation -->
-<nav class="block lg:hidden mb-8 pb-2 border-b border-flexoki-ui/20">
-    <ul class="flex gap-2 justify-end text-[13px] lowercase">
+<nav class="flex lg:hidden mb-8 pb-2 border-b border-flexoki-ui/20 items-center justify-between">
+    <ThemeToggle client:load />
+    <ul class="flex gap-2 text-[13px] lowercase">
         {
             navItems.map((item) => (
                 <li>
