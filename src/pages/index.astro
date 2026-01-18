@@ -4,7 +4,6 @@ import ElementsLogo from "../components/brand/ElementsLogo.astro";
 import TinteLogo from "../components/brand/TinteLogo.astro";
 import OneHunterLogo from "../components/brand/OneHunterLogo.astro";
 import ScrapiLogo from "../components/brand/ScrapiLogo.astro";
-import AchievementCard from "../components/ui/AchievementCard.astro";
 import HeroSection from "../components/layout/HeroSection.astro";
 import SectionHeader from "../components/layout/SectionHeader.astro";
 import PageLayout from "../components/layout/PageLayout.astro";
@@ -92,91 +91,13 @@ const projectsData = [
 ];
 
 const achievementsData = [
-    {
-        title: "🏆 Overall Winner — First Ever Next.js Global Hackathon",
-        year: "2025",
-        color: "cyan" as const,
-        embedId: "text0-embed",
-        embedSrc: "https://www.youtube.com/embed/KDRwgbwq0_c?start=1142",
-        embedType: "youtube" as const,
-        project: "text0",
-        hosts: ["vercel"],
-        scope: "🌎",
-    },
-    {
-        title: "🥇 1st Place — Vercel AI Gateway Hackathon",
-        year: "2025",
-        color: "blue" as const,
-        embedId: "ai-gateway-embed",
-        embedSrc: "https://www.youtube.com/embed/yKzXoJgPenw?start=28889",
-        embedType: "youtube" as const,
-        project: "Chess Battle",
-        hosts: ["vercel"],
-        scope: "🌎",
-    },
-    {
-        title: "👨‍⚖️ Judge & Mentor — IA Hackathon Colombia Tech Fest",
-        year: "2025",
-        color: "orange" as const,
-        embedId: "colombia-judge-embed",
-        embedSrc: "",
-        embedType: "image" as const,
-        project: "Colombia Tech Fest",
-        imageUrl: "/images/colombia-hackathon.webp",
-        linkedinUrl:
-            "https://www.linkedin.com/posts/railly-hugo_de-vuelta-en-lima-despu%C3%A9s-de-una-experiencia-activity-7369217715481362432-XgLj",
-        embedTitle:
-            "🇨🇴✨ De vuelta en Lima después de una experiencia brutal en la <span class='font-bold'>IA Hackathon del Colombia Tech Fest</span>",
-        scope: "🇨🇴",
-    },
-    {
-        title: "🎓 Outstanding Engineering Graduate — UNMSM",
-        year: "2025",
-        color: "purple" as const,
-        embedId: "unmsm-egresado-embed",
-        embedSrc: "https://www.youtube.com/embed/swdmucdGGLA?start=10362",
-        embedType: "youtube" as const,
-        hosts: ["unmsm"],
-        scope: "🇵🇪",
-    },
-    {
-        title: "🎖️ Finalist — Platanus Hack 25'",
-        year: "2025",
-        color: "teal" as const,
-        embedId: "scrapi-platanus-embed",
-        embedSrc: "",
-        embedType: "image" as const,
-        project: "Scrapi",
-        imageUrl: "/images/platanus-hack.webp",
-        linkedinUrl:
-            "https://www.linkedin.com/posts/railly-hugo_gran-experiencia-en-la-platanus-hack-25-activity-7400005671913684992-A1WW",
-        embedTitle:
-            "🇨🇱⚡ Gran experiencia en la <span class='font-bold'>Platanus Hack 25' ft. Buk</span> en Chile. Llegamos a la final con Scrapi.",
-        scope: "🇨🇱",
-    },
-    {
-        title: "🎖️ Finalist — IA Hackathon LATAM",
-        year: "2025",
-        color: "yellow" as const,
-        embedId: "githunter-embed",
-        embedSrc:
-            "https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7328521111485243393?compact=1",
-        embedType: "linkedin" as const,
-        project: "GitHunter",
-        scope: "🌎",
-    },
-    {
-        title: "🥉 3rd Place — Vercel × Midudev Hackathon",
-        year: "2024",
-        color: "magenta" as const,
-        embedId: "tinte-embed",
-        embedSrc:
-            "https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7232743944592240640?compact=1",
-        embedType: "linkedin" as const,
-        project: "Tinte",
-        hosts: ["vercel", "midudev"],
-        scope: "🌎",
-    },
+    { year: "2025", achievement: "Overall Winner", event: "Next.js Global Hackathon", project: "text0" },
+    { year: "2025", achievement: "1st Place", event: "Vercel AI Gateway Hackathon", project: "Chess Battle" },
+    { year: "2025", achievement: "Judge & Mentor", event: "IA Hackathon Colombia Tech Fest" },
+    { year: "2025", achievement: "Outstanding Graduate", event: "UNMSM Engineering" },
+    { year: "2025", achievement: "Finalist", event: "Platanus Hack 25'", project: "Scrapi" },
+    { year: "2025", achievement: "Finalist", event: "IA Hackathon LATAM", project: "GitHunter" },
+    { year: "2024", achievement: "3rd Place", event: "Vercel × Midudev Hackathon", project: "Tinte" },
 ];
 
 // Icon mapping for components
@@ -310,28 +231,29 @@ type IconKey = keyof typeof iconMap;
                 }
             </div>
         </section>
-        <section class="flex flex-col gap-4 w-full">
+        <section class="w-full">
             <SectionHeader title="Achievements" />
-            <div class="flex flex-col gap-4">
-                {
-                    achievementsData.map((achievement) => (
-                        <AchievementCard
-                            title={achievement.title}
-                            year={achievement.year}
-                            color={achievement.color}
-                            embedId={achievement.embedId}
-                            embedSrc={achievement.embedSrc}
-                            embedType={achievement.embedType}
-                            project={achievement.project}
-                            hosts={achievement.hosts}
-                            linkedinUrl={achievement.linkedinUrl}
-                            imageUrl={achievement.imageUrl}
-                            embedDescription={achievement.embedDescription}
-                            embedTitle={achievement.embedTitle}
-                            scope={achievement.scope}
-                        />
-                    ))
-                }
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                    <thead>
+                        <tr class="border-b border-flexoki-ui text-left">
+                            <th class="py-2 pr-4 font-medium text-flexoki-tx-2 w-16">Year</th>
+                            <th class="py-2 pr-4 font-medium text-flexoki-tx-2">Achievement</th>
+                            <th class="py-2 pr-4 font-medium text-flexoki-tx-2 hidden sm:table-cell">Event</th>
+                            <th class="py-2 font-medium text-flexoki-tx-2 hidden md:table-cell">Project</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {achievementsData.map((item) => (
+                            <tr class="border-b border-flexoki-ui/50 hover:bg-flexoki-bg-2 transition-colors">
+                                <td class="py-3 pr-4 text-flexoki-tx-3 tabular-nums">{item.year}</td>
+                                <td class="py-3 pr-4 text-flexoki-tx font-medium">{item.achievement}</td>
+                                <td class="py-3 pr-4 text-flexoki-tx-2 hidden sm:table-cell">{item.event}</td>
+                                <td class="py-3 text-flexoki-tx-3 hidden md:table-cell">{item.project || "—"}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
             </div>
         </section>
         <Footer />
