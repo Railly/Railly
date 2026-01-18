@@ -2,8 +2,9 @@
 import Layout from "../layouts/Layout.astro";
 import ElementsLogo from "../components/brand/ElementsLogo.astro";
 import TinteLogo from "../components/brand/TinteLogo.astro";
+import OneHunterLogo from "../components/brand/OneHunterLogo.astro";
+import ScrapiLogo from "../components/brand/ScrapiLogo.astro";
 import AchievementCard from "../components/ui/AchievementCard.astro";
-import ProjectCard from "../components/ui/ProjectCard.astro";
 import HeroSection from "../components/layout/HeroSection.astro";
 import SectionHeader from "../components/layout/SectionHeader.astro";
 import PageLayout from "../components/layout/PageLayout.astro";
@@ -54,33 +55,32 @@ const projectsData = [
     {
         title: "Elements",
         description: "Full-stack shadcn components",
-        color: "cyan" as const,
         href: "https://tryelements.dev",
         icon: "elements" as IconKey,
     },
     {
         title: "text0",
-        description: "AI-powered text editor.",
-        color: "yellow" as const,
+        description: "AI-powered text editor",
         href: "https://text0.dev",
         icon: "text0" as IconKey,
     },
     {
         title: "Tinte",
         description: "Multiplatform theme builder",
-        color: "purple" as const,
         href: "https://tinte.dev",
         icon: "tinte" as IconKey,
     },
     {
         title: "One Hunter Theme",
-        description: "Stylish VS Code theme",
-        color: "magenta" as const,
+        description: "VS Code theme (35k+ downloads)",
         href: "https://marketplace.visualstudio.com/items?itemName=RaillyHugo.one-hunter",
-        isImage: true,
-        imageSrc: "/images/one-hunter-logo.webp",
-        imageAlt: "One Hunter Theme",
-        iconPadding: "p-2.5",
+        icon: "oneHunter" as IconKey,
+    },
+    {
+        title: "Scrapi",
+        description: "Fast web scraper",
+        href: "https://www.scrapi.fast",
+        icon: "scrapi" as IconKey,
     },
 ];
 
@@ -177,6 +177,8 @@ const iconMap = {
     elements: ElementsLogo,
     text0: Text0Logo,
     tinte: TinteLogo,
+    oneHunter: OneHunterLogo,
+    scrapi: ScrapiLogo,
 } as const;
 
 type IconKey = keyof typeof iconMap;
@@ -186,9 +188,9 @@ type IconKey = keyof typeof iconMap;
     <PageLayout class="flex flex-col gap-10">
         <HeroSection name={heroData.name} title={heroData.title} />
 
-        <section class="flex flex-col gap-4 w-full">
+        <section class="w-full">
             <SectionHeader title="Projects" />
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="space-y-0">
                 {
                     projectsData.map((project) => {
                         const IconComponent =
@@ -196,38 +198,42 @@ type IconKey = keyof typeof iconMap;
                                 ? iconMap[project.icon as IconKey]
                                 : null;
                         return (
-                            <ProjectCard
-                                title={project.title}
-                                description={project.description}
-                                color={project.color}
+                            <a
                                 href={project.href}
-                                isImage={project.isImage}
-                                imageSrc={project.imageSrc}
-                                imageAlt={project.imageAlt}
-                                iconPadding={project.iconPadding}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="group flex items-center gap-4 py-3 border-b border-flexoki-ui hover:bg-flexoki-bg-2 transition-colors -mx-3 px-3"
                             >
-                                {IconComponent && (
-                                    <IconComponent
-                                        slot="icon"
-                                        size={
-                                            project.icon === "text0"
-                                                ? undefined
-                                                : 28
-                                        }
-                                        width={
-                                            project.icon === "text0"
-                                                ? 28
-                                                : undefined
-                                        }
-                                        height={
-                                            project.icon === "text0"
-                                                ? 28
-                                                : undefined
-                                        }
-                                        class={`text-flexoki-tx-3 group-hover:text-flexoki-${project.color} transition-colors duration-300 ${project.icon === "text0" ? "rounded-sm" : ""}`}
-                                    />
-                                )}
-                            </ProjectCard>
+                                <span class="w-6 h-6 flex items-center justify-center shrink-0">
+                                    {IconComponent && (
+                                        <IconComponent
+                                            width={20}
+                                            height={20}
+                                            class="text-flexoki-tx-3 group-hover:text-flexoki-tx transition-colors"
+                                        />
+                                    )}
+                                </span>
+                                <span class="flex-1 text-flexoki-tx font-medium">
+                                    {project.title}
+                                </span>
+                                <span class="text-flexoki-tx-3 text-sm hidden sm:block">
+                                    {project.description}
+                                </span>
+                                <svg
+                                    width="14"
+                                    height="14"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="1.5"
+                                    viewBox="0 0 24 24"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    class="text-flexoki-tx-3 group-hover:translate-x-0.5 transition-transform shrink-0"
+                                >
+                                    <path d="M4.5 12h15m0 0-5.625-6m5.625 6-5.625 6" />
+                                </svg>
+                            </a>
                         );
                     })
                 }
