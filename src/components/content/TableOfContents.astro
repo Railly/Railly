@@ -5,8 +5,7 @@ interface Props {
 
 const { headings } = Astro.props;
 
-// Filter only main headings (h1 and h2)
-const mainHeadings = headings.filter((heading) => heading.depth <= 2);
+const mainHeadings = headings.filter((heading) => heading.depth <= 3);
 ---
 
 <nav class="sticky top-24 w-64 hidden lg:block">
@@ -19,16 +18,21 @@ const mainHeadings = headings.filter((heading) => heading.depth <= 2);
         </svg>
         <span>writing</span>
     </a>
-    <ul class="space-y-1.5 text-[13px]">
+
+    <p class="font-mono text-[10px] uppercase tracking-wider text-flexoki-tx-2 mb-3">
+        On This Page
+    </p>
+
+    <ul class="space-y-0.5 text-sm border-l border-flexoki-ui">
         {
             mainHeadings.map((heading) => (
-                <li>
+                <li class={heading.depth === 3 ? "ml-3" : ""}>
                     <a
                         href={`#${heading.slug}`}
-                        class="toc-link block py-0.5 text-flexoki-tx-2 hover:text-flexoki-tx transition-colors duration-200"
+                        class="toc-link block py-1 px-3 text-sm border-l-2 -ml-px transition-all duration-200 border-transparent text-flexoki-tx-2 hover:text-flexoki-tx hover:border-flexoki-ui-2"
                         data-heading={heading.slug}
                     >
-                        {heading.text}
+                        <span class="line-clamp-2">{heading.text}</span>
                     </a>
                 </li>
             ))
@@ -50,7 +54,7 @@ const mainHeadings = headings.filter((heading) => heading.depth <= 2);
 
 <script>
     function setupTableOfContents() {
-        const toc = document.querySelector("nav");
+        const toc = document.querySelector("nav.hidden.lg\\:block");
         if (!toc) return;
 
         const tocLinks = toc.querySelectorAll(".toc-link");
@@ -62,7 +66,7 @@ const mainHeadings = headings.filter((heading) => heading.depth <= 2);
             .filter(Boolean);
 
         const observerOptions = {
-            rootMargin: "-20% 0px -60% 0px",
+            rootMargin: "-100px 0px -66% 0px",
             threshold: 0,
         };
 
@@ -72,24 +76,12 @@ const mainHeadings = headings.filter((heading) => heading.depth <= 2);
                 const link = toc.querySelector(`[data-heading="${slug}"]`);
 
                 if (entry.isIntersecting) {
-                    // Remove active class from all links
-                    tocLinks.forEach((l) =>
-                        l.classList.remove(
-                            "active",
-                            "text-flexoki-tx",
-                            "font-semibold",
-                            "after:content-['•']",
-                            "after:ml-1",
-                        ),
-                    );
-                    // Add active class to current link
-                    link?.classList.add(
-                        "active",
-                        "text-flexoki-tx",
-                        "font-semibold",
-                        "after:content-['•']",
-                        "after:ml-1",
-                    );
+                    tocLinks.forEach((l) => {
+                        l.classList.remove("border-flexoki-tx", "text-flexoki-tx", "font-medium");
+                        l.classList.add("border-transparent", "text-flexoki-tx-2");
+                    });
+                    link?.classList.remove("border-transparent", "text-flexoki-tx-2");
+                    link?.classList.add("border-flexoki-tx", "text-flexoki-tx", "font-medium");
                 }
             });
         };
@@ -100,7 +92,6 @@ const mainHeadings = headings.filter((heading) => heading.depth <= 2);
         );
         sections.forEach((section) => section && observer.observe(section));
 
-        // Cleanup function
         return () => {
             sections.forEach(
                 (section) => section && observer.unobserve(section),
@@ -109,9 +100,7 @@ const mainHeadings = headings.filter((heading) => heading.depth <= 2);
         };
     }
 
-    // Setup on initial load
     setupTableOfContents();
 
-    // Setup on client-side navigation
     document.addEventListener("astro:page-load", setupTableOfContents);
 </script>
