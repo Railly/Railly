@@ -13,15 +13,22 @@ const mainHeadings = headings.filter((heading) => heading.depth <= 3);
         href="/writing"
         class="flex items-center gap-1.5 text-sm mb-6 text-flexoki-tx-2 hover:text-flexoki-tx transition-colors duration-200"
     >
-        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" class="rotate-180">
-            <path d='M4.5 12h15m0 0-5.625-6m5.625 6-5.625 6'/>
+        <svg
+            width="16"
+            height="16"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            viewBox="0 0 24 24"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            xmlns="http://www.w3.org/2000/svg"
+            class="rotate-180"
+        >
+            <path d="M4.5 12h15m0 0-5.625-6m5.625 6-5.625 6"></path>
         </svg>
         <span>writing</span>
     </a>
-
-    <p class="font-mono text-[10px] uppercase tracking-wider text-flexoki-tx-2 mb-3">
-        On This Page
-    </p>
 
     <ul class="space-y-0.5 text-sm border-l border-flexoki-ui">
         {
@@ -45,8 +52,19 @@ const mainHeadings = headings.filter((heading) => heading.depth <= 3);
         href="/writing"
         class="flex items-center gap-1.5 text-sm mb-6 text-flexoki-tx-2 hover:text-flexoki-tx transition-colors duration-200"
     >
-        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" class="rotate-180">
-            <path d='M4.5 12h15m0 0-5.625-6m5.625 6-5.625 6'/>
+        <svg
+            width="16"
+            height="16"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            viewBox="0 0 24 24"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            xmlns="http://www.w3.org/2000/svg"
+            class="rotate-180"
+        >
+            <path d="M4.5 12h15m0 0-5.625-6m5.625 6-5.625 6"></path>
         </svg>
         <span>writing</span>
     </a>
@@ -77,11 +95,25 @@ const mainHeadings = headings.filter((heading) => heading.depth <= 3);
 
                 if (entry.isIntersecting) {
                     tocLinks.forEach((l) => {
-                        l.classList.remove("border-flexoki-tx", "text-flexoki-tx", "font-medium");
-                        l.classList.add("border-transparent", "text-flexoki-tx-2");
+                        l.classList.remove(
+                            "border-flexoki-tx",
+                            "text-flexoki-tx",
+                            "font-medium",
+                        );
+                        l.classList.add(
+                            "border-transparent",
+                            "text-flexoki-tx-2",
+                        );
                     });
-                    link?.classList.remove("border-transparent", "text-flexoki-tx-2");
-                    link?.classList.add("border-flexoki-tx", "text-flexoki-tx", "font-medium");
+                    link?.classList.remove(
+                        "border-transparent",
+                        "text-flexoki-tx-2",
+                    );
+                    link?.classList.add(
+                        "border-flexoki-tx",
+                        "text-flexoki-tx",
+                        "font-medium",
+                    );
                 }
             });
         };
