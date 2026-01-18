@@ -1,0 +1,17 @@
+---
+interface Props {
+    width?: number;
+    height?: number;
+    class?: string;
+}
+
+const { width = 16, height = 16, class: className } = Astro.props;
+---
+
+<img
+    src="/images/platanus-hack-logo.ico"
+    alt="Platanus Hack"
+    width={width}
+    height={height}
+    class={className}
+/>
