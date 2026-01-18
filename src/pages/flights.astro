@@ -1,167 +1,163 @@
 ---
-import Layout from "../layouts/Layout.astro";
-import PageLayout from "../components/layout/PageLayout.astro";
-import SectionHeader from "../components/layout/SectionHeader.astro";
-import Footer from "../components/layout/Footer.astro";
 import FlightMap from "../components/flights/FlightMap";
 import MiniMap from "../components/flights/MiniMap";
 import PeruMap from "../components/flights/PeruMap";
+import Footer from "../components/layout/Footer.astro";
+import PageLayout from "../components/layout/PageLayout.astro";
+import SectionHeader from "../components/layout/SectionHeader.astro";
+import Layout from "../layouts/Layout.astro";
 
 interface Flight {
-    from: string;
-    to: string;
-    date: string;
-    year: string;
-    purpose: string;
-    highlights: string[];
-    color: string;
-    continent: string;
+	from: string;
+	to: string;
+	date: string;
+	year: string;
+	purpose: string;
+	highlights: string[];
+	color: string;
+	continent: string;
 }
 
 const flights: Flight[] = [
-    {
-        from: "Lima, Peru",
-        to: "Buenos Aires, Argentina",
-        date: "2023",
-        year: "2023",
-        purpose: "Exploring the Paris of South America",
-        highlights: [
-            "Walked through colorful La Boca",
-            "Experienced tango culture",
-            "Enjoyed world-class steak"
-        ],
-        color: "blue",
-        continent: "South America",
-    },
-    {
-        from: "Lima, Peru",
-        to: "Bariloche, Argentina",
-        date: "2023",
-        year: "2023",
-        purpose: "Adventure in Patagonia",
-        highlights: [
-            "Hiked in the Andes",
-            "Explored Nahuel Huapi Lake",
-            "Discovered chocolate shops"
-        ],
-        color: "purple",
-        continent: "South America",
-    },
-    {
-        from: "Lima, Peru",
-        to: "Iguazú, Argentina",
-        date: "2023",
-        year: "2023",
-        purpose: "Natural wonder exploration",
-        highlights: [
-            "Witnessed Iguazú Falls",
-            "Walked through rainforest trails",
-            "Crossed to Brazil side"
-        ],
-        color: "green",
-        continent: "South America",
-    },
-    {
-        from: "Lima, Peru",
-        to: "Santiago, Chile",
-        date: "2024",
-        year: "2024",
-        purpose: "Discovering Chilean culture",
-        highlights: [
-            "Explored Valparaíso streets",
-            "Tasted Chilean wine",
-            "Visited Andes viewpoints"
-        ],
-        color: "magenta",
-        continent: "South America",
-    },
-    {
-        from: "Lima, Peru",
-        to: "Cusco, Peru",
-        date: "March 2024",
-        year: "2024",
-        purpose: "Exploring ancient Incan heritage",
-        highlights: [
-            "Visited Machu Picchu",
-            "Explored Sacred Valley",
-            "Experienced local culture"
-        ],
-        color: "orange",
-        continent: "South America",
-    },
-    {
-        from: "Lima, Peru",
-        to: "Bogotá, Colombia",
-        date: "January 2025",
-        year: "2025",
-        purpose: "Judge & Mentor - Colombia Tech Fest",
-        highlights: [
-            "Judged AI Hackathon",
-            "Met incredible developers",
-            "Shared knowledge on AI"
-        ],
-        color: "cyan",
-        continent: "South America",
-    },
+	{
+		from: "Lima, Peru",
+		to: "Buenos Aires, Argentina",
+		date: "2023",
+		year: "2023",
+		purpose: "Exploring the Paris of South America",
+		highlights: [
+			"Walked through colorful La Boca",
+			"Experienced tango culture",
+			"Enjoyed world-class steak",
+		],
+		color: "blue",
+		continent: "South America",
+	},
+	{
+		from: "Lima, Peru",
+		to: "Bariloche, Argentina",
+		date: "2023",
+		year: "2023",
+		purpose: "Adventure in Patagonia",
+		highlights: [
+			"Hiked in the Andes",
+			"Explored Nahuel Huapi Lake",
+			"Discovered chocolate shops",
+		],
+		color: "purple",
+		continent: "South America",
+	},
+	{
+		from: "Lima, Peru",
+		to: "Iguazú, Argentina",
+		date: "2023",
+		year: "2023",
+		purpose: "Natural wonder exploration",
+		highlights: [
+			"Witnessed Iguazú Falls",
+			"Walked through rainforest trails",
+			"Crossed to Brazil side",
+		],
+		color: "green",
+		continent: "South America",
+	},
+	{
+		from: "Lima, Peru",
+		to: "Santiago, Chile",
+		date: "2024",
+		year: "2024",
+		purpose: "Discovering Chilean culture",
+		highlights: [
+			"Explored Valparaíso streets",
+			"Tasted Chilean wine",
+			"Visited Andes viewpoints",
+		],
+		color: "magenta",
+		continent: "South America",
+	},
+	{
+		from: "Lima, Peru",
+		to: "Cusco, Peru",
+		date: "March 2024",
+		year: "2024",
+		purpose: "Exploring ancient Incan heritage",
+		highlights: [
+			"Visited Machu Picchu",
+			"Explored Sacred Valley",
+			"Experienced local culture",
+		],
+		color: "orange",
+		continent: "South America",
+	},
+	{
+		from: "Lima, Peru",
+		to: "Bogotá, Colombia",
+		date: "January 2025",
+		year: "2025",
+		purpose: "Judge & Mentor - Colombia Tech Fest",
+		highlights: [
+			"Judged AI Hackathon",
+			"Met incredible developers",
+			"Shared knowledge on AI",
+		],
+		color: "cyan",
+		continent: "South America",
+	},
 ];
 
-const visitedCountries = new Set(flights.map(f => f.to.split(", ")[1]));
+const visitedCountries = new Set(flights.map((f) => f.to.split(", ")[1]));
 const totalSouthAmericanCountries = 12; // Total countries in South America
 
 const stats = {
-    totalFlights: flights.length,
-    countries: visitedCountries.size,
-    continents: new Set(flights.map(f => f.continent)).size,
-    homeBase: "Lima, Peru",
+	totalFlights: flights.length,
+	countries: visitedCountries.size,
+	continents: new Set(flights.map((f) => f.continent)).size,
+	homeBase: "Lima, Peru",
 };
 
 // Peru domestic visits
 const peruVisits = [
-    {
-        city: "Lima",
-        department: "Lima",
-        highlights: [
-            "Home sweet home",
-            "Coastal views and ceviche",
-            "Tech hub of Peru"
-        ]
-    },
-    {
-        city: "Cusco",
-        department: "Cusco",
-        highlights: [
-            "Gateway to Machu Picchu",
-            "Incan architecture",
-            "Sacred Valley exploration"
-        ]
-    },
-    {
-        city: "Huaraz",
-        department: "Ancash",
-        highlights: [
-            "Cordillera Blanca mountains",
-            "Laguna 69 trek",
-            "Adventure capital"
-        ]
-    },
-    {
-        city: "Huancayo",
-        department: "Junín",
-        highlights: [
-            "Central Highlands culture",
-            "Traditional markets",
-            "Valle del Mantaro"
-        ]
-    },
-    {
-        city: "Paracas",
-        department: "Ica",
-        highlights: [
-            "Ballestas Islands",
-            "Desert oasis",
-            "Wildlife sanctuary"
-        ]
-    },
+	{
+		city: "Lima",
+		department: "Lima",
+		highlights: [
+			"Home sweet home",
+			"Coastal views and ceviche",
+			"Tech hub of Peru",
+		],
+	},
+	{
+		city: "Cusco",
+		department: "Cusco",
+		highlights: [
+			"Gateway to Machu Picchu",
+			"Incan architecture",
+			"Sacred Valley exploration",
+		],
+	},
+	{
+		city: "Huaraz",
+		department: "Ancash",
+		highlights: [
+			"Cordillera Blanca mountains",
+			"Laguna 69 trek",
+			"Adventure capital",
+		],
+	},
+	{
+		city: "Huancayo",
+		department: "Junín",
+		highlights: [
+			"Central Highlands culture",
+			"Traditional markets",
+			"Valle del Mantaro",
+		],
+	},
+	{
+		city: "Paracas",
+		department: "Ica",
+		highlights: ["Ballestas Islands", "Desert oasis", "Wildlife sanctuary"],
+	},
 ];
 ---
 

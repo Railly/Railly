@@ -1,15 +1,23 @@
 ---
 interface Props {
-  embedId: string;
-  embedSrc: string;
-  embedType: "youtube" | "linkedin" | "linkedin-link" | "image";
-  linkedinUrl?: string;
-  imageUrl?: string;
-  embedDescription?: string;
-  embedTitle?: string;
+	embedId: string;
+	embedSrc: string;
+	embedType: "youtube" | "linkedin" | "linkedin-link" | "image";
+	linkedinUrl?: string;
+	imageUrl?: string;
+	embedDescription?: string;
+	embedTitle?: string;
 }
 
-const { embedId, embedSrc, embedType, linkedinUrl, imageUrl, embedDescription, embedTitle } = Astro.props;
+const {
+	embedId,
+	embedSrc,
+	embedType,
+	linkedinUrl,
+	imageUrl,
+	embedDescription,
+	embedTitle,
+} = Astro.props;
 ---
 
 {embedType === "image" ? (

@@ -1,182 +1,182 @@
 ---
-import Layout from "../layouts/Layout.astro";
-import ElementsLogo from "../components/brand/ElementsLogo.astro";
-import TinteLogo from "../components/brand/TinteLogo.astro";
-import OneHunterLogo from "../components/brand/OneHunterLogo.astro";
-import ScrapiLogo from "../components/brand/ScrapiLogo.astro";
-import HeroSection from "../components/layout/HeroSection.astro";
-import SectionHeader from "../components/layout/SectionHeader.astro";
-import PageLayout from "../components/layout/PageLayout.astro";
-import Footer from "../components/layout/Footer.astro";
 import { getCollection } from "astro:content";
-import Text0Logo from "../assets/svgs/t0-logo.svg";
 import Hack0Logo from "../assets/svgs/h0-logo.svg";
-import GlobeIcon from "../components/brand/GlobeIcon.astro";
+import Text0Logo from "../assets/svgs/t0-logo.svg";
 import ChileFlag from "../components/brand/ChileFlag.astro";
 import ColombiaFlag from "../components/brand/ColombiaFlag.astro";
+import ElementsLogo from "../components/brand/ElementsLogo.astro";
+import GlobeIcon from "../components/brand/GlobeIcon.astro";
+import OneHunterLogo from "../components/brand/OneHunterLogo.astro";
 import PeruFlag from "../components/brand/PeruFlag.astro";
+import ScrapiLogo from "../components/brand/ScrapiLogo.astro";
+import TinteLogo from "../components/brand/TinteLogo.astro";
+import Footer from "../components/layout/Footer.astro";
+import HeroSection from "../components/layout/HeroSection.astro";
+import PageLayout from "../components/layout/PageLayout.astro";
+import SectionHeader from "../components/layout/SectionHeader.astro";
+import Layout from "../layouts/Layout.astro";
 
 const allPosts = await getCollection("blog", ({ data }) => {
-    return import.meta.env.PROD ? data.status !== "draft" : true;
+	return import.meta.env.PROD ? data.status !== "draft" : true;
 });
 
 const activePosts = allPosts
-    .filter(({ data }) => data.status === "published")
-    .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+	.filter(({ data }) => data.status === "published")
+	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
 const recentPosts = activePosts.slice(0, 5);
 
 const postsByYear = recentPosts.reduce(
-    (acc, post) => {
-        const year = post.data.pubDate.getFullYear();
-        if (!acc[year]) acc[year] = [];
-        acc[year].push(post);
-        return acc;
-    },
-    {} as Record<number, typeof recentPosts>,
+	(acc, post) => {
+		const year = post.data.pubDate.getFullYear();
+		if (!acc[year]) acc[year] = [];
+		acc[year].push(post);
+		return acc;
+	},
+	{} as Record<number, typeof recentPosts>,
 );
 
 const years = Object.keys(postsByYear)
-    .map(Number)
-    .sort((a, b) => b - a);
+	.map(Number)
+	.sort((a, b) => b - a);
 
 const newestPost = activePosts[0];
 const isNewest = (slug: string) => slug === newestPost?.slug;
 
 const formatDate = (date: Date) => {
-    const day = date.getDate().toString().padStart(2, "0");
-    const month = (date.getMonth() + 1).toString().padStart(2, "0");
-    return `${day}/${month}`;
+	const day = date.getDate().toString().padStart(2, "0");
+	const month = (date.getMonth() + 1).toString().padStart(2, "0");
+	return `${day}/${month}`;
 };
 
 // Data objects for all sections
 const heroData = {
-    name: "Railly Hugo",
-    title: "Hunter",
+	name: "Railly Hugo",
+	title: "Hunter",
 };
 
 const projectsData = [
-    {
-        title: "Elements",
-        description: "Full-stack shadcn components",
-        href: "https://tryelements.dev",
-        icon: "elements" as IconKey,
-    },
-    {
-        title: "text0",
-        description: "AI-powered text editor",
-        href: "https://text0.dev",
-        icon: "text0" as IconKey,
-    },
-    {
-        title: "Tinte",
-        description: "Multiplatform theme builder",
-        href: "https://tinte.dev",
-        icon: "tinte" as IconKey,
-    },
-    {
-        title: "One Hunter Theme",
-        description: "VS Code theme (35k+ downloads)",
-        href: "https://marketplace.visualstudio.com/items?itemName=RaillyHugo.one-hunter",
-        icon: "oneHunter" as IconKey,
-    },
-    {
-        title: "Scrapi",
-        description: "Fast web scraper",
-        href: "https://www.scrapi.fast",
-        icon: "scrapi" as IconKey,
-    },
-    {
-        title: "hack0",
-        description: "LATAM tech ecosystem map",
-        href: "https://hack0.dev",
-        icon: "hack0" as IconKey,
-    },
+	{
+		title: "Elements",
+		description: "Full-stack shadcn components",
+		href: "https://tryelements.dev",
+		icon: "elements" as IconKey,
+	},
+	{
+		title: "text0",
+		description: "AI-powered text editor",
+		href: "https://text0.dev",
+		icon: "text0" as IconKey,
+	},
+	{
+		title: "Tinte",
+		description: "Multiplatform theme builder",
+		href: "https://tinte.dev",
+		icon: "tinte" as IconKey,
+	},
+	{
+		title: "One Hunter Theme",
+		description: "VS Code theme (35k+ downloads)",
+		href: "https://marketplace.visualstudio.com/items?itemName=RaillyHugo.one-hunter",
+		icon: "oneHunter" as IconKey,
+	},
+	{
+		title: "Scrapi",
+		description: "Fast web scraper",
+		href: "https://www.scrapi.fast",
+		icon: "scrapi" as IconKey,
+	},
+	{
+		title: "hack0",
+		description: "LATAM tech ecosystem map",
+		href: "https://hack0.dev",
+		icon: "hack0" as IconKey,
+	},
 ];
 
 const achievementsData = [
-    {
-        year: "2026",
-        achievement: "Online Winner",
-        event: "Platanus Hack 25'| Voting",
-        eventUrl: "https://25.hack.platan.us/vote/scrapifast",
-        project: "Scrapi",
-        projectUrl: "https://scrapi.fast",
-        scope: "cl" as const,
-    },
-    {
-        year: "2025",
-        achievement: "Overall Winner",
-        event: "Next.js Global Hackathon",
-        eventUrl: "https://www.youtube.com/watch?v=KDRwgbwq0_c&t=1142s",
-        project: "text0",
-        projectUrl: "https://text0.dev",
-        scope: "global" as const,
-    },
-    {
-        year: "2025",
-        achievement: "1st Place",
-        event: "Vercel AI Gateway Hackathon",
-        eventUrl: "https://www.youtube.com/watch?v=yKzXoJgPenw&t=28889s",
-        project: "Chess Battle",
-        projectUrl: "https://github.com/crafter-station/chess-battle",
-        scope: "global" as const,
-    },
-    {
-        year: "2025",
-        achievement: "Judge & Mentor",
-        event: "IA Hackathon Colombia Tech Fest",
-        eventUrl:
-            "https://www.linkedin.com/posts/railly-hugo_de-vuelta-en-lima-despu%C3%A9s-de-una-experiencia-activity-7369217715481362432-XgLj",
-        scope: "co" as const,
-    },
-    {
-        year: "2025",
-        achievement: "Outstanding Graduate",
-        event: "UNMSM Engineering",
-        eventUrl: "https://www.youtube.com/watch?v=swdmucdGGLA&t=10362s",
-        scope: "pe" as const,
-    },
-    {
-        year: "2025",
-        achievement: "Finalist",
-        event: "Platanus Hack 25'",
-        eventUrl:
-            "https://www.linkedin.com/posts/railly-hugo_gran-experiencia-en-la-platanus-hack-25-activity-7400005671913684992-A1WW",
-        project: "Scrapi",
-        projectUrl: "https://scrapi.fast",
-        scope: "cl" as const,
-    },
-    {
-        year: "2025",
-        achievement: "Finalist",
-        event: "IA Hackathon LATAM",
-        eventUrl:
-            "https://www.linkedin.com/feed/update/urn:li:ugcPost:7328521111485243393",
-        project: "GitHunter",
-        projectUrl: "https://github.com/crafter-station/githunter",
-        scope: "global" as const,
-    },
-    {
-        year: "2024",
-        achievement: "3rd Place",
-        event: "Vercel × Midudev Hackathon",
-        eventUrl:
-            "https://www.linkedin.com/feed/update/urn:li:ugcPost:7232743944592240640",
-        project: "Tinte",
-        projectUrl: "https://tinte.dev",
-        scope: "global" as const,
-    },
+	{
+		year: "2026",
+		achievement: "Online Winner",
+		event: "Platanus Hack 25'| Voting",
+		eventUrl: "https://25.hack.platan.us/vote/scrapifast",
+		project: "Scrapi",
+		projectUrl: "https://scrapi.fast",
+		scope: "cl" as const,
+	},
+	{
+		year: "2025",
+		achievement: "Overall Winner",
+		event: "Next.js Global Hackathon",
+		eventUrl: "https://www.youtube.com/watch?v=KDRwgbwq0_c&t=1142s",
+		project: "text0",
+		projectUrl: "https://text0.dev",
+		scope: "global" as const,
+	},
+	{
+		year: "2025",
+		achievement: "1st Place",
+		event: "Vercel AI Gateway Hackathon",
+		eventUrl: "https://www.youtube.com/watch?v=yKzXoJgPenw&t=28889s",
+		project: "Chess Battle",
+		projectUrl: "https://github.com/crafter-station/chess-battle",
+		scope: "global" as const,
+	},
+	{
+		year: "2025",
+		achievement: "Judge & Mentor",
+		event: "IA Hackathon Colombia Tech Fest",
+		eventUrl:
+			"https://www.linkedin.com/posts/railly-hugo_de-vuelta-en-lima-despu%C3%A9s-de-una-experiencia-activity-7369217715481362432-XgLj",
+		scope: "co" as const,
+	},
+	{
+		year: "2025",
+		achievement: "Outstanding Graduate",
+		event: "UNMSM Engineering",
+		eventUrl: "https://www.youtube.com/watch?v=swdmucdGGLA&t=10362s",
+		scope: "pe" as const,
+	},
+	{
+		year: "2025",
+		achievement: "Finalist",
+		event: "Platanus Hack 25'",
+		eventUrl:
+			"https://www.linkedin.com/posts/railly-hugo_gran-experiencia-en-la-platanus-hack-25-activity-7400005671913684992-A1WW",
+		project: "Scrapi",
+		projectUrl: "https://scrapi.fast",
+		scope: "cl" as const,
+	},
+	{
+		year: "2025",
+		achievement: "Finalist",
+		event: "IA Hackathon LATAM",
+		eventUrl:
+			"https://www.linkedin.com/feed/update/urn:li:ugcPost:7328521111485243393",
+		project: "GitHunter",
+		projectUrl: "https://github.com/crafter-station/githunter",
+		scope: "global" as const,
+	},
+	{
+		year: "2024",
+		achievement: "3rd Place",
+		event: "Vercel × Midudev Hackathon",
+		eventUrl:
+			"https://www.linkedin.com/feed/update/urn:li:ugcPost:7232743944592240640",
+		project: "Tinte",
+		projectUrl: "https://tinte.dev",
+		scope: "global" as const,
+	},
 ];
 
 // Icon mapping for components
 const iconMap = {
-    elements: ElementsLogo,
-    text0: Text0Logo,
-    tinte: TinteLogo,
-    oneHunter: OneHunterLogo,
-    scrapi: ScrapiLogo,
-    hack0: Hack0Logo,
+	elements: ElementsLogo,
+	text0: Text0Logo,
+	tinte: TinteLogo,
+	oneHunter: OneHunterLogo,
+	scrapi: ScrapiLogo,
+	hack0: Hack0Logo,
 } as const;
 
 type IconKey = keyof typeof iconMap;

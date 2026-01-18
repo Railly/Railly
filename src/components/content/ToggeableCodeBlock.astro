@@ -1,19 +1,19 @@
 ---
 interface Props {
-  title?: string;
-  rawContent: string;
-  previewHeight?: string;
+	title?: string;
+	rawContent: string;
+	previewHeight?: string;
 }
 
 const {
-  title = "Example Content:",
-  rawContent,
-  previewHeight = "250px",
+	title = "Example Content:",
+	rawContent,
+	previewHeight = "250px",
 } = Astro.props;
 
+import katex from "katex";
 // Process the content through markdown and KaTeX
 import { marked } from "marked";
-import katex from "katex";
 import CustomCode from "./CustomCode.astro";
 
 // Configure marked to handle KaTeX
@@ -21,20 +21,20 @@ const renderer = new marked.Renderer();
 renderer.paragraph = (text: string) => `<p>${text}</p>`;
 
 marked.setOptions({
-  renderer,
-  pedantic: false,
-  gfm: true,
+	renderer,
+	pedantic: false,
+	gfm: true,
 });
 
 // Process KaTeX
 const processKatex = (content: string) => {
-  return content
-    .replace(/\$\$(.*?)\$\$/g, (_, tex) =>
-      katex.renderToString(tex, { displayMode: true }),
-    )
-    .replace(/\$(.*?)\$/g, (_, tex) =>
-      katex.renderToString(tex, { displayMode: false }),
-    );
+	return content
+		.replace(/\$\$(.*?)\$\$/g, (_, tex) =>
+			katex.renderToString(tex, { displayMode: true }),
+		)
+		.replace(/\$(.*?)\$/g, (_, tex) =>
+			katex.renderToString(tex, { displayMode: false }),
+		);
 };
 
 const renderedContent = processKatex(await marked.parse(rawContent));

@@ -3,34 +3,34 @@ import { getCollection } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
 
 const posts = await getCollection("blog", ({ data }) => {
-  return import.meta.env.PROD ? data.status === "published" : true;
+	return import.meta.env.PROD ? data.status === "published" : true;
 });
 
 const sortedPosts = posts.sort(
-  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
 
 const postsByYear = sortedPosts.reduce(
-  (acc, post) => {
-    const year = post.data.pubDate.getFullYear();
-    if (!acc[year]) acc[year] = [];
-    acc[year].push(post);
-    return acc;
-  },
-  {} as Record<number, typeof sortedPosts>,
+	(acc, post) => {
+		const year = post.data.pubDate.getFullYear();
+		if (!acc[year]) acc[year] = [];
+		acc[year].push(post);
+		return acc;
+	},
+	{} as Record<number, typeof sortedPosts>,
 );
 
 const years = Object.keys(postsByYear)
-  .map(Number)
-  .sort((a, b) => b - a);
+	.map(Number)
+	.sort((a, b) => b - a);
 
 const newestPost = sortedPosts[0];
 const isNewest = (slug: string) => slug === newestPost?.slug;
 
 const formatDate = (date: Date) => {
-  const day = date.getDate().toString().padStart(2, "0");
-  const month = (date.getMonth() + 1).toString().padStart(2, "0");
-  return `${day}/${month}`;
+	const day = date.getDate().toString().padStart(2, "0");
+	const month = (date.getMonth() + 1).toString().padStart(2, "0");
+	return `${day}/${month}`;
 };
 ---
 

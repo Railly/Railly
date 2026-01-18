@@ -1,12 +1,12 @@
 ---
 interface Props {
-    href?: string;
-    [key: string]: any;
+	href?: string;
+	[key: string]: any;
 }
 
 const { href, ...rest } = Astro.props;
 
-const isExternal = href?.startsWith('http') || href?.startsWith('//');
+const isExternal = href?.startsWith("http") || href?.startsWith("//");
 ---
 
 <a

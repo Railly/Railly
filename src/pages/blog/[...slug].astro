@@ -1,56 +1,54 @@
 ---
-import { getCollection, type CollectionEntry } from "astro:content";
-import Layout from "../../layouts/Layout.astro";
-import TableOfContents from "../../components/content/TableOfContents.astro";
+import { type CollectionEntry, getCollection } from "astro:content";
 import ViewCounter from "../../components/blog/ViewCounter";
-import Quote from "../../components/content/Quote.astro";
 import Link from "../../components/content/Link.astro";
+import Quote from "../../components/content/Quote.astro";
+import TableOfContents from "../../components/content/TableOfContents.astro";
+import Layout from "../../layouts/Layout.astro";
 
 export async function getStaticPaths() {
-    const posts = await getCollection("blog", ({ data }) => {
-        return import.meta.env.PROD ? data.status === "published" : true;
-    });
-    return posts.map((post) => ({
-        params: { slug: post.slug },
-        props: { post },
-    }));
+	const posts = await getCollection("blog", ({ data }) => {
+		return import.meta.env.PROD ? data.status === "published" : true;
+	});
+	return posts.map((post) => ({
+		params: { slug: post.slug },
+		props: { post },
+	}));
 }
 
 interface Props {
-    post: CollectionEntry<"blog">;
+	post: CollectionEntry<"blog">;
 }
 
 const { post } = Astro.props;
 const { Content, headings } = await post.render();
 
 const allPosts = await getCollection("blog", ({ data }) => {
-    return import.meta.env.PROD ? data.status === "published" : true;
+	return import.meta.env.PROD ? data.status === "published" : true;
 });
 const sortedPosts = allPosts.sort(
-    (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
 
 const currentIndex = sortedPosts.findIndex((p) => p.slug === post.slug);
 
 const previousPost =
-    currentIndex < sortedPosts.length - 1
-        ? sortedPosts[currentIndex + 1]
-        : null;
+	currentIndex < sortedPosts.length - 1 ? sortedPosts[currentIndex + 1] : null;
 const nextPost = currentIndex > 0 ? sortedPosts[currentIndex - 1] : null;
 
 const publishedDate = post.data.pubDate.toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
+	year: "numeric",
+	month: "long",
+	day: "numeric",
 });
 
 const updatedDate = post.data.updatedDate
-    ? post.data.updatedDate.toLocaleDateString("en-US", {
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-      })
-    : null;
+	? post.data.updatedDate.toLocaleDateString("en-US", {
+			year: "numeric",
+			month: "long",
+			day: "numeric",
+		})
+	: null;
 
 const ogImage = `/api/og?title=${encodeURIComponent(post.data.title)}&description=${encodeURIComponent(post.data.description || "")}`;
 ---

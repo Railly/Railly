@@ -1,28 +1,28 @@
 ---
 type ColorName =
-    | "blue"
-    | "teal"
-    | "yellow"
-    | "cyan"
-    | "purple"
-    | "magenta"
-    | "orange";
+	| "blue"
+	| "teal"
+	| "yellow"
+	| "cyan"
+	| "purple"
+	| "magenta"
+	| "orange";
 
 interface Props {
-    color?: ColorName;
-    padding?: "p-2.5" | "p-3";
+	color?: ColorName;
+	padding?: "p-2.5" | "p-3";
 }
 
 const { color = "blue", padding = "" } = Astro.props;
 
 const colorMap = {
-    blue: "group-hover:bg-flexoki-blue/10",
-    teal: "group-hover:bg-flexoki-teal/10",
-    yellow: "group-hover:bg-flexoki-yellow/10",
-    cyan: "group-hover:bg-flexoki-cyan/10",
-    purple: "group-hover:bg-flexoki-purple/10",
-    magenta: "group-hover:bg-flexoki-magenta/10",
-    orange: "group-hover:bg-flexoki-orange/10",
+	blue: "group-hover:bg-flexoki-blue/10",
+	teal: "group-hover:bg-flexoki-teal/10",
+	yellow: "group-hover:bg-flexoki-yellow/10",
+	cyan: "group-hover:bg-flexoki-cyan/10",
+	purple: "group-hover:bg-flexoki-purple/10",
+	magenta: "group-hover:bg-flexoki-magenta/10",
+	orange: "group-hover:bg-flexoki-orange/10",
 } as const;
 ---
 

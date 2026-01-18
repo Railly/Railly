@@ -3,36 +3,36 @@ import Card from "./Card.astro";
 import CardIcon from "./CardIcon.astro";
 
 type ColorName =
-  | "blue"
-  | "teal"
-  | "yellow"
-  | "cyan"
-  | "purple"
-  | "magenta"
-  | "orange";
+	| "blue"
+	| "teal"
+	| "yellow"
+	| "cyan"
+	| "purple"
+	| "magenta"
+	| "orange";
 
 interface Props {
-  title: string;
-  description: string;
-  color: ColorName;
-  href?: string;
-  icon?: any;
-  iconPadding?: string;
-  isImage?: boolean;
-  imageSrc?: string;
-  imageAlt?: string;
+	title: string;
+	description: string;
+	color: ColorName;
+	href?: string;
+	icon?: any;
+	iconPadding?: string;
+	isImage?: boolean;
+	imageSrc?: string;
+	imageAlt?: string;
 }
 
 const {
-  title,
-  description,
-  color,
-  href,
-  icon,
-  iconPadding = "p-3",
-  isImage = false,
-  imageSrc,
-  imageAlt
+	title,
+	description,
+	color,
+	href,
+	icon,
+	iconPadding = "p-3",
+	isImage = false,
+	imageSrc,
+	imageAlt,
 } = Astro.props;
 ---
 

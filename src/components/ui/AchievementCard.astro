@@ -3,60 +3,60 @@ import EmbedContainer from "../content/EmbedContainer.astro";
 import Card from "./Card.astro";
 
 type ColorName =
-    | "blue"
-    | "teal"
-    | "yellow"
-    | "cyan"
-    | "purple"
-    | "magenta"
-    | "orange";
+	| "blue"
+	| "teal"
+	| "yellow"
+	| "cyan"
+	| "purple"
+	| "magenta"
+	| "orange";
 
 interface Props {
-    title: string;
-    year: string;
-    color: ColorName;
-    embedId: string;
-    embedSrc: string;
-    embedType: "youtube" | "linkedin" | "linkedin-link" | "image";
-    project?: string;
-    hosts?: string[];
-    linkedinUrl?: string;
-    imageUrl?: string;
-    embedDescription?: string;
-    embedTitle?: string;
-    scope?: string;
+	title: string;
+	year: string;
+	color: ColorName;
+	embedId: string;
+	embedSrc: string;
+	embedType: "youtube" | "linkedin" | "linkedin-link" | "image";
+	project?: string;
+	hosts?: string[];
+	linkedinUrl?: string;
+	imageUrl?: string;
+	embedDescription?: string;
+	embedTitle?: string;
+	scope?: string;
 }
 
 const {
-    title,
-    year,
-    color,
-    embedId,
-    embedSrc,
-    embedType,
-    project,
-    hosts,
-    linkedinUrl,
-    imageUrl,
-    embedDescription,
-    embedTitle,
-    scope,
+	title,
+	year,
+	color,
+	embedId,
+	embedSrc,
+	embedType,
+	project,
+	hosts,
+	linkedinUrl,
+	imageUrl,
+	embedDescription,
+	embedTitle,
+	scope,
 } = Astro.props;
 
 // Host mapping for logos and SVGs
 const hostMap = {
-    vercel: {
-        name: "Vercel",
-        svgPath: "M37.5274 0L75.0548 65H0L37.5274 0Z",
-    },
-    midudev: {
-        name: "Midudev",
-        logo: "/images/midudev-logo.webp",
-    },
-    unmsm: {
-        name: "UNMSM",
-        logo: "/images/unmsm-logo.webp",
-    },
+	vercel: {
+		name: "Vercel",
+		svgPath: "M37.5274 0L75.0548 65H0L37.5274 0Z",
+	},
+	midudev: {
+		name: "Midudev",
+		logo: "/images/midudev-logo.webp",
+	},
+	unmsm: {
+		name: "UNMSM",
+		logo: "/images/unmsm-logo.webp",
+	},
 };
 ---
 

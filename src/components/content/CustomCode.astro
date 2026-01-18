@@ -1,15 +1,15 @@
 ---
 import { Code } from "astro:components";
-import oneHunterThemeLight from "../../../public/themes/one-hunter-light.json";
 import oneHunterThemeDark from "../../..//public/themes/one-hunter-dark.json";
+import oneHunterThemeLight from "../../../public/themes/one-hunter-light.json";
 
 interface Props {
-    className?: string;
-    style?: string;
-    code: string;
-    lang: string;
-    wrap?: boolean;
-    inline?: boolean;
+	className?: string;
+	style?: string;
+	code: string;
+	lang: string;
+	wrap?: boolean;
+	inline?: boolean;
 }
 
 const { className, code, lang, wrap, inline, style } = Astro.props;

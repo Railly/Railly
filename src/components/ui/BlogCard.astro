@@ -1,44 +1,44 @@
 ---
-import Card from "./Card.astro";
-import ClerkLogo from "../brand/ClerkLogo.astro";
 import CrafterIcon from "../../assets/svgs/crafter.svg";
 import ViewCounter from "../blog/ViewCounter";
+import ClerkLogo from "../brand/ClerkLogo.astro";
+import Card from "./Card.astro";
 
 type ColorName =
-    | "blue"
-    | "teal"
-    | "yellow"
-    | "cyan"
-    | "purple"
-    | "magenta"
-    | "orange";
+	| "blue"
+	| "teal"
+	| "yellow"
+	| "cyan"
+	| "purple"
+	| "magenta"
+	| "orange";
 
 interface Props {
-    title: string;
-    description?: string;
-    color: ColorName;
-    href?: string;
-    target?: "_blank" | "_self";
-    className?: string;
-    image?: string;
-    imageDark?: string;
-    date?: string;
-    tag?: string;
-    slug?: string;
+	title: string;
+	description?: string;
+	color: ColorName;
+	href?: string;
+	target?: "_blank" | "_self";
+	className?: string;
+	image?: string;
+	imageDark?: string;
+	date?: string;
+	tag?: string;
+	slug?: string;
 }
 
 const {
-    title,
-    description,
-    color,
-    href,
-    target = "_self",
-    className,
-    image,
-    imageDark,
-    date,
-    tag,
-    slug,
+	title,
+	description,
+	color,
+	href,
+	target = "_self",
+	className,
+	image,
+	imageDark,
+	date,
+	tag,
+	slug,
 } = Astro.props;
 ---
 

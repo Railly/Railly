@@ -1,41 +1,44 @@
 {
-  "name": "railly.dev",
-  "type": "module",
-  "version": "0.0.1",
-  "scripts": {
-    "dev": "astro dev",
-    "build": "astro build",
-    "preview": "astro preview",
-    "astro": "astro"
-  },
-  "overrides": {
-    "estree-walker": "2.0.2"
-  },
-  "resolutions": {
-    "estree-walker": "2.0.2"
-  },
-  "dependencies": {
-    "@astrojs/mdx": "4.3.11",
-    "@astrojs/react": "4.4.2",
-    "@astrojs/vercel": "9.0.2",
-    "@fontsource/ibm-plex-mono": "^5.2.7",
-    "@fontsource/ibm-plex-sans": "^5.2.8",
-    "@fontsource/ibm-plex-serif": "^5.2.7",
-    "@midudev/tailwind-animations": "^0.1.0",
-    "@tailwindcss/typography": "^0.5.19",
-    "@tailwindcss/vite": "^4.1.17",
-    "@types/react": "^19.2.7",
-    "@types/react-dom": "^19.2.3",
-    "@vercel/kv": "^3.0.0",
-    "@vercel/og": "^0.8.6",
-    "astro": "5.15.9",
-    "katex": "^0.16.25",
-    "marked": "^12.0.2",
-    "motion": "^12.23.24",
-    "react": "^19.2.0",
-    "react-dom": "^19.2.0",
-    "rehype-katex": "^7.0.1",
-    "remark-math": "^6.0.0",
-    "tailwindcss": "^4.1.17"
-  }
+	"name": "railly.dev",
+	"type": "module",
+	"version": "0.0.1",
+	"scripts": {
+		"dev": "astro dev",
+		"build": "astro build",
+		"preview": "astro preview",
+		"astro": "astro"
+	},
+	"overrides": {
+		"estree-walker": "2.0.2"
+	},
+	"resolutions": {
+		"estree-walker": "2.0.2"
+	},
+	"dependencies": {
+		"@astrojs/mdx": "4.3.11",
+		"@astrojs/react": "4.4.2",
+		"@astrojs/vercel": "9.0.2",
+		"@fontsource/ibm-plex-mono": "^5.2.7",
+		"@fontsource/ibm-plex-sans": "^5.2.8",
+		"@fontsource/ibm-plex-serif": "^5.2.7",
+		"@midudev/tailwind-animations": "^0.1.0",
+		"@tailwindcss/typography": "^0.5.19",
+		"@tailwindcss/vite": "^4.1.17",
+		"@types/react": "^19.2.7",
+		"@types/react-dom": "^19.2.3",
+		"@vercel/kv": "^3.0.0",
+		"@vercel/og": "^0.8.6",
+		"astro": "5.15.9",
+		"katex": "^0.16.25",
+		"marked": "^12.0.2",
+		"motion": "^12.23.24",
+		"react": "^19.2.0",
+		"react-dom": "^19.2.0",
+		"rehype-katex": "^7.0.1",
+		"remark-math": "^6.0.0",
+		"tailwindcss": "^4.1.17"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "^2.3.11"
+	}
 }

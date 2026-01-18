@@ -1,24 +1,24 @@
 ---
-import { siteConfig } from "../config/site";
 import { ClientRouter } from "astro:transitions";
+import { siteConfig } from "../config/site";
 import "../styles/global.css";
 
 interface Props {
-    title?: string;
-    description?: string;
-    image?: string;
-    article?: boolean;
-    publishedTime?: Date;
-    modifiedTime?: Date;
+	title?: string;
+	description?: string;
+	image?: string;
+	article?: boolean;
+	publishedTime?: Date;
+	modifiedTime?: Date;
 }
 
 const {
-    title = siteConfig.name,
-    description = siteConfig.description,
-    image = siteConfig.ogImage,
-    article = false,
-    publishedTime,
-    modifiedTime,
+	title = siteConfig.name,
+	description = siteConfig.description,
+	image = siteConfig.ogImage,
+	article = false,
+	publishedTime,
+	modifiedTime,
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, siteConfig.url);

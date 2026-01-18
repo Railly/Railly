@@ -1,23 +1,24 @@
 ---
-import PeruFlag from "../brand/PeruFlag.astro";
 import ClerkLogo from "../brand/ClerkLogo.astro";
 import CrafterStationLogo from "../brand/CrafterStationLogo.astro";
+import GitHubLogo from "../brand/GitHubLogo.astro";
 import MidudevLogo from "../brand/MidudevLogo.astro";
+import NextjsLogo from "../brand/NextjsLogo.astro";
+import PeruFlag from "../brand/PeruFlag.astro";
 import UNMSMLogo from "../brand/UNMSMLogo.astro";
 import V0Logo from "../brand/V0Logo.astro";
 import VercelLogo from "../brand/VercelLogo.astro";
-import NextjsLogo from "../brand/NextjsLogo.astro";
-import GitHubLogo from "../brand/GitHubLogo.astro";
 import XLogo from "../brand/XLogo.astro";
 
 interface Props {
-    name: string;
-    title: string;
+	name: string;
+	title: string;
 }
 
 const { name, title } = Astro.props;
 
-const linkClass = "text-flexoki-tx font-medium underline decoration-flexoki-ui hover:bg-flexoki-tx hover:text-flexoki-bg transition-colors";
+const linkClass =
+	"text-flexoki-tx font-medium underline decoration-flexoki-ui hover:bg-flexoki-tx hover:text-flexoki-bg transition-colors";
 ---
 
 <header class="flex gap-2 items-center justify-start w-full">

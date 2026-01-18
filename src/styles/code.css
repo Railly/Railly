@@ -1,69 +1,68 @@
 @layer base {
+	html.dark .astro-code,
+	html.dark .astro-code span {
+		color: var(--color-flexoki-tx) !important;
+		background-color: var(--color-flexoki-ui) !important;
+	}
 
-  html.dark .astro-code,
-  html.dark .astro-code span {
-    color: var(--color-flexoki-tx) !important;
-    background-color: var(--color-flexoki-ui) !important;
-  }
+	html.dark .astro-code,
+	html:not(.dark) .astro-code {
+		border: 1px solid var(--color-flexoki-ui) !important;
+		font-size: 13px;
+		position: relative !important;
+		isolation: isolate !important;
+		background-image: linear-gradient(
+			45deg,
+			rgba(82, 82, 82, 0.05) 25%,
+			transparent 25%,
+			transparent 50%,
+			rgba(82, 82, 82, 0.05) 50%,
+			rgba(82, 82, 82, 0.05) 75%,
+			transparent 75%,
+			transparent
+		) !important;
+		background-size: 8px 8px !important;
+		background-attachment: local !important;
+	}
 
-  html.dark .astro-code,
-  html:not(.dark) .astro-code {
-    border: 1px solid var(--color-flexoki-ui) !important;
-    font-size: 13px;
-    position: relative !important;
-    isolation: isolate !important;
-    background-image: linear-gradient(45deg,
-        rgba(82, 82, 82, 0.05) 25%,
-        transparent 25%,
-        transparent 50%,
-        rgba(82, 82, 82, 0.05) 50%,
-        rgba(82, 82, 82, 0.05) 75%,
-        transparent 75%,
-        transparent) !important;
-    background-size: 8px 8px !important;
-    background-attachment: local !important;
-  }
+	html.dark .astro-code::after,
+	html:not(.dark) .astro-code::after {
+		content: "" !important;
+		position: absolute !important;
+		inset: 0 !important;
+		opacity: 0.985 !important;
+		z-index: 0 !important;
+		pointer-events: none !important;
+	}
 
-  html.dark .astro-code::after,
-  html:not(.dark) .astro-code::after {
-    content: "" !important;
-    position: absolute !important;
-    inset: 0 !important;
-    opacity: 0.985 !important;
-    z-index: 0 !important;
-    pointer-events: none !important;
-  }
+	html.dark .astro-code code,
+	html:not(.dark) .astro-code code {
+		counter-reset: step !important;
+		counter-increment: step calc(var(--start, 1) - 1) !important;
+		position: relative !important;
+		z-index: 1 !important;
+	}
 
-  html.dark .astro-code code,
-  html:not(.dark) .astro-code code {
-    counter-reset: step !important;
-    counter-increment: step calc(var(--start, 1) - 1) !important;
-    position: relative !important;
-    z-index: 1 !important;
-  }
+	html.dark .astro-code code .line::before,
+	html:not(.dark) .astro-code code .line::before {
+		content: counter(step) !important;
+		counter-increment: step !important;
+		width: 1rem !important;
+		margin-right: 1.5rem !important;
+		display: inline-block !important;
+		text-align: right !important;
+		color: var(--color-flexoki-tx-2) !important;
+		opacity: 0.5 !important;
+	}
 
-  html.dark .astro-code code .line::before,
-  html:not(.dark) .astro-code code .line::before {
-    content: counter(step) !important;
-    counter-increment: step !important;
-    width: 1rem !important;
-    margin-right: 1.5rem !important;
-    display: inline-block !important;
-    text-align: right !important;
-    color: var(--color-flexoki-tx-2) !important;
-    opacity: 0.5 !important;
-  }
+	@media (prefers-color-scheme: dark) {
+		.astro-code {
+			color: var(--shiki-dark) !important;
+			background-color: var(--shiki-dark-bg) !important;
+		}
 
-  @media (prefers-color-scheme: dark) {
-
-    .astro-code {
-      color: var(--shiki-dark) !important;
-      background-color: var(--shiki-dark-bg) !important;
-    }
-
-    .astro-code span {
-      color: var(--shiki-dark) !important;
-    }
-  }
-
+		.astro-code span {
+			color: var(--shiki-dark) !important;
+		}
+	}
 }

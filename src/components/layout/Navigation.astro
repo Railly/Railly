@@ -1,22 +1,22 @@
 ---
 interface NavItem {
-    href: string;
-    label: string;
+	href: string;
+	label: string;
 }
 
 const navItems: NavItem[] = [
-    { href: "/", label: "home" },
-    { href: "/about", label: "about" },
-    { href: "/writing", label: "writing" },
+	{ href: "/", label: "home" },
+	{ href: "/about", label: "about" },
+	{ href: "/writing", label: "writing" },
 ];
 
 const { pathname } = Astro.url;
 
 function isActive(href: string): boolean {
-    if (href === "/") {
-        return pathname === "/";
-    }
-    return pathname.startsWith(href);
+	if (href === "/") {
+		return pathname === "/";
+	}
+	return pathname.startsWith(href);
 }
 ---
 

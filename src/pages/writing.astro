@@ -1,57 +1,57 @@
 ---
 import { getCollection } from "astro:content";
-import Layout from "../layouts/Layout.astro";
+import Footer from "../components/layout/Footer.astro";
 import PageLayout from "../components/layout/PageLayout.astro";
 import SectionHeader from "../components/layout/SectionHeader.astro";
-import Footer from "../components/layout/Footer.astro";
+import Layout from "../layouts/Layout.astro";
 
 const allPosts = await getCollection("blog", ({ data }) => {
-    return import.meta.env.PROD ? data.status !== "draft" : true;
+	return import.meta.env.PROD ? data.status !== "draft" : true;
 });
 
 const activePosts = allPosts
-    .filter(({ data }) => data.status === "published")
-    .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+	.filter(({ data }) => data.status === "published")
+	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
 const archivedPosts = allPosts
-    .filter(({ data }) => data.status === "archived")
-    .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+	.filter(({ data }) => data.status === "archived")
+	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
 const postsByYear = activePosts.reduce(
-    (acc, post) => {
-        const year = post.data.pubDate.getFullYear();
-        if (!acc[year]) acc[year] = [];
-        acc[year].push(post);
-        return acc;
-    },
-    {} as Record<number, typeof activePosts>,
+	(acc, post) => {
+		const year = post.data.pubDate.getFullYear();
+		if (!acc[year]) acc[year] = [];
+		acc[year].push(post);
+		return acc;
+	},
+	{} as Record<number, typeof activePosts>,
 );
 
 const archivedByYear = archivedPosts.reduce(
-    (acc, post) => {
-        const year = post.data.pubDate.getFullYear();
-        if (!acc[year]) acc[year] = [];
-        acc[year].push(post);
-        return acc;
-    },
-    {} as Record<number, typeof archivedPosts>,
+	(acc, post) => {
+		const year = post.data.pubDate.getFullYear();
+		if (!acc[year]) acc[year] = [];
+		acc[year].push(post);
+		return acc;
+	},
+	{} as Record<number, typeof archivedPosts>,
 );
 
 const years = Object.keys(postsByYear)
-    .map(Number)
-    .sort((a, b) => b - a);
+	.map(Number)
+	.sort((a, b) => b - a);
 
 const archivedYears = Object.keys(archivedByYear)
-    .map(Number)
-    .sort((a, b) => b - a);
+	.map(Number)
+	.sort((a, b) => b - a);
 
 const newestPost = activePosts[0];
 const isNewest = (slug: string) => slug === newestPost?.slug;
 
 const formatDate = (date: Date) => {
-    const day = date.getDate().toString().padStart(2, "0");
-    const month = (date.getMonth() + 1).toString().padStart(2, "0");
-    return `${day}/${month}`;
+	const day = date.getDate().toString().padStart(2, "0");
+	const month = (date.getMonth() + 1).toString().padStart(2, "0");
+	return `${day}/${month}`;
 };
 ---
 
