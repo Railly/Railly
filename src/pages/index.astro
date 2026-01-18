@@ -11,6 +11,7 @@ import PageLayout from "../components/layout/PageLayout.astro";
 import Footer from "../components/layout/Footer.astro";
 import { getCollection } from "astro:content";
 import Text0Logo from "../assets/svgs/t0-logo.svg";
+import Hack0Logo from "../assets/svgs/h0-logo.svg";
 
 const allPosts = await getCollection("blog", ({ data }) => {
     return import.meta.env.PROD ? data.status !== "draft" : true;
@@ -81,6 +82,12 @@ const projectsData = [
         description: "Fast web scraper",
         href: "https://www.scrapi.fast",
         icon: "scrapi" as IconKey,
+    },
+    {
+        title: "hack0",
+        description: "LATAM tech ecosystem map",
+        href: "https://hack0.dev",
+        icon: "hack0" as IconKey,
     },
 ];
 
@@ -179,6 +186,7 @@ const iconMap = {
     tinte: TinteLogo,
     oneHunter: OneHunterLogo,
     scrapi: ScrapiLogo,
+    hack0: Hack0Logo,
 } as const;
 
 type IconKey = keyof typeof iconMap;

@@ -1,0 +1,16 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <g id="h0-logo">
+    <rect class="h0-background" width="1024" height="1024" rx="128" />
+    <path class="h0-foreground" d="M220 260V764H320V560H460V764H560V260H460V460H320V260H220Z" />
+    <rect class="h0-background" x="590" y="380" width="240" height="340" rx="50" />
+    <path class="h0-foreground" d="M710 340C787.32 340 850 402.68 850 480V620C850 697.32 787.32 760 710 760C632.68 760 570 697.32 570 620V480C570 402.68 632.68 340 710 340ZM710 440C682.39 440 660 462.39 660 490V610C660 637.61 682.39 660 710 660C737.61 660 760 637.61 760 610V490C760 462.39 737.61 440 710 440Z" />
+  </g>
+  <style>
+    .h0-background {
+      fill: var(--color-flexoki-tx);
+    }
+    .h0-foreground {
+      fill: var(--color-flexoki-bg);
+    }
+  </style>
+</svg>
