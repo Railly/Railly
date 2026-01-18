@@ -11,6 +11,10 @@ import Footer from "../components/layout/Footer.astro";
 import { getCollection } from "astro:content";
 import Text0Logo from "../assets/svgs/t0-logo.svg";
 import Hack0Logo from "../assets/svgs/h0-logo.svg";
+import GlobeIcon from "../components/brand/GlobeIcon.astro";
+import ChileFlag from "../components/brand/ChileFlag.astro";
+import ColombiaFlag from "../components/brand/ColombiaFlag.astro";
+import PeruFlag from "../components/brand/PeruFlag.astro";
 
 const allPosts = await getCollection("blog", ({ data }) => {
     return import.meta.env.PROD ? data.status !== "draft" : true;
@@ -91,13 +95,13 @@ const projectsData = [
 ];
 
 const achievementsData = [
-    { year: "2025", achievement: "Overall Winner", event: "Next.js Global Hackathon", eventUrl: "https://nextjs.org/blog/2025-hackathon-winners", project: "text0", projectUrl: "https://text0.dev", scope: "🌎" },
-    { year: "2025", achievement: "1st Place", event: "Vercel AI Gateway Hackathon", eventUrl: "https://vercel.com/blog/vercel-ai-gateway-hackathon-winners", project: "Chess Battle", projectUrl: "https://github.com/crafter-station/chess-battle", scope: "🌎" },
-    { year: "2025", achievement: "Judge & Mentor", event: "IA Hackathon Colombia Tech Fest", eventUrl: "https://www.linkedin.com/posts/railly-hugo_de-vuelta-en-lima-despu%C3%A9s-de-una-experiencia-activity-7369217715481362432-XgLj", scope: "🇨🇴" },
-    { year: "2025", achievement: "Outstanding Graduate", event: "UNMSM Engineering", eventUrl: "https://unmsm.edu.pe", scope: "🇵🇪" },
-    { year: "2025", achievement: "Finalist", event: "Platanus Hack 25'", eventUrl: "https://25.hack.platan.us", project: "Scrapi", projectUrl: "https://www.scrapi.fast", scope: "🇨🇱" },
-    { year: "2025", achievement: "Finalist", event: "IA Hackathon LATAM", eventUrl: "https://ia-hackathon.vercel.app", project: "GitHunter", projectUrl: "https://github.com/crafter-station/githunter", scope: "🌎" },
-    { year: "2024", achievement: "3rd Place", event: "Vercel × Midudev Hackathon", eventUrl: "https://vercel.com/blog/vercel-ship-hackathon-2024-winners", project: "Tinte", projectUrl: "https://tinte.dev", scope: "🌎" },
+    { year: "2025", achievement: "Overall Winner", event: "Next.js Global Hackathon", eventUrl: "https://nextjs.org/blog/2025-hackathon-winners", project: "text0", projectUrl: "https://text0.dev", scope: "global" as const },
+    { year: "2025", achievement: "1st Place", event: "Vercel AI Gateway Hackathon", eventUrl: "https://vercel.com/blog/vercel-ai-gateway-hackathon-winners", project: "Chess Battle", projectUrl: "https://github.com/crafter-station/chess-battle", scope: "global" as const },
+    { year: "2025", achievement: "Judge & Mentor", event: "IA Hackathon Colombia Tech Fest", eventUrl: "https://www.linkedin.com/posts/railly-hugo_de-vuelta-en-lima-despu%C3%A9s-de-una-experiencia-activity-7369217715481362432-XgLj", scope: "co" as const },
+    { year: "2025", achievement: "Outstanding Graduate", event: "UNMSM Engineering", eventUrl: "https://unmsm.edu.pe", scope: "pe" as const },
+    { year: "2025", achievement: "Finalist", event: "Platanus Hack 25'", eventUrl: "https://25.hack.platan.us", project: "Scrapi", projectUrl: "https://www.scrapi.fast", scope: "cl" as const },
+    { year: "2025", achievement: "Finalist", event: "IA Hackathon LATAM", eventUrl: "https://ia-hackathon.vercel.app", project: "GitHunter", projectUrl: "https://github.com/crafter-station/githunter", scope: "global" as const },
+    { year: "2024", achievement: "3rd Place", event: "Vercel × Midudev Hackathon", eventUrl: "https://vercel.com/blog/vercel-ship-hackathon-2024-winners", project: "Tinte", projectUrl: "https://tinte.dev", scope: "global" as const },
 ];
 
 // Icon mapping for components
@@ -263,7 +267,12 @@ type IconKey = keyof typeof iconMap;
                                     <span class="text-flexoki-tx-3">{item.project}</span>
                                 ) : null}
                             </span>
-                            <span class="text-sm shrink-0">{item.scope}</span>
+                            <span class="shrink-0">
+                                {item.scope === "global" && <GlobeIcon width={16} height={16} />}
+                                {item.scope === "pe" && <PeruFlag class="rounded-sm" />}
+                                {item.scope === "cl" && <ChileFlag width={20} height={14} class="rounded-sm" />}
+                                {item.scope === "co" && <ColombiaFlag width={20} height={14} class="rounded-sm" />}
+                            </span>
                         </div>
                     );
                 })}
