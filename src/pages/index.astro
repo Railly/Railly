@@ -91,13 +91,13 @@ const projectsData = [
 ];
 
 const achievementsData = [
-    { year: "2025", achievement: "Overall Winner", event: "Next.js Global Hackathon", project: "text0" },
-    { year: "2025", achievement: "1st Place", event: "Vercel AI Gateway Hackathon", project: "Chess Battle" },
-    { year: "2025", achievement: "Judge & Mentor", event: "IA Hackathon Colombia Tech Fest" },
-    { year: "2025", achievement: "Outstanding Graduate", event: "UNMSM Engineering" },
-    { year: "2025", achievement: "Finalist", event: "Platanus Hack 25'", project: "Scrapi" },
-    { year: "2025", achievement: "Finalist", event: "IA Hackathon LATAM", project: "GitHunter" },
-    { year: "2024", achievement: "3rd Place", event: "Vercel × Midudev Hackathon", project: "Tinte" },
+    { year: "2025", achievement: "Overall Winner", event: "Next.js Global Hackathon", eventUrl: "https://nextjs.org/blog/2025-hackathon-winners", project: "text0", projectUrl: "https://text0.dev", scope: "🌎" },
+    { year: "2025", achievement: "1st Place", event: "Vercel AI Gateway Hackathon", eventUrl: "https://vercel.com/blog/vercel-ai-gateway-hackathon-winners", project: "Chess Battle", projectUrl: "https://github.com/crafter-station/chess-battle", scope: "🌎" },
+    { year: "2025", achievement: "Judge & Mentor", event: "IA Hackathon Colombia Tech Fest", eventUrl: "https://www.linkedin.com/posts/railly-hugo_de-vuelta-en-lima-despu%C3%A9s-de-una-experiencia-activity-7369217715481362432-XgLj", scope: "🇨🇴" },
+    { year: "2025", achievement: "Outstanding Graduate", event: "UNMSM Engineering", eventUrl: "https://unmsm.edu.pe", scope: "🇵🇪" },
+    { year: "2025", achievement: "Finalist", event: "Platanus Hack 25'", eventUrl: "https://25.hack.platan.us", project: "Scrapi", projectUrl: "https://www.scrapi.fast", scope: "🇨🇱" },
+    { year: "2025", achievement: "Finalist", event: "IA Hackathon LATAM", eventUrl: "https://ia-hackathon.vercel.app", project: "GitHunter", projectUrl: "https://github.com/crafter-station/githunter", scope: "🌎" },
+    { year: "2024", achievement: "3rd Place", event: "Vercel × Midudev Hackathon", eventUrl: "https://vercel.com/blog/vercel-ship-hackathon-2024-winners", project: "Tinte", projectUrl: "https://tinte.dev", scope: "🌎" },
 ];
 
 // Icon mapping for components
@@ -233,27 +233,40 @@ type IconKey = keyof typeof iconMap;
         </section>
         <section class="w-full">
             <SectionHeader title="Achievements" />
-            <div class="overflow-x-auto">
-                <table class="w-full text-sm">
-                    <thead>
-                        <tr class="border-b border-flexoki-ui text-left">
-                            <th class="py-2 pr-4 font-medium text-flexoki-tx-2 w-16">Year</th>
-                            <th class="py-2 pr-4 font-medium text-flexoki-tx-2">Achievement</th>
-                            <th class="py-2 pr-4 font-medium text-flexoki-tx-2 hidden sm:table-cell">Event</th>
-                            <th class="py-2 font-medium text-flexoki-tx-2 hidden md:table-cell">Project</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {achievementsData.map((item) => (
-                            <tr class="border-b border-flexoki-ui/50 hover:bg-flexoki-bg-2 transition-colors">
-                                <td class="py-3 pr-4 text-flexoki-tx-3 tabular-nums">{item.year}</td>
-                                <td class="py-3 pr-4 text-flexoki-tx font-medium">{item.achievement}</td>
-                                <td class="py-3 pr-4 text-flexoki-tx-2 hidden sm:table-cell">{item.event}</td>
-                                <td class="py-3 text-flexoki-tx-3 hidden md:table-cell">{item.project || "—"}</td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
+            <div class="space-y-0">
+                {achievementsData.map((item, index) => {
+                    const prevYear = index > 0 ? achievementsData[index - 1].year : null;
+                    const showYear = item.year !== prevYear;
+                    return (
+                        <div class="group flex items-baseline gap-4 py-3 border-b border-flexoki-ui/50 hover:bg-flexoki-bg-2 transition-colors -mx-3 px-3">
+                            <span class="text-flexoki-tx-3 tabular-nums w-12 shrink-0 text-sm">
+                                {showYear ? item.year : ""}
+                            </span>
+                            <span class="w-36 shrink-0 text-flexoki-tx font-medium text-sm">
+                                {item.achievement}
+                            </span>
+                            <span class="flex-1 text-sm">
+                                {item.eventUrl ? (
+                                    <a href={item.eventUrl} target="_blank" rel="noopener noreferrer" class="text-flexoki-tx-2 hover:text-flexoki-tx underline decoration-flexoki-ui/50 hover:decoration-flexoki-ui transition-colors">
+                                        {item.event}
+                                    </a>
+                                ) : (
+                                    <span class="text-flexoki-tx-2">{item.event}</span>
+                                )}
+                            </span>
+                            <span class="text-sm hidden sm:block shrink-0">
+                                {item.project && item.projectUrl ? (
+                                    <a href={item.projectUrl} target="_blank" rel="noopener noreferrer" class="text-flexoki-tx-3 hover:text-flexoki-tx underline decoration-flexoki-ui/50 hover:decoration-flexoki-ui transition-colors">
+                                        {item.project}
+                                    </a>
+                                ) : item.project ? (
+                                    <span class="text-flexoki-tx-3">{item.project}</span>
+                                ) : null}
+                            </span>
+                            <span class="text-sm shrink-0">{item.scope}</span>
+                        </div>
+                    );
+                })}
             </div>
         </section>
         <Footer />
