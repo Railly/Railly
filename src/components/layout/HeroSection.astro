@@ -1,6 +1,9 @@
 ---
 import PeruFlag from "../brand/PeruFlag.astro";
 import ClerkLogo from "../brand/ClerkLogo.astro";
+import CrafterStationLogo from "../brand/CrafterStationLogo.astro";
+import MidudevLogo from "../brand/MidudevLogo.astro";
+import UNMSMLogo from "../brand/UNMSMLogo.astro";
 import V0Logo from "../brand/V0Logo.astro";
 import VercelLogo from "../brand/VercelLogo.astro";
 
@@ -30,7 +33,7 @@ const { name, title } = Astro.props;
 
 <section class="flex flex-col gap-2">
     <p class="text-base text-flexoki-tx !m-0">
-        I work as a <i>software engineer</i> at <ClerkLogo
+        I'm a <i>software engineer</i> at <ClerkLogo
             width={16}
             height={16}
             class="inline-block mb-0.5 align-text-bottom"
@@ -38,20 +41,55 @@ const { name, title } = Astro.props;
         <a
             href="https://clerk.com"
             target="_blank"
-            class="text-flexoki-tx underline">Clerk</a
-        >. I also create open-source tools and projects that push the boundaries
-        of UI and developer experience.
+            class="text-flexoki-tx underline decoration-flexoki-ui hover:bg-flexoki-tx hover:text-flexoki-bg transition-colors">Clerk</a
+        > and founder of <CrafterStationLogo
+            width={16}
+            height={16}
+            class="inline-block mb-0.5 mr-0.5 align-text-bottom"
+        />
+        <a
+            href="https://github.com/crafter-station"
+            target="_blank"
+            class="text-flexoki-tx underline decoration-flexoki-ui hover:bg-flexoki-tx hover:text-flexoki-bg transition-colors">Crafter Station</a
+        >.
     </p>
 
     <p class="text-base text-flexoki-tx !m-0">
-        Find my work on <a
+        I teach Parallel Computing at <UNMSMLogo
+            width={16}
+            height={16}
+            class="inline-block mb-0.5 mr-0.5 align-text-bottom rounded-sm"
+        /><a
+            href="https://unmsm.edu.pe"
+            target="_blank"
+            class="text-flexoki-tx underline decoration-flexoki-ui hover:bg-flexoki-tx hover:text-flexoki-bg transition-colors">UNMSM</a
+        > and build platforms with <MidudevLogo
+            width={18}
+            height={16}
+            class="inline-block mb-0.5 mr-0.5 align-text-bottom"
+        /><a
+            href="https://midu.dev"
+            target="_blank"
+            class="text-flexoki-tx underline decoration-flexoki-ui hover:bg-flexoki-tx hover:text-flexoki-bg transition-colors">Midudev</a
+        >, the leading Hispanic tech streamer.
+    </p>
+
+    <p class="text-base text-flexoki-tx !m-0">
+        Winner of the <a
+            href="https://luma.com/vsi4m4l8"
+            target="_blank"
+            class="text-flexoki-tx underline decoration-flexoki-ui hover:bg-flexoki-tx hover:text-flexoki-bg transition-colors">Next.js Global Hackathon 2025</a
+        >. Find my work on <a
             href="https://github.com/railly"
             target="_blank"
-            class="text-flexoki-tx underline">GitHub</a
+            class="text-flexoki-tx underline decoration-flexoki-ui hover:bg-flexoki-tx hover:text-flexoki-bg transition-colors">GitHub</a
         > and <a
             href="https://x.com/raillyhugo"
             target="_blank"
-            class="text-flexoki-tx underline">𝕏 / Twitter</a
+            class="text-flexoki-tx underline decoration-flexoki-ui hover:bg-flexoki-tx hover:text-flexoki-bg transition-colors">𝕏</a
+        >, or <a
+            href="/about"
+            class="text-flexoki-tx underline decoration-flexoki-ui hover:bg-flexoki-tx hover:text-flexoki-bg transition-colors">get to know me</a
         >.
     </p>
 
