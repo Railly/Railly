@@ -1,6 +1,5 @@
 @import "tailwindcss";
 @import "katex/dist/katex.min.css";
-@import "./flexoki.css";
 @import "./reset.css";
 @import "./fonts.css";
 @import "./code.css";
@@ -13,83 +12,80 @@
     --font-serif: "IBM Plex Serif", "serif";
     --font-mono: "IBM Plex Mono", "monospace";
 
-    /* Custom Breakpoints */
     --breakpoint-mobile: 40rem;
 
-    --color-primary: oklch(0.9084 0.2171 105.88);
-    /* Base Colors */
-    --color-flexoki-bg: var(--color-paper);
-    --color-flexoki-bg-2: var(--color-base-50);
-    --color-flexoki-ui: var(--color-base-100);
-    --color-flexoki-ui-2: var(--color-base-150);
-    --color-flexoki-ui-3: var(--color-base-200);
-    --color-flexoki-tx: var(--color-black);
-    --color-flexoki-tx-2: var(--color-base-600);
-    --color-flexoki-tx-3: var(--color-base-300);
+    --color-primary: #525252;
 
-    /* Colors */
-    --color-flexoki-red: var(--color-red-600);
-    --color-flexoki-orange: var(--color-orange-600);
-    --color-flexoki-yellow: var(--color-yellow-600);
-    --color-flexoki-green: var(--color-green-600);
-    --color-flexoki-cyan: var(--color-cyan-600);
-    --color-flexoki-blue: var(--color-blue-600);
-    --color-flexoki-purple: var(--color-purple-600);
-    --color-flexoki-magenta: var(--color-magenta-600);
-    --color-flexoki-amber: var(--color-amber-600);
-    --color-flexoki-lime: var(--color-lime-600);
-    --color-flexoki-emerald: var(--color-emerald-600);
-    --color-flexoki-teal: var(--color-teal-600);
-    --color-flexoki-sky: var(--color-sky-600);
-    --color-flexoki-indigo: var(--color-indigo-600);
-    --color-flexoki-violet: var(--color-violet-600);
-    --color-flexoki-fuchsia: var(--color-fuchsia-600);
-    --color-flexoki-pink: var(--color-pink-600);
-    --color-flexoki-rose: var(--color-rose-600);
-    --color-flexoki-slate: var(--color-slate-600);
-    --color-flexoki-gray: var(--color-gray-600);
-    --color-flexoki-zinc: var(--color-zinc-600);
-    --color-flexoki-neutral: var(--color-neutral-600);
-    --color-flexoki-stone: var(--color-stone-600);
+    --color-flexoki-bg: #FDFDFC;
+    --color-flexoki-bg-2: #f5f5f4;
+    --color-flexoki-ui: #e5e5e5;
+    --color-flexoki-ui-2: #d4d4d4;
+    --color-flexoki-ui-3: #c4c4c4;
+    --color-flexoki-tx: #111111;
+    --color-flexoki-tx-2: #525252;
+    --color-flexoki-tx-3: #a3a3a3;
+
+    --color-flexoki-red: #525252;
+    --color-flexoki-orange: #525252;
+    --color-flexoki-yellow: #525252;
+    --color-flexoki-green: #525252;
+    --color-flexoki-cyan: #525252;
+    --color-flexoki-blue: #525252;
+    --color-flexoki-purple: #525252;
+    --color-flexoki-magenta: #525252;
+    --color-flexoki-amber: #525252;
+    --color-flexoki-lime: #525252;
+    --color-flexoki-emerald: #525252;
+    --color-flexoki-teal: #525252;
+    --color-flexoki-sky: #525252;
+    --color-flexoki-indigo: #525252;
+    --color-flexoki-violet: #525252;
+    --color-flexoki-fuchsia: #525252;
+    --color-flexoki-pink: #525252;
+    --color-flexoki-rose: #525252;
+    --color-flexoki-slate: #525252;
+    --color-flexoki-gray: #525252;
+    --color-flexoki-zinc: #525252;
+    --color-flexoki-neutral: #525252;
+    --color-flexoki-stone: #525252;
 }
 
 @media (prefers-color-scheme: dark) {
     :root {
-        --color-primary: #fed400;
-        /* Base Colors */
-        --color-flexoki-bg: var(--color-black);
-        --color-flexoki-bg-2: var(--color-base-950);
-        --color-flexoki-ui: var(--color-base-900);
-        --color-flexoki-ui-2: var(--color-base-850);
-        --color-flexoki-ui-3: var(--color-base-800);
-        --color-flexoki-tx: var(--color-base-200);
-        --color-flexoki-tx-2: var(--color-base-500);
-        --color-flexoki-tx-3: var(--color-base-700);
+        --color-primary: #a3a3a3;
 
-        /* Colors */
-        --color-flexoki-red: var(--color-red-400);
-        --color-flexoki-orange: var(--color-orange-400);
-        --color-flexoki-yellow: var(--color-yellow-400);
-        --color-flexoki-green: var(--color-green-400);
-        --color-flexoki-cyan: var(--color-cyan-400);
-        --color-flexoki-blue: var(--color-blue-400);
-        --color-flexoki-purple: var(--color-purple-400);
-        --color-flexoki-magenta: var(--color-magenta-400);
-        --color-flexoki-amber: var(--color-amber-400);
-        --color-flexoki-lime: var(--color-lime-400);
-        --color-flexoki-emerald: var(--color-emerald-400);
-        --color-flexoki-teal: var(--color-teal-400);
-        --color-flexoki-sky: var(--color-sky-400);
-        --color-flexoki-indigo: var(--color-indigo-400);
-        --color-flexoki-violet: var(--color-violet-400);
-        --color-flexoki-fuchsia: var(--color-fuchsia-400);
-        --color-flexoki-pink: var(--color-pink-400);
-        --color-flexoki-rose: var(--color-rose-400);
-        --color-flexoki-slate: var(--color-slate-400);
-        --color-flexoki-gray: var(--color-gray-400);
-        --color-flexoki-zinc: var(--color-zinc-400);
-        --color-flexoki-neutral: var(--color-neutral-400);
-        --color-flexoki-stone: var(--color-stone-400);
+        --color-flexoki-bg: #111111;
+        --color-flexoki-bg-2: #1a1a1a;
+        --color-flexoki-ui: #262626;
+        --color-flexoki-ui-2: #2e2e2e;
+        --color-flexoki-ui-3: #3a3a3a;
+        --color-flexoki-tx: #fafafa;
+        --color-flexoki-tx-2: #a3a3a3;
+        --color-flexoki-tx-3: #525252;
+
+        --color-flexoki-red: #a3a3a3;
+        --color-flexoki-orange: #a3a3a3;
+        --color-flexoki-yellow: #a3a3a3;
+        --color-flexoki-green: #a3a3a3;
+        --color-flexoki-cyan: #a3a3a3;
+        --color-flexoki-blue: #a3a3a3;
+        --color-flexoki-purple: #a3a3a3;
+        --color-flexoki-magenta: #a3a3a3;
+        --color-flexoki-amber: #a3a3a3;
+        --color-flexoki-lime: #a3a3a3;
+        --color-flexoki-emerald: #a3a3a3;
+        --color-flexoki-teal: #a3a3a3;
+        --color-flexoki-sky: #a3a3a3;
+        --color-flexoki-indigo: #a3a3a3;
+        --color-flexoki-violet: #a3a3a3;
+        --color-flexoki-fuchsia: #a3a3a3;
+        --color-flexoki-pink: #a3a3a3;
+        --color-flexoki-rose: #a3a3a3;
+        --color-flexoki-slate: #a3a3a3;
+        --color-flexoki-gray: #a3a3a3;
+        --color-flexoki-zinc: #a3a3a3;
+        --color-flexoki-neutral: #a3a3a3;
+        --color-flexoki-stone: #a3a3a3;
     }
 }
 
@@ -97,11 +93,11 @@
     text-decoration: underline;
     text-underline-offset: 4px;
     text-decoration-thickness: 1px;
-    text-decoration-color: var(--color-primary);
-    transition: text-decoration-color 0.2s ease-in-out;
+    text-decoration-color: var(--color-flexoki-tx-3);
+    transition: text-decoration-color 0.2s ease-in-out, color 0.2s ease-in-out, background-color 0.2s ease-in-out;
 
     &:hover {
         color: var(--color-flexoki-bg);
-        background-color: var(--color-primary);
+        background-color: var(--color-flexoki-tx);
     }
 }

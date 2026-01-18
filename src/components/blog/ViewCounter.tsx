@@ -8,6 +8,14 @@ interface ViewCounterProps {
 
 const incrementedSlugs = new Set<string>();
 
+const isDev = () => {
+  if (typeof window === "undefined") return false;
+  return (
+    window.location.hostname === "localhost" ||
+    window.location.hostname === "127.0.0.1"
+  );
+};
+
 export default function ViewCounter({
   slug,
   increment = false,
@@ -18,6 +26,10 @@ export default function ViewCounter({
 
   useEffect(() => {
     if (!slug || hasFetchedRef.current) {
+      return;
+    }
+
+    if (isDev()) {
       return;
     }
 
@@ -54,7 +66,6 @@ export default function ViewCounter({
       })
       .catch((error) => {
         if (isMounted) {
-          console.error("Error fetching views:", error);
           setViews(0);
         }
       });
@@ -64,7 +75,7 @@ export default function ViewCounter({
     };
   }, [slug, increment]);
 
-  if (views === null) {
+  if (isDev() || views === null) {
     return null;
   }
 

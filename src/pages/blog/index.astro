@@ -1,7 +1,6 @@
 ---
 import { getCollection } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
-import Card from "../../components/ui/Card.astro";
 
 const posts = await getCollection("blog", ({ data }) => {
   return import.meta.env.PROD ? data.status === "published" : true;
@@ -10,27 +9,60 @@ const posts = await getCollection("blog", ({ data }) => {
 const sortedPosts = posts.sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
+
+const postsByYear = sortedPosts.reduce(
+  (acc, post) => {
+    const year = post.data.pubDate.getFullYear();
+    if (!acc[year]) acc[year] = [];
+    acc[year].push(post);
+    return acc;
+  },
+  {} as Record<number, typeof sortedPosts>,
+);
+
+const years = Object.keys(postsByYear)
+  .map(Number)
+  .sort((a, b) => b - a);
+
+const newestPost = sortedPosts[0];
+const isNewest = (slug: string) => slug === newestPost?.slug;
+
+const formatDate = (date: Date) => {
+  const day = date.getDate().toString().padStart(2, "0");
+  const month = (date.getMonth() + 1).toString().padStart(2, "0");
+  return `${day}/${month}`;
+};
 ---
 
 <Layout>
   <main class="max-w-2xl mx-auto px-6 py-12">
-    <h1 class="text-3xl font-medium text-flexoki-tx mb-8">Writing</h1>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <h1 class="text-3xl font-medium text-flexoki-tx mb-12">Writing</h1>
+    <div class="space-y-1">
       {
-        sortedPosts.map((post) => (
-          <Card
-            href={`/blog/${post.slug}`}
-            target="_self"
-            color="purple"
-            transitionName={`blog-card-${post.slug}`}
-          >
-            <div class="relative z-10">
-              <h3 class="font-serif text-flexoki-tx group-hover:text-flexoki-purple transition-colors mb-2 font-medium">
-                {post.data.title}
-              </h3>
-              <p class="text-sm text-flexoki-tx-2">{post.data.description}</p>
-            </div>
-          </Card>
+        years.map((year) => (
+          <>
+            {postsByYear[year].map((post, index) => (
+              <a
+                href={`/blog/${post.slug}`}
+                class="group flex items-baseline gap-4 py-3 border-b border-flexoki-ui hover:bg-flexoki-bg-2 transition-colors -mx-3 px-3"
+              >
+                <span class="text-flexoki-tx-3 tabular-nums w-12 shrink-0 text-sm">
+                  {index === 0 ? year : ""}
+                </span>
+                <span class="flex-1 text-flexoki-tx group-hover:text-flexoki-tx font-medium">
+                  {post.data.title}
+                  {isNewest(post.slug) && (
+                    <span class="ml-2 text-xs font-normal px-1.5 py-0.5 bg-flexoki-ui rounded text-flexoki-tx-2">
+                      Newest
+                    </span>
+                  )}
+                </span>
+                <span class="text-flexoki-tx-3 tabular-nums text-sm shrink-0">
+                  {formatDate(post.data.pubDate)}
+                </span>
+              </a>
+            ))}
+          </>
         ))
       }
     </div>

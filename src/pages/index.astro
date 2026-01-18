@@ -3,17 +3,13 @@ import Layout from "../layouts/Layout.astro";
 import ElementsLogo from "../components/brand/ElementsLogo.astro";
 import TinteLogo from "../components/brand/TinteLogo.astro";
 import AchievementCard from "../components/ui/AchievementCard.astro";
-import PresentCard from "../components/ui/PresentCard.astro";
 import ProjectCard from "../components/ui/ProjectCard.astro";
-import BlogCard from "../components/ui/BlogCard.astro";
 import HeroSection from "../components/layout/HeroSection.astro";
 import SectionHeader from "../components/layout/SectionHeader.astro";
 import PageLayout from "../components/layout/PageLayout.astro";
 import Footer from "../components/layout/Footer.astro";
 import { getCollection } from "astro:content";
 import Text0Logo from "../assets/svgs/t0-logo.svg";
-import CrafterIcon from "../assets/svgs/crafter.svg";
-import ClerkLogo from "../components/brand/ClerkLogo.astro";
 
 const allPosts = await getCollection("blog", ({ data }) => {
     return import.meta.env.PROD ? data.status !== "draft" : true;
@@ -23,50 +19,36 @@ const activePosts = allPosts
     .filter(({ data }) => data.status === "published")
     .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
-const archivedPosts = allPosts
-    .filter(({ data }) => data.status === "archived")
-    .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const recentPosts = activePosts.slice(0, 5);
+
+const postsByYear = recentPosts.reduce(
+    (acc, post) => {
+        const year = post.data.pubDate.getFullYear();
+        if (!acc[year]) acc[year] = [];
+        acc[year].push(post);
+        return acc;
+    },
+    {} as Record<number, typeof recentPosts>,
+);
+
+const years = Object.keys(postsByYear)
+    .map(Number)
+    .sort((a, b) => b - a);
+
+const newestPost = activePosts[0];
+const isNewest = (slug: string) => slug === newestPost?.slug;
+
+const formatDate = (date: Date) => {
+    const day = date.getDate().toString().padStart(2, "0");
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
+    return `${day}/${month}`;
+};
 
 // Data objects for all sections
 const heroData = {
     name: "Railly Hugo",
     title: "Hunter",
 };
-
-const presentData = [
-    {
-        title: "Clerk",
-        description: "AI Enablement Team",
-        color: "blue" as const,
-        href: "https://clerk.com",
-        icon: "clerk" as IconKey,
-    },
-    {
-        title: "Crafter Station",
-        description: "Open-source organization",
-        color: "orange" as const,
-        href: "https://tinte.dev",
-        icon: "crafter" as IconKey,
-    },
-    {
-        title: "UNMSM",
-        description: "Teaching & Researching",
-        color: "yellow" as const,
-        iconPadding: "p-3",
-        isImage: true,
-        imageSrc: "/images/unmsm-logo.webp",
-        imageAlt: "UNMSM Research",
-    },
-    {
-        title: "Midudev Team",
-        description: "The leading Hispanic streamer",
-        color: "teal" as const,
-        iconPadding: "p-2.5",
-        isImage: true,
-        imageSrc: "/images/midudev-logo.webp",
-        imageAlt: "Midudev Team",
-    },
-];
 
 const projectsData = [
     {
@@ -192,8 +174,6 @@ const achievementsData = [
 
 // Icon mapping for components
 const iconMap = {
-    clerk: ClerkLogo,
-    crafter: CrafterIcon,
     elements: ElementsLogo,
     text0: Text0Logo,
     tinte: TinteLogo,
@@ -206,38 +186,6 @@ type IconKey = keyof typeof iconMap;
     <PageLayout class="flex flex-col gap-10">
         <HeroSection name={heroData.name} title={heroData.title} />
 
-        <section class="flex flex-col gap-4 w-full">
-            <SectionHeader title="Present" />
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {
-                    presentData.map((item) => {
-                        const IconComponent =
-                            item.icon && item.icon in iconMap
-                                ? iconMap[item.icon as IconKey]
-                                : null;
-                        return (
-                            <PresentCard
-                                title={item.title}
-                                description={item.description}
-                                color={item.color}
-                                href={item.href}
-                                iconPadding={item.iconPadding}
-                                isImage={item.isImage}
-                                imageSrc={item.imageSrc}
-                                imageAlt={item.imageAlt}
-                            >
-                                {IconComponent && (
-                                    <IconComponent
-                                        slot="icon"
-                                        class={`size-9 text-flexoki-${item.color === "blue" ? "tx" : item.color}`}
-                                    />
-                                )}
-                            </PresentCard>
-                        );
-                    })
-                }
-            </div>
-        </section>
         <section class="flex flex-col gap-4 w-full">
             <SectionHeader title="Projects" />
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -311,86 +259,42 @@ type IconKey = keyof typeof iconMap;
                     </span>
                 </a>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="space-y-0">
                 {
-                    activePosts.map((post) => (
-                        <BlogCard
-                            href={`/blog/${post.slug}`}
-                            target="_self"
-                            color="purple"
-                            title={post.data.title}
-                            image={post.data.image}
-                            imageDark={post.data.imageDark}
-                            date={post.data.pubDate.toLocaleDateString(
-                                "en-US",
-                                {
-                                    year: "numeric",
-                                    month: "long",
-                                },
-                            )}
-                            tag={post.data.tags?.[0]}
-                            slug={post.slug}
-                        />
+                    years.map((year) => (
+                        <>
+                            {postsByYear[year].map((post, index) => (
+                                <a
+                                    href={`/blog/${post.slug}`}
+                                    class="group flex items-baseline gap-4 py-3 border-b border-flexoki-ui hover:bg-flexoki-bg-2 transition-colors -mx-3 px-3"
+                                >
+                                    <span class="text-flexoki-tx-3 tabular-nums w-12 shrink-0 text-sm">
+                                        {index === 0 ? year : ""}
+                                    </span>
+                                    <span class="flex-1 text-flexoki-tx group-hover:text-flexoki-tx font-medium">
+                                        {post.data.title}
+                                        {isNewest(post.slug) && (
+                                            <span class="ml-2 text-xs font-normal px-1.5 py-0.5 bg-flexoki-ui rounded text-flexoki-tx-2">
+                                                Newest
+                                            </span>
+                                        )}
+                                    </span>
+                                    <span class="text-flexoki-tx-3 tabular-nums text-sm shrink-0">
+                                        {formatDate(post.data.pubDate)}
+                                    </span>
+                                </a>
+                            ))}
+                        </>
                     ))
                 }
                 {
-                    activePosts.length < 2 && (
-                        <div class="group relative overflow-hidden rounded-lg border border-flexoki-ui transition-all hover:border-flexoki-yellow/30 flex items-center justify-center min-h-[200px]">
-                            <div class="absolute inset-0 bg-gradient-to-tr from-flexoki-yellow/[0.03] to-transparent opacity-80 [mask-image:linear-gradient(45deg,#000_25%,transparent_25%,transparent_50%,#000_50%,#000_75%,transparent_75%,transparent)] [mask-size:8px_8px] pointer-events-none" />
-                            <div class="relative z-10 text-center p-8">
-                                <div class="mb-3 flex justify-center">
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width="24"
-                                        height="24"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        class="size-8 fill-flexoki-yellow/50"
-                                    >
-                                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
-                                    </svg>
-                                </div>
-                                <h3 class="font-serif text-flexoki-tx font-medium text-lg mb-2">
-                                    More stories coming soon
-                                </h3>
-                                <p class="text-sm text-flexoki-tx-2">
-                                    Currently crafting new content
-                                </p>
-                            </div>
+                    recentPosts.length === 0 && (
+                        <div class="py-12 text-center">
+                            <p class="text-flexoki-tx-2">More stories coming soon</p>
                         </div>
                     )
                 }
             </div>
-            {
-                archivedPosts.length > 0 && (
-                    <div class="archived-posts hidden mt-8 pt-6 border-t border-flexoki-ui/30">
-                        <p class="text-xs text-flexoki-tx-3 mb-4 font-mono">
-                            Older writings — kept for reference
-                        </p>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 opacity-60">
-                            {archivedPosts.map((post) => (
-                                <BlogCard
-                                    href={`/blog/${post.slug}`}
-                                    target="_self"
-                                    color="purple"
-                                    title={post.data.title}
-                                    image={post.data.image}
-                                    imageDark={post.data.imageDark}
-                                    date={post.data.pubDate.toLocaleDateString(
-                                        "en-US",
-                                        {
-                                            year: "numeric",
-                                            month: "long",
-                                        },
-                                    )}
-                                    tag={post.data.tags?.[0]}
-                                    slug={post.slug}
-                                />
-                            ))}
-                        </div>
-                    </div>
-                )
-            }
         </section>
         <section class="flex flex-col gap-4 w-full">
             <SectionHeader title="Achievements" />
@@ -419,30 +323,3 @@ type IconKey = keyof typeof iconMap;
         <Footer />
     </PageLayout>
 </Layout>
-
-<script>
-    class ArchiveToggle extends HTMLElement {
-        connectedCallback() {
-            const button = this.querySelector("button");
-            const icon = this.querySelector(".archive-icon");
-            const archivedSection = document.querySelector(".archived-posts");
-
-            if (button && icon && archivedSection) {
-                button.addEventListener("click", () => {
-                    const isHidden =
-                        archivedSection.classList.contains("hidden");
-
-                    if (isHidden) {
-                        archivedSection.classList.remove("hidden");
-                        icon.classList.add("rotate-180");
-                    } else {
-                        archivedSection.classList.add("hidden");
-                        icon.classList.remove("rotate-180");
-                    }
-                });
-            }
-        }
-    }
-
-    customElements.define("archive-toggle", ArchiveToggle);
-</script>

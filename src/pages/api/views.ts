@@ -24,6 +24,22 @@ export const GET: APIRoute = async ({ url }) => {
     );
   }
 
+  if (import.meta.env.DEV) {
+    return new Response(
+      JSON.stringify({
+        slug: id,
+        views: 0,
+        dev: true,
+      }),
+      {
+        status: 200,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+    );
+  }
+
   try {
     const kv = createClient({
       url: import.meta.env.KV_REST_API_URL!,

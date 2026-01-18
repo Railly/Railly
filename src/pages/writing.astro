@@ -3,7 +3,6 @@ import { getCollection } from "astro:content";
 import Layout from "../layouts/Layout.astro";
 import PageLayout from "../components/layout/PageLayout.astro";
 import SectionHeader from "../components/layout/SectionHeader.astro";
-import BlogCard from "../components/ui/BlogCard.astro";
 import Footer from "../components/layout/Footer.astro";
 
 const allPosts = await getCollection("blog", ({ data }) => {
@@ -17,118 +16,140 @@ const activePosts = allPosts
 const archivedPosts = allPosts
     .filter(({ data }) => data.status === "archived")
     .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const postsByYear = activePosts.reduce(
+    (acc, post) => {
+        const year = post.data.pubDate.getFullYear();
+        if (!acc[year]) acc[year] = [];
+        acc[year].push(post);
+        return acc;
+    },
+    {} as Record<number, typeof activePosts>,
+);
+
+const archivedByYear = archivedPosts.reduce(
+    (acc, post) => {
+        const year = post.data.pubDate.getFullYear();
+        if (!acc[year]) acc[year] = [];
+        acc[year].push(post);
+        return acc;
+    },
+    {} as Record<number, typeof archivedPosts>,
+);
+
+const years = Object.keys(postsByYear)
+    .map(Number)
+    .sort((a, b) => b - a);
+
+const archivedYears = Object.keys(archivedByYear)
+    .map(Number)
+    .sort((a, b) => b - a);
+
+const newestPost = activePosts[0];
+const isNewest = (slug: string) => slug === newestPost?.slug;
+
+const formatDate = (date: Date) => {
+    const day = date.getDate().toString().padStart(2, "0");
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
+    return `${day}/${month}`;
+};
 ---
 
 <Layout>
     <PageLayout class="flex flex-col gap-8">
         <div class="flex items-center justify-between">
-                    <SectionHeader title="Writing" className="mb-0" />
-                    {
-                        archivedPosts.length > 0 && (
-                            <archive-toggle>
-                                <button class="group text-xs text-flexoki-tx-3 hover:text-flexoki-tx-2 transition-colors duration-200">
-                                    <span class="flex items-center gap-1">
-                                        <span>archive</span>
-                                        <svg
-                                            width="10"
-                                            height="10"
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            stroke-width="2"
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            class="archive-icon transition-transform duration-200"
-                                        >
-                                            <polyline points="6 9 12 15 18 9" />
-                                        </svg>
-                                    </span>
-                                </button>
-                            </archive-toggle>
-                        )
-                    }
-                </div>
+            <SectionHeader title="Writing" className="mb-0" />
+            {
+                archivedPosts.length > 0 && (
+                    <archive-toggle>
+                        <button class="group text-xs text-flexoki-tx-3 hover:text-flexoki-tx-2 transition-colors duration-200">
+                            <span class="flex items-center gap-1">
+                                <span>archive</span>
+                                <svg
+                                    width="10"
+                                    height="10"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    class="archive-icon transition-transform duration-200"
+                                >
+                                    <polyline points="6 9 12 15 18 9" />
+                                </svg>
+                            </span>
+                        </button>
+                    </archive-toggle>
+                )
+            }
+        </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {
-                        activePosts.map((post) => (
-                            <BlogCard
+        <div class="space-y-0">
+            {
+                years.map((year) => (
+                    <>
+                        {postsByYear[year].map((post, index) => (
+                            <a
                                 href={`/blog/${post.slug}`}
-                                target="_self"
-                                color="purple"
-                                title={post.data.title}
-                                image={post.data.image}
-                                imageDark={post.data.imageDark}
-                                date={post.data.pubDate.toLocaleDateString(
-                                    "en-US",
-                                    {
-                                        year: "numeric",
-                                        month: "long",
-                                    },
-                                )}
-                                tag={post.data.tags?.[0]}
-                                slug={post.slug}
-                            />
-                        ))
-                    }
-                    {
-                        activePosts.length === 0 && (
-                            <div class="col-span-2 group relative overflow-hidden rounded-lg border border-flexoki-ui transition-all hover:border-flexoki-yellow/30 flex items-center justify-center min-h-[200px]">
-                                <div class="absolute inset-0 bg-gradient-to-tr from-flexoki-yellow/[0.03] to-transparent opacity-80 [mask-image:linear-gradient(45deg,#000_25%,transparent_25%,transparent_50%,#000_50%,#000_75%,transparent_75%,transparent)] [mask-size:8px_8px] pointer-events-none" />
-                                <div class="relative z-10 text-center p-8">
-                                    <div class="mb-3 flex justify-center">
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="24"
-                                            height="24"
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            class="size-8 fill-flexoki-yellow/50"
-                                        >
-                                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
-                                        </svg>
-                                    </div>
-                                    <h3 class="font-serif text-flexoki-tx font-medium text-lg mb-2">
-                                        More stories coming soon
-                                    </h3>
-                                    <p class="text-sm text-flexoki-tx-2">
-                                        Currently crafting new content
-                                    </p>
-                                </div>
-                            </div>
-                        )
-                    }
-                </div>
+                                class="group flex items-baseline gap-4 py-3 border-b border-flexoki-ui hover:bg-flexoki-bg-2 transition-colors -mx-3 px-3"
+                            >
+                                <span class="text-flexoki-tx-3 tabular-nums w-12 shrink-0 text-sm">
+                                    {index === 0 ? year : ""}
+                                </span>
+                                <span class="flex-1 text-flexoki-tx group-hover:text-flexoki-tx font-medium">
+                                    {post.data.title}
+                                    {isNewest(post.slug) && (
+                                        <span class="ml-2 text-xs font-normal px-1.5 py-0.5 bg-flexoki-ui rounded text-flexoki-tx-2">
+                                            Newest
+                                        </span>
+                                    )}
+                                </span>
+                                <span class="text-flexoki-tx-3 tabular-nums text-sm shrink-0">
+                                    {formatDate(post.data.pubDate)}
+                                </span>
+                            </a>
+                        ))}
+                    </>
+                ))
+            }
+            {
+                activePosts.length === 0 && (
+                    <div class="py-12 text-center">
+                        <p class="text-flexoki-tx-2">More stories coming soon</p>
+                    </div>
+                )
+            }
+        </div>
 
-                {
-                    archivedPosts.length > 0 && (
-                        <div
-                            class="archived-posts hidden mt-8 pt-6 border-t border-flexoki-ui/30"
-                        >
-                            <p class="text-xs text-flexoki-tx-3 mb-4 font-mono">
-                                Older writings — kept for reference
-                            </p>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 opacity-60">
-                                {archivedPosts.map((post) => (
-                                    <BlogCard
+        {
+            archivedPosts.length > 0 && (
+                <div class="archived-posts hidden mt-4 pt-6 border-t border-flexoki-ui/30">
+                    <p class="text-xs text-flexoki-tx-3 mb-4 font-mono">
+                        Older writings — kept for reference
+                    </p>
+                    <div class="space-y-0 opacity-60">
+                        {archivedYears.map((year) => (
+                            <>
+                                {archivedByYear[year].map((post, index) => (
+                                    <a
                                         href={`/blog/${post.slug}`}
-                                        target="_self"
-                                        color="purple"
-                                        title={post.data.title}
-                                        image={post.data.image}
-                                        imageDark={post.data.imageDark}
-                                        date={post.data.pubDate.toLocaleDateString(
-                                            "en-US",
-                                            {
-                                                year: "numeric",
-                                                month: "long",
-                                            },
-                                        )}
-                                        tag={post.data.tags?.[0]}
-                                        slug={post.slug}
-                                    />
+                                        class="group flex items-baseline gap-4 py-3 border-b border-flexoki-ui hover:bg-flexoki-bg-2 transition-colors -mx-3 px-3"
+                                    >
+                                        <span class="text-flexoki-tx-3 tabular-nums w-12 shrink-0 text-sm">
+                                            {index === 0 ? year : ""}
+                                        </span>
+                                        <span class="flex-1 text-flexoki-tx group-hover:text-flexoki-tx font-medium">
+                                            {post.data.title}
+                                        </span>
+                                        <span class="text-flexoki-tx-3 tabular-nums text-sm shrink-0">
+                                            {formatDate(post.data.pubDate)}
+                                        </span>
+                                    </a>
                                 ))}
-                            </div>
+                            </>
+                        ))}
+                    </div>
                 </div>
             )
         }
