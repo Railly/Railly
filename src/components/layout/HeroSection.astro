@@ -6,6 +6,9 @@ import MidudevLogo from "../brand/MidudevLogo.astro";
 import UNMSMLogo from "../brand/UNMSMLogo.astro";
 import V0Logo from "../brand/V0Logo.astro";
 import VercelLogo from "../brand/VercelLogo.astro";
+import NextjsLogo from "../brand/NextjsLogo.astro";
+import GitHubLogo from "../brand/GitHubLogo.astro";
+import XLogo from "../brand/XLogo.astro";
 
 interface Props {
     name: string;
@@ -13,6 +16,8 @@ interface Props {
 }
 
 const { name, title } = Astro.props;
+
+const linkClass = "text-flexoki-tx font-medium underline decoration-flexoki-ui hover:bg-flexoki-tx hover:text-flexoki-bg transition-colors";
 ---
 
 <header class="flex gap-2 items-center justify-start w-full">
@@ -32,37 +37,35 @@ const { name, title } = Astro.props;
 </header>
 
 <section class="flex flex-col gap-2">
-    <p class="text-base text-flexoki-tx !m-0">
+    <p class="text-base text-flexoki-tx-2 !m-0">
         I'm a <i>software engineer</i> at <ClerkLogo
             width={16}
             height={16}
             class="inline-block mb-0.5 align-text-bottom"
-        />
-        <a
+        /><a
             href="https://clerk.com"
             target="_blank"
-            class="text-flexoki-tx underline decoration-flexoki-ui hover:bg-flexoki-tx hover:text-flexoki-bg transition-colors">Clerk</a
+            class={linkClass}>Clerk</a
         > and founder of <CrafterStationLogo
             width={16}
             height={16}
             class="inline-block mb-0.5 mr-0.5 align-text-bottom"
-        />
-        <a
+        /><a
             href="https://github.com/crafter-station"
             target="_blank"
-            class="text-flexoki-tx underline decoration-flexoki-ui hover:bg-flexoki-tx hover:text-flexoki-bg transition-colors">Crafter Station</a
+            class={linkClass}>Crafter Station</a
         >.
     </p>
 
-    <p class="text-base text-flexoki-tx !m-0">
+    <p class="text-base text-flexoki-tx-2 !m-0">
         I teach Parallel Computing at <UNMSMLogo
             width={16}
             height={16}
-            class="inline-block mb-0.5 mr-0.5 align-text-bottom rounded-sm"
+            class="inline-block !my-0 !ml-0 mr-0.5 align-text-bottom rounded-sm"
         /><a
             href="https://unmsm.edu.pe"
             target="_blank"
-            class="text-flexoki-tx underline decoration-flexoki-ui hover:bg-flexoki-tx hover:text-flexoki-bg transition-colors">UNMSM</a
+            class={linkClass}>UNMSM</a
         > and build platforms with <MidudevLogo
             width={18}
             height={16}
@@ -70,26 +73,38 @@ const { name, title } = Astro.props;
         /><a
             href="https://midu.dev"
             target="_blank"
-            class="text-flexoki-tx underline decoration-flexoki-ui hover:bg-flexoki-tx hover:text-flexoki-bg transition-colors">Midudev</a
+            class={linkClass}>Midudev</a
         >, the leading Hispanic tech streamer.
     </p>
 
-    <p class="text-base text-flexoki-tx !m-0">
-        Winner of the <a
+    <p class="text-base text-flexoki-tx-2 !m-0">
+        Winner of the <NextjsLogo
+            width={16}
+            height={16}
+            class="inline-block mb-0.5 mr-0.5 align-text-bottom"
+        /><a
             href="https://luma.com/vsi4m4l8"
             target="_blank"
-            class="text-flexoki-tx underline decoration-flexoki-ui hover:bg-flexoki-tx hover:text-flexoki-bg transition-colors">Next.js Global Hackathon 2025</a
-        >. Find my work on <a
+            class={linkClass}>Next.js Global Hackathon 2025</a
+        >. Find my work on <GitHubLogo
+            width={14}
+            height={14}
+            class="inline-block mb-0.5 mr-0.5 align-text-bottom"
+        /><a
             href="https://github.com/railly"
             target="_blank"
-            class="text-flexoki-tx underline decoration-flexoki-ui hover:bg-flexoki-tx hover:text-flexoki-bg transition-colors">GitHub</a
-        > and <a
+            class={linkClass}>GitHub</a
+        > and <XLogo
+            width={14}
+            height={14}
+            class="inline-block mb-0.5 mr-0.5 align-text-bottom"
+        /><a
             href="https://x.com/raillyhugo"
             target="_blank"
-            class="text-flexoki-tx underline decoration-flexoki-ui hover:bg-flexoki-tx hover:text-flexoki-bg transition-colors">𝕏</a
+            class={linkClass}>X</a
         >, or <a
             href="/about"
-            class="text-flexoki-tx underline decoration-flexoki-ui hover:bg-flexoki-tx hover:text-flexoki-bg transition-colors">get to know me</a
+            class={linkClass}>get to know me</a
         >.
     </p>
 
