@@ -5,6 +5,11 @@
 		background-color: var(--color-flexoki-ui) !important;
 	}
 
+	html:not(.dark) .astro-code,
+	html:not(.dark) .astro-code span {
+		background-color: #FAFAFA !important;
+	}
+
 	html.dark .astro-code,
 	html:not(.dark) .astro-code {
 		border: 1px solid var(--color-flexoki-ui) !important;
