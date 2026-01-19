@@ -1,6 +1,6 @@
 ---
 import { Code } from "astro:components";
-import oneHunterThemeDark from "../../..//public/themes/one-hunter-dark.json";
+import vesperTheme from "../../../public/themes/vesper-flexoki.json";
 import oneHunterThemeLight from "../../../public/themes/one-hunter-light.json";
 
 interface Props {
@@ -23,7 +23,7 @@ const { className, code, lang, wrap, inline, style } = Astro.props;
     inline={inline}
     themes={{
         light: oneHunterThemeLight as any,
-        dark: oneHunterThemeDark as any,
+        dark: vesperTheme as any,
     }}
     style={style}
 />

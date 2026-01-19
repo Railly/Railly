@@ -7,7 +7,7 @@ import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "astro/config";
 import rehypeKatex from "rehype-katex";
 import remarkMath from "remark-math";
-import oneHunterThemeDark2024 from "./public/themes/one-hunter-dark.json";
+import vesperTheme from "./public/themes/vesper-flexoki.json";
 import oneHunterThemeLight2024 from "./public/themes/one-hunter-light.json";
 
 // https://astro.build/config
@@ -35,7 +35,7 @@ export default defineConfig({
 				// @ts-expect-error
 				light: oneHunterThemeLight2024,
 				// @ts-expect-error
-				dark: oneHunterThemeDark2024,
+				dark: vesperTheme,
 			},
 			defaultColor: "light",
 			cssVariablePrefix: "--shiki-",
