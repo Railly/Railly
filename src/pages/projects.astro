@@ -1,0 +1,165 @@
+---
+import Hack0Logo from "../assets/svgs/h0-logo.svg";
+import Text0Logo from "../assets/svgs/t0-logo.svg";
+import ElementsLogo from "../components/brand/ElementsLogo.astro";
+import OneHunterLogo from "../components/brand/OneHunterLogo.astro";
+import ScrapiLogo from "../components/brand/ScrapiLogo.astro";
+import TinteLogo from "../components/brand/TinteLogo.astro";
+import Footer from "../components/layout/Footer.astro";
+import PageLayout from "../components/layout/PageLayout.astro";
+import SectionHeader from "../components/layout/SectionHeader.astro";
+import Layout from "../layouts/Layout.astro";
+
+const projects = [
+	{
+		name: "Elements",
+		stars: "341",
+		description: "Full-stack shadcn components for auth, payments, and more",
+		github: "https://github.com/crafter-station/elements",
+		url: "https://tryelements.dev",
+		icon: "elements" as const,
+	},
+	{
+		name: "Tinte",
+		stars: "556",
+		description: "Multiplatform theme builder for VS Code, shadcn, and more",
+		github: "https://github.com/Railly/tinte",
+		url: "https://tinte.dev",
+		icon: "tinte" as const,
+	},
+	{
+		name: "One Hunter",
+		stars: "368",
+		description: "VS Code theme inspired by Vercel and One Dark Pro",
+		github: "https://github.com/Railly/one-hunter-vscode",
+		url: "https://marketplace.visualstudio.com/items?itemName=RaillyHugo.one-hunter",
+		icon: "oneHunter" as const,
+	},
+	{
+		name: "text0",
+		stars: "50",
+		description: "AI-powered text editor with real-time collaboration",
+		github: "https://github.com/crafter-station/text0",
+		url: "https://text0.dev",
+		icon: "text0" as const,
+	},
+	{
+		name: "Scrapi",
+		stars: "28",
+		description: "Fast web scraper with AI-powered data extraction",
+		github: "https://github.com/crafter-station/scrapi",
+		url: "https://scrapi.fast",
+		icon: "scrapi" as const,
+	},
+	{
+		name: "hack0",
+		stars: "17",
+		description: "Mapping LATAM's tech ecosystem - hackathons, events, and more",
+		github: "https://github.com/crafter-station/hack0",
+		url: "https://hack0.dev",
+		icon: "hack0" as const,
+	},
+];
+
+const iconMap = {
+	elements: ElementsLogo,
+	text0: Text0Logo,
+	tinte: TinteLogo,
+	oneHunter: OneHunterLogo,
+	scrapi: ScrapiLogo,
+	hack0: Hack0Logo,
+} as const;
+
+type IconKey = keyof typeof iconMap;
+---
+
+<Layout title="Projects" description="Open source projects and tools I've built">
+	<PageLayout class="flex flex-col gap-8">
+		<SectionHeader title="Projects" />
+
+		<div class="overflow-x-auto -mx-3">
+			<table class="w-full text-sm">
+				<thead>
+					<tr class="border-b border-flexoki-ui">
+						<th class="text-left py-3 px-3 text-xs font-medium text-flexoki-tx-3 uppercase tracking-wider">Name</th>
+						<th class="text-left py-3 px-3 text-xs font-medium text-flexoki-tx-3 uppercase tracking-wider">Stars</th>
+						<th class="text-left py-3 px-3 text-xs font-medium text-flexoki-tx-3 uppercase tracking-wider hidden sm:table-cell">Description</th>
+						<th class="text-left py-3 px-3 text-xs font-medium text-flexoki-tx-3 uppercase tracking-wider">Links</th>
+					</tr>
+				</thead>
+				<tbody>
+					{projects.map((project) => {
+						const IconComponent = iconMap[project.icon as IconKey];
+						return (
+							<tr class="border-b border-flexoki-ui hover:bg-flexoki-bg-2 transition-colors">
+								<td class="py-3 px-3">
+									<div class="flex items-center gap-2">
+										<span class="w-5 h-5 flex items-center justify-center shrink-0">
+											{IconComponent && (
+												<IconComponent
+													width={16}
+													height={16}
+													class="text-flexoki-tx-2"
+												/>
+											)}
+										</span>
+										<span class="font-medium text-flexoki-tx">{project.name}</span>
+									</div>
+								</td>
+								<td class="py-3 px-3">
+									<span class="flex items-center gap-1 text-flexoki-tx-2">
+										<svg
+											width="14"
+											height="14"
+											viewBox="0 0 24 24"
+											fill="currentColor"
+											class="text-flexoki-tx-3"
+										>
+											<path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+										</svg>
+										{project.stars}
+									</span>
+								</td>
+								<td class="py-3 px-3 text-flexoki-tx-2 hidden sm:table-cell max-w-xs">
+									{project.description}
+								</td>
+								<td class="py-3 px-3">
+									<div class="flex items-center gap-3">
+										<a
+											href={project.github}
+											target="_blank"
+											rel="noopener noreferrer"
+											class="text-flexoki-tx-3 hover:text-flexoki-tx transition-colors"
+											title="GitHub"
+										>
+											<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+												<path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+											</svg>
+										</a>
+										{project.url && (
+											<a
+												href={project.url}
+												target="_blank"
+												rel="noopener noreferrer"
+												class="text-flexoki-tx-3 hover:text-flexoki-tx transition-colors"
+												title="Visit site"
+											>
+												<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+													<path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+													<polyline points="15 3 21 3 21 9"></polyline>
+													<line x1="10" y1="14" x2="21" y2="3"></line>
+												</svg>
+											</a>
+										)}
+									</div>
+								</td>
+							</tr>
+						);
+					})}
+				</tbody>
+			</table>
+		</div>
+
+		<Footer />
+	</PageLayout>
+</Layout>

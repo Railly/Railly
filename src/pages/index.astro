@@ -187,7 +187,30 @@ type IconKey = keyof typeof iconMap;
         <HeroSection name={heroData.name} title={heroData.title} />
 
         <section class="w-full">
-            <SectionHeader title="Projects" />
+            <div class="flex items-center justify-between mb-4">
+                <SectionHeader title="Projects" className="mb-0" />
+                <a
+                    href="/projects"
+                    class="group text-xs text-flexoki-tx-3 hover:text-flexoki-tx-2 transition-colors duration-200"
+                >
+                    <span class="flex items-center gap-1">
+                        <span>view all</span>
+                        <svg
+                            width="10"
+                            height="10"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.5"
+                            viewBox="0 0 24 24"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <path d="M4.5 12h15m0 0-5.625-6m5.625 6-5.625 6"></path>
+                        </svg>
+                    </span>
+                </a>
+            </div>
             <div class="space-y-0">
                 {
                     projectsData.map((project) => {
@@ -211,7 +234,7 @@ type IconKey = keyof typeof iconMap;
                                         />
                                     )}
                                 </span>
-                                <span class="flex-1 text-flexoki-tx font-medium">
+                                <span class="flex-1 text-flexoki-tx font-medium text-sm">
                                     {project.title}
                                 </span>
                                 <span class="text-flexoki-tx-3 text-sm hidden sm:block">
@@ -303,7 +326,9 @@ type IconKey = keyof typeof iconMap;
             </div>
         </section>
         <section class="w-full">
-            <SectionHeader title="Achievements" />
+            <div class="mb-4">
+                <SectionHeader title="Achievements" className="mb-0" />
+            </div>
             <div class="space-y-0">
                 {
                     achievementsData.map((item, index) => {
@@ -311,7 +336,7 @@ type IconKey = keyof typeof iconMap;
                             index > 0 ? achievementsData[index - 1].year : null;
                         const showYear = item.year !== prevYear;
                         return (
-                            <div class="group flex items-baseline gap-4 py-3 border-b border-flexoki-ui/50 hover:bg-flexoki-bg-2 transition-colors -mx-3 px-3">
+                            <div class="group flex items-baseline gap-4 py-3 border-b border-flexoki-ui hover:bg-flexoki-bg-2 transition-colors -mx-3 px-3">
                                 <span class="text-flexoki-tx-3 tabular-nums w-12 shrink-0 text-sm">
                                     {showYear ? item.year : ""}
                                 </span>

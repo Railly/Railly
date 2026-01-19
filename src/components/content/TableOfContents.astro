@@ -81,58 +81,72 @@ const mainHeadings = headings.filter((heading) => heading.depth <= 3);
                 const slug = link.getAttribute("data-heading");
                 return slug ? document.getElementById(slug) : null;
             })
-            .filter(Boolean);
+            .filter((s): s is HTMLElement => s !== null);
+
+        let currentActive: Element | null = null;
+
+        function setActiveLink(link: Element | null) {
+            if (currentActive === link) return;
+
+            if (currentActive) {
+                currentActive.classList.remove("border-flexoki-tx", "text-flexoki-tx", "font-medium");
+                currentActive.classList.add("border-transparent", "text-flexoki-tx-2");
+            }
+
+            if (link) {
+                link.classList.remove("border-transparent", "text-flexoki-tx-2");
+                link.classList.add("border-flexoki-tx", "text-flexoki-tx", "font-medium");
+            }
+
+            currentActive = link;
+        }
+
+        tocLinks.forEach((link) => {
+            link.addEventListener("click", (e) => {
+                e.preventDefault();
+                const slug = link.getAttribute("data-heading");
+                const target = slug ? document.getElementById(slug) : null;
+                if (target) {
+                    target.scrollIntoView({ behavior: "smooth", block: "start" });
+                    setActiveLink(link);
+                    history.pushState(null, "", `#${slug}`);
+                }
+            });
+        });
 
         const observerOptions = {
-            rootMargin: "-100px 0px -66% 0px",
+            rootMargin: "-80px 0px -70% 0px",
             threshold: 0,
         };
 
         const intersectionCallback = (entries: IntersectionObserverEntry[]) => {
             entries.forEach((entry) => {
-                const slug = entry.target.id;
-                const link = toc.querySelector(`[data-heading="${slug}"]`);
-
                 if (entry.isIntersecting) {
-                    tocLinks.forEach((l) => {
-                        l.classList.remove(
-                            "border-flexoki-tx",
-                            "text-flexoki-tx",
-                            "font-medium",
-                        );
-                        l.classList.add(
-                            "border-transparent",
-                            "text-flexoki-tx-2",
-                        );
-                    });
-                    link?.classList.remove(
-                        "border-transparent",
-                        "text-flexoki-tx-2",
-                    );
-                    link?.classList.add(
-                        "border-flexoki-tx",
-                        "text-flexoki-tx",
-                        "font-medium",
-                    );
+                    const slug = entry.target.id;
+                    const link = toc.querySelector(`[data-heading="${slug}"]`);
+                    setActiveLink(link);
                 }
             });
         };
 
-        const observer = new IntersectionObserver(
-            intersectionCallback,
-            observerOptions,
-        );
-        sections.forEach((section) => section && observer.observe(section));
+        const observer = new IntersectionObserver(intersectionCallback, observerOptions);
+        sections.forEach((section) => observer.observe(section));
+
+        if (sections.length > 0 && !window.location.hash) {
+            const firstLink = toc.querySelector(".toc-link");
+            setActiveLink(firstLink);
+        } else if (window.location.hash) {
+            const slug = window.location.hash.slice(1);
+            const link = toc.querySelector(`[data-heading="${slug}"]`);
+            setActiveLink(link);
+        }
 
         return () => {
-            sections.forEach(
-                (section) => section && observer.unobserve(section),
-            );
+            sections.forEach((section) => observer.unobserve(section));
             observer.disconnect();
         };
     }
 
     setupTableOfContents();
-
     document.addEventListener("astro:page-load", setupTableOfContents);
 </script>

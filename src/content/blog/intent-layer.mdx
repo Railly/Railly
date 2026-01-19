@@ -1,0 +1,103 @@
+---
+title: "Introducing Intent Layer"
+description: "A skill that sets up hierarchical AGENTS.md files so AI agents navigate your codebase like senior engineers."
+slug: "intent-layer"
+pubDate: "2026-01-18"
+tags: ["ai", "engineering", "claude", "agents", "open-source"]
+image: "/images/intent-layer-light.webp"
+imageDark: "/images/intent-layer-dark.webp"
+status: "published"
+---
+
+Today I'm releasing **Intent Layer**, the first skill from [Crafter Station](https://crafterstation.com).
+
+```bash
+npx skills add crafter-station/skills --skill intent-layer -g
+```
+
+Works with Claude Code, Codex, Cursor, Copilot, and [10+ more agents](https://github.com/vercel-labs/add-skill#available-agents).
+
+## The Problem
+
+I've been using Claude Code daily for 3 months. Same model, same prompts—completely different results depending on the repo.
+
+On a 2.5M token codebase I watched Claude:
+- Burn 40k tokens exploring dead ends
+- Find mocked tests, outdated docs, random utilities
+- Miss the config file with the actual bug
+
+Reasonable search. Wrong places. Bug still there.
+
+## Why This Happens
+
+Your best engineers don't grep randomly. They have a mental map:
+- What each folder owns
+- What breaks if you touch it wrong
+- Where the real logic lives
+
+That map took years to build. Your agents don't have it.
+
+## What Intent Layer Does
+
+The skill helps you set up `AGENTS.md` files at folder boundaries—simple markdown that gives agents the context they can't get from code alone:
+
+```markdown
+# Payment Service
+
+## Purpose
+Handles payment processing and settlement.
+Does NOT own billing/invoicing (see billing-service).
+
+## Rules
+- All processor calls go through src/clients/processor.ts
+- Settlement config lives in ../platform-config/rules/
+
+## Warnings
+- src/legacy/ looks dead but handles pre-2023 accounts
+- Test mode hits real sandbox. Charges appear then void.
+```
+
+Run `/intent-layer` on your project and it:
+1. Detects existing CLAUDE.md / AGENTS.md files
+2. Analyzes your codebase structure
+3. Suggests where to add context nodes
+4. Interviews you for the stuff code can't say
+
+## Results
+
+Same bug, with AGENTS.md in place:
+- 16k tokens loaded (not 40k)
+- Went straight to the config file
+- Found it first try
+
+The agent knew where to look because I told it.
+
+## Try It
+
+```bash
+npx skills add crafter-station/skills --skill intent-layer -g
+```
+
+Or just create an `AGENTS.md` in your repo root. Start with purpose, rules, and warnings. See what happens.
+
+## What's Next
+
+This is the first skill in a series on context engineering:
+
+- **model-router** - Haiku for simple, Sonnet for code, Opus for architecture
+- **parallel-agents** - Overnight builds while you sleep
+- **context-bundler** - Assemble task-specific context packs
+
+All open source at [crafter-station/skills](https://github.com/crafter-station/skills).
+
+---
+
+## Credits
+
+Built on [The Intent Layer](https://www.intent-systems.com/learn/intent-layer) by Tyler Brandt. His article covers hierarchical summarization, the LCA principle, and maintenance patterns. Start there for the full methodology.
+
+Also related to my earlier [AI-First Manifesto](/writing/ai-first-manifesto) where I proposed `LLMS.md` files—Intent Layer is the evolved version of that idea.
+
+---
+
+*Follow [@RaillyHugo](https://x.com/RaillyHugo) for more on agentic engineering.*

@@ -24,17 +24,23 @@ const { post } = Astro.props;
 const { Content, headings } = await post.render();
 
 const allPosts = await getCollection("blog", ({ data }) => {
-	return import.meta.env.PROD ? data.status === "published" : true;
+	return data.status === "published";
 });
 const sortedPosts = allPosts.sort(
 	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
 
 const currentIndex = sortedPosts.findIndex((p) => p.slug === post.slug);
+const totalPosts = sortedPosts.length;
 
 const previousPost =
-	currentIndex < sortedPosts.length - 1 ? sortedPosts[currentIndex + 1] : null;
-const nextPost = currentIndex > 0 ? sortedPosts[currentIndex - 1] : null;
+	currentIndex < totalPosts - 1
+		? sortedPosts[currentIndex + 1]
+		: sortedPosts[0];
+const nextPost =
+	currentIndex > 0
+		? sortedPosts[currentIndex - 1]
+		: sortedPosts[totalPosts - 1];
 
 const publishedDate = post.data.pubDate.toLocaleDateString("en-US", {
 	year: "numeric",
@@ -76,7 +82,7 @@ const ogImage = `/api/og?title=${encodeURIComponent(post.data.title)}&descriptio
                 <!-- Title Section -->
                 <header class="mb-10">
                     <h1
-                        class="text-3xl font-semibold tracking-tight mb-6 text-flexoki-tx"
+                        class="text-2xl font-semibold tracking-[-0.03em] mb-5 text-flexoki-tx"
                         style="text-wrap: balance;"
                         transition:name={`blog-card-${post.slug}`}
                         transition:animate="fade"
@@ -86,7 +92,7 @@ const ogImage = `/api/og?title=${encodeURIComponent(post.data.title)}&descriptio
 
                     {
                         post.data.description && (
-                            <p class="text-base leading-7 mb-6 text-flexoki-tx-2" style="text-wrap: pretty;">
+                            <p class="text-[15px] leading-[1.6] tracking-[-0.01em] mb-5 text-flexoki-tx-2" style="text-wrap: pretty;">
                                 {post.data.description}
                             </p>
                         )
@@ -151,16 +157,16 @@ const ogImage = `/api/og?title=${encodeURIComponent(post.data.title)}&descriptio
                     <div
                         class:list={[
                             "prose prose-flexoki max-w-none",
-                            "prose-headings:text-flexoki-tx prose-headings:font-semibold prose-headings:scroll-mt-10",
-                            "prose-h2:text-base prose-h2:mt-14 prose-h2:mb-4 prose-h2:tracking-tight",
-                            "prose-h3:text-base prose-h3:mt-10 prose-h3:mb-3 prose-h3:font-medium",
-                            "prose-p:text-flexoki-tx-2 prose-p:text-base prose-p:leading-7 prose-p:[text-wrap:pretty]",
+                            "prose-headings:text-flexoki-tx prose-headings:font-semibold prose-headings:scroll-mt-10 prose-headings:tracking-[-0.02em]",
+                            "prose-h2:text-lg prose-h2:mt-12 prose-h2:mb-4",
+                            "prose-h3:text-base prose-h3:mt-8 prose-h3:mb-3 prose-h3:font-medium",
+                            "prose-p:text-flexoki-tx-2 prose-p:text-[15px] prose-p:leading-[1.75] prose-p:tracking-[-0.01em] prose-p:[text-wrap:pretty]",
                             "prose-a:text-flexoki-tx-2 prose-a:underline prose-a:decoration-flexoki-tx-3/50 prose-a:underline-offset-2 prose-a:decoration-1 prose-a:hover:text-flexoki-tx prose-a:hover:decoration-flexoki-tx prose-a:transition-colors",
                             "prose-strong:text-flexoki-tx/90 prose-strong:font-medium",
-                            "prose-li:text-flexoki-tx-2 prose-li:leading-relaxed",
+                            "prose-li:text-flexoki-tx-2 prose-li:text-[15px] prose-li:leading-[1.75] prose-li:tracking-[-0.01em]",
                             "prose-li:marker:text-flexoki-tx-3",
-                            "prose-ul:my-4 prose-ul:space-y-2",
-                            "prose-ol:my-4 prose-ol:space-y-2",
+                            "prose-ul:my-5 prose-ul:space-y-1",
+                            "prose-ol:my-5 prose-ol:space-y-1",
                             "prose-code:before:content-none prose-code:after:content-none",
                             "prose-table:text-flexoki-tx prose-table:border-flexoki-ui prose-table:border prose-table:rounded-lg",
                             "prose-tr:border-flexoki-ui prose-tr:border-b",
@@ -169,7 +175,8 @@ const ogImage = `/api/og?title=${encodeURIComponent(post.data.title)}&descriptio
                             "prose-th:p-2 prose-th:text-flexoki-tx",
                             "prose-img:rounded-xl prose-img:border-flexoki-ui/50 prose-img:border",
                             "prose-blockquote:border-none prose-blockquote:not-italic prose-blockquote:p-0 prose-blockquote:m-0",
-                            "prose-hr:border-flexoki-ui/50 prose-hr:my-12",
+                            "prose-hr:border-flexoki-ui/50 prose-hr:my-10",
+                            "prose-figcaption:text-sm prose-figcaption:text-flexoki-tx-3 prose-figcaption:mt-3 prose-figcaption:text-center",
                             "dark:prose-invert",
                         ]}
                     >
@@ -183,63 +190,39 @@ const ogImage = `/api/og?title=${encodeURIComponent(post.data.title)}&descriptio
         </div>
 
         <!-- Navigation Footer -->
-        <div class="max-w-3xl mx-auto px-4 sm:px-6 mt-20 pt-8 border-t border-flexoki-ui/50">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 mt-16">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <!-- Previous Post -->
-                <div>
-                    {
-                        previousPost ? (
-                            <a
-                                href={`/blog/${previousPost.slug}`}
-                                class="group block"
-                            >
-                                <span class="text-xs text-flexoki-tx-3 uppercase tracking-wider">
-                                    ← Previous
-                                </span>
-                                <h4 class="mt-2 text-flexoki-tx-2 group-hover:text-flexoki-tx transition-colors leading-snug">
-                                    {previousPost.data.title}
-                                </h4>
-                            </a>
-                        ) : (
-                            <div>
-                                <span class="text-xs text-flexoki-tx-3 uppercase tracking-wider">
-                                    ← Previous
-                                </span>
-                                <p class="mt-2 text-sm text-flexoki-tx-3">
-                                    You've reached the beginning
-                                </p>
-                            </div>
-                        )
-                    }
-                </div>
+                <a
+                    href={`/blog/${previousPost.slug}`}
+                    class="group block p-4 border border-flexoki-ui rounded-lg hover:border-flexoki-tx-3 hover:bg-flexoki-bg-2 transition-all"
+                >
+                    <span class="text-xs text-flexoki-tx-3 uppercase tracking-wider flex items-center gap-1">
+                        <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" class="rotate-180">
+                            <path d="M4.5 12h15m0 0-5.625-6m5.625 6-5.625 6" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Previous
+                    </span>
+                    <h4 class="mt-2 text-sm text-flexoki-tx-2 group-hover:text-flexoki-tx transition-colors leading-snug line-clamp-2">
+                        {previousPost.data.title}
+                    </h4>
+                </a>
 
                 <!-- Next Post -->
-                <div class="md:text-right">
-                    {
-                        nextPost ? (
-                            <a
-                                href={`/blog/${nextPost.slug}`}
-                                class="group block"
-                            >
-                                <span class="text-xs text-flexoki-tx-3 uppercase tracking-wider">
-                                    Next →
-                                </span>
-                                <h4 class="mt-2 text-flexoki-tx-2 group-hover:text-flexoki-tx transition-colors leading-snug">
-                                    {nextPost.data.title}
-                                </h4>
-                            </a>
-                        ) : (
-                            <div>
-                                <span class="text-xs text-flexoki-tx-3 uppercase tracking-wider">
-                                    Next →
-                                </span>
-                                <p class="mt-2 text-sm text-flexoki-tx-3">
-                                    You're up to date
-                                </p>
-                            </div>
-                        )
-                    }
-                </div>
+                <a
+                    href={`/blog/${nextPost.slug}`}
+                    class="group block p-4 border border-flexoki-ui rounded-lg hover:border-flexoki-tx-3 hover:bg-flexoki-bg-2 transition-all md:text-right"
+                >
+                    <span class="text-xs text-flexoki-tx-3 uppercase tracking-wider flex items-center gap-1 md:justify-end">
+                        Next
+                        <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M4.5 12h15m0 0-5.625-6m5.625 6-5.625 6" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </span>
+                    <h4 class="mt-2 text-sm text-flexoki-tx-2 group-hover:text-flexoki-tx transition-colors leading-snug line-clamp-2">
+                        {nextPost.data.title}
+                    </h4>
+                </a>
             </div>
         </div>
 
