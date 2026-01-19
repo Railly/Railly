@@ -3,9 +3,9 @@
 	"type": "light",
 	"displayName": "Vesper Flexoki Light",
 	"colors": {
-		"editor.background": "#FFFCF0",
+		"editor.background": "#FAFAFA",
 		"editor.foreground": "#403E3C",
-		"editor.lineHighlightBackground": "#F2F0E5",
+		"editor.lineHighlightBackground": "#F5F5F5",
 		"editor.selectionBackground": "#403E3C22",
 		"editorLineNumber.foreground": "#B7B5AC",
 		"editorLineNumber.activeForeground": "#403E3C"
