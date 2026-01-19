@@ -1,5 +1,5 @@
 ---
-title: "Introducing Intent Layer"
+title: "Introducing Intent Layer Skill"
 description: "A skill that sets up hierarchical AGENTS.md files so AI agents navigate your codebase like senior engineers."
 slug: "intent-layer"
 pubDate: "2026-01-18"
@@ -9,7 +9,7 @@ imageDark: "/images/intent-layer-dark.webp"
 status: "published"
 ---
 
-Today I'm releasing **Intent Layer**, the first skill from [Crafter Station](https://crafterstation.com).
+Today I'm releasing **`/intent-layer`**, the first skill from [Crafter Station](https://crafterstation.com).
 
 ```bash
 npx skills add crafter-station/skills --skill intent-layer -g
@@ -22,6 +22,7 @@ Works with Claude Code, Codex, Cursor, Copilot, and [10+ more agents](https://gi
 I've been using Claude Code daily for 3 months. Same model, same prompts—completely different results depending on the repo.
 
 On a 2.5M token codebase I watched Claude:
+
 - Burn 40k tokens exploring dead ends
 - Find mocked tests, outdated docs, random utilities
 - Miss the config file with the actual bug
@@ -31,11 +32,23 @@ Reasonable search. Wrong places. Bug still there.
 ## Why This Happens
 
 Your best engineers don't grep randomly. They have a mental map:
+
 - What each folder owns
 - What breaks if you touch it wrong
 - Where the real logic lives
 
 That map took years to build. Your agents don't have it.
+
+## The Solution: Context Engineering
+
+Context engineering is designing the full information an agent needs to perform reliably:
+
+- System prompts and instructions
+- Structured inputs and outputs
+- Tools and their definitions
+- RAG and memory systems
+
+Intent Layer solves the first piece: **system prompt infrastructure**.
 
 ## What Intent Layer Does
 
@@ -45,19 +58,23 @@ The skill helps you set up `AGENTS.md` files at folder boundaries—simple markd
 # Payment Service
 
 ## Purpose
+
 Handles payment processing and settlement.
 Does NOT own billing/invoicing (see billing-service).
 
 ## Rules
+
 - All processor calls go through src/clients/processor.ts
 - Settlement config lives in ../platform-config/rules/
 
 ## Warnings
+
 - src/legacy/ looks dead but handles pre-2023 accounts
 - Test mode hits real sandbox. Charges appear then void.
 ```
 
 Run `/intent-layer` on your project and it:
+
 1. Detects existing CLAUDE.md / AGENTS.md files
 2. Analyzes your codebase structure
 3. Suggests where to add context nodes
@@ -66,6 +83,7 @@ Run `/intent-layer` on your project and it:
 ## Results
 
 Same bug, with AGENTS.md in place:
+
 - 16k tokens loaded (not 40k)
 - Went straight to the config file
 - Found it first try
@@ -82,11 +100,19 @@ Or just create an `AGENTS.md` in your repo root. Start with purpose, rules, and 
 
 ## What's Next
 
-This is the first skill in a series on context engineering:
+Intent Layer is the first of several context engineering skills:
 
-- **model-router** - Haiku for simple, Sonnet for code, Opus for architecture
-- **parallel-agents** - Overnight builds while you sleep
-- **context-bundler** - Assemble task-specific context packs
+| Tier | Problem | Skill |
+| ---- | ------- | ----- |
+| Foundation | Agents grep in dark | `intent-layer` ✓ |
+| Foundation | Agent reads too much | `context-bundler` |
+| Foundation | System boundaries unclear | `architecture-map` |
+| Capture | Rules are implicit | `invariants-capture` |
+| Capture | Patterns undocumented | `contract-extractor` |
+| Maintenance | Context drifts | `intent-maintenance` |
+| Maintenance | Invariants not enforced | `contract-verifier` |
+
+Plus **Stack Skills** for specific tools: Clerk, Vercel, Supabase, etc.
 
 All open source at [crafter-station/skills](https://github.com/crafter-station/skills).
 
@@ -94,10 +120,12 @@ All open source at [crafter-station/skills](https://github.com/crafter-station/s
 
 ## Credits
 
-Built on [The Intent Layer](https://www.intent-systems.com/learn/intent-layer) by Tyler Brandt. His article covers hierarchical summarization, the LCA principle, and maintenance patterns. Start there for the full methodology.
+Built on [The Intent Layer](https://www.intent-systems.com/learn/intent-layer) by Tyler Brandt. His [AI Adoption Roadmap](https://www.intent-systems.com/learn/ai-adoption-roadmap) maps the stages most teams are stuck at—start there for the full methodology.
+
+Context engineering framework from [DAIR.AI](https://www.promptingguide.ai) and [LangChain](https://blog.langchain.com/the-rise-of-context-engineering/).
 
 Also related to my earlier [AI-First Manifesto](/writing/ai-first-manifesto) where I proposed `LLMS.md` files—Intent Layer is the evolved version of that idea.
 
 ---
 
-*Follow [@RaillyHugo](https://x.com/RaillyHugo) for more on agentic engineering.*
+_Follow [@RaillyHugo](https://x.com/RaillyHugo) for more on context engineering._
