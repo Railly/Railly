@@ -49,4 +49,10 @@
 		color: var(--color-flexoki-tx-2) !important;
 		opacity: 0.5 !important;
 	}
+
+	@media (prefers-color-scheme: dark) {
+		.astro-code span {
+			color: var(--shiki-dark) !important;
+		}
+	}
 }
