@@ -7,7 +7,8 @@ import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "astro/config";
 import rehypeKatex from "rehype-katex";
 import remarkMath from "remark-math";
-import vesperTheme from "./public/themes/vesper-flexoki.json";
+import vesperDark from "./public/themes/vesper-flexoki.json";
+import vesperLight from "./public/themes/vesper-flexoki-light.json";
 
 // https://astro.build/config
 export default defineConfig({
@@ -32,9 +33,9 @@ export default defineConfig({
 		shikiConfig: {
 			themes: {
 				// @ts-expect-error
-				light: vesperTheme,
+				light: vesperLight,
 				// @ts-expect-error
-				dark: vesperTheme,
+				dark: vesperDark,
 			},
 			defaultColor: "light",
 			cssVariablePrefix: "--shiki-",
