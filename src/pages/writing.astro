@@ -1,5 +1,6 @@
 ---
 import { getCollection } from "astro:content";
+import ViewCounter from "../components/blog/ViewCounter";
 import Footer from "../components/layout/Footer.astro";
 import PageLayout from "../components/layout/PageLayout.astro";
 import SectionHeader from "../components/layout/SectionHeader.astro";
@@ -105,6 +106,11 @@ const formatDate = (date: Date) => {
                                         </span>
                                     )}
                                 </span>
+                                <ViewCounter
+                                    slug={post.slug}
+                                    client:only="react"
+                                    className="text-xs text-flexoki-tx-3 tabular-nums shrink-0"
+                                />
                                 <span class="text-flexoki-tx-3 tabular-nums text-sm shrink-0">
                                     {formatDate(post.data.pubDate)}
                                 </span>

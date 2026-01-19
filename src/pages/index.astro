@@ -10,6 +10,7 @@ import OneHunterLogo from "../components/brand/OneHunterLogo.astro";
 import PeruFlag from "../components/brand/PeruFlag.astro";
 import ScrapiLogo from "../components/brand/ScrapiLogo.astro";
 import TinteLogo from "../components/brand/TinteLogo.astro";
+import ViewCounter from "../components/blog/ViewCounter";
 import Footer from "../components/layout/Footer.astro";
 import HeroSection from "../components/layout/HeroSection.astro";
 import PageLayout from "../components/layout/PageLayout.astro";
@@ -306,6 +307,11 @@ type IconKey = keyof typeof iconMap;
                                             </span>
                                         )}
                                     </span>
+                                    <ViewCounter
+                                        slug={post.slug}
+                                        client:only="react"
+                                        className="text-xs text-flexoki-tx-3 tabular-nums shrink-0"
+                                    />
                                     <span class="text-flexoki-tx-3 tabular-nums text-sm shrink-0">
                                         {formatDate(post.data.pubDate)}
                                     </span>
