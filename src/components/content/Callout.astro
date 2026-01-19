@@ -1,0 +1,78 @@
+---
+type CalloutType = "note" | "tip" | "warning" | "important";
+
+interface Props {
+	type?: CalloutType;
+	title?: string;
+}
+
+const { type = "note", title } = Astro.props;
+
+const defaultTitles: Record<CalloutType, string> = {
+	note: "Note",
+	tip: "Tip",
+	warning: "Warning",
+	important: "Important",
+};
+
+const displayTitle = title ?? defaultTitles[type];
+---
+
+<div class:list={["callout not-prose my-6 border-l-2 py-3 px-4 rounded-r-md", `callout-${type}`]}>
+    <p class="callout-title text-xs font-medium uppercase tracking-wide mb-1">
+        {displayTitle}
+    </p>
+    <div class="text-sm text-flexoki-tx-2 [&_p]:mb-0 [&_code]:text-xs [&_a]:underline [&_a]:underline-offset-2 [&_a]:decoration-current/50 hover:[&_a]:decoration-current">
+        <slot />
+    </div>
+</div>
+
+<style>
+    .callout-note {
+        border-color: #878580;
+        background: rgb(135 133 128 / 0.06);
+    }
+    .callout-note .callout-title { color: #878580; }
+
+    .callout-tip {
+        border-color: #5b9a8b;
+        background: rgb(91 154 139 / 0.06);
+    }
+    .callout-tip .callout-title { color: #5b9a8b; }
+
+    .callout-warning {
+        border-color: #ad8b32;
+        background: rgb(173 139 50 / 0.06);
+    }
+    .callout-warning .callout-title { color: #ad8b32; }
+
+    .callout-important {
+        border-color: #c27054;
+        background: rgb(194 112 84 / 0.06);
+    }
+    .callout-important .callout-title { color: #c27054; }
+
+    @media (prefers-color-scheme: dark) {
+        .callout-note {
+            border-color: #878580;
+            background: rgb(135 133 128 / 0.08);
+        }
+        .callout-tip {
+            border-color: #6ab0a0;
+            background: rgb(106 176 160 / 0.08);
+        }
+        .callout-tip .callout-title { color: #6ab0a0; }
+
+        .callout-warning {
+            border-color: #c9a840;
+            background: rgb(201 168 64 / 0.08);
+        }
+        .callout-warning .callout-title { color: #c9a840; }
+
+        .callout-important {
+            border-color: #d88870;
+            background: rgb(216 136 112 / 0.08);
+        }
+        .callout-important .callout-title { color: #d88870; }
+    }
+</style>

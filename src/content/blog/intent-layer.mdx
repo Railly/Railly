@@ -9,6 +9,8 @@ imageDark: "/images/intent-layer-dark.webp"
 status: "published"
 ---
 
+import Callout from "../../components/content/Callout.astro";
+
 Today I'm releasing **`/intent-layer`**, the first skill from [Crafter Station](https://crafterstation.com).
 
 ```bash
@@ -19,7 +21,7 @@ Works with Claude Code, Codex, Cursor, Copilot, and [10+ more agents](https://gi
 
 ## The Problem
 
-I've been using Claude Code daily for 3 months. Same model, same prompts—completely different results depending on the repo.
+I've been using Claude Code daily for 3 months. Same model, same prompts, completely different results depending on the repo.
 
 On a 2.5M token codebase I watched Claude:
 
@@ -52,7 +54,7 @@ Intent Layer solves the first piece: **system prompt infrastructure**.
 
 ## What Intent Layer Does
 
-The skill helps you set up `AGENTS.md` files at folder boundaries—simple markdown that gives agents the context they can't get from code alone:
+The skill helps you set up `AGENTS.md` files at folder boundaries. Simple markdown that gives agents the context they can't get from code alone:
 
 ```markdown
 # Payment Service
@@ -62,12 +64,12 @@ The skill helps you set up `AGENTS.md` files at folder boundaries—simple markd
 Handles payment processing and settlement.
 Does NOT own billing/invoicing (see billing-service).
 
-## Rules
+## Contracts
 
 - All processor calls go through src/clients/processor.ts
 - Settlement config lives in ../platform-config/rules/
 
-## Warnings
+## Pitfalls
 
 - src/legacy/ looks dead but handles pre-2023 accounts
 - Test mode hits real sandbox. Charges appear then void.
@@ -78,7 +80,9 @@ Run `/intent-layer` on your project and it:
 1. Detects existing CLAUDE.md / AGENTS.md files
 2. Analyzes your codebase structure
 3. Suggests where to add context nodes
-4. Interviews you for the stuff code can't say
+4. Asks what patterns and pitfalls to document
+
+Run it again later to audit existing nodes or find new candidates as your codebase grows.
 
 ## Results
 
@@ -88,43 +92,29 @@ Same bug, with AGENTS.md in place:
 - Went straight to the config file
 - Found it first try
 
-The agent knew where to look because I told it.
-
 ## Try It
 
 ```bash
 npx skills add crafter-station/skills --skill intent-layer -g
 ```
 
-Or just create an `AGENTS.md` in your repo root. Start with purpose, rules, and warnings. See what happens.
-
 ## What's Next
 
-Intent Layer is the first of several context engineering skills:
+Intent Layer is the first of several context engineering skills I'm building. More coming soon.
 
-| Tier | Problem | Skill |
-| ---- | ------- | ----- |
-| Foundation | Agents grep in dark | `intent-layer` ✓ |
-| Foundation | Agent reads too much | `context-bundler` |
-| Foundation | System boundaries unclear | `architecture-map` |
-| Capture | Rules are implicit | `invariants-capture` |
-| Capture | Patterns undocumented | `contract-extractor` |
-| Maintenance | Context drifts | `intent-maintenance` |
-| Maintenance | Invariants not enforced | `contract-verifier` |
-
-Plus **Stack Skills** for specific tools: Clerk, Vercel, Supabase, etc.
-
-All open source at [crafter-station/skills](https://github.com/crafter-station/skills).
+<Callout type="tip" title="Open Source">
+All skills are open source at [crafter-station/skills](https://github.com/crafter-station/skills).
+</Callout>
 
 ---
 
 ## Credits
 
-Built on [The Intent Layer](https://www.intent-systems.com/learn/intent-layer) by Tyler Brandt. His [AI Adoption Roadmap](https://www.intent-systems.com/learn/ai-adoption-roadmap) maps the stages most teams are stuck at—start there for the full methodology.
+Built on [The Intent Layer](https://www.intent-systems.com/learn/intent-layer) by Tyler Brandt. His [AI Adoption Roadmap](https://www.intent-systems.com/learn/ai-adoption-roadmap) maps the stages most teams are stuck at. Start there for the full methodology.
 
 Context engineering framework from [DAIR.AI](https://www.promptingguide.ai) and [LangChain](https://blog.langchain.com/the-rise-of-context-engineering/).
 
-Also related to my earlier [AI-First Manifesto](/writing/ai-first-manifesto) where I proposed `LLMS.md` files—Intent Layer is the evolved version of that idea.
+Also related to my earlier [AI-First Manifesto](/writing/ai-first-manifesto) where I proposed `LLMS.md` files. Intent Layer is the evolved version of that idea.
 
 ---
 

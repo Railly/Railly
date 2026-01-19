@@ -89,6 +89,11 @@
     }
 }
 
+::selection {
+    background-color: var(--color-flexoki-ui-2);
+    color: var(--color-flexoki-tx);
+}
+
 .underline {
     text-decoration: underline;
     text-underline-offset: 4px;

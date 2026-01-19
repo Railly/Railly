@@ -91,3 +91,16 @@ Required for production:
 - Blog view counter is a React component (`ViewCounter.tsx`) for client-side interactivity
 - Custom CSS theme variables must maintain both light and dark mode values
 - API routes require `export const prerender = false` for SSR
+
+## Intent Layer
+
+**Before modifying code in a subdirectory, read its AGENTS.md first** to understand local patterns and invariants.
+
+- **Components**: `src/components/AGENTS.md` - UI component library (Astro + React)
+
+### Global Invariants
+
+- All colors use Flexoki palette via `--color-flexoki-{color}` CSS variables
+- Light/dark mode values must always be paired in theme definitions
+- React components (.tsx) are only for client-side interactivity; prefer Astro (.astro) for static content
+- Never import from `node_modules` directly for fonts; use @fontsource packages
