@@ -8,7 +8,6 @@ import { defineConfig } from "astro/config";
 import rehypeKatex from "rehype-katex";
 import remarkMath from "remark-math";
 import vesperTheme from "./public/themes/vesper-flexoki.json";
-import oneHunterThemeLight2024 from "./public/themes/one-hunter-light.json";
 
 // https://astro.build/config
 export default defineConfig({
@@ -33,7 +32,7 @@ export default defineConfig({
 		shikiConfig: {
 			themes: {
 				// @ts-expect-error
-				light: oneHunterThemeLight2024,
+				light: vesperTheme,
 				// @ts-expect-error
 				dark: vesperTheme,
 			},
