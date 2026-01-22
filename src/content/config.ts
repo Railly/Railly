@@ -28,6 +28,20 @@ const blog = defineCollection({
 	}),
 });
 
+const til = defineCollection({
+	type: "content",
+	schema: z.object({
+		title: z.string(),
+		pubDate: z
+			.union([z.coerce.date(), z.string().datetime()])
+			.transform((val) => new Date(val)),
+		topic: z.string(),
+		link: z.string().url().optional(),
+		status: z.enum(["draft", "published"]).default("published"),
+	}),
+});
+
 export const collections = {
 	blog,
+	til,
 };

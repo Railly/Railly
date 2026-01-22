@@ -1,7 +1,6 @@
 @layer base {
-	.astro-code,
 	.astro-code span {
-		background-color: var(--color-flexoki-bg-2) !important;
+		background-color: transparent !important;
 	}
 
 	.astro-code {
@@ -9,13 +8,14 @@
 		font-size: 13px;
 		position: relative !important;
 		isolation: isolate !important;
+		background-color: transparent !important;
 		background-image: linear-gradient(
 			45deg,
-			rgba(128, 128, 128, 0.03) 25%,
+			rgba(128, 128, 128, 0.06) 25%,
 			transparent 25%,
 			transparent 50%,
-			rgba(128, 128, 128, 0.03) 50%,
-			rgba(128, 128, 128, 0.03) 75%,
+			rgba(128, 128, 128, 0.06) 50%,
+			rgba(128, 128, 128, 0.06) 75%,
 			transparent 75%,
 			transparent
 		) !important;

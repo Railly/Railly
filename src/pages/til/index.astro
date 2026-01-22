@@ -1,0 +1,84 @@
+---
+import { getCollection, render } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import PageLayout from "../../components/layout/PageLayout.astro";
+
+const tils = await getCollection("til", ({ data }) => {
+	return import.meta.env.PROD ? data.status === "published" : true;
+});
+
+const sortedTils = tils.sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+
+const tilsWithContent = await Promise.all(
+	sortedTils.map(async (til) => {
+		const { Content } = await render(til);
+		return { til, Content };
+	}),
+);
+
+const formatDate = (date: Date) => {
+	return date.toLocaleDateString("en-US", {
+		year: "numeric",
+		month: "long",
+		day: "numeric",
+	});
+};
+---
+
+<Layout
+	title="TIL - Railly Hugo"
+	description="Today I Learned - Small discoveries and learnings documented daily."
+>
+	<PageLayout>
+		<h1 class="text-3xl font-medium text-flexoki-tx mb-4">TIL</h1>
+		<p class="text-flexoki-tx-2 mb-12 text-[15px]">
+			Learning new things every day. Writing them down to remember.
+		</p>
+		<div class="space-y-12">
+			{
+				tilsWithContent.map(({ til, Content }) => (
+					<article class="group">
+						<time
+							datetime={til.data.pubDate.toISOString()}
+							class="text-sm text-flexoki-tx-3 block mb-2"
+						>
+							{formatDate(til.data.pubDate)}
+						</time>
+						<h2 class="text-lg font-medium text-flexoki-tx mb-3">
+							{til.data.title}
+						</h2>
+						<div class="prose prose-flexoki prose-sm max-w-none text-flexoki-tx-2 prose-p:text-[15px] prose-p:leading-[1.75] prose-a:text-flexoki-tx-2 prose-a:underline prose-a:decoration-flexoki-tx-3/50 prose-a:underline-offset-2 prose-a:decoration-1 prose-a:hover:text-flexoki-tx prose-a:hover:decoration-flexoki-tx prose-a:transition-colors prose-code:before:content-none prose-code:after:content-none prose-code:px-1.5 prose-code:py-0.5 prose-code:text-sm prose-code:rounded">
+							<Content />
+						</div>
+						{til.data.link && (
+							<a
+								href={til.data.link}
+								target="_blank"
+								rel="noopener noreferrer"
+								class="inline-flex items-center gap-1 text-sm text-flexoki-tx-3 hover:text-flexoki-tx transition-colors mt-3"
+							>
+								Learn more
+								<svg
+									width="12"
+									height="12"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="1.5"
+									viewBox="0 0 24 24"
+								>
+									<path
+										d="M4.5 12h15m0 0-5.625-6m5.625 6-5.625 6"
+										stroke-linecap="round"
+										stroke-linejoin="round"
+									/>
+								</svg>
+							</a>
+						)}
+					</article>
+				))
+			}
+		</div>
+	</PageLayout>
+</Layout>
