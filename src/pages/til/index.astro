@@ -2,6 +2,7 @@
 import { getCollection, render } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
 import PageLayout from "../../components/layout/PageLayout.astro";
+import Link from "../../components/content/Link.astro";
 
 const tils = await getCollection("til", ({ data }) => {
 	return import.meta.env.PROD ? data.status === "published" : true;
@@ -50,7 +51,7 @@ const formatDate = (date: Date) => {
 							{til.data.title}
 						</h2>
 						<div class="prose prose-flexoki prose-sm max-w-none text-flexoki-tx-2 prose-p:text-[15px] prose-p:leading-[1.75] prose-a:text-flexoki-tx-2 prose-a:underline prose-a:decoration-flexoki-tx-3/50 prose-a:underline-offset-2 prose-a:decoration-1 prose-a:hover:text-flexoki-tx prose-a:hover:decoration-flexoki-tx prose-a:transition-colors prose-code:before:content-none prose-code:after:content-none prose-code:px-1.5 prose-code:py-0.5 prose-code:text-sm prose-code:rounded">
-							<Content />
+							<Content components={{ a: Link }} />
 						</div>
 						{til.data.link && (
 							<a
@@ -81,4 +82,19 @@ const formatDate = (date: Date) => {
 			}
 		</div>
 	</PageLayout>
+<style>
+		.prose :global(:not(pre) > code) {
+			background-color: var(--color-flexoki-bg-2);
+			padding: 0.125rem 0.375rem;
+			font-size: 0.875rem;
+			border-radius: 0.25rem;
+			color: var(--color-flexoki-tx);
+		}
+
+		.prose :global(a[href^="http"])::after {
+			content: "↗";
+			margin-left: 0.125rem;
+			font-size: 0.75em;
+		}
+	</style>
 </Layout>

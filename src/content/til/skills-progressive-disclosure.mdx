@@ -1,0 +1,10 @@
+---
+title: "Skills Use Progressive Disclosure for Token Management"
+pubDate: 2026-01-23
+topic: AI Tools
+link: https://jpcaparas.medium.com/anatomy-of-an-excellent-opencode-skill-lessons-from-cloudflare-skill-0f853babc471
+---
+
+Agent skills load context in three levels: metadata (~100 tokens) at startup, full instructions (under 5,000 tokens) when triggered, and resources only as needed.
+
+This is why skills beat `.cursorrules` - it loads entire contents into every conversation. A skill with 60+ product references only loads what's relevant. Cloudflare-skill has 60 reference files but you can ask about Workers without paying for WAF documentation.
