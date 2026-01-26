@@ -1,0 +1,31 @@
+---
+interface Props {
+	width?: number;
+	height?: number;
+	class?: string;
+}
+
+const { width = 16, height = 16, class: className } = Astro.props;
+---
+
+<svg
+    width={width}
+    height={height}
+    viewBox="0 0 24 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    class={className}
+>
+    <title>Brazil</title>
+    <g clip-path="url(#BR_svg__a)">
+        <path d="M12 24c6.627 0 12-5.373 12-12S18.627 0 12 0 0 5.373 0 12s5.373 12 12 12Z" fill="#6DA544"/>
+        <path d="m12 4.696 8.485 7.304L12 19.304 3.515 12 12 4.696Z" fill="#FFDA44"/>
+        <path d="M12 16.174a4.174 4.174 0 1 0 0-8.348 4.174 4.174 0 0 0 0 8.348Z" fill="#F0F0F0"/>
+        <path d="M9.391 11.478a6.956 6.956 0 0 0-1.74.219 4.17 4.17 0 0 0 7.91 1.107 6.913 6.913 0 0 0-6.17-1.326Z" fill="#0052B4"/>
+    </g>
+    <defs>
+        <clipPath id="BR_svg__a">
+            <path fill="#fff" d="M0 0h24v24H0z"/>
+        </clipPath>
+    </defs>
+</svg>

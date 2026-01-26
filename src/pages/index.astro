@@ -2,6 +2,7 @@
 import { getCollection } from "astro:content";
 import Hack0Logo from "../assets/svgs/h0-logo.svg";
 import Text0Logo from "../assets/svgs/t0-logo.svg";
+import BrazilFlag from "../components/brand/BrazilFlag.astro";
 import ChileFlag from "../components/brand/ChileFlag.astro";
 import ColombiaFlag from "../components/brand/ColombiaFlag.astro";
 import ElementsLogo from "../components/brand/ElementsLogo.astro";
@@ -96,6 +97,15 @@ const projectsData = [
 ];
 
 const achievementsData = [
+	{
+		year: "2026",
+		achievement: "ElevenLabs Prize",
+		event: "Agents Hackathon Brazil",
+		eventUrl: "https://luma.com/8lhsk41h?tk=k4faUG",
+		project: "i18n",
+		projectUrl: "https://i18n.crafter.run",
+		scope: "br" as const,
+	},
 	{
 		year: "2026",
 		achievement: "Online Winner",
@@ -397,6 +407,9 @@ type IconKey = keyof typeof iconMap;
                                     )}
                                     {item.scope === "co" && (
                                         <ColombiaFlag width={16} height={16} />
+                                    )}
+                                    {item.scope === "br" && (
+                                        <BrazilFlag width={16} height={16} />
                                     )}
                                 </span>
                             </div>
