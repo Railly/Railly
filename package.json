@@ -17,6 +17,8 @@
 	"dependencies": {
 		"@astrojs/mdx": "4.3.11",
 		"@astrojs/react": "4.4.2",
+		"@astrojs/rss": "^4.0.15",
+		"@astrojs/sitemap": "^3.7.0",
 		"@astrojs/vercel": "9.0.2",
 		"@fontsource/ibm-plex-mono": "^5.2.7",
 		"@fontsource/ibm-plex-sans": "^5.2.8",

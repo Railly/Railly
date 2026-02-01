@@ -61,6 +61,7 @@ const socialImageURL = new URL(image, siteConfig.url);
         <meta property="og:image:type" content="image/png" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="628" />
+        <meta property="og:image:alt" content={`${title} - ${siteConfig.name}`} />
         <meta property="og:locale" content={siteConfig.locale} />
         {article && (
             <>
@@ -75,12 +76,13 @@ const socialImageURL = new URL(image, siteConfig.url);
         )}
 
         {/* Twitter */}
-        <meta property="twitter:card" content="summary_large_image" />
-        <meta property="twitter:url" content={canonicalURL} />
-        <meta property="twitter:title" content={title} />
-        <meta property="twitter:description" content={description} />
-        <meta property="twitter:image" content={socialImageURL} />
-        <meta property="twitter:creator" content="@raillyhugo" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:site" content="@raillyhugo" />
+        <meta name="twitter:creator" content="@raillyhugo" />
+        <meta name="twitter:title" content={title} />
+        <meta name="twitter:description" content={description} />
+        <meta name="twitter:image" content={socialImageURL} />
+        <meta name="twitter:image:alt" content={`${title} - Railly Hugo`} />
 
         {/* Favicons */}
         <link rel="icon" type="image/x-icon" href={siteConfig.icons.icon} />
@@ -111,6 +113,38 @@ const socialImageURL = new URL(image, siteConfig.url);
             title={`RSS Feed for ${siteConfig.name}`}
             href="/rss.xml"
         />
+
+        {/* JSON-LD Structured Data */}
+        <script type="application/ld+json" set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@graph": [
+                {
+                    "@type": "WebSite",
+                    "@id": `${siteConfig.url}/#website`,
+                    "url": siteConfig.url,
+                    "name": siteConfig.name,
+                    "description": siteConfig.description,
+                    "inLanguage": "en-US"
+                },
+                {
+                    "@type": "Person",
+                    "@id": `${siteConfig.url}/#person`,
+                    "name": siteConfig.author,
+                    "url": siteConfig.url,
+                    "image": `${siteConfig.url}/images/profile.webp`,
+                    "sameAs": [
+                        siteConfig.links.twitter,
+                        siteConfig.links.github,
+                        siteConfig.links.linkedin
+                    ],
+                    "jobTitle": "Software Engineer",
+                    "worksFor": {
+                        "@type": "Organization",
+                        "name": "Clerk"
+                    }
+                }
+            ]
+        })} />
 
         {/* View Transitions */}
         <ClientRouter />

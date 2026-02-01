@@ -9,7 +9,7 @@ export const siteConfig: SiteConfig = {
 	description:
 		"Software Engineer and UI Developer from Lima. Dive into my projects, tutorials, and digital explorations. Always learning, always crafting.",
 	url: BASE_URL,
-	ogImage: `${BASE_URL}/images/og.png`,
+	ogImage: `${BASE_URL}/images/og.webp`,
 	author: "Railly Hugo",
 	email: "contact@railly.dev",
 	links: {
