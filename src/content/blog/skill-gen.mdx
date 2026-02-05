@@ -1,0 +1,129 @@
+---
+title: "Meta Skills: Skill Gen"
+description: "Auto-generate agent skills from documentation. Point it at docs, get back a working skill."
+slug: "skill-gen"
+pubDate: "2026-02-04"
+tags: ["ai", "engineering", "claude", "agents", "meta"]
+status: "published"
+---
+
+import Callout from "../../components/content/Callout.astro";
+import ToolHighlight from "../../components/content/ToolHighlight.astro";
+
+**`/skill-gen`** is the second skill from [Crafter Station](https://crafterstation.com).
+
+```bash
+npx skills add crafter-station/skills --skill skill-gen -g
+```
+
+Works with Claude Code, Codex, Cursor, Copilot, and [10+ more agents](https://github.com/vercel-labs/add-skill#available-agents).
+
+## The Problem
+
+I needed skills for Clerk's API (webhooks, orgs, custom flows).
+
+**Option 1**: Read docs, write `SKILL.md` by hand, hope I got the frontmatter right.
+
+**Option 2**: Point an agent at the docs and let it extract what matters.
+
+I picked option 2.
+
+## How It Works
+
+Give it a URL. It asks 3 clarifying questions (focus areas, use cases, workflow priorities). Then hits Firecrawl's agent endpoint to extract structured content.
+
+Out comes a skill with:
+- `SKILL.md` (frontmatter + instructions)
+- `references/` (API patterns, examples, auth flows)
+- Proper structure (validated, ready to use)
+
+Ask Claude: `"Create a skill from clerk.com/docs/guides/development/webhooks"`
+
+Claude runs `/skill-gen`, asks what endpoints matter, extracts the patterns, writes the skill. Done.
+
+<ToolHighlight
+  name="Firecrawl"
+  url="https://www.firecrawl.dev/agent"
+  logo="https://firecrawl.dev/logo.png"
+  description="Uses Firecrawl's agent endpoint for intelligent document extraction. The agent understands structure, not just scraping HTML."
+/>
+
+[Full source on GitHub](https://github.com/crafter-station/skills/tree/main/meta/skill-gen).
+
+## Why This Matters
+
+Skills are context engineering. They teach agents domain knowledge the model doesn't have.
+
+But writing them from docs is grunt work:
+- Read through pages
+- Extract patterns
+- Structure as `SKILL.md`
+- Validate frontmatter
+- Hope you didn't miss something
+
+`skill-gen` automates the grunt work. You get the skill, the agent gets domain knowledge.
+
+## The Meta Part
+
+This is the first skill in a new category: **meta**.
+
+Agent ecosystems need tools to build tools. `skill-gen` auto-generates skills from docs. Next:
+
+- `skill-debugger` (why didn't it trigger?)
+- `skill-analyzer` (token usage, activation patterns)
+- `skill-marketplace` (publish, discover, version)
+
+Infrastructure for AI-native development.
+
+## Results
+
+Used it to scaffold Clerk skills (`clerk-webhooks`, `clerk-orgs`, `clerk-custom-ui`). Gets you a solid starting point in 2-3 minutes.
+
+<Callout type="warning" title="Still Needs Refinement">
+The output needs refinement - critical thinking still required. But it beats staring at blank `SKILL.md` files.
+</Callout>
+
+**Before**: 30 minutes to extract patterns and write frontmatter.
+
+**After**: 2 minutes for scaffold, 10 minutes to refine.
+
+## Requirements
+
+You need Firecrawl for this to work:
+
+1. Get a free API key at [firecrawl.dev](https://firecrawl.dev) (5 free daily runs)
+2. Set up the [Firecrawl MCP server](https://github.com/mendableai/firecrawl-mcp)
+3. Add your key to the MCP config
+
+Each skill generation uses **5-15 credits** on the free tier, **15-50 credits** on pro. The free tier is enough to generate a few skills per day.
+
+## Try It
+
+```bash
+npx skills add crafter-station/skills --skill skill-gen -g
+```
+
+Then ask Claude: `"Research Stripe webhooks and create a skill"` or `"Create a skill from stripe.com/docs/webhooks"`
+
+<Callout type="tip" title="Open Source">
+View source at [crafter-station/skills](https://github.com/crafter-station/skills)
+</Callout>
+
+## What's Next
+
+Second skill in the Crafter Station marketplace:
+
+1. **intent-layer** (context engineering) - AGENTS.md infrastructure
+2. **skill-gen** (meta) - Auto-generate skills from docs
+
+More coming soon.
+
+## Credits
+
+Inspired by [Firecrawl's guide](https://www.firecrawl.dev/blog/claude-code-skill) on Claude Code skills. Uses Firecrawl's agent endpoint for structured extraction.
+
+Built in Peru 🇵🇪, tested on [Clerk skills](https://clerk.com/changelog/2026-01-29-clerk-skills).
+
+---
+
+_Follow [@RaillyHugo](https://x.com/RaillyHugo) for more on context engineering._

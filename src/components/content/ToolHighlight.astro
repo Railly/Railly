@@ -1,0 +1,76 @@
+---
+interface Props {
+	name: string;
+	url: string;
+	logo?: string;
+	description: string;
+}
+
+const { name, url, logo, description } = Astro.props;
+---
+
+<a
+	href={url}
+	target="_blank"
+	rel="noopener noreferrer"
+	class="tool-highlight not-prose my-8 border rounded-lg p-6 block group transition-all duration-300 hover:border-flexoki-re/40"
+>
+	<div class="flex items-start gap-4">
+		{logo && (
+			<div class="flex-shrink-0 w-12 h-12 rounded-lg overflow-hidden flex items-center justify-center">
+				<img src={logo} alt={`${name} logo`} class="w-8 h-8 object-contain" />
+			</div>
+		)}
+		<div class="flex-1">
+			<div class="flex items-center gap-2 mb-2">
+				<h3 class="text-lg font-semibold text-flexoki-tx m-0 group-hover:text-flexoki-re transition-colors">
+					Powered by {name}
+				</h3>
+				<svg class="w-4 h-4 text-flexoki-tx-2 group-hover:text-flexoki-re transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+				</svg>
+			</div>
+			<p class="text-sm text-flexoki-tx-2 mb-3 [&_code]:text-xs">
+				{description}
+			</p>
+			<span class="inline-flex items-center gap-1 text-sm font-medium text-flexoki-re group-hover:gap-2 transition-all">
+				Learn more about {name}
+				<svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+				</svg>
+			</span>
+		</div>
+	</div>
+</a>
+
+<style>
+	.tool-highlight {
+		border-color: rgb(135 133 128 / 0.2);
+		background:
+			radial-gradient(circle at 100% 0%, rgb(194 112 84 / 0.03), transparent 50%),
+			radial-gradient(circle at 0% 100%, rgb(91 154 139 / 0.03), transparent 50%);
+		text-decoration: none;
+		transition: border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+	}
+
+	.tool-highlight:hover {
+		background:
+			radial-gradient(circle at 100% 0%, rgb(194 112 84 / 0.06), transparent 50%),
+			radial-gradient(circle at 0% 100%, rgb(91 154 139 / 0.06), transparent 50%);
+	}
+
+	@media (prefers-color-scheme: dark) {
+		.tool-highlight {
+			border-color: rgb(135 133 128 / 0.3);
+			background:
+				radial-gradient(circle at 100% 0%, rgb(194 112 84 / 0.05), transparent 50%),
+				radial-gradient(circle at 0% 100%, rgb(91 154 139 / 0.05), transparent 50%);
+		}
+
+		.tool-highlight:hover {
+			background:
+				radial-gradient(circle at 100% 0%, rgb(194 112 84 / 0.08), transparent 50%),
+				radial-gradient(circle at 0% 100%, rgb(91 154 139 / 0.08), transparent 50%);
+		}
+	}
+</style>
