@@ -1,6 +1,6 @@
 ---
 interface Props {
-	headings: { depth: number; slug: string; text: string }[];
+    headings: { depth: number; slug: string; text: string }[];
 }
 
 const { headings } = Astro.props;
@@ -8,7 +8,9 @@ const { headings } = Astro.props;
 const mainHeadings = headings.filter((heading) => heading.depth <= 3);
 ---
 
-<nav class="sticky top-24 w-64 hidden lg:block">
+<nav
+    class="sticky top-24 w-64 hidden lg:block opacity-65 hover:opacity-100 transition-opacity duration-300"
+>
     <a
         href="/writing"
         class="flex items-center gap-1.5 text-sm mb-6 text-flexoki-tx-2 hover:text-flexoki-tx transition-colors duration-200"
@@ -75,6 +77,20 @@ const mainHeadings = headings.filter((heading) => heading.depth <= 3);
         const toc = document.querySelector("nav.hidden.lg\\:block");
         if (!toc) return;
 
+        const navEl = toc as HTMLElement;
+        let scrollHandler: (() => void) | null = null;
+
+        scrollHandler = () => {
+            if (window.scrollY > 50) {
+                navEl.classList.remove("opacity-65");
+                navEl.classList.add("opacity-30");
+            } else {
+                navEl.classList.remove("opacity-30");
+                navEl.classList.add("opacity-65");
+            }
+        };
+        window.addEventListener("scroll", scrollHandler, { passive: true });
+
         const tocLinks = toc.querySelectorAll(".toc-link");
         const sections = Array.from(tocLinks)
             .map((link) => {
@@ -89,13 +105,27 @@ const mainHeadings = headings.filter((heading) => heading.depth <= 3);
             if (currentActive === link) return;
 
             if (currentActive) {
-                currentActive.classList.remove("border-flexoki-tx", "text-flexoki-tx", "font-medium");
-                currentActive.classList.add("border-transparent", "text-flexoki-tx-2");
+                currentActive.classList.remove(
+                    "border-flexoki-tx",
+                    "text-flexoki-tx",
+                    "font-medium",
+                );
+                currentActive.classList.add(
+                    "border-transparent",
+                    "text-flexoki-tx-2",
+                );
             }
 
             if (link) {
-                link.classList.remove("border-transparent", "text-flexoki-tx-2");
-                link.classList.add("border-flexoki-tx", "text-flexoki-tx", "font-medium");
+                link.classList.remove(
+                    "border-transparent",
+                    "text-flexoki-tx-2",
+                );
+                link.classList.add(
+                    "border-flexoki-tx",
+                    "text-flexoki-tx",
+                    "font-medium",
+                );
             }
 
             currentActive = link;
@@ -107,7 +137,10 @@ const mainHeadings = headings.filter((heading) => heading.depth <= 3);
                 const slug = link.getAttribute("data-heading");
                 const target = slug ? document.getElementById(slug) : null;
                 if (target) {
-                    target.scrollIntoView({ behavior: "smooth", block: "start" });
+                    target.scrollIntoView({
+                        behavior: "smooth",
+                        block: "start",
+                    });
                     setActiveLink(link);
                     history.pushState(null, "", `#${slug}`);
                 }
@@ -129,7 +162,10 @@ const mainHeadings = headings.filter((heading) => heading.depth <= 3);
             });
         };
 
-        const observer = new IntersectionObserver(intersectionCallback, observerOptions);
+        const observer = new IntersectionObserver(
+            intersectionCallback,
+            observerOptions,
+        );
         sections.forEach((section) => observer.observe(section));
 
         if (sections.length > 0 && !window.location.hash) {
@@ -144,6 +180,8 @@ const mainHeadings = headings.filter((heading) => heading.depth <= 3);
         return () => {
             sections.forEach((section) => observer.unobserve(section));
             observer.disconnect();
+            if (scrollHandler)
+                window.removeEventListener("scroll", scrollHandler);
         };
     }
 
