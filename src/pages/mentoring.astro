@@ -1,0 +1,215 @@
+---
+import CrafterStationLogo from "../components/brand/CrafterStationLogo.astro";
+import ClerkLogo from "../components/brand/ClerkLogo.astro";
+import Footer from "../components/layout/Footer.astro";
+import PageLayout from "../components/layout/PageLayout.astro";
+import SectionHeader from "../components/layout/SectionHeader.astro";
+import Layout from "../layouts/Layout.astro";
+
+const topics = [
+	{
+		title: "Learning English",
+		description:
+			"I taught myself English through total immersion. Shadowing, IPA phonetics, reading aloud every day. Took 3 months to write, 6 to read technical docs, 9 to do my first interview. No institute, just consistency.",
+		color: "blue",
+	},
+	{
+		title: "Building in Public",
+		description:
+			"I shipped an open source project, tweeted about it, and that tweet landed me my job at Clerk. You don't need followers. You need something real that people can see and try.",
+		color: "cyan",
+	},
+	{
+		title: "Remote Careers",
+		description:
+			"Every job I've gotten came from events, hackathons, or someone who saw my work. Never from a job board. Recruiters find you when you're visible. Build presence instead of sending CVs.",
+		color: "purple",
+	},
+];
+
+const testimonials = [
+	{
+		quote:
+			"Fue como pagar mucho dinero por una consultoría. Me ayudó a ver claro lo que tenía que hacer con mi startup y me dio un empujón para lanzar ya.",
+		name: "Phil Taboada",
+		context: "Building Wavis, a workflow automation platform",
+	},
+];
+
+const reportPreview = {
+	mentee: "Your Name",
+	date: "February 2026",
+	sections: ["Contexto", "Temas Principales", "Recomendaciones", "Próximos Pasos", "Recursos"],
+};
+---
+
+<Layout>
+	<PageLayout class="flex flex-col gap-8">
+		<SectionHeader title="Mentoring" />
+
+		<div class="flex flex-col gap-5">
+			<p class="text-flexoki-tx-2 leading-relaxed">
+				Every week I talk with developers across Latin America. Most of them
+				ask me the same three things. I went from Lima with no connections to
+				working remotely at <ClerkLogo
+					width={16}
+					height={16}
+					class="inline-block mb-0.5 align-text-bottom"
+				/><a
+					href="https://clerk.com"
+					target="_blank"
+					class="text-flexoki-tx underline decoration-flexoki-ui hover:bg-flexoki-tx hover:text-flexoki-bg transition-colors"
+					>Clerk</a
+				>, and I'm happy to share how.
+			</p>
+		</div>
+
+		<div class="flex flex-col gap-4 mt-2">
+			<h2
+				class="text-sm font-serif italic text-flexoki-tx-2 uppercase tracking-wider"
+			>
+				What I help with
+			</h2>
+			<div class="flex flex-col gap-3">
+				{
+					topics.map((topic) => (
+						<div
+							class={`group flex flex-col gap-1.5 p-4 rounded-lg border border-flexoki-ui hover:border-flexoki-${topic.color}/30 transition-all`}
+						>
+							<h3
+								class={`font-medium text-flexoki-tx group-hover:text-flexoki-${topic.color} transition-colors`}
+							>
+								{topic.title}
+							</h3>
+							<p class="text-sm text-flexoki-tx-2 leading-relaxed">
+								{topic.description}
+							</p>
+						</div>
+					))
+				}
+			</div>
+		</div>
+
+		<div class="flex flex-col gap-4 mt-2">
+			<h2
+				class="text-sm font-serif italic text-flexoki-tx-2 uppercase tracking-wider"
+			>
+				After we talk
+			</h2>
+			<p class="text-sm text-flexoki-tx-2 leading-relaxed">
+				You get a personalized report with everything we discussed: context,
+				key topics, concrete recommendations, next steps, and resources. Branded,
+				structured, yours to keep.
+			</p>
+			<div
+				class="relative rounded-lg border border-flexoki-ui overflow-hidden bg-flexoki-bg-2"
+			>
+				<div class="px-6 pt-5 pb-4">
+					<div class="flex items-center gap-3">
+						<img
+							src="/favicon/favicon-32x32.png"
+							alt=""
+							class="w-7 h-7 rounded-full"
+						/>
+						<div class="flex items-baseline gap-2">
+							<span class="text-sm font-semibold text-flexoki-tx">Railly Hugo</span>
+							<span class="text-[11px] font-serif italic text-flexoki-tx-3">Mentoring Report</span>
+						</div>
+					</div>
+					<div class="mt-3 h-px bg-flexoki-tx"></div>
+				</div>
+				<div class="px-6 pb-5">
+					<div class="grid grid-cols-2 gap-x-6 gap-y-2 p-3.5 rounded bg-flexoki-tx/5">
+						<div>
+							<span class="block text-[8px] uppercase tracking-wider text-flexoki-tx-3 font-serif">Mentee</span>
+							<span class="text-xs font-medium text-flexoki-tx">{reportPreview.mentee}</span>
+						</div>
+						<div>
+							<span class="block text-[8px] uppercase tracking-wider text-flexoki-tx-3 font-serif">Fecha</span>
+							<span class="text-xs font-medium text-flexoki-tx">{reportPreview.date}</span>
+						</div>
+						<div>
+							<span class="block text-[8px] uppercase tracking-wider text-flexoki-tx-3 font-serif">Duraci&oacute;n</span>
+							<span class="text-xs font-medium text-flexoki-tx">30 minutos</span>
+						</div>
+						<div>
+							<span class="block text-[8px] uppercase tracking-wider text-flexoki-tx-3 font-serif">Cobertura</span>
+							<span class="text-xs font-medium text-flexoki-tx">Completa</span>
+						</div>
+					</div>
+					<div class="mt-4 space-y-2">
+						{
+							reportPreview.sections.map((section, i) => (
+								<div class="flex items-center gap-2">
+									<div
+										class="w-1 h-3 rounded-full"
+										style={`background: ${
+											["#4385BE", "#4385BE", "#879A39", "#DA702C", "#8B7EC8"][i]
+										}; opacity: ${1 - i * 0.15}`}
+									/>
+									<span class="text-[11px] text-flexoki-tx font-medium">
+										{section}
+									</span>
+								</div>
+							))
+						}
+					</div>
+				</div>
+				<div class="px-6 py-2.5 border-t border-flexoki-ui/50 flex items-center justify-between">
+					<span class="text-[9px] text-flexoki-tx-3">
+						railly.dev · @raillyhugo · railly@crafterstation.com
+					</span>
+					<span class="text-[9px] text-flexoki-tx-3">1 / 2</span>
+				</div>
+			</div>
+		</div>
+
+		<div class="flex flex-col gap-4 mt-2">
+			<h2
+				class="text-sm font-serif italic text-flexoki-tx-2 uppercase tracking-wider"
+			>
+				What they say
+			</h2>
+			<div class="flex flex-col gap-3">
+				{
+					testimonials.map((t) => (
+						<div class="p-5 rounded-lg border border-flexoki-ui">
+							<p class="font-serif italic text-flexoki-tx leading-relaxed">
+								"{t.quote}"
+							</p>
+							<div class="mt-3 flex flex-col">
+								<span class="text-sm font-medium text-flexoki-tx">
+									{t.name}
+								</span>
+								<span class="text-xs text-flexoki-tx-3">{t.context}</span>
+							</div>
+						</div>
+					))
+				}
+			</div>
+		</div>
+
+		<div class="flex flex-col gap-3 mt-4 items-start">
+			<a
+				href="/meet"
+				class="inline-flex items-center gap-2 px-5 py-2.5 bg-flexoki-tx text-flexoki-bg rounded-lg text-sm font-medium hover:opacity-90 transition-opacity"
+			>
+				Book a conversation
+			</a>
+			<p class="text-sm text-flexoki-tx-3">
+				Free, 30 minutes. Or join <CrafterStationLogo
+					width={14}
+					height={14}
+					class="inline-block mb-0.5 mr-0.5 align-text-bottom"
+				/><a
+					href="https://crafterstation.com"
+					target="_blank"
+					class="text-flexoki-tx underline decoration-flexoki-ui hover:bg-flexoki-tx hover:text-flexoki-bg transition-colors text-sm"
+					>Crafter Station</a
+				> to connect with 250+ builders in Peru.
+			</p>
+		</div>
+
+		<Footer />
+	</PageLayout>
+</Layout>
