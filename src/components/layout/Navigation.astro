@@ -46,8 +46,8 @@ function isActive(href: string): boolean {
 </nav>
 
 <!-- Mobile Navigation -->
-<nav class="block lg:hidden mb-8 pb-2 border-b border-flexoki-ui/20">
-    <ul class="flex gap-2 justify-end text-[13px] lowercase">
+<nav class="block lg:hidden mb-8 pb-2 border-b border-flexoki-ui/20 overflow-x-auto scrollbar-none">
+    <ul class="flex gap-2 justify-end text-[13px] lowercase w-max ml-auto">
         {
             navItems.map((item) => (
                 <li>
