@@ -58,6 +58,11 @@ const testimonials = [
 	},
 ];
 
+const mentoringStats = {
+	devsMentored: 4,
+	sessionsThisWeek: 3,
+};
+
 const reportPreview = {
 	mentee: "Your Name",
 	date: "February 2026",
@@ -97,6 +102,12 @@ const reportPreview = {
 				</a>
 				<span class="text-sm text-flexoki-tx-3">Free, 30 minutes</span>
 			</div>
+		</div>
+
+		<div class="flex items-center gap-3 text-xs text-flexoki-tx-3">
+			<span><span class="text-flexoki-tx font-medium">{mentoringStats.devsMentored}</span> devs mentored 1:1</span>
+			<span class="text-flexoki-ui">&middot;</span>
+			<span><span class="text-flexoki-tx font-medium">{mentoringStats.sessionsThisWeek}</span> {mentoringStats.sessionsThisWeek === 1 ? "session" : "sessions"} this week</span>
 		</div>
 
 		<div class="flex flex-col gap-4 mt-2">
