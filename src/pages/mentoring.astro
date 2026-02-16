@@ -30,17 +30,31 @@ const topics = [
 const testimonials = [
 	{
 		quote:
-			"It was like paying a lot of money for a consulting session. It helped me see clearly what I needed to do with my startup and gave me a push to launch now.",
+			"He taught me to launch without fear of it being perfect and improve along the way. The conversation was like a training session on where I should really focus. Very grateful.",
 		name: "Phil Taboada",
 		context: "Founder of Wavys",
 		url: "https://www.wavys-technologies.com/en/nosotros",
 	},
 	{
 		quote:
-			"I left the conversation with much more clarity and confidence. It helped me see that I do have potential, but above all, to understand how to focus it and sell it better.",
+			"I left with much more clarity and confidence. It helped me see that I do have potential, but above all, to understand how to focus it and sell it better.",
 		name: "Harold Medrano",
 		context: "Navigating a career transition",
 		url: "https://h18m.tech/",
+	},
+	{
+		quote:
+			"I won hackathons and landed an international job, but something was missing. Hugo gave me the reality check I needed: building great things in silence gets you nowhere. Now I ship in the open.",
+		name: "Junior Rodriguez",
+		context: "AI & Software Engineer @ Juan ADS",
+		url: "https://junrod.notion.site/Junior-Rodriguez-Desarrollador-FullStack-1be599dff6b080dda3aae4ac7d6a0fe6",
+	},
+	{
+		quote:
+			"We aligned on so much of what we do. I realized we could learn a lot from each other, collaborate on projects, and most importantly, build together.",
+		name: "Luis Fernando Yupanqui",
+		context: "AI Engineer",
+		url: "https://github.com/lout33",
 	},
 ];
 
@@ -189,7 +203,7 @@ const reportPreview = {
 							<p class="font-serif italic text-flexoki-tx leading-relaxed">
 								"{t.quote}"
 							</p>
-							<div class="mt-3 flex flex-col">
+							<div class="mt-3 flex items-baseline gap-2">
 								{t.url ? (
 									<a href={t.url} target="_blank" class="text-sm font-medium text-flexoki-tx underline decoration-flexoki-ui hover:bg-flexoki-tx hover:text-flexoki-bg transition-colors w-fit">
 										{t.name}
