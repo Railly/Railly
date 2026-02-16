@@ -9,21 +9,21 @@ import Layout from "../layouts/Layout.astro";
 const topics = [
 	{
 		title: "Learning English",
-		description:
-			"I taught myself English through total immersion. Shadowing, IPA phonetics, reading aloud every day. Took 3 months to write, 6 to read technical docs, 9 to do my first interview. No institute, just consistency.",
+		description: "Self-taught, total immersion",
 		color: "blue",
+		href: "/blog/what-4-developers-asked-me#how-i-learned-english",
 	},
 	{
 		title: "Building in Public",
-		description:
-			"I shipped an open source project, tweeted about it, and that tweet landed me my job at Clerk. You don't need followers. You need something real that people can see and try.",
+		description: "Ship, share, get noticed",
 		color: "cyan",
+		href: "/blog/what-4-developers-asked-me#how-i-got-a-remote-job-at-clerk",
 	},
 	{
 		title: "Remote Careers",
-		description:
-			"Every job I've gotten came from events, hackathons, or someone who saw my work. Never from a job board. Recruiters find you when you're visible. Build presence instead of sending CVs.",
+		description: "Visibility over CVs",
 		color: "purple",
+		href: "/blog/what-4-developers-asked-me#how-do-i-get-visible",
 	},
 ];
 
@@ -88,6 +88,15 @@ const reportPreview = {
 					>Clerk</a
 				>, and I'm happy to share how.
 			</p>
+			<div class="flex items-center gap-3">
+				<a
+					href="/meet"
+					class="inline-flex items-center gap-2 px-5 py-2.5 bg-flexoki-tx text-flexoki-bg rounded-lg text-sm font-medium hover:opacity-90 transition-opacity"
+				>
+					Book a conversation
+				</a>
+				<span class="text-sm text-flexoki-tx-3">Free, 30 minutes</span>
+			</div>
 		</div>
 
 		<div class="flex flex-col gap-4 mt-2">
@@ -96,21 +105,27 @@ const reportPreview = {
 			>
 				What I help with
 			</h2>
-			<div class="flex flex-col gap-3">
+			<div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
 				{
 					topics.map((topic) => (
-						<div
-							class={`group flex flex-col gap-1.5 p-4 rounded-lg border border-flexoki-ui hover:border-flexoki-${topic.color}/30 transition-all`}
+						<a
+							href={topic.href}
+							class={`group flex flex-col gap-1 p-4 rounded-lg border border-flexoki-ui hover:border-flexoki-${topic.color}/30 transition-all`}
 						>
-							<h3
-								class={`font-medium text-flexoki-tx group-hover:text-flexoki-${topic.color} transition-colors`}
-							>
-								{topic.title}
-							</h3>
-							<p class="text-sm text-flexoki-tx-2 leading-relaxed">
+							<div class="flex items-center justify-between">
+								<h3
+									class={`font-medium text-flexoki-tx group-hover:text-flexoki-${topic.color} transition-colors`}
+								>
+									{topic.title}
+								</h3>
+								<span class={`text-xs text-flexoki-tx-3 group-hover:text-flexoki-${topic.color} transition-colors`}>
+									&rarr;
+								</span>
+							</div>
+							<span class="text-xs text-flexoki-tx-3">
 								{topic.description}
-							</p>
-						</div>
+							</span>
+						</a>
 					))
 				}
 			</div>
@@ -145,28 +160,28 @@ const reportPreview = {
 					<div class="mt-3 h-px bg-flexoki-tx"></div>
 				</div>
 				<div class="px-6 pb-5">
-					<div class="grid grid-cols-2 gap-x-6 gap-y-2 p-3.5 rounded bg-flexoki-tx/5">
-						<div>
-							<span class="block text-[8px] uppercase tracking-wider text-flexoki-tx-3 font-serif">Mentee</span>
+					<div class="flex flex-wrap gap-x-5 gap-y-1 p-3.5 rounded bg-flexoki-tx/5">
+						<div class="flex items-baseline gap-1.5">
+							<span class="text-[8px] uppercase tracking-wider text-flexoki-tx-3 font-serif">Mentee</span>
 							<span class="text-xs font-medium text-flexoki-tx">{reportPreview.mentee}</span>
 						</div>
-						<div>
-							<span class="block text-[8px] uppercase tracking-wider text-flexoki-tx-3 font-serif">Fecha</span>
+						<div class="flex items-baseline gap-1.5">
+							<span class="text-[8px] uppercase tracking-wider text-flexoki-tx-3 font-serif">Fecha</span>
 							<span class="text-xs font-medium text-flexoki-tx">{reportPreview.date}</span>
 						</div>
-						<div>
-							<span class="block text-[8px] uppercase tracking-wider text-flexoki-tx-3 font-serif">Duraci&oacute;n</span>
+						<div class="flex items-baseline gap-1.5">
+							<span class="text-[8px] uppercase tracking-wider text-flexoki-tx-3 font-serif">Duraci&oacute;n</span>
 							<span class="text-xs font-medium text-flexoki-tx">30 minutos</span>
 						</div>
-						<div>
-							<span class="block text-[8px] uppercase tracking-wider text-flexoki-tx-3 font-serif">Cobertura</span>
+						<div class="flex items-baseline gap-1.5">
+							<span class="text-[8px] uppercase tracking-wider text-flexoki-tx-3 font-serif">Cobertura</span>
 							<span class="text-xs font-medium text-flexoki-tx">Completa</span>
 						</div>
 					</div>
-					<div class="mt-4 space-y-2">
+					<div class="mt-4 flex flex-wrap gap-3">
 						{
 							reportPreview.sections.map((section, i) => (
-								<div class="flex items-center gap-2">
+								<div class="flex items-center gap-1.5">
 									<div
 										class="w-1 h-3 rounded-full"
 										style={`background: ${
@@ -190,30 +205,25 @@ const reportPreview = {
 			</div>
 		</div>
 
-		<div class="flex flex-col gap-4 mt-2">
-			<h2
-				class="text-sm font-serif italic text-flexoki-tx-2 uppercase tracking-wider"
-			>
-				What they say
-			</h2>
-			<div class="flex flex-col gap-3">
+		<div class="w-[100vw] relative left-1/2 -translate-x-1/2 overflow-hidden py-6 marquee-container">
+			<div class="flex gap-6 marquee-track w-max items-stretch">
 				{
-					testimonials.map((t) => (
-						<div class="p-5 rounded-lg border border-flexoki-ui">
-							<p class="font-serif italic text-flexoki-tx leading-relaxed">
+					[...testimonials, ...testimonials, ...testimonials].map((t, i) => (
+						<div class={`shrink-0 w-[300px] sm:w-[400px] p-4 sm:p-5 rounded-lg border border-flexoki-ui bg-flexoki-bg flex flex-col ${i % 2 === 0 ? "rotate-1" : "-rotate-1"}`}>
+							<p class="font-serif italic text-flexoki-tx leading-relaxed text-sm flex-1">
 								"{t.quote}"
 							</p>
 							<div class="mt-3 flex items-baseline gap-2">
 								{t.url ? (
-									<a href={t.url} target="_blank" class="text-sm font-medium text-flexoki-tx underline decoration-flexoki-ui hover:bg-flexoki-tx hover:text-flexoki-bg transition-colors w-fit">
+									<a href={t.url} target="_blank" class="text-xs font-medium text-flexoki-tx underline decoration-flexoki-ui hover:bg-flexoki-tx hover:text-flexoki-bg transition-colors w-fit">
 										{t.name}
 									</a>
 								) : (
-									<span class="text-sm font-medium text-flexoki-tx">
+									<span class="text-xs font-medium text-flexoki-tx">
 										{t.name}
 									</span>
 								)}
-								<span class="text-xs text-flexoki-tx-3">{t.context}</span>
+								<span class="text-[11px] text-flexoki-tx-3">{t.context}</span>
 							</div>
 						</div>
 					))
@@ -221,27 +231,42 @@ const reportPreview = {
 			</div>
 		</div>
 
-		<div class="flex flex-col gap-3 mt-4 items-start">
-			<a
-				href="/meet"
-				class="inline-flex items-center gap-2 px-5 py-2.5 bg-flexoki-tx text-flexoki-bg rounded-lg text-sm font-medium hover:opacity-90 transition-opacity"
-			>
-				Book a conversation
-			</a>
-			<p class="text-sm text-flexoki-tx-3">
-				Free, 30 minutes. Or join <CrafterStationLogo
-					width={14}
-					height={14}
-					class="inline-block mb-0.5 mr-0.5 align-text-bottom"
-				/><a
-					href="https://crafterstation.com"
-					target="_blank"
-					class="text-flexoki-tx underline decoration-flexoki-ui hover:bg-flexoki-tx hover:text-flexoki-bg transition-colors text-sm"
-					>Crafter Station</a
-				> to connect with 250+ builders in Peru.
-			</p>
-		</div>
+		<p class="text-sm text-flexoki-tx-3 mt-4">
+			Read the <a
+				href="/blog/what-4-developers-asked-me"
+				class="text-flexoki-tx underline decoration-flexoki-ui hover:bg-flexoki-tx hover:text-flexoki-bg transition-colors"
+				>full blog post</a
+			> behind these conversations, or join <CrafterStationLogo
+				width={14}
+				height={14}
+				class="inline-block mb-0.5 mr-0.5 align-text-bottom"
+			/><a
+				href="https://crafterstation.com"
+				target="_blank"
+				class="text-flexoki-tx underline decoration-flexoki-ui hover:bg-flexoki-tx hover:text-flexoki-bg transition-colors"
+				>Crafter Station</a
+			> to connect with 250+ builders in Peru.
+		</p>
 
 		<Footer />
 	</PageLayout>
 </Layout>
+
+<style>
+	@keyframes marquee {
+		0% {
+			transform: translateX(0);
+		}
+		100% {
+			transform: translateX(-33.33%);
+		}
+	}
+
+	.marquee-track {
+		animation: marquee 30s linear infinite;
+	}
+
+	.marquee-container:hover .marquee-track {
+		animation-play-state: paused;
+	}
+</style>
