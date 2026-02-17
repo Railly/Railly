@@ -1,0 +1,111 @@
+---
+import Footer from "../components/layout/Footer.astro";
+import PageLayout from "../components/layout/PageLayout.astro";
+import SectionHeader from "../components/layout/SectionHeader.astro";
+import Layout from "../layouts/Layout.astro";
+
+const ogTitle = "Uses";
+const ogDescription = "Hardware, software, and tools I use daily as a software engineer.";
+const ogImage = `/api/og?title=${encodeURIComponent(ogTitle)}&description=${encodeURIComponent(ogDescription)}`;
+
+const sections = [
+	{
+		title: "Hardware",
+		items: [
+			{ name: "MacBook Pro M4 Pro", description: "24 GB RAM, 2025" },
+		],
+	},
+	{
+		title: "Editor & Terminal",
+		items: [
+			{ name: "Zed", description: "Primary editor, vim mode, Vesper theme" },
+			{ name: "Ghostty", description: "Terminal, GeistMono Nerd Font, Vesper theme" },
+			{ name: "Neovim", description: "Migrating to, learning" },
+			{ name: "tmux", description: "Terminal multiplexer" },
+		],
+	},
+	{
+		title: "Dev Stack",
+		items: [
+			{ name: "Bun", description: "Runtime, package manager, test runner" },
+			{ name: "Biome", description: "Lint + format (never ESLint/Prettier)" },
+			{ name: "TypeScript", description: "Strict mode, always" },
+			{ name: "Next.js 15", description: "React 19, Server Components first" },
+			{ name: "Tailwind CSS", description: "Styling" },
+			{ name: "Clerk", description: "Authentication" },
+			{ name: "Vercel", description: "Deploy" },
+			{ name: "Neon", description: "Postgres" },
+			{ name: "Trigger.dev", description: "Background jobs" },
+			{ name: "Resend", description: "Email" },
+		],
+	},
+	{
+		title: "AI",
+		items: [
+			{ name: "Claude Code", description: "Primary AI assistant" },
+			{ name: "Cursor", description: "AI code editor" },
+			{ name: "LM Studio", description: "Local models" },
+		],
+	},
+	{
+		title: "Apps",
+		items: [
+			{ name: "Obsidian", description: "Notes, Zettelkasten" },
+			{ name: "Raycast", description: "Launcher, snippets, clipboard" },
+			{ name: "Arc", description: "Browser" },
+			{ name: "Figma", description: "Design" },
+			{ name: "Screen Studio", description: "Screen recording" },
+			{ name: "CapCut", description: "Video editing" },
+			{ name: "Linear", description: "Project management" },
+			{ name: "Toggl Track", description: "Time tracking" },
+			{ name: "Discord & Slack", description: "Communication" },
+			{ name: "Notion Calendar", description: "Scheduling" },
+		],
+	},
+	{
+		title: "CLI",
+		items: [
+			{ name: "gh", description: "GitHub" },
+			{ name: "vercel", description: "Deploys" },
+			{ name: "cloudflared", description: "Tunnels" },
+			{ name: "ffmpeg", description: "Media processing" },
+		],
+	},
+];
+---
+
+<Layout title={`${ogTitle} — Railly Hugo`} description={ogDescription} image={ogImage}>
+	<PageLayout class="flex flex-col gap-8">
+		<SectionHeader title="Uses" />
+
+		<p class="text-flexoki-tx-2 leading-relaxed">
+			Hardware, software, and tools I use daily. Inspired by <a
+				href="https://uses.tech"
+				target="_blank"
+				class="text-flexoki-tx underline decoration-flexoki-ui hover:bg-flexoki-tx hover:text-flexoki-bg transition-colors"
+			>uses.tech</a>.
+		</p>
+
+		{sections.map((section) => (
+			<section class="w-full">
+				<h2 class="text-sm font-serif italic text-flexoki-tx-2 uppercase tracking-wider mb-3">
+					{section.title}
+				</h2>
+				<div class="space-y-0">
+					{section.items.map((item) => (
+						<div class="flex items-baseline gap-4 py-2.5 border-b border-flexoki-ui">
+							<span class="text-flexoki-tx font-medium text-sm shrink-0 w-40">
+								{item.name}
+							</span>
+							<span class="text-flexoki-tx-3 text-sm">
+								{item.description}
+							</span>
+						</div>
+					))}
+				</div>
+			</section>
+		))}
+
+		<Footer />
+	</PageLayout>
+</Layout>
