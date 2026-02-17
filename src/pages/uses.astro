@@ -14,6 +14,7 @@ import CloudflareLogo from "../assets/svgs/logos/cloudflare.svg";
 import CursorLogo from "../assets/svgs/logos/cursor.svg";
 import DiscordLogo from "../assets/svgs/logos/discord.svg";
 import DjiLogo from "../assets/svgs/logos/dji.svg";
+import ShureLogo from "../assets/svgs/logos/shure.svg";
 import FfmpegLogo from "../assets/svgs/logos/ffmpeg.svg";
 import FigmaLogo from "../assets/svgs/logos/figma.svg";
 import GhosttyLogo from "../assets/svgs/logos/ghostty.svg";
@@ -44,7 +45,8 @@ const logoMap: Record<string, ImageMetadata> = {
 	"Apple Watch S10": AppleLogo,
 	"AirPods Pro": AppleLogo,
 	"DJI Mic Mini": DjiLogo,
-	"DJI Osmo Action 5 Pro": DjiLogo,
+	"Shure MV7+": ShureLogo,
+	"DJI Osmo Nano": DjiLogo,
 	"Meta Ray-Ban": MetaLogo,
 	"Arduino UNO R4 WiFi": ArduinoLogo,
 	"Zed": ZedLogo,
@@ -78,7 +80,7 @@ const logoMap: Record<string, ImageMetadata> = {
 
 const monoLogos = new Set([
 	"MacBook Pro M4 Pro", "iPad Pro", "iPhone 15 Plus", "Apple Watch S10", "AirPods Pro",
-	"DJI Mic Mini", "DJI Osmo Action 5 Pro", "Meta Ray-Ban", "Arduino UNO R4 WiFi",
+	"Shure MV7+", "DJI Mic Mini", "DJI Osmo Nano", "Meta Ray-Ban", "Arduino UNO R4 WiFi",
 	"Zed", "Ghostty", "Biome",
 	"Next.js 15", "Tailwind CSS", "Clerk", "Vercel", "Neon",
 	"Trigger.dev", "Resend", "Claude Code", "Cursor", "Obsidian", "Raycast",
@@ -117,7 +119,7 @@ const sections: { title: string; items: Item[] }[] = [
 		items: [
 			{ name: "Shure MV7+", description: "Podcast microphone + boom arm", url: "https://shure.com/en-US/microphones/usb/mv7-plus" },
 			{ name: "DJI Mic Mini", description: "Wireless lavalier (2 TX + 1 RX)", url: "https://store.dji.com/product/dji-mic-mini" },
-			{ name: "DJI Osmo Action 5 Pro", description: "Action camera, 128 GB", url: "https://store.dji.com/product/dji-osmo-action-5-pro" },
+			{ name: "DJI Osmo Nano", description: "Action camera, 128 GB", url: "https://store.dji.com/product/dji-osmo-nano" },
 			{ name: "Meta Ray-Ban", description: "Smart glasses, Classic Black", url: "https://www.meta.com/smart-glasses" },
 		],
 	},
