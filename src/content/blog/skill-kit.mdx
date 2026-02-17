@@ -1,0 +1,124 @@
+---
+title: "Skill Kit: Local Analytics for AI Agent Skills"
+description: "Track usage, measure context budget, and prune what you don't use. Zero telemetry."
+slug: "skill-kit"
+pubDate: "2026-02-17"
+tags: ["ai", "engineering", "claude", "agents", "open-source", "cli"]
+status: "published"
+---
+
+import Callout from "../../components/content/Callout.astro";
+
+**Skill Kit** is a CLI that scans your AI agent skills, tracks usage, and tells you what to keep and what to drop.
+
+```bash
+npx @crafter/skillkit scan
+```
+
+Works with Claude Code, Codex, Cursor, Copilot, Windsurf, and [10+ more agents](https://github.com/crafter-station/skill-kit#supported-agents).
+
+## The Problem
+
+The skills ecosystem is growing fast. Skills.sh, manual installs, project-level skills — they accumulate. Every skill gets loaded into the agent's context window on every session.
+
+Context is a finite budget. Every unused skill steals tokens from your actual code.
+
+But there's zero visibility:
+- Which skills are actually being used?
+- How much context budget are they consuming?
+- Which ones haven't been invoked in months?
+
+I use Claude Code daily at [Clerk](https://clerk.com) and for my open source work at [Crafter Station](https://crafterstation.com). I had 40+ skills installed across global and project scopes. No idea which ones mattered.
+
+## The Solution
+
+Skill Kit gives you five commands:
+
+### scan
+
+Discovers installed skills and indexes your session files.
+
+```
+$ skillkit scan
+  Scanning ~/.claude/skills/ ...
+  Found 12 skills (8 via skills.sh, 4 manual)
+  Indexed 211 sessions · 1,847 invocations
+```
+
+It parses JSONL session files, looking for `Skill` tool_use blocks, and maps each invocation back to the skill that triggered it.
+
+### stats
+
+Usage analytics with sparkline trends over the last 30 days.
+
+```
+$ skillkit stats --top 3
+  SKILL       30d   TREND
+  commit      42    ▂▃▅▇█▆▅▇█
+  review      38    ▁▃▅▆▇▇▆▅▃
+  deploy      27    ▁▁▂▃▅▇█▇▅
+```
+
+### health
+
+Context budget check. Flags unused skills.
+
+```
+$ skillkit health
+  [████████░░] 78% metadata budget (12.5K / 16.0K)
+  ! 3 skills unused in 30d — run skillkit prune
+```
+
+### prune
+
+Removes skills that haven't been used in 30 days. Shows what you'll reclaim before confirming.
+
+```
+$ skillkit prune
+  × scaffold (0.9K)
+  × lint (2.1K)
+
+  2 skills · 3.0K context reclaimable
+
+  Run with --yes to confirm deletion.
+```
+
+### list
+
+Lists all installed skills with size and installation method.
+
+## How It Works
+
+Everything runs locally. SQLite database at `~/.skillkit/analytics.db`. No telemetry, no network calls, nothing leaves your machine.
+
+The scanner walks `~/.claude/skills/` (and equivalent paths for other agents), reads SKILL.md files, and detects whether each skill was installed via skills.sh or manually. It deduplicates symlinked skills across agents.
+
+For usage data, it parses JSONL session files from `~/.claude/projects/`. Each session file contains tool_use blocks — when a `Skill` tool is invoked, Skill Kit maps the skill name back to an installed skill and records the invocation.
+
+Sparklines are generated from 30-day invocation data, bucketed daily. The health check calculates total metadata bytes across all loaded skills and compares against the 16K context budget.
+
+## Use as a Skill
+
+You can also install Skill Kit as a Claude Code skill itself:
+
+```bash
+npx skills add crafter-station/skill-kit
+```
+
+Then ask your agent: "which skills do I use the most?" or "clean up unused skills" and it runs the right commands.
+
+## Try It
+
+```bash
+npx @crafter/skillkit scan
+npx @crafter/skillkit stats
+npx @crafter/skillkit health
+```
+
+<Callout type="tip" title="Open Source">
+Full source at [crafter-station/skill-kit](https://github.com/crafter-station/skill-kit). MIT License.
+</Callout>
+
+---
+
+_Follow [@RaillyHugo](https://x.com/RaillyHugo) for more on developer tools and context engineering._
