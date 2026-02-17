@@ -54,7 +54,7 @@ const logoMap: Record<string, ImageMetadata> = {
 	"Discord & Slack": DiscordLogo,
 	"Notion Calendar": NotionLogo,
 	"Linear": LinearLogo,
-	"GitHub": GithubLogo,
+	"gh": GithubLogo,
 	"cloudflared": CloudflareLogo,
 	"vercel": VercelLogo,
 	"clerk": ClerkLogo,
@@ -65,7 +65,7 @@ const monoLogos = new Set([
 	"MacBook Pro M4 Pro", "Zed", "Ghostty", "Biome",
 	"Next.js 15", "Tailwind CSS", "Clerk", "Vercel", "Neon",
 	"Trigger.dev", "Resend", "Cursor", "Obsidian", "Raycast",
-	"Linear", "GitHub", "cloudflared", "vercel", "clerk", "obsidian",
+	"Linear", "gh", "cloudflared", "vercel", "clerk", "obsidian",
 ]);
 
 interface Item {
@@ -130,7 +130,7 @@ const sections: { title: string; items: Item[] }[] = [
 	{
 		title: "CLI",
 		items: [
-			{ name: "GitHub", description: "gh", url: "https://cli.github.com" },
+			{ name: "gh", description: "GitHub", url: "https://cli.github.com" },
 			{ name: "vercel", description: "Deploys", url: "https://vercel.com/docs/cli" },
 			{ name: "clerk", description: "Authentication", url: "https://clerk.com/docs/cli" },
 			{ name: "obsidian", description: "Vault management", url: "https://help.obsidian.md/cli" },
