@@ -1,24 +1,11 @@
 <svg
-      role="img"
-      viewBox="280 310 470 660"
+      viewBox="0 0 38 57"
       xmlns="http://www.w3.org/2000/svg"
     >
       <title>Figma</title>
-      <path
-        d="M312 840C312 784.772 356.772 740 412 740H512V840C512 895.228 467.228 940 412 940C356.772 940 312 895.228 312 840Z"
-        fill="#24CB71"
-      />
-      <path
-        d="M512 340V540H612C667.228 540 712 495.228 712 440C712 384.772 667.228 340 612 340H512Z"
-        fill="#FF7237"
-      />
-      <circle cx="611.167" cy="640" r="100" fill="#00B6FF" />
-      <path
-        d="M312 440C312 495.228 356.772 540 412 540H512V340H412C356.772 340 312 384.772 312 440Z"
-        fill="#FF3737"
-      />
-      <path
-        d="M312 640C312 695.228 356.772 740 412 740H512V540H412C356.772 540 312 584.772 312 640Z"
-        fill="#874FFF"
-      />
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M19 28.5C19 23.2533 23.2533 19 28.5 19C33.7467 19 38 23.2533 38 28.5C38 33.7467 33.7467 38 28.5 38C23.2533 38 19 33.7467 19 28.5Z" fill="currentColor"/>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M0 47.5C0 42.2533 4.25329 38 9.5 38H19V47.5C19 52.7467 14.7467 57 9.5 57C4.25329 57 0 52.7467 0 47.5Z" fill="currentColor"/>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M19 0V19H28.5C33.7467 19 38 14.7467 38 9.5C38 4.25329 33.7467 0 28.5 0H19Z" fill="currentColor"/>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M0 9.5C0 14.7467 4.25329 19 9.5 19H19V0H9.5C4.25329 0 0 4.25329 0 9.5Z" fill="currentColor"/>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M0 28.5C0 33.7467 4.25329 38 9.5 38H19V19H9.5C4.25329 19 0 23.2533 0 28.5Z" fill="currentColor"/>
     </svg>
