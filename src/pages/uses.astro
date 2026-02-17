@@ -41,7 +41,7 @@ const logoMap: Record<string, ImageMetadata> = {
 	"MacBook Pro M4 Pro": AppleLogo,
 	"iPad Pro": AppleLogo,
 	"iPhone 15 Plus": AppleLogo,
-	"Apple Watch Series 10": AppleLogo,
+	"Apple Watch S10": AppleLogo,
 	"AirPods Pro": AppleLogo,
 	"DJI Mic Mini": DjiLogo,
 	"DJI Osmo Action 5 Pro": DjiLogo,
@@ -77,7 +77,7 @@ const logoMap: Record<string, ImageMetadata> = {
 };
 
 const monoLogos = new Set([
-	"MacBook Pro M4 Pro", "iPad Pro", "iPhone 15 Plus", "Apple Watch Series 10", "AirPods Pro",
+	"MacBook Pro M4 Pro", "iPad Pro", "iPhone 15 Plus", "Apple Watch S10", "AirPods Pro",
 	"DJI Mic Mini", "DJI Osmo Action 5 Pro", "Meta Ray-Ban", "Arduino UNO R4 WiFi",
 	"Zed", "Ghostty", "Biome",
 	"Next.js 15", "Tailwind CSS", "Clerk", "Vercel", "Neon",
@@ -106,7 +106,7 @@ const sections: { title: string; items: Item[] }[] = [
 			{ name: "MacBook Pro M4 Pro", description: "14\", 24 GB RAM, 2025", url: "https://apple.com/macbook-pro" },
 			{ name: "iPad Pro", description: "M-series chip", url: "https://apple.com/ipad-pro" },
 			{ name: "iPhone 15 Plus", description: "Daily driver", url: "https://apple.com/iphone-15" },
-			{ name: "Apple Watch Series 10", description: "Health tracking", url: "https://apple.com/apple-watch-series-10" },
+			{ name: "Apple Watch S10", description: "Health tracking", url: "https://apple.com/apple-watch-series-10" },
 			{ name: "AirPods Pro", description: "Noise cancellation", url: "https://apple.com/airpods-pro" },
 			{ name: "Keychron K2", description: "Mechanical keyboard", url: "https://keychron.com/products/keychron-k2" },
 			{ name: "Cougar E-STAR 140", description: "Electric standing desk", url: "https://cougargaming.com" },
@@ -226,7 +226,7 @@ const statusLabel: Record<Book["status"], string> = {
 				<div class="space-y-0">
 					{section.items.map((item) => (
 						<div class="flex items-center gap-4 py-2.5 border-b border-flexoki-ui">
-							<span class="text-flexoki-tx font-medium text-sm shrink-0 w-40 flex items-center gap-2">
+							<span class="text-flexoki-tx font-medium text-sm shrink-0 w-52 flex items-center gap-2">
 								{logoMap[item.name] && (
 									<img
 										src={logoMap[item.name].src}
@@ -265,7 +265,7 @@ const statusLabel: Record<Book["status"], string> = {
 			<div class="space-y-0">
 				{books.map((book) => (
 					<div class="flex items-center gap-4 py-2.5 border-b border-flexoki-ui">
-						<span class="text-flexoki-tx font-medium text-sm shrink-0 w-40 flex items-center gap-2">
+						<span class="text-flexoki-tx font-medium text-sm shrink-0 w-52 flex items-center gap-2">
 							{book.url ? (
 								<a
 									href={book.url}
