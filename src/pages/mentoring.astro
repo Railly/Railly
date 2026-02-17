@@ -68,9 +68,13 @@ const reportPreview = {
 	date: "February 2026",
 	sections: ["Contexto", "Temas Principales", "Recomendaciones", "Próximos Pasos", "Recursos"],
 };
+
+const ogTitle = "Mentoring";
+const ogDescription = "Free 1:1 conversations for LATAM developers. English, remote careers, building in public.";
+const ogImage = `/api/og?title=${encodeURIComponent(ogTitle)}&description=${encodeURIComponent(ogDescription)}`;
 ---
 
-<Layout>
+<Layout title={`${ogTitle} — Railly Hugo`} description={ogDescription} image={ogImage}>
 	<PageLayout class="flex flex-col gap-8">
 		<SectionHeader title="Mentoring" />
 
