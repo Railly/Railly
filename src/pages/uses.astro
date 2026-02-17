@@ -20,6 +20,7 @@ import NeonLogo from "../assets/svgs/logos/neon.svg";
 import NextjsLogo from "../assets/svgs/logos/nextjs.svg";
 import NotionLogo from "../assets/svgs/logos/notion.svg";
 import ObsidianLogo from "../assets/svgs/logos/obsidian.svg";
+import PerplexityLogo from "../assets/svgs/logos/perplexity.svg";
 import RaycastLogo from "../assets/svgs/logos/raycast.svg";
 import ResendLogo from "../assets/svgs/logos/resend.svg";
 import TailwindLogo from "../assets/svgs/logos/tailwindcss.svg";
@@ -51,6 +52,7 @@ const logoMap: Record<string, ImageMetadata> = {
 	"Obsidian": ObsidianLogo,
 	"Raycast": RaycastLogo,
 	"Figma": FigmaLogo,
+	"Comet": PerplexityLogo,
 	"Discord & Slack": DiscordLogo,
 	"Notion Calendar": NotionLogo,
 	"Linear": LinearLogo,
@@ -65,7 +67,7 @@ const monoLogos = new Set([
 	"MacBook Pro M4 Pro", "Zed", "Ghostty", "Biome",
 	"Next.js 15", "Tailwind CSS", "Clerk", "Vercel", "Neon",
 	"Trigger.dev", "Resend", "Claude Code", "Cursor", "Obsidian", "Raycast",
-	"Figma", "Discord & Slack", "TypeScript",
+	"Figma", "Discord & Slack", "TypeScript", "Comet",
 	"Linear", "gh", "cloudflared", "vercel", "clerk", "obsidian",
 ]);
 
@@ -87,8 +89,6 @@ const sections: { title: string; items: Item[] }[] = [
 		items: [
 			{ name: "Zed", description: "Primary editor, vim mode, Vesper theme", url: "https://zed.dev" },
 			{ name: "Ghostty", description: "Terminal, GeistMono Nerd Font, Vesper theme", url: "https://ghostty.org" },
-			{ name: "Neovim", description: "Migrating to, learning", url: "https://neovim.io" },
-			{ name: "tmux", description: "Terminal multiplexer", url: "https://github.com/tmux/tmux" },
 		],
 	},
 	{
@@ -111,7 +111,6 @@ const sections: { title: string; items: Item[] }[] = [
 		items: [
 			{ name: "Claude Code", description: "Primary AI assistant", url: "https://claude.ai/claude-code" },
 			{ name: "Cursor", description: "AI code editor", url: "https://cursor.com" },
-			{ name: "LM Studio", description: "Local models", url: "https://lmstudio.ai" },
 		],
 	},
 	{
@@ -119,7 +118,7 @@ const sections: { title: string; items: Item[] }[] = [
 		items: [
 			{ name: "Obsidian", description: "Notes, Zettelkasten", url: "https://obsidian.md" },
 			{ name: "Raycast", description: "Launcher, snippets, clipboard", url: "https://raycast.com" },
-			{ name: "Comet", description: "Browser (by Perplexity)", url: "https://comet.sh" },
+			{ name: "Comet", description: "Browser (by Perplexity)", url: "https://www.perplexity.ai/comet" },
 			{ name: "Figma", description: "Design", url: "https://figma.com" },
 			{ name: "Screen Studio", description: "Screen recording", url: "https://screen.studio" },
 			{ name: "Linear", description: "Project management", url: "https://linear.app" },
