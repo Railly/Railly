@@ -5,6 +5,7 @@ import SectionHeader from "../components/layout/SectionHeader.astro";
 import Layout from "../layouts/Layout.astro";
 
 import AppleLogo from "../assets/svgs/logos/apple.svg";
+import BiomeLogo from "../assets/svgs/logos/biome.svg";
 import BunLogo from "../assets/svgs/logos/bun.svg";
 import ClaudeLogo from "../assets/svgs/logos/claude.svg";
 import ClerkLogo from "../assets/svgs/logos/clerk.svg";
@@ -14,6 +15,7 @@ import DiscordLogo from "../assets/svgs/logos/discord.svg";
 import FigmaLogo from "../assets/svgs/logos/figma.svg";
 import GhosttyLogo from "../assets/svgs/logos/ghostty.svg";
 import GithubLogo from "../assets/svgs/logos/github.svg";
+import LinearLogo from "../assets/svgs/logos/linear.svg";
 import NeonLogo from "../assets/svgs/logos/neon.svg";
 import NextjsLogo from "../assets/svgs/logos/nextjs.svg";
 import NotionLogo from "../assets/svgs/logos/notion.svg";
@@ -25,7 +27,6 @@ import TriggerLogo from "../assets/svgs/logos/trigger.svg";
 import TypescriptLogo from "../assets/svgs/logos/typescript.svg";
 import VercelLogo from "../assets/svgs/logos/vercel.svg";
 import ZedLogo from "../assets/svgs/logos/zed.svg";
-import BiomeLogo from "../assets/svgs/logos/biome.svg";
 
 const ogTitle = "Uses";
 const ogDescription = "Hardware, software, and tools I use daily as a software engineer.";
@@ -52,71 +53,89 @@ const logoMap: Record<string, ImageMetadata> = {
 	"Figma": FigmaLogo,
 	"Discord & Slack": DiscordLogo,
 	"Notion Calendar": NotionLogo,
-	"gh": GithubLogo,
+	"Linear": LinearLogo,
+	"GitHub": GithubLogo,
 	"cloudflared": CloudflareLogo,
+	"vercel": VercelLogo,
+	"clerk": ClerkLogo,
+	"obsidian": ObsidianLogo,
 };
 
-const sections = [
+const monoLogos = new Set([
+	"MacBook Pro M4 Pro", "Zed", "Ghostty", "Biome",
+	"Next.js 15", "Tailwind CSS", "Clerk", "Vercel", "Neon",
+	"Trigger.dev", "Resend", "Cursor", "Obsidian", "Raycast",
+	"Linear", "GitHub", "cloudflared", "vercel", "clerk", "obsidian",
+]);
+
+interface Item {
+	name: string;
+	description: string;
+	url?: string;
+}
+
+const sections: { title: string; items: Item[] }[] = [
 	{
 		title: "Hardware",
 		items: [
-			{ name: "MacBook Pro M4 Pro", description: "24 GB RAM, 2025" },
+			{ name: "MacBook Pro M4 Pro", description: "24 GB RAM, 2025", url: "https://apple.com/macbook-pro" },
 		],
 	},
 	{
 		title: "Editor & Terminal",
 		items: [
-			{ name: "Zed", description: "Primary editor, vim mode, Vesper theme" },
-			{ name: "Ghostty", description: "Terminal, GeistMono Nerd Font, Vesper theme" },
-			{ name: "Neovim", description: "Migrating to, learning" },
-			{ name: "tmux", description: "Terminal multiplexer" },
+			{ name: "Zed", description: "Primary editor, vim mode, Vesper theme", url: "https://zed.dev" },
+			{ name: "Ghostty", description: "Terminal, GeistMono Nerd Font, Vesper theme", url: "https://ghostty.org" },
+			{ name: "Neovim", description: "Migrating to, learning", url: "https://neovim.io" },
+			{ name: "tmux", description: "Terminal multiplexer", url: "https://github.com/tmux/tmux" },
 		],
 	},
 	{
 		title: "Dev Stack",
 		items: [
-			{ name: "Bun", description: "Runtime, package manager, test runner" },
-			{ name: "Biome", description: "Lint + format (never ESLint/Prettier)" },
-			{ name: "TypeScript", description: "Strict mode, always" },
-			{ name: "Next.js 15", description: "React 19, Server Components first" },
-			{ name: "Tailwind CSS", description: "Styling" },
-			{ name: "Clerk", description: "Authentication" },
-			{ name: "Vercel", description: "Deploy" },
-			{ name: "Neon", description: "Postgres" },
-			{ name: "Trigger.dev", description: "Background jobs" },
-			{ name: "Resend", description: "Email" },
+			{ name: "Bun", description: "Runtime, package manager, test runner", url: "https://bun.sh" },
+			{ name: "Biome", description: "Lint + format (never ESLint/Prettier)", url: "https://biomejs.dev" },
+			{ name: "TypeScript", description: "Strict mode, always", url: "https://typescriptlang.org" },
+			{ name: "Next.js 15", description: "React 19, Server Components first", url: "https://nextjs.org" },
+			{ name: "Tailwind CSS", description: "Styling", url: "https://tailwindcss.com" },
+			{ name: "Clerk", description: "Authentication", url: "https://clerk.com" },
+			{ name: "Vercel", description: "Deploy", url: "https://vercel.com" },
+			{ name: "Neon", description: "Postgres", url: "https://neon.tech" },
+			{ name: "Trigger.dev", description: "Background jobs", url: "https://trigger.dev" },
+			{ name: "Resend", description: "Email", url: "https://resend.com" },
 		],
 	},
 	{
 		title: "AI",
 		items: [
-			{ name: "Claude Code", description: "Primary AI assistant" },
-			{ name: "Cursor", description: "AI code editor" },
-			{ name: "LM Studio", description: "Local models" },
+			{ name: "Claude Code", description: "Primary AI assistant", url: "https://claude.ai/claude-code" },
+			{ name: "Cursor", description: "AI code editor", url: "https://cursor.com" },
+			{ name: "LM Studio", description: "Local models", url: "https://lmstudio.ai" },
 		],
 	},
 	{
 		title: "Apps",
 		items: [
-			{ name: "Obsidian", description: "Notes, Zettelkasten" },
-			{ name: "Raycast", description: "Launcher, snippets, clipboard" },
-			{ name: "Comet", description: "Browser (by Perplexity)" },
-			{ name: "Figma", description: "Design" },
-			{ name: "Screen Studio", description: "Screen recording" },
-			{ name: "CapCut", description: "Video editing" },
-			{ name: "Linear", description: "Project management" },
-			{ name: "Toggl Track", description: "Time tracking" },
-			{ name: "Discord & Slack", description: "Communication" },
-			{ name: "Notion Calendar", description: "Scheduling" },
+			{ name: "Obsidian", description: "Notes, Zettelkasten", url: "https://obsidian.md" },
+			{ name: "Raycast", description: "Launcher, snippets, clipboard", url: "https://raycast.com" },
+			{ name: "Comet", description: "Browser (by Perplexity)", url: "https://comet.sh" },
+			{ name: "Figma", description: "Design", url: "https://figma.com" },
+			{ name: "Screen Studio", description: "Screen recording", url: "https://screen.studio" },
+			{ name: "Linear", description: "Project management", url: "https://linear.app" },
+			{ name: "Toggl Track", description: "Time tracking", url: "https://toggl.com/track" },
+			{ name: "Discord & Slack", description: "Communication", url: "https://discord.com" },
+			{ name: "Notion Calendar", description: "Scheduling", url: "https://notion.so/product/calendar" },
 		],
 	},
 	{
 		title: "CLI",
 		items: [
-			{ name: "gh", description: "GitHub" },
-			{ name: "vercel", description: "Deploys" },
-			{ name: "cloudflared", description: "Tunnels" },
-			{ name: "ffmpeg", description: "Media processing" },
+			{ name: "GitHub", description: "gh", url: "https://cli.github.com" },
+			{ name: "vercel", description: "Deploys", url: "https://vercel.com/docs/cli" },
+			{ name: "clerk", description: "Authentication", url: "https://clerk.com/docs/cli" },
+			{ name: "obsidian", description: "Vault management", url: "https://help.obsidian.md/cli" },
+			{ name: "cloudflared", description: "Tunnels", url: "https://developers.cloudflare.com/cloudflare-one/connections/connect-networks" },
+			{ name: "ffmpeg", description: "Media processing", url: "https://ffmpeg.org" },
 		],
 	},
 ];
@@ -144,9 +163,26 @@ const sections = [
 						<div class="flex items-center gap-4 py-2.5 border-b border-flexoki-ui">
 							<span class="text-flexoki-tx font-medium text-sm shrink-0 w-40 flex items-center gap-2">
 								{logoMap[item.name] && (
-									<img src={logoMap[item.name].src} alt="" class="w-4 h-4 shrink-0 dark:invert" />
+									<img
+										src={logoMap[item.name].src}
+										alt=""
+										class:list={[
+											"w-4 h-4 shrink-0",
+											monoLogos.has(item.name) && "dark:invert",
+										]}
+									/>
 								)}
-								{item.name}
+								{item.url ? (
+									<a
+										href={item.url}
+										target="_blank"
+										class="hover:underline decoration-flexoki-ui"
+									>
+										{item.name}
+									</a>
+								) : (
+									item.name
+								)}
 							</span>
 							<span class="text-flexoki-tx-3 text-sm">
 								{item.description}
