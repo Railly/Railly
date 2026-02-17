@@ -5,6 +5,7 @@ import SectionHeader from "../components/layout/SectionHeader.astro";
 import Layout from "../layouts/Layout.astro";
 
 import AppleLogo from "../assets/svgs/logos/apple.svg";
+import ArduinoLogo from "../assets/svgs/logos/arduino.svg";
 import BiomeLogo from "../assets/svgs/logos/biome.svg";
 import BunLogo from "../assets/svgs/logos/bun.svg";
 import ClaudeLogo from "../assets/svgs/logos/claude.svg";
@@ -12,11 +13,13 @@ import ClerkLogo from "../assets/svgs/logos/clerk.svg";
 import CloudflareLogo from "../assets/svgs/logos/cloudflare.svg";
 import CursorLogo from "../assets/svgs/logos/cursor.svg";
 import DiscordLogo from "../assets/svgs/logos/discord.svg";
+import DjiLogo from "../assets/svgs/logos/dji.svg";
 import FfmpegLogo from "../assets/svgs/logos/ffmpeg.svg";
 import FigmaLogo from "../assets/svgs/logos/figma.svg";
 import GhosttyLogo from "../assets/svgs/logos/ghostty.svg";
 import GithubLogo from "../assets/svgs/logos/github.svg";
 import LinearLogo from "../assets/svgs/logos/linear.svg";
+import MetaLogo from "../assets/svgs/logos/meta.svg";
 import NeonLogo from "../assets/svgs/logos/neon.svg";
 import NextjsLogo from "../assets/svgs/logos/nextjs.svg";
 import NotionLogo from "../assets/svgs/logos/notion.svg";
@@ -36,6 +39,14 @@ const ogImage = `/api/og?title=${encodeURIComponent(ogTitle)}&description=${enco
 
 const logoMap: Record<string, ImageMetadata> = {
 	"MacBook Pro M4 Pro": AppleLogo,
+	"iPad Pro": AppleLogo,
+	"iPhone 15 Plus": AppleLogo,
+	"Apple Watch Series 10": AppleLogo,
+	"AirPods Pro": AppleLogo,
+	"DJI Mic Mini": DjiLogo,
+	"DJI Osmo Action 5 Pro": DjiLogo,
+	"Meta Ray-Ban": MetaLogo,
+	"Arduino UNO R4 WiFi": ArduinoLogo,
 	"Zed": ZedLogo,
 	"Ghostty": GhosttyLogo,
 	"Bun": BunLogo,
@@ -66,7 +77,9 @@ const logoMap: Record<string, ImageMetadata> = {
 };
 
 const monoLogos = new Set([
-	"MacBook Pro M4 Pro", "Zed", "Ghostty", "Biome",
+	"MacBook Pro M4 Pro", "iPad Pro", "iPhone 15 Plus", "Apple Watch Series 10", "AirPods Pro",
+	"DJI Mic Mini", "DJI Osmo Action 5 Pro", "Meta Ray-Ban", "Arduino UNO R4 WiFi",
+	"Zed", "Ghostty", "Biome",
 	"Next.js 15", "Tailwind CSS", "Clerk", "Vercel", "Neon",
 	"Trigger.dev", "Resend", "Claude Code", "Cursor", "Obsidian", "Raycast",
 	"Figma", "Discord & Slack", "TypeScript", "Comet",
@@ -79,11 +92,40 @@ interface Item {
 	url?: string;
 }
 
+interface Book {
+	title: string;
+	author: string;
+	status: "reading" | "completed" | "queued";
+	url?: string;
+}
+
 const sections: { title: string; items: Item[] }[] = [
 	{
 		title: "Hardware",
 		items: [
-			{ name: "MacBook Pro M4 Pro", description: "24 GB RAM, 2025", url: "https://apple.com/macbook-pro" },
+			{ name: "MacBook Pro M4 Pro", description: "14\", 24 GB RAM, 2025", url: "https://apple.com/macbook-pro" },
+			{ name: "iPad Pro", description: "M-series chip", url: "https://apple.com/ipad-pro" },
+			{ name: "iPhone 15 Plus", description: "Daily driver", url: "https://apple.com/iphone-15" },
+			{ name: "Apple Watch Series 10", description: "Health tracking", url: "https://apple.com/apple-watch-series-10" },
+			{ name: "AirPods Pro", description: "Noise cancellation", url: "https://apple.com/airpods-pro" },
+			{ name: "Keychron K2", description: "Mechanical keyboard", url: "https://keychron.com/products/keychron-k2" },
+			{ name: "Cougar E-STAR 140", description: "Electric standing desk", url: "https://cougargaming.com" },
+		],
+	},
+	{
+		title: "Audio & Video",
+		items: [
+			{ name: "Shure MV7+", description: "Podcast microphone + boom arm", url: "https://shure.com/en-US/microphones/usb/mv7-plus" },
+			{ name: "DJI Mic Mini", description: "Wireless lavalier (2 TX + 1 RX)", url: "https://store.dji.com/product/dji-mic-mini" },
+			{ name: "DJI Osmo Action 5 Pro", description: "Action camera, 128 GB", url: "https://store.dji.com/product/dji-osmo-action-5-pro" },
+			{ name: "Meta Ray-Ban", description: "Smart glasses, Classic Black", url: "https://www.meta.com/smart-glasses" },
+		],
+	},
+	{
+		title: "Accessories",
+		items: [
+			{ name: "Anker 737 Power Bank", description: "PowerCore 24K, portable charger", url: "https://anker.com" },
+			{ name: "Arduino UNO R4 WiFi", description: "2 GB RAM, IoT projects", url: "https://store.arduino.cc/products/uno-r4-wifi" },
 		],
 	},
 	{
@@ -141,6 +183,27 @@ const sections: { title: string; items: Item[] }[] = [
 		],
 	},
 ];
+
+const books: Book[] = [
+	{
+		title: "The Art of Doing Science and Engineering",
+		author: "Richard W. Hamming",
+		status: "reading",
+		url: "https://press.stripe.com/the-art-of-doing-science-and-engineering",
+	},
+	{
+		title: "Working in Public",
+		author: "Nadia Eghbal",
+		status: "reading",
+		url: "https://press.stripe.com/working-in-public",
+	},
+];
+
+const statusLabel: Record<Book["status"], string> = {
+	reading: "Reading",
+	completed: "Completed",
+	queued: "Queued",
+};
 ---
 
 <Layout title={`${ogTitle} — Railly Hugo`} description={ogDescription} image={ogImage}>
@@ -194,6 +257,42 @@ const sections: { title: string; items: Item[] }[] = [
 				</div>
 			</section>
 		))}
+
+		<section class="w-full">
+			<h2 class="text-sm font-serif italic text-flexoki-tx-2 uppercase tracking-wider mb-3">
+				Bookshelf
+			</h2>
+			<div class="space-y-0">
+				{books.map((book) => (
+					<div class="flex items-center gap-4 py-2.5 border-b border-flexoki-ui">
+						<span class="text-flexoki-tx font-medium text-sm shrink-0 w-40 flex items-center gap-2">
+							{book.url ? (
+								<a
+									href={book.url}
+									target="_blank"
+									class="hover:underline decoration-flexoki-ui"
+								>
+									{book.title}
+								</a>
+							) : (
+								book.title
+							)}
+						</span>
+						<span class="text-flexoki-tx-3 text-sm flex-1">
+							{book.author}
+						</span>
+						<span class:list={[
+							"text-xs px-2 py-0.5 rounded-full shrink-0",
+							book.status === "reading" && "bg-flexoki-ye/20 text-flexoki-ye",
+							book.status === "completed" && "bg-flexoki-gr/20 text-flexoki-gr",
+							book.status === "queued" && "bg-flexoki-ui text-flexoki-tx-2",
+						]}>
+							{statusLabel[book.status]}
+						</span>
+					</div>
+				))}
+			</div>
+		</section>
 
 		<Footer />
 	</PageLayout>
