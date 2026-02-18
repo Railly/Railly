@@ -1,4 +1,10 @@
 {
+	"crons": [
+		{
+			"path": "/api/cron/rebuild",
+			"schedule": "0 12 * * *"
+		}
+	],
 	"headers": [
 		{
 			"source": "/(.*)",
