@@ -51,7 +51,7 @@ export default function TilFilters({ topics }: TilFiltersProps) {
 				<button
 					key={topic}
 					onClick={() => toggle(topic)}
-					className={`px-2 py-0.5 text-[11px] rounded-full border transition-colors cursor-pointer ${
+					className={`px-1.5 py-px text-[10px] rounded-full border transition-colors cursor-pointer ${
 						active === topic
 							? "bg-flexoki-tx text-flexoki-bg border-flexoki-tx"
 							: "text-flexoki-tx-3 border-flexoki-ui hover:text-flexoki-tx hover:border-flexoki-tx-2"
