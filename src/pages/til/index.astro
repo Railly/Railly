@@ -45,20 +45,20 @@ const formatDate = (date: Date) => {
 		<div class="space-y-12">
 			{
 				tilsWithContent.map(({ til, Content }) => (
-					<article class="group" id={til.id} data-topic={til.data.topic}>
-						<div class="flex items-center gap-3 mb-2">
+					<article class="group" id={til.id.replace(/\.mdx?$/, "")} data-topic={til.data.topic}>
+						<div class="flex items-center gap-2 mb-2">
 							<time
 								datetime={til.data.pubDate.toISOString()}
-								class="text-sm text-flexoki-tx-3"
+								class="text-xs text-flexoki-tx-3"
 							>
 								{formatDate(til.data.pubDate)}
 							</time>
-							<span class="text-flexoki-tx-3">·</span>
-							<span class="text-xs text-flexoki-tx-3 px-2 py-0.5 rounded-full border border-flexoki-ui">
+							<span class="text-flexoki-tx-3 text-[10px]">·</span>
+							<span class="text-[10px] text-flexoki-tx-3 px-1.5 py-px rounded-full border border-flexoki-ui">
 								{til.data.topic}
 							</span>
-							<span class="text-flexoki-tx-3">·</span>
-							<TilShareLink slug={til.id} client:load />
+							<span class="text-flexoki-tx-3 text-[10px]">·</span>
+							<TilShareLink slug={til.id.replace(/\.mdx?$/, "")} client:load />
 						</div>
 						<h2 class="text-lg font-medium text-flexoki-tx mb-3">
 							{til.data.title}
