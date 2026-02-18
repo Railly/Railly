@@ -66,8 +66,9 @@ const testimonials = [
 ];
 
 const mentoringStats = {
-	devsMentored: 6,
-	sessionsThisWeek: 6,
+	devsMentored: 5,
+	sessionsThisWeek: 1,
+	upcomingSessions: 5,
 };
 
 const reportPreview = {
@@ -119,6 +120,8 @@ const ogImage = `/api/og?title=${encodeURIComponent(ogTitle)}&description=${enco
 			<span><span class="text-flexoki-tx font-medium">{mentoringStats.devsMentored}</span> devs mentored 1:1</span>
 			<span class="text-flexoki-ui">&middot;</span>
 			<span><span class="text-flexoki-tx font-medium">{mentoringStats.sessionsThisWeek}</span> {mentoringStats.sessionsThisWeek === 1 ? "session" : "sessions"} this week</span>
+			<span class="text-flexoki-ui">&middot;</span>
+			<span><span class="text-flexoki-tx font-medium">{mentoringStats.upcomingSessions}</span> upcoming</span>
 		</div>
 
 		<div class="flex flex-col gap-4 mt-2">
