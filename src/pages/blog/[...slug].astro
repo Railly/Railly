@@ -1,5 +1,6 @@
 ---
 import { type CollectionEntry, getCollection } from "astro:content";
+import ClapButton from "../../components/blog/ClapButton";
 import ViewCounter from "../../components/blog/ViewCounter";
 import Link from "../../components/content/Link.astro";
 import Quote from "../../components/content/Quote.astro";
@@ -188,6 +189,11 @@ const ogImage = `/api/og?title=${encodeURIComponent(post.data.title)}&descriptio
 
             <!-- Right Sidebar (empty for balance) -->
             <div class="lg:col-start-3"></div>
+        </div>
+
+        <!-- Clap Button -->
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 mt-16 flex justify-center">
+            <ClapButton slug={post.slug} client:only="react" />
         </div>
 
         <!-- Navigation Footer -->

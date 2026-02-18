@@ -1,0 +1,49 @@
+import { createClient } from "@vercel/kv";
+import type { APIRoute } from "astro";
+
+export const prerender = false;
+
+export const GET: APIRoute = async ({ url }) => {
+	const id = url.searchParams.get("id");
+	const incr = url.searchParams.get("incr");
+
+	if (!id) {
+		return new Response(
+			JSON.stringify({ error: { message: 'Missing "id" query', code: "MISSING_ID" } }),
+			{ status: 400, headers: { "Content-Type": "application/json" } },
+		);
+	}
+
+	if (import.meta.env.DEV) {
+		return new Response(
+			JSON.stringify({ slug: id, claps: 42, dev: true }),
+			{ status: 200, headers: { "Content-Type": "application/json" } },
+		);
+	}
+
+	try {
+		const kv = createClient({
+			url: import.meta.env.KV_REST_API_URL!,
+			token: import.meta.env.KV_REST_API_TOKEN!,
+		});
+
+		let claps: number;
+
+		if (incr) {
+			claps = await kv.hincrby("claps", id, Number(incr));
+		} else {
+			const result = await kv.hget("claps", id);
+			claps = result ? Number(result) : 0;
+		}
+
+		return new Response(
+			JSON.stringify({ slug: id, claps }),
+			{ status: 200, headers: { "Content-Type": "application/json" } },
+		);
+	} catch (error) {
+		return new Response(
+			JSON.stringify({ error: { message: "Internal server error", code: "SERVER_ERROR" } }),
+			{ status: 500, headers: { "Content-Type": "application/json" } },
+		);
+	}
+};
