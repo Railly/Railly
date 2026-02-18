@@ -46,15 +46,15 @@ export default function TilFilters({ topics }: TilFiltersProps) {
 	}
 
 	return (
-		<div className="flex flex-wrap gap-2 mb-8">
+		<div className="flex flex-wrap gap-1.5 mb-8">
 			{topics.map((topic) => (
 				<button
 					key={topic}
 					onClick={() => toggle(topic)}
-					className={`px-3 py-1 text-xs rounded-full border transition-colors cursor-pointer ${
+					className={`px-2 py-0.5 text-[11px] rounded-md transition-colors cursor-pointer ${
 						active === topic
-							? "bg-flexoki-tx text-flexoki-bg border-flexoki-tx"
-							: "bg-transparent text-flexoki-tx-3 border-flexoki-ui hover:text-flexoki-tx hover:border-flexoki-tx-2"
+							? "bg-flexoki-tx text-flexoki-bg"
+							: "text-flexoki-tx-3 hover:text-flexoki-tx"
 					}`}
 				>
 					{topic}
