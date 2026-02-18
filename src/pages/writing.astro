@@ -1,10 +1,11 @@
 ---
 import { getCollection } from "astro:content";
+import PremiereCountdown from "../components/blog/PremiereCountdown";
 import ViewCounter from "../components/blog/ViewCounter";
 import Footer from "../components/layout/Footer.astro";
 import PageLayout from "../components/layout/PageLayout.astro";
 import SectionHeader from "../components/layout/SectionHeader.astro";
-import { isPostVisible } from "../config/blog";
+import { isPostListable } from "../config/blog";
 import Layout from "../layouts/Layout.astro";
 
 const allPosts = await getCollection("blog", ({ data }) => {
@@ -12,7 +13,7 @@ const allPosts = await getCollection("blog", ({ data }) => {
 });
 
 const activePosts = allPosts
-	.filter(({ data }) => isPostVisible(data))
+	.filter(({ data }) => isPostListable(data))
 	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
 const archivedPosts = allPosts
@@ -91,32 +92,52 @@ const formatDate = (date: Date) => {
             {
                 years.map((year) => (
                     <>
-                        {postsByYear[year].map((post, index) => (
-                            <a
-                                href={`/blog/${post.slug}`}
-                                class="group flex items-baseline gap-4 py-3 border-b border-flexoki-ui hover:bg-flexoki-bg-2 transition-colors -mx-3 px-3"
-                            >
-                                <span class="text-flexoki-tx-3 tabular-nums w-12 shrink-0 text-sm">
-                                    {index === 0 ? year : ""}
-                                </span>
-                                <span class="flex-1 text-flexoki-tx group-hover:text-flexoki-tx font-medium text-sm">
-                                    {post.data.title}
-                                    {isNewest(post.slug) && (
-                                        <span class="ml-2 text-xs font-normal px-1.5 py-0.5 bg-flexoki-ui rounded text-flexoki-tx-2">
-                                            Newest
-                                        </span>
+                        {postsByYear[year].map((post, index) => {
+                            const isPremiere = post.data.status === "premiere" && new Date() < post.data.pubDate;
+                            const Element = isPremiere ? "div" : "a";
+                            return (
+                                <Element
+                                    {...(!isPremiere ? { href: `/blog/${post.slug}` } : {})}
+                                    class:list={[
+                                        "group flex items-baseline gap-4 py-3 border-b border-flexoki-ui transition-colors -mx-3 px-3",
+                                        isPremiere ? "cursor-default" : "hover:bg-flexoki-bg-2",
+                                    ]}
+                                >
+                                    <span class="text-flexoki-tx-3 tabular-nums w-12 shrink-0 text-sm">
+                                        {index === 0 ? year : ""}
+                                    </span>
+                                    <span class:list={[
+                                        "flex-1 font-medium text-sm",
+                                        isPremiere ? "text-flexoki-tx-3" : "text-flexoki-tx group-hover:text-flexoki-tx",
+                                    ]}>
+                                        {post.data.title}
+                                        {isPremiere ? (
+                                            <span class="ml-2 text-xs font-normal px-1.5 py-0.5 border border-flexoki-ui rounded text-flexoki-tx-3">
+                                                Premiere
+                                            </span>
+                                        ) : isNewest(post.slug) ? (
+                                            <span class="ml-2 text-xs font-normal px-1.5 py-0.5 bg-flexoki-ui rounded text-flexoki-tx-2">
+                                                Newest
+                                            </span>
+                                        ) : null}
+                                    </span>
+                                    {isPremiere ? (
+                                        <PremiereCountdown pubDate={post.data.pubDate.toISOString()} client:only="react" />
+                                    ) : (
+                                        <>
+                                            <ViewCounter
+                                                slug={post.slug}
+                                                client:only="react"
+                                                className="text-xs text-flexoki-tx-3 tabular-nums shrink-0"
+                                            />
+                                            <span class="text-flexoki-tx-3 tabular-nums text-sm shrink-0">
+                                                {formatDate(post.data.pubDate)}
+                                            </span>
+                                        </>
                                     )}
-                                </span>
-                                <ViewCounter
-                                    slug={post.slug}
-                                    client:only="react"
-                                    className="text-xs text-flexoki-tx-3 tabular-nums shrink-0"
-                                />
-                                <span class="text-flexoki-tx-3 tabular-nums text-sm shrink-0">
-                                    {formatDate(post.data.pubDate)}
-                                </span>
-                            </a>
-                        ))}
+                                </Element>
+                            );
+                        })}
                     </>
                 ))
             }
