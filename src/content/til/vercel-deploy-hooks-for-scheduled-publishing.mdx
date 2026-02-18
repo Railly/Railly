@@ -1,0 +1,18 @@
+---
+title: "Vercel Deploy Hooks Solve SSG Scheduled Publishing"
+pubDate: 2026-02-17
+topic: Infrastructure
+link: https://vercel.com/docs/deploy-hooks
+---
+
+Static sites can't publish posts at a future date because pages only exist if they're generated at build time. No build = no page = 404.
+
+The fix: Vercel Deploy Hooks. You create a hook URL in your project settings, and hitting it with a POST triggers a fresh production deploy. Combine that with a `vercel.json` cron job that calls your hook daily, and your SSG site rebuilds itself automatically.
+
+```json
+{
+  "crons": [{ "path": "/api/cron/rebuild", "schedule": "0 12 * * *" }]
+}
+```
+
+The API route just fetches the deploy hook URL and authenticates with `CRON_SECRET`. I use this on my Astro blog to auto-publish "premiere" posts at their `pubDate` -- the countdown disappears and the article goes live, zero manual intervention.
