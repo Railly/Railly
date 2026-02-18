@@ -4,10 +4,8 @@ pubDate: 2026-02-10
 topic: AI Agents
 ---
 
-I built a 3-agent dev team (Bolt writes code, Sage reviews, Nova researches) and immediately hit the same problems any engineering manager faces: who owns what, how many tasks can each handle, and how to route work.
+Built a 3-agent dev team (Bolt codes, Sage reviews, Nova researches) and hit every classic engineering management problem: ownership, concurrency limits, routing, queues.
 
-Per-agent concurrency limits (max 1 task each, 3 total), per-agent workspaces (isolated repos), label-based routing, queues when busy. Conway's Law applies to AI teams too — the architecture of your agent system will mirror the communication structure you design for it.
+Conway's Law applies to AI teams too — your agent architecture mirrors the communication structure you design. The review loop proved it: Bolt opens PR, Sage reviews, Bolt fixes, repeat. Had to cap at 3 iterations because without a kill switch, two agents argue forever.
 
-The review loop was the clearest example: Bolt opens a PR, Sage reviews it, Bolt fixes the feedback, repeat. Capped at 3 iterations — because without a kill switch, two agents will argue forever. Same reason human code reviews have norms against infinite back-and-forth.
-
-The takeaway: don't think of multi-agent systems as "parallel workers." Think of them as a team you're managing. Roles, boundaries, escalation paths, and termination conditions.
+Don't think of multi-agent systems as "parallel workers." Think of them as a team. Roles, boundaries, escalation paths, termination conditions.

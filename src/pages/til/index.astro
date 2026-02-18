@@ -3,6 +3,8 @@ import { getCollection, render } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
 import PageLayout from "../../components/layout/PageLayout.astro";
 import Link from "../../components/content/Link.astro";
+import TilFilters from "../../components/til/TilFilters.tsx";
+import TilShareLink from "../../components/til/TilShareLink.tsx";
 
 const tils = await getCollection("til", ({ data }) => {
 	return import.meta.env.PROD ? data.status === "published" : true;
@@ -19,6 +21,8 @@ const tilsWithContent = await Promise.all(
 	}),
 );
 
+const topics = [...new Set(sortedTils.map((t) => t.data.topic))].sort();
+
 const formatDate = (date: Date) => {
 	return date.toLocaleDateString("en-US", {
 		year: "numeric",
@@ -34,19 +38,28 @@ const formatDate = (date: Date) => {
 >
 	<PageLayout>
 		<h1 class="text-3xl font-medium text-flexoki-tx mb-4">TIL</h1>
-		<p class="text-flexoki-tx-2 mb-12 text-[15px]">
+		<p class="text-flexoki-tx-2 mb-8 text-[15px]">
 			Learning new things every day. Writing them down to remember.
 		</p>
+		<TilFilters topics={topics} client:load />
 		<div class="space-y-12">
 			{
 				tilsWithContent.map(({ til, Content }) => (
-					<article class="group">
-						<time
-							datetime={til.data.pubDate.toISOString()}
-							class="text-sm text-flexoki-tx-3 block mb-2"
-						>
-							{formatDate(til.data.pubDate)}
-						</time>
+					<article class="group" id={til.id} data-topic={til.data.topic}>
+						<div class="flex items-center gap-3 mb-2">
+							<time
+								datetime={til.data.pubDate.toISOString()}
+								class="text-sm text-flexoki-tx-3"
+							>
+								{formatDate(til.data.pubDate)}
+							</time>
+							<span class="text-flexoki-tx-3">·</span>
+							<span class="text-xs text-flexoki-tx-3 px-2 py-0.5 rounded-full border border-flexoki-ui">
+								{til.data.topic}
+							</span>
+							<span class="text-flexoki-tx-3">·</span>
+							<TilShareLink slug={til.id} client:load />
+						</div>
 						<h2 class="text-lg font-medium text-flexoki-tx mb-3">
 							{til.data.title}
 						</h2>
