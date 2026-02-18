@@ -4,6 +4,7 @@ import ViewCounter from "../components/blog/ViewCounter";
 import Footer from "../components/layout/Footer.astro";
 import PageLayout from "../components/layout/PageLayout.astro";
 import SectionHeader from "../components/layout/SectionHeader.astro";
+import { isPostVisible } from "../config/blog";
 import Layout from "../layouts/Layout.astro";
 
 const allPosts = await getCollection("blog", ({ data }) => {
@@ -11,7 +12,7 @@ const allPosts = await getCollection("blog", ({ data }) => {
 });
 
 const activePosts = allPosts
-	.filter(({ data }) => data.status === "published")
+	.filter(({ data }) => isPostVisible(data))
 	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
 const archivedPosts = allPosts

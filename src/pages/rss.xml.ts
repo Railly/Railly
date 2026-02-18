@@ -1,10 +1,11 @@
 import rss from "@astrojs/rss";
 import { getCollection } from "astro:content";
+import { isPostVisible } from "../config/blog";
 import { siteConfig } from "../config/site";
 
 export async function GET(context: { site: URL }) {
 	const posts = await getCollection("blog", ({ data }) => {
-		return data.status === "published";
+		return isPostVisible(data);
 	});
 
 	const sortedPosts = posts.sort(

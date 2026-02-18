@@ -23,7 +23,9 @@ const blog = defineCollection({
 		imageDark: z.string().optional(),
 		tags: z.array(z.string()).default([]),
 		category: z.enum(["tech", "personal", "tutorial", "thoughts"]).optional(),
-		status: z.enum(["draft", "published", "archived"]).default("published"),
+		status: z
+			.enum(["draft", "published", "archived", "premiere"])
+			.default("published"),
 		featured: z.boolean().default(false),
 	}),
 });

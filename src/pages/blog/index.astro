@@ -1,9 +1,10 @@
 ---
 import { getCollection } from "astro:content";
+import { isPostVisible } from "../../config/blog";
 import Layout from "../../layouts/Layout.astro";
 
 const posts = await getCollection("blog", ({ data }) => {
-	return import.meta.env.PROD ? data.status === "published" : true;
+	return import.meta.env.PROD ? isPostVisible(data) : true;
 });
 
 const sortedPosts = posts.sort(

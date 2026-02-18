@@ -4,11 +4,12 @@ import ViewCounter from "../../components/blog/ViewCounter";
 import Link from "../../components/content/Link.astro";
 import Quote from "../../components/content/Quote.astro";
 import TableOfContents from "../../components/content/TableOfContents.astro";
+import { isPostVisible } from "../../config/blog";
 import Layout from "../../layouts/Layout.astro";
 
 export async function getStaticPaths() {
 	const posts = await getCollection("blog", ({ data }) => {
-		return import.meta.env.PROD ? data.status === "published" : true;
+		return import.meta.env.PROD ? isPostVisible(data) : true;
 	});
 	return posts.map((post) => ({
 		params: { slug: post.slug },
@@ -24,7 +25,7 @@ const { post } = Astro.props;
 const { Content, headings } = await post.render();
 
 const allPosts = await getCollection("blog", ({ data }) => {
-	return data.status === "published";
+	return isPostVisible(data);
 });
 const sortedPosts = allPosts.sort(
 	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
