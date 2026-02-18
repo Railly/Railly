@@ -1,0 +1,20 @@
+---
+title: "Figma + Claude Code: The Bidirectional Design-Code Loop"
+pubDate: 2026-02-18
+topic: Agents
+link: https://developers.figma.com/docs/figma-mcp-server/
+---
+
+Figma's "Code to Canvas" plugin enables a full round-trip between design and code via MCP.
+
+`/implement-design` extracts layout, typography, colors from any Figma frame and generates code for your stack. `generate_figma_design` serializes your running page's DOM into real editable Figma layers (not a screenshot).
+
+```
+Figma frame → /implement-design → component
+    ↑                                  ↓
+edit in Figma              generate_figma_design
+    ↑                                  ↓
+get_design_context ← editable Figma layers
+```
+
+Gotcha: Code to Figma still needs a browser render with a capture script injected. Not purely automatic from code.
