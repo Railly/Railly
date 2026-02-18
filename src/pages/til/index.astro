@@ -54,8 +54,8 @@ const formatDate = (date: Date) => {
 								{formatDate(til.data.pubDate)}
 							</time>
 							<span class="text-flexoki-tx-3">·</span>
-							<span class="text-xs text-flexoki-tx-3 px-2 py-0.5 rounded-full border border-flexoki-ui">
-								{til.data.topic}
+							<span class="text-xs text-flexoki-tx-3">
+								#{til.data.topic}
 							</span>
 							<span class="text-flexoki-tx-3">·</span>
 							<TilShareLink slug={til.id.replace(/\.mdx?$/, "")} client:load />
