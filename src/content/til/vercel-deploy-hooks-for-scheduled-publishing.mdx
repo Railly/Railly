@@ -11,7 +11,12 @@ The fix: Vercel Deploy Hooks. You create a hook URL in your project settings, an
 
 ```json
 {
-  "crons": [{ "path": "/api/cron/rebuild", "schedule": "0 12 * * *" }]
+  "crons": [
+    {
+      "path": "/api/cron/rebuild",
+      "schedule": "0 12 * * *"
+    }
+  ]
 }
 ```
 

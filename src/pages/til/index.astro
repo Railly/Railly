@@ -91,6 +91,15 @@ const formatDate = (date: Date) => {
 			color: var(--color-flexoki-tx);
 		}
 
+		.prose :global(pre > code) {
+			display: block;
+		}
+
+		.prose :global(pre > code::before),
+		.prose :global(pre > code::after) {
+			content: none;
+		}
+
 		.prose :global(a[href^="http"])::after {
 			content: "↗";
 			margin-left: 0.125rem;
