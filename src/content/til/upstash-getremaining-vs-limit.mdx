@@ -1,22 +1,16 @@
 ---
-title: "Upstash getRemaining() vs limit() for Status Endpoints"
+title: "Upstash getRemaining() vs limit()"
 pubDate: 2026-02-19
 topic: Infrastructure
 link: https://upstash.com/docs/oss/sdks/ts/ratelimit/methods#getremaining
 ---
 
-`@upstash/ratelimit` has two ways to check quota: `limit()` and `getRemaining()`. The difference matters.
-
-`limit()` **consumes a token** every time you call it. If you use it for a status endpoint (e.g. `GET /api/v1/ratelimit-status`), every check eats into the user's allowance. Bad.
-
-`getRemaining()` is **read-only** — returns `{ remaining, limit, reset }` without consuming anything. Use this for UI counters, health checks, or any "how much do I have left?" query.
+`limit()` consumes a token. `getRemaining()` doesn't. Use `getRemaining()` for status endpoints and UI counters.
 
 ```ts
-// Status endpoint — read-only, no token consumed
-const { remaining, limit, reset } = await ratelimit.getRemaining(identifier);
+// read-only, no token consumed
+const { remaining } = await rl.getRemaining(id);
 
-// Actual API call — consumes a token
-const { success } = await ratelimit.limit(identifier);
+// consumes a token
+const { success } = await rl.limit(id);
 ```
-
-Built this for ray.tinte.dev's image-to-theme feature. The popover fetches remaining AI extractions on open via `getRemaining()`, and only `limit()` runs on actual extraction requests. The UI always shows an accurate counter without wasting quota.
