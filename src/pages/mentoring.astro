@@ -25,6 +25,12 @@ const topics = [
 		color: "purple",
 		href: "/blog/what-4-developers-asked-me#how-do-i-get-visible",
 	},
+	{
+		title: "Design Engineering",
+		description: "Design + code = superpower",
+		color: "orange",
+		href: "/blog/design-engineering",
+	},
 ];
 
 const testimonials = [
@@ -137,7 +143,7 @@ const ogImage = `/api/og?title=${encodeURIComponent(ogTitle)}&description=${enco
 			>
 				What I help with
 			</h2>
-			<div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+			<div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
 				{
 					topics.map((topic) => (
 						<a
