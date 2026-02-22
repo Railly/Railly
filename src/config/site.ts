@@ -7,7 +7,7 @@ const BASE_URL = import.meta.env.PROD
 export const siteConfig: SiteConfig = {
 	name: "Railly Hugo",
 	description:
-		"Software Engineer and UI Developer from Lima. Dive into my projects, tutorials, and digital explorations. Always learning, always crafting.",
+		"Design Engineer from Lima. Building developer tools, winning hackathons, and crafting interfaces that ship.",
 	url: BASE_URL,
 	ogImage: `${BASE_URL}/images/og.webp`,
 	author: "Railly Hugo",
@@ -19,8 +19,7 @@ export const siteConfig: SiteConfig = {
 	},
 	keywords: [
 		"Railly Hugo",
-		"Software Engineer",
-		"UI Developer",
+		"Design Engineer",
 		"Web Development",
 		"Frontend Development",
 		"JavaScript",
