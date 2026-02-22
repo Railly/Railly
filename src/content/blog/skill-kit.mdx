@@ -9,17 +9,17 @@ status: "premiere"
 
 import Callout from "../../components/content/Callout.astro";
 
-**Skill Kit** is a CLI that scans your AI agent skills, tracks usage, and tells you what to keep and what to drop.
+**Skill Kit** is a CLI that shows you which AI agent skills you actually use - and which ones waste context.
 
 ```bash
-npx @crafter/skillkit scan
+npx @crafter/skillkit stats
 ```
 
 Discovers skills across 15 agents (Claude Code, Codex, Cursor, Copilot, Windsurf, and [more](https://github.com/crafter-station/skill-kit#supported-agents)). Usage analytics for Claude Code and OpenCode, with more connectors coming.
 
 ## The Problem
 
-The skills ecosystem is growing fast. Skills.sh, manual installs, project-level skills — they accumulate. Every skill gets loaded into the agent's context window on every session.
+The skills ecosystem is growing fast. Skills.sh, manual installs, project-level skills - they accumulate. Every skill gets loaded into the agent's context window on every session.
 
 Context is a finite budget. Every unused skill steals tokens from your actual code.
 
@@ -32,32 +32,26 @@ I use Claude Code daily at [Clerk](https://clerk.com) and for my open source wor
 
 ## The Solution
 
-Skill Kit gives you five commands:
-
-### scan
-
-Discovers installed skills across all detected agents and indexes session data from supported connectors.
-
-```
-$ skillkit scan
-  Scanning 3 agents: Claude Code, Cursor, OpenCode
-  Found 12 skills (8 via skills.sh, 4 manual)
-  Indexed 211 sessions · 1,847 invocations
-```
-
-It parses session data from each connector — Claude Code's JSONL files for `Skill` tool_use blocks, OpenCode's SQLite database for skill tool parts — and maps each invocation back to the skill that triggered it.
+Skill Kit gives you four commands:
 
 ### stats
 
-Usage analytics with sparkline trends over the last 30 days.
+Usage analytics with sparkline trends. Auto-discovers your skills on first run, no setup needed.
 
 ```
-$ skillkit stats --top 3
+$ skillkit stats
+  First run detected, scanning skills...
+  Found 12 skills across 3 agents.
+
   SKILL       30d   TREND
   commit      42    ▂▃▅▇█▆▅▇█
   review      38    ▁▃▅▆▇▇▆▅▃
   deploy      27    ▁▁▂▃▅▇█▇▅
 ```
+
+It parses session data from each connector - Claude Code's JSONL files for `Skill` tool_use blocks, OpenCode's SQLite database for skill tool parts - and maps each invocation back to the skill that triggered it.
+
+Use `--days 7` to narrow the window or `--all` to see every skill.
 
 ### health
 
@@ -66,7 +60,7 @@ Context budget check. Flags unused skills.
 ```
 $ skillkit health
   [████████░░] 78% metadata budget (12.5K / 16.0K)
-  ! 3 skills unused in 30d — run skillkit prune
+  ! 3 skills unused in 30d - run skillkit prune
 ```
 
 ### prune
@@ -87,6 +81,10 @@ $ skillkit prune
 
 Lists all installed skills with size and installation method.
 
+<Callout type="info" title="Advanced">
+Under the hood, `skillkit scan` discovers skills and indexes sessions. It runs automatically on first use, but you can run it manually to force a re-scan or use `--include-commands` to also track slash commands.
+</Callout>
+
 ## How It Works
 
 Everything runs locally. SQLite database at `~/.skillkit/analytics.db`. No telemetry, no network calls, nothing leaves your machine.
@@ -95,12 +93,12 @@ The scanner walks skill directories for 15 agents (`~/.claude/skills/`, `~/.conf
 
 For usage data, the connector system parses session storage from each supported agent:
 
-- **Claude Code**: JSONL session files from `~/.claude/projects/` — each file contains tool_use blocks. When a `Skill` tool is invoked, Skill Kit maps the skill name back to an installed skill and records the invocation.
-- **OpenCode**: SQLite database at `~/Library/Application Support/opencode/opencode.db` (macOS) or `~/.local/share/opencode/opencode.db` (Linux) — queries the `part` table for tool entries with `tool: "skill"` and extracts the skill name from the input state.
+- **Claude Code**: JSONL session files from `~/.claude/projects/` - each file contains tool_use blocks. When a `Skill` tool is invoked, Skill Kit maps the skill name back to an installed skill and records the invocation.
+- **OpenCode**: SQLite database at `~/Library/Application Support/opencode/opencode.db` (macOS) or `~/.local/share/opencode/opencode.db` (Linux) - queries the `part` table for tool entries with `tool: "skill"` and extracts the skill name from the input state.
 
 The connector architecture makes it straightforward to add more agents as they adopt trackable skill invocations.
 
-**Why only two connectors?** Most agents (Cursor, Windsurf, Copilot, etc.) load skills as context rules injected into the system prompt. There's no discrete "Skill" tool call in their session data — Cursor stores chats in SQLite (`state.vscdb`) with a `toolFormerData` field for its built-in tools (read_file, edit_file, etc.), but skills are invisible at that layer. Claude Code and OpenCode are currently the only agents that invoke skills through a dedicated, trackable tool call. If more agents adopt this pattern, adding connectors is trivial.
+**Why only two connectors?** Most agents (Cursor, Windsurf, Copilot, etc.) load skills as context rules injected into the system prompt. There's no discrete "Skill" tool call in their session data -Cursor stores chats in SQLite (`state.vscdb`) with a `toolFormerData` field for its built-in tools (read_file, edit_file, etc.), but skills are invisible at that layer. Claude Code and OpenCode are currently the only agents that invoke skills through a dedicated, trackable tool call. If more agents adopt this pattern, adding connectors is trivial.
 
 Sparklines are generated from 30-day invocation data, bucketed daily. The health check calculates total metadata bytes across all loaded skills and compares against the 16K context budget.
 
@@ -117,9 +115,9 @@ Then ask your agent: "which skills do I use the most?" or "clean up unused skill
 ## Try It
 
 ```bash
-npx @crafter/skillkit scan
 npx @crafter/skillkit stats
 npx @crafter/skillkit health
+npx @crafter/skillkit prune
 ```
 
 <Callout type="tip" title="Open Source">
