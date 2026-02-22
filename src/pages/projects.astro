@@ -10,6 +10,10 @@ import PageLayout from "../components/layout/PageLayout.astro";
 import SectionHeader from "../components/layout/SectionHeader.astro";
 import Layout from "../layouts/Layout.astro";
 
+const ogTitle = "Projects";
+const ogDescription = "Open source projects and tools I've built";
+const ogImage = `/api/og?title=${encodeURIComponent(ogTitle)}&description=${encodeURIComponent(ogDescription)}`;
+
 const projectsData = [
     {
         name: "Elements",
@@ -90,7 +94,8 @@ type IconKey = keyof typeof iconMap;
 
 <Layout
     title="Projects - Railly Hugo"
-    description="Open source projects and tools I've built"
+    description={ogDescription}
+    image={ogImage}
 >
     <PageLayout class="flex flex-col gap-8">
         <SectionHeader title="Projects" />

@@ -2,6 +2,10 @@
 import SectionHeader from "../components/layout/SectionHeader.astro";
 import Layout from "../layouts/Layout.astro";
 
+const ogTitle = "Gallery";
+const ogDescription = "Photos and visual moments from events, travel, and daily life.";
+const ogImage = `/api/og?title=${encodeURIComponent(ogTitle)}&description=${encodeURIComponent(ogDescription)}`;
+
 // Placeholder for future photos - you can add your images here
 const photos = [
 	{
@@ -15,7 +19,8 @@ const photos = [
 
 <Layout
     title="Gallery - Railly Hugo"
-    description="Photos and visual moments from events, travel, and daily life."
+    description={ogDescription}
+    image={ogImage}
 >
     <main
         class="flex flex-col gap-12 items-center justify-center min-h-screen max-w-2xl mx-auto text-flexoki-tx px-6 py-12"

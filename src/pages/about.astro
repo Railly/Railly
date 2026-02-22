@@ -17,11 +17,16 @@ import Footer from "../components/layout/Footer.astro";
 import PageLayout from "../components/layout/PageLayout.astro";
 import SectionHeader from "../components/layout/SectionHeader.astro";
 import Layout from "../layouts/Layout.astro";
+
+const ogTitle = "About";
+const ogDescription = "AI Software Engineer at Clerk, founder of Crafter Station, and hackathon winner. Based in Lima, Peru.";
+const ogImage = `/api/og?title=${encodeURIComponent(ogTitle)}&description=${encodeURIComponent(ogDescription)}`;
 ---
 
 <Layout
     title="About - Railly Hugo"
-    description="AI Software Engineer at Clerk, founder of Crafter Station, and hackathon winner. Based in Lima, Peru."
+    description={ogDescription}
+    image={ogImage}
 >
     <PageLayout class="flex flex-col gap-8">
         <SectionHeader title="About" />

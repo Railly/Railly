@@ -7,6 +7,10 @@ import PageLayout from "../components/layout/PageLayout.astro";
 import SectionHeader from "../components/layout/SectionHeader.astro";
 import Layout from "../layouts/Layout.astro";
 
+const ogTitle = "Flights";
+const ogDescription = "My travel journey around the world";
+const ogImage = `/api/og?title=${encodeURIComponent(ogTitle)}&description=${encodeURIComponent(ogDescription)}`;
+
 interface Flight {
 	from: string;
 	to: string;
@@ -161,7 +165,7 @@ const peruVisits = [
 ];
 ---
 
-<Layout title="Flights - Railly Hugo" description="My travel journey around the world">
+<Layout title="Flights - Railly Hugo" description={ogDescription} image={ogImage}>
     <PageLayout class="flex flex-col">
         <!-- Header -->
         <div class="flex items-center justify-between">

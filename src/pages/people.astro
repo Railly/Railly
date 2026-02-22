@@ -2,6 +2,10 @@
 import SectionHeader from "../components/layout/SectionHeader.astro";
 import Layout from "../layouts/Layout.astro";
 
+const ogTitle = "People";
+const ogDescription = "People who inspire my work in tech, open source, and community building.";
+const ogImage = `/api/og?title=${encodeURIComponent(ogTitle)}&description=${encodeURIComponent(ogDescription)}`;
+
 const people = [
 	{
 		name: "Midudev",
@@ -38,7 +42,8 @@ const people = [
 
 <Layout
     title="People - Railly Hugo"
-    description="People who inspire my work in tech, open source, and community building."
+    description={ogDescription}
+    image={ogImage}
 >
     <main
         class="flex flex-col gap-12 items-center justify-center min-h-screen max-w-2xl mx-auto text-flexoki-tx px-6 py-12"

@@ -8,6 +8,10 @@ import SectionHeader from "../components/layout/SectionHeader.astro";
 import { isPostListable } from "../config/blog";
 import Layout from "../layouts/Layout.astro";
 
+const ogTitle = "Writing";
+const ogDescription = "Articles on design engineering, context engineering, AI tools, and building in public.";
+const ogImage = `/api/og?title=${encodeURIComponent(ogTitle)}&description=${encodeURIComponent(ogDescription)}`;
+
 const allPosts = await getCollection("blog", ({ data }) => {
 	return import.meta.env.PROD ? data.status !== "draft" : true;
 });
@@ -60,7 +64,8 @@ const formatDate = (date: Date) => {
 
 <Layout
     title="Writing - Railly Hugo"
-    description="Articles on design engineering, context engineering, AI tools, and building in public."
+    description={ogDescription}
+    image={ogImage}
 >
     <PageLayout class="flex flex-col gap-8">
         <div class="flex items-center justify-between">
