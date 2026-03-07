@@ -9,7 +9,7 @@ I also create open-source tools at [crafter-station](https:/crafter-station.com)
 
 - [elements](https://github.com/crafter-station/elements) ⊞ - full-stack shadcn/ui components - [trusted registry](https://github.com/shadcn-ui/ui/blob/fce5926265322f41e43a61c9f536d81d4e9abc90/apps/v4/public/r/registries.json#L24)
 - [text0](https://github.com/crafter-station/text0) ✍️ - absurdly smart (and personal) autocomplete - 🥇 Next.js Global Hackathon 25'
-- [tinte](https://github.com/Railly/tinte) 🖌️ - create your own beautiful themes (vscode, shadcn) - 🥉 Vercel + [Midu](https://midu.dev) Hackathon 24'
+- [tinte](https://github.com/Railly/tinte) 🖌️ - agent-native design system infrastructure (shadcn presets, VS Code, 19+ formats) - 🥉 Vercel + [Midu](https://midu.dev) Hackathon 24'
 - [one-hunter](https://github.com/Railly/one-hunter-vscode) 🎨 - stylish vscode theme inspired by vercel ▲ and one-dark-pro
 
 ### Links
