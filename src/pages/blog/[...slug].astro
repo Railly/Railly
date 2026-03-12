@@ -304,5 +304,10 @@ const { words, minutes, text: readingTimeText } = getReadingTime(post.body || ""
             border-radius: 0.25rem;
             color: var(--color-flexoki-tx);
         }
+
+        /* Code blocks */
+        .blog-content :global(pre code) {
+            font-size: 13px;
+        }
     </style>
 </Layout>
