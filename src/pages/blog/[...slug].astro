@@ -6,6 +6,7 @@ import Link from "../../components/content/Link.astro";
 import Quote from "../../components/content/Quote.astro";
 import TableOfContents from "../../components/content/TableOfContents.astro";
 import { isPostVisible } from "../../config/blog";
+import { getReadingTime } from "../../config/reading-time";
 import Layout from "../../layouts/Layout.astro";
 
 export async function getStaticPaths() {
@@ -59,6 +60,8 @@ const updatedDate = post.data.updatedDate
 	: null;
 
 const ogImage = `/api/og?title=${encodeURIComponent(post.data.title)}&description=${encodeURIComponent(post.data.description || "")}`;
+
+const { words, minutes, text: readingTimeText } = getReadingTime(post.body || "");
 ---
 
 <Layout
@@ -68,6 +71,8 @@ const ogImage = `/api/og?title=${encodeURIComponent(post.data.title)}&descriptio
     article={true}
     publishedTime={post.data.pubDate}
     modifiedTime={post.data.updatedDate}
+    readingTimeMinutes={minutes}
+    wordCount={words}
 >
     <div class="w-full mx-auto py-12 sm:py-24">
         <!-- Main Content Grid - TOC aligned with content -->
@@ -112,6 +117,8 @@ const ogImage = `/api/og?title=${encodeURIComponent(post.data.title)}&descriptio
                                 </span>
                             )
                         }
+                        <span class="text-flexoki-tx-3">·</span>
+                        <span title={`${words.toLocaleString()} words`}>{readingTimeText}</span>
                         <span class="text-flexoki-tx-3">·</span>
                         <ViewCounter
                             slug={post.slug}
