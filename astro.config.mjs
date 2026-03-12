@@ -23,12 +23,7 @@ export default defineConfig({
 	},
 
 	integrations: [
-		sitemap({
-			serialize(item) {
-				item.lastmod = new Date().toISOString();
-				return item;
-			},
-		}),
+		sitemap(),
 		mdx({
 			remarkPlugins: [remarkMath],
 			rehypePlugins: [rehypeKatex],
