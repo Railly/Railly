@@ -9,7 +9,7 @@ import { isPostListable } from "../config/blog";
 import Layout from "../layouts/Layout.astro";
 
 const ogTitle = "Writing";
-const ogDescription = "Articles on design engineering, context engineering, AI tools, and building in public.";
+const ogDescription = "Technical articles on AI engineering, developer tools, context engineering, and building in public by Railly Hugo.";
 const ogImage = `/api/og?title=${encodeURIComponent(ogTitle)}&description=${encodeURIComponent(ogDescription)}`;
 
 const allPosts = await getCollection("blog", ({ data }) => {
