@@ -1,75 +1,46 @@
 ---
 ---
 <div class="knowledge-flow-diagram my-8 overflow-x-auto">
-  <svg viewBox="0 0 780 200" xmlns="http://www.w3.org/2000/svg" class="w-full max-w-[780px] mx-auto">
+  <svg viewBox="0 0 780 80" xmlns="http://www.w3.org/2000/svg" class="w-full max-w-[780px] mx-auto">
     <defs>
       <marker id="kfArrowR" viewBox="0 0 10 7" refX="9" refY="3.5" markerWidth="8" markerHeight="6" orient="0">
         <path d="M 0 0 L 10 3.5 L 0 7 z" fill="var(--color-flexoki-tx-3)" />
       </marker>
-      <marker id="kfArrowL" viewBox="0 0 10 7" refX="1" refY="3.5" markerWidth="8" markerHeight="6" orient="0">
-        <path d="M 10 0 L 0 3.5 L 10 7 z" fill="var(--color-flexoki-tx-3)" />
-      </marker>
-      <marker id="kfArrowU" viewBox="0 0 7 10" refX="3.5" refY="1" markerWidth="6" markerHeight="8" orient="0">
-        <path d="M 0 10 L 3.5 0 L 7 10 z" fill="var(--color-flexoki-tx-3)" />
-      </marker>
     </defs>
 
-    <!-- ═══ ROW 1: Main flow ═══ -->
+    <rect x="10" y="16" width="100" height="44" rx="8" fill="var(--color-flexoki-bg-2)" stroke="var(--color-flexoki-ui)" stroke-width="1.5" />
+    <text x="60" y="34" text-anchor="middle" fill="var(--color-flexoki-tx-2)" font-size="11" font-family="ui-monospace, monospace">Web Clipper</text>
+    <text x="60" y="50" text-anchor="middle" fill="var(--color-flexoki-tx-3)" font-size="9" font-family="ui-sans-serif, system-ui">capture</text>
 
-    <rect x="10" y="20" width="100" height="44" rx="8" fill="var(--color-flexoki-bg-2)" stroke="var(--color-flexoki-ui)" stroke-width="1.5" />
-    <text x="60" y="38" text-anchor="middle" fill="var(--color-flexoki-tx-2)" font-size="11" font-family="ui-monospace, monospace">Web Clipper</text>
-    <text x="60" y="54" text-anchor="middle" fill="var(--color-flexoki-tx-3)" font-size="9" font-family="ui-sans-serif, system-ui">capture</text>
+    <line x1="110" y1="38" x2="138" y2="38" stroke="var(--color-flexoki-tx-3)" stroke-width="1.5" marker-end="url(#kfArrowR)" />
 
-    <line x1="110" y1="42" x2="138" y2="42" stroke="var(--color-flexoki-tx-3)" stroke-width="1.5" marker-end="url(#kfArrowR)" />
+    <rect x="146" y="16" width="100" height="44" rx="8" fill="var(--color-flexoki-bg-2)" stroke="var(--color-flexoki-ui)" stroke-width="1.5" />
+    <text x="196" y="34" text-anchor="middle" fill="var(--color-flexoki-tx)" font-size="12" font-weight="500" font-family="ui-monospace, monospace">01_Inbox/</text>
+    <text x="196" y="50" text-anchor="middle" fill="var(--color-flexoki-tx-3)" font-size="9" font-family="ui-sans-serif, system-ui">raw clips</text>
 
-    <rect x="146" y="20" width="100" height="44" rx="8" fill="var(--color-flexoki-bg-2)" stroke="var(--color-flexoki-ui)" stroke-width="1.5" />
-    <text x="196" y="38" text-anchor="middle" fill="var(--color-flexoki-tx)" font-size="12" font-weight="500" font-family="ui-monospace, monospace">01_Inbox/</text>
-    <text x="196" y="54" text-anchor="middle" fill="var(--color-flexoki-tx-3)" font-size="9" font-family="ui-sans-serif, system-ui">raw clips</text>
+    <line x1="246" y1="38" x2="274" y2="38" stroke="var(--color-flexoki-tx-3)" stroke-width="1.5" marker-end="url(#kfArrowR)" />
 
-    <line x1="246" y1="42" x2="274" y2="42" stroke="var(--color-flexoki-tx-3)" stroke-width="1.5" marker-end="url(#kfArrowR)" />
+    <rect x="282" y="16" width="86" height="44" rx="8" fill="var(--color-flexoki-tx)" stroke="var(--color-flexoki-tx)" stroke-width="1.5" />
+    <text x="325" y="34" text-anchor="middle" fill="var(--color-flexoki-bg)" font-size="13" font-weight="600" font-family="ui-monospace, monospace">/inbox</text>
+    <text x="325" y="50" text-anchor="middle" fill="var(--color-flexoki-bg-2)" font-size="9" font-family="ui-sans-serif, system-ui" opacity="0.7">AI processes</text>
 
-    <rect x="282" y="20" width="86" height="44" rx="8" fill="var(--color-flexoki-tx)" stroke="var(--color-flexoki-tx)" stroke-width="1.5" />
-    <text x="325" y="38" text-anchor="middle" fill="var(--color-flexoki-bg)" font-size="13" font-weight="600" font-family="ui-monospace, monospace">/inbox</text>
-    <text x="325" y="54" text-anchor="middle" fill="var(--color-flexoki-bg-2)" font-size="9" font-family="ui-sans-serif, system-ui" opacity="0.7">AI processes</text>
+    <line x1="368" y1="38" x2="396" y2="38" stroke="var(--color-flexoki-tx-3)" stroke-width="1.5" marker-end="url(#kfArrowR)" />
 
-    <line x1="368" y1="42" x2="396" y2="42" stroke="var(--color-flexoki-tx-3)" stroke-width="1.5" marker-end="url(#kfArrowR)" />
+    <rect x="404" y="16" width="110" height="44" rx="8" fill="var(--color-flexoki-bg-2)" stroke="var(--color-flexoki-ui)" stroke-width="1.5" />
+    <text x="459" y="34" text-anchor="middle" fill="var(--color-flexoki-tx)" font-size="12" font-weight="500" font-family="ui-monospace, monospace">03_Garden/</text>
+    <text x="459" y="50" text-anchor="middle" fill="var(--color-flexoki-tx-3)" font-size="9" font-family="ui-sans-serif, system-ui">atomic notes</text>
 
-    <rect x="404" y="20" width="110" height="44" rx="8" fill="var(--color-flexoki-bg-2)" stroke="var(--color-flexoki-ui)" stroke-width="1.5" />
-    <text x="459" y="38" text-anchor="middle" fill="var(--color-flexoki-tx)" font-size="12" font-weight="500" font-family="ui-monospace, monospace">03_Garden/</text>
-    <text x="459" y="54" text-anchor="middle" fill="var(--color-flexoki-tx-3)" font-size="9" font-family="ui-sans-serif, system-ui">atomic notes</text>
+    <line x1="514" y1="38" x2="542" y2="38" stroke="var(--color-flexoki-tx-3)" stroke-width="1.5" marker-end="url(#kfArrowR)" />
 
-    <line x1="514" y1="42" x2="542" y2="42" stroke="var(--color-flexoki-tx-3)" stroke-width="1.5" marker-end="url(#kfArrowR)" />
+    <rect x="550" y="16" width="100" height="44" rx="8" fill="var(--color-flexoki-tx)" stroke="var(--color-flexoki-tx)" stroke-width="1.5" />
+    <text x="600" y="34" text-anchor="middle" fill="var(--color-flexoki-bg)" font-size="13" font-weight="600" font-family="ui-monospace, monospace">/graduate</text>
+    <text x="600" y="50" text-anchor="middle" fill="var(--color-flexoki-bg-2)" font-size="9" font-family="ui-sans-serif, system-ui" opacity="0.7">promotes</text>
 
-    <rect x="550" y="20" width="100" height="44" rx="8" fill="var(--color-flexoki-tx)" stroke="var(--color-flexoki-tx)" stroke-width="1.5" />
-    <text x="600" y="38" text-anchor="middle" fill="var(--color-flexoki-bg)" font-size="13" font-weight="600" font-family="ui-monospace, monospace">/graduate</text>
-    <text x="600" y="54" text-anchor="middle" fill="var(--color-flexoki-bg-2)" font-size="9" font-family="ui-sans-serif, system-ui" opacity="0.7">promotes</text>
+    <line x1="650" y1="38" x2="678" y2="38" stroke="var(--color-flexoki-tx-3)" stroke-width="1.5" marker-end="url(#kfArrowR)" />
 
-    <line x1="650" y1="42" x2="678" y2="42" stroke="var(--color-flexoki-tx-3)" stroke-width="1.5" marker-end="url(#kfArrowR)" />
-
-    <rect x="686" y="20" width="86" height="44" rx="8" fill="var(--color-flexoki-bg-2)" stroke="var(--color-flexoki-ui)" stroke-width="1.5" />
-    <text x="729" y="38" text-anchor="middle" fill="var(--color-flexoki-tx)" font-size="11" font-weight="500" font-family="ui-monospace, monospace">06_Content/</text>
-    <text x="729" y="54" text-anchor="middle" fill="var(--color-flexoki-tx-3)" font-size="9" font-family="ui-sans-serif, system-ui">publish</text>
-
-    <!-- ═══ ROW 2: Daily loop ═══ -->
-
-    <rect x="10" y="120" width="110" height="44" rx="8" fill="var(--color-flexoki-bg-2)" stroke="var(--color-flexoki-ui)" stroke-width="1.5" />
-    <text x="65" y="138" text-anchor="middle" fill="var(--color-flexoki-tx)" font-size="12" font-weight="500" font-family="ui-monospace, monospace">02_Journal/</text>
-    <text x="65" y="154" text-anchor="middle" fill="var(--color-flexoki-tx-3)" font-size="9" font-family="ui-sans-serif, system-ui">daily logs</text>
-
-    <line x1="172" y1="142" x2="128" y2="142" stroke="var(--color-flexoki-tx-3)" stroke-width="1.5" marker-end="url(#kfArrowL)" />
-
-    <rect x="180" y="124" width="76" height="36" rx="6" fill="var(--color-flexoki-tx)" stroke="var(--color-flexoki-tx)" stroke-width="1.5" />
-    <text x="218" y="146" text-anchor="middle" fill="var(--color-flexoki-bg)" font-size="12" font-weight="600" font-family="ui-monospace, monospace">/ship</text>
-
-    <rect x="268" y="124" width="66" height="36" rx="6" fill="var(--color-flexoki-tx)" stroke="var(--color-flexoki-tx)" stroke-width="1.5" />
-    <text x="301" y="146" text-anchor="middle" fill="var(--color-flexoki-bg)" font-size="12" font-weight="600" font-family="ui-monospace, monospace">/log</text>
-
-    <rect x="346" y="124" width="82" height="36" rx="6" fill="var(--color-flexoki-tx)" stroke="var(--color-flexoki-tx)" stroke-width="1.5" />
-    <text x="387" y="146" text-anchor="middle" fill="var(--color-flexoki-bg)" font-size="12" font-weight="600" font-family="ui-monospace, monospace">/today</text>
-
-    <!-- Dashed loop: Journal ideas → Garden -->
-    <path d="M 10 132 L 4 132 L 4 86 L 404 86 L 404 64" stroke="var(--color-flexoki-tx-3)" stroke-width="1" stroke-dasharray="6 3" fill="none" marker-end="url(#kfArrowU)" />
-    <text x="204" y="82" text-anchor="middle" fill="var(--color-flexoki-tx-3)" font-size="9" font-family="ui-sans-serif, system-ui" font-style="italic">ideas get /graduated</text>
+    <rect x="686" y="16" width="86" height="44" rx="8" fill="var(--color-flexoki-bg-2)" stroke="var(--color-flexoki-ui)" stroke-width="1.5" />
+    <text x="729" y="34" text-anchor="middle" fill="var(--color-flexoki-tx)" font-size="11" font-weight="500" font-family="ui-monospace, monospace">06_Content/</text>
+    <text x="729" y="50" text-anchor="middle" fill="var(--color-flexoki-tx-3)" font-size="9" font-family="ui-sans-serif, system-ui">publish</text>
 
   </svg>
 </div>
