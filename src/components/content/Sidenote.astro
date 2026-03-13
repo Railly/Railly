@@ -1,0 +1,212 @@
+---
+interface Props {
+  href?: string;
+}
+
+const { href } = Astro.props;
+---
+
+<span class="sn-wrap">
+  <span class="sn-term"><slot /></span><sup class="sn-ref"></sup>
+  <span class="sn" role="note">
+    <span class="sn-num"></span>
+    <span class="sn-content">
+      <slot name="note" />
+      {href && (
+        <a href={href} target="_blank" rel="noopener noreferrer" class="sn-link">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="sn-ext">
+            <path d="M6.5 3.5h-3a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-3" />
+            <path d="M9.5 2.5h4v4" />
+            <path d="M13.5 2.5l-6 6" />
+          </svg>
+        </a>
+      )}
+    </span>
+  </span>
+</span>
+
+<style>
+  .sn-wrap {
+    position: relative;
+    counter-increment: sidenote;
+  }
+
+  .sn-term {
+    text-decoration: underline;
+    text-decoration-style: dotted;
+    text-underline-offset: 3px;
+    text-decoration-color: var(--color-flexoki-tx-3);
+    transition: text-decoration-color 0.2s ease;
+  }
+
+  .sn-ref {
+    font-size: 0.65em;
+    color: var(--color-flexoki-tx-3);
+    margin-left: 1px;
+    vertical-align: super;
+    line-height: 0;
+  }
+
+  .sn-ref::after {
+    content: counter(sidenote);
+  }
+
+  .sn-num {
+    font-weight: 500;
+    color: var(--color-flexoki-tx-3);
+    font-size: 12px;
+  }
+
+  .sn-num::before {
+    content: counter(sidenote) ". ";
+  }
+
+  .sn-content {
+    display: inline;
+  }
+
+  .sn-content :global(p) {
+    margin: 0;
+    display: inline;
+  }
+
+  .sn-content :global(p + p) {
+    display: block;
+    margin-top: 0.5rem;
+  }
+
+  .sn-content :global(strong) {
+    font-weight: 600;
+    color: var(--color-flexoki-tx);
+  }
+
+  .sn-content :global(img) {
+    margin-top: 0.5rem;
+    border-radius: 4px;
+    width: 100%;
+    border: 1px solid var(--color-flexoki-ui);
+  }
+
+  .sn-content :global(code) {
+    font-size: 0.9em;
+    background: var(--color-flexoki-bg-2);
+    padding: 1px 4px;
+    border-radius: 3px;
+  }
+
+  .sn-link {
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .sn-ext {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    margin-left: 3px;
+    vertical-align: -1px;
+    opacity: 0.5;
+    transition: opacity 0.15s ease;
+  }
+
+  .sn-link:hover .sn-ext {
+    opacity: 1;
+  }
+
+  /* Desktop: Tufte-style margin sidenote */
+  @media (min-width: 1024px) {
+    .sn {
+      float: right;
+      clear: right;
+      margin-right: -42%;
+      width: 36%;
+      margin-top: 0.15rem;
+      margin-bottom: 1.25rem;
+      padding-left: 10px;
+      border-left: 2px solid transparent;
+      font-size: 13px;
+      line-height: 1.5;
+      color: var(--color-flexoki-tx-2);
+      opacity: 0.35;
+      transition: opacity 0.25s ease, border-color 0.25s ease;
+    }
+
+    /* Hover: just fade in */
+    .sn-wrap:hover .sn,
+    .sn:hover {
+      opacity: 0.75;
+    }
+
+    .sn-wrap:hover .sn-term {
+      text-decoration-color: var(--color-flexoki-tx-2);
+    }
+
+    /* Click-activated: full opacity + border accent */
+    .sn-wrap.active .sn {
+      opacity: 1;
+      border-left-color: var(--color-flexoki-tx-3);
+    }
+
+    .sn-wrap.active .sn-term {
+      text-decoration-color: var(--color-flexoki-tx);
+    }
+  }
+
+  /* Mobile: inline disclosure */
+  @media (max-width: 1023px) {
+    .sn-wrap {
+      display: inline;
+    }
+
+    .sn {
+      display: none;
+      padding: 8px 12px;
+      margin: 6px 0;
+      border-radius: 6px;
+      background: var(--color-flexoki-bg-2);
+      color: var(--color-flexoki-tx-2);
+      border: 1px solid var(--color-flexoki-ui);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .sn-wrap.active .sn {
+      display: block;
+    }
+
+    .sn-num {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('astro:page-load', () => {
+    document.querySelectorAll('.sn-term').forEach(term => {
+      term.addEventListener('click', (e) => {
+        const wrap = (e.currentTarget as HTMLElement).closest('.sn-wrap');
+        if (!wrap) return;
+
+        const wasActive = wrap.classList.contains('active');
+
+        document.querySelectorAll('.sn-wrap.active').forEach(el => {
+          el.classList.remove('active');
+        });
+
+        if (!wasActive) {
+          wrap.classList.add('active');
+        }
+      });
+    });
+
+    document.addEventListener('click', (e) => {
+      const target = e.target as HTMLElement;
+      if (!target.closest('.sn-wrap')) {
+        document.querySelectorAll('.sn-wrap.active').forEach(el => {
+          el.classList.remove('active');
+        });
+      }
+    });
+  });
+</script>
