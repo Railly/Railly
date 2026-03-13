@@ -20,6 +20,7 @@
 		"@astrojs/rss": "^4.0.15",
 		"@astrojs/sitemap": "^3.7.0",
 		"@astrojs/vercel": "9.0.2",
+		"@crafter/mermaid": "0.0.3",
 		"@fontsource/ibm-plex-mono": "^5.2.7",
 		"@fontsource/ibm-plex-sans": "^5.2.8",
 		"@fontsource/ibm-plex-serif": "^5.2.7",

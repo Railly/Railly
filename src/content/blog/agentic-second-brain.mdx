@@ -1,6 +1,6 @@
 ---
-title: "I Built an Agentic Second Brain with Claude Code and Obsidian"
-description: "My AI processes web clips, warns me about old mistakes, and argues against my own thinking. Here's the full system, and how you can set it up."
+title: "Claude Code + Obsidian: A Second Brain That Actually Works"
+description: "An open-source knowledge system where Claude Code maintains your Obsidian vault: processing clips, connecting ideas, tracking goals, and calling out your recurring failures."
 slug: "agentic-second-brain"
 pubDate: "2026-03-12"
 tags: ["ai", "obsidian", "claude", "productivity", "knowledge-management", "open-source"]
@@ -11,22 +11,23 @@ import Callout from "../../components/content/Callout.astro";
 import Figure from "../../components/content/Figure.astro";
 import KnowledgeFlowDiagram from "../../components/content/KnowledgeFlowDiagram.astro";
 import CoreLoopDiagram from "../../components/content/CoreLoopDiagram.astro";
+import Sidenote from "../../components/content/Sidenote.astro";
 
-Last week I had three mentoring conversations. Three different developers, different stages, different countries. They all asked me the same thing.
+Last week three developers asked me the same question. A data engineer in Lima, a PM in Bogota, a founder building from Italy. None of them coordinated.
 
-Not about English. Not about remote work. This time it was: **"How does your AI workflow actually work?"**
+**"How does your AI workflow actually work?"**
 
-Daniel Santos, a data engineer, watched me open five Claude Code terminals connected to the same Obsidian vault and said, quote, "me volaste la cabeza." Jhomar, a technical PM, wrote in his notes afterwards that he needed to open-source his setup. Rodrigo Weilg, building a real-time SaaS from Italy, wanted to know how I stay organized across jobs, side projects, and a community of 450+ members.
+One of them, after I walked him through the setup, said "me volaste la cabeza." It's one system I've been running daily for 4+ months.
 
-The answer is the same system I've been using daily for 4+ months. It's not a note-taking app. It's not a Claude Code config. It's a **knowledge operating system** where an AI maintains your second brain: processing web clips into atomic notes, extracting buried ideas from daily logs, finding missing connections, warning you when you're repeating old mistakes, and arguing against your thinking when you ask it to.
+Not a note-taking app. Not a Claude Code config. A **knowledge operating system**: the AI processes your web clips into atomic notes, extracts ideas buried in daily logs, finds connections you missed, and warns you when you're repeating old mistakes.
 
-I open-sourced it. Here's how it works.
+I open-sourced it.
 
 ## The Problem
 
 Every knowledge management system dies the same way. You start excited. You take notes for a week. Maybe two. Then life gets busy, you stop processing, and your vault becomes a graveyard of unconnected ideas.
 
-The problem isn't discipline. The problem is that traditional PKM systems require you to be the librarian, the connector, the reviewer, and the writer. You have to process your own clips. Find your own connections. Review your own goals. That's a lot of cognitive overhead on top of the actual work.
+The problem isn't discipline. The problem is that traditional <Sidenote>PKM<Fragment slot="note">**Personal Knowledge Management.** The practice of capturing, organizing, and connecting your own information. Most PKM systems assume you'll do the organizing yourself.</Fragment></Sidenote> systems require you to be the librarian, the connector, the reviewer, and the writer. You have to process your own clips. Find your own connections. Review your own goals. That's a lot of cognitive overhead on top of the actual work.
 
 What if the AI did all of that?
 
@@ -38,7 +39,7 @@ That's what I built.
 
 The system has three layers:
 
-**Obsidian** is the persistence layer. A vault with 7 folders following a [Zettelkasten](https://zettelkasten.de/overview/) + [PARA](https://fortelabs.com/blog/para/) hybrid:
+**Obsidian** is the persistence layer. A vault with 7 folders following a <Sidenote>Zettelkasten<Fragment slot="note">**German for "slip box."** Each note captures one atomic idea and links to others, building a web of knowledge over time. Invented by sociologist Niklas Luhmann, who published 70 books using this method.</Fragment></Sidenote> + <Sidenote>PARA<Fragment slot="note">**Projects, Areas, Resources, Archives.** Tiago Forte's organizational method that sorts information by how actionable it is, not by topic.</Fragment></Sidenote> hybrid:
 
 ```
 01_Inbox/        -> Raw captures from Web Clipper
@@ -50,11 +51,11 @@ The system has three layers:
 07_System/       -> System configuration and context files
 ```
 
-**Claude Code** is the execution layer. 22 slash commands that process, connect, analyze, and create. Each command reads from the vault, makes decisions, and writes back.
+**Claude Code** is the execution layer. 21 slash commands that process, connect, analyze, and create. Each command reads from the vault, makes decisions, and writes back.
 
 **CLAUDE.md** is the personality layer. It contains your identity, goals, stack preferences, anti-patterns, and communication style. Every time Claude Code starts, it reads this file and knows who you are.
 
-The magic is in the flow:
+Here's the flow:
 
 <KnowledgeFlowDiagram />
 
@@ -64,15 +65,15 @@ Knowledge flows in one direction: from raw capture to published content. The AI 
 
 Here's what a typical day looks like.
 
-1. **Morning**: I run `/morning`. It pulls my calendar, pending tasks, and recent activity. It gives me three MITs (Most Important Things) for the day. I know exactly what to focus on before I open any code editor.
+1. **Morning**: I run `/morning`. It pulls my calendar, pending tasks, and recent activity. It gives me three <Sidenote>MITs<Fragment slot="note">**Most Important Things.** The 3 tasks that, if completed, make the day a success regardless of everything else. Set each morning, reviewed each night.</Fragment></Sidenote> for the day. I know exactly what to focus on before I open any code editor.
 
 2. **During the day**: Every time I ship something, `/ship` commits and pushes my code, then logs the commit to my daily journal automatically. If I have a quick thought, `/log "idea about X"` adds a timestamped entry to today's file. No context switching.
 
-3. **Processing**: When my Obsidian Web Clipper has accumulated articles, I run `/inbox`. It reads each clip, extracts the core ideas, creates atomic notes in `03_Garden/` with proper backlinks, and marks the clips as processed. One command, 10 articles processed in under 3 minutes.
+3. **Processing**: When my <Sidenote>Obsidian Web Clipper<Fragment slot="note">**Browser extension** that saves web pages directly into your vault as markdown files. Articles, tweets, documentation, anything. It becomes the entry point for all external knowledge.</Fragment></Sidenote> has accumulated articles, I run `/inbox`. It reads each clip, extracts the core ideas, creates atomic notes in `03_Garden/` with proper backlinks, and marks the clips as processed. One command, 10 articles processed in under 3 minutes.
 
-4. **End of day**: `/close-day` reviews what happened. What did I accomplish? What's carrying over? What should I focus on tomorrow?
+4. **End of day**: `/today` also handles reflection. It audits your planned tasks vs actual, checks MIT progress, integrates health and study data, and asks for a day rating. Carry-over items automatically become tomorrow's planned tasks.
 
-5. **Weekly**: `/pulse` runs a Pareto analysis on my engagement. It reads my daily logs, notes created, and projects touched, then compares them against my stated goals in CLAUDE.md.
+5. **Weekly**: `/pulse` runs a <Sidenote>Pareto analysis<Fragment slot="note">**The 80/20 rule applied to your work.** Finds the 20% of activities producing 80% of your results. `/pulse` ranks your interests by engagement weight and flags the vital few.</Fragment></Sidenote> on my engagement. It reads my daily logs, notes created, and projects touched, then compares them against my stated goals in CLAUDE.md.
 
 <CoreLoopDiagram />
 
@@ -92,13 +93,13 @@ DRIFT
 - "Real-time WebSockets" - High engagement, NOT in your goals
 ```
 
-This is where it gets personal. That "Math for ML" blind spot? It's been there for months. I keep saying I want to learn it, but `/pulse` doesn't lie. The data shows I haven't touched it. That kind of honesty is uncomfortable, and that's exactly why it works.
+This is where it gets personal. That "Math for ML" blind spot? It's been there for months. I keep saying I want to learn it, but `/pulse` doesn't lie. The data shows I haven't touched it. That kind of honesty is uncomfortable. That's why it works.
 
 ## The Anti-Pattern Engine
 
-This is the feature that made Daniel say "me volaste la cabeza."
+This is the feature that made someone say "me volaste la cabeza."
 
-Where do these patterns come from? Every year I answer [40 questions](https://stephango.com/40-questions) (inspired by Steph Ango). Things like "What was your biggest failure this year?", "What did you waste time on?", "What habit do you keep failing to build?" The answers are brutally honest because nobody reads them except me and my AI. After a few years, the patterns become obvious. Same failures, different year.
+Where do these patterns come from? Every year I answer <Sidenote href="https://stephango.com/40-questions">40 questions<Fragment slot="note">**Annual self-reflection exercise** by Steph Ango, CEO of Obsidian. Questions like "What was your biggest failure?" and "What did you waste time on?" force honest pattern recognition across years.</Fragment></Sidenote>. Things like "What was your biggest failure this year?", "What did you waste time on?", "What habit do you keep failing to build?" The answers are brutally honest because nobody reads them except me and my AI. After a few years, the patterns become obvious. Same failures, different year.
 
 So I formalized them. In your CLAUDE.md, you write your recurring failures. Honestly. Not the version you tell recruiters. The real ones:
 
@@ -130,18 +131,18 @@ Nobody wants to write down their failures. But once you do, and once an AI holds
 
 ## The /challenge Command
 
-I built anti-sycophancy into my knowledge system.
+I built <Sidenote>anti-sycophancy<Fragment slot="note">**Making the AI disagree with you.** Most AI assistants default to agreement ("Great idea!"). `/challenge` forces it to argue against your position using your own vault data as evidence.</Fragment></Sidenote> into my knowledge system.
 
 Every AI assistant wants to agree with you. "Great idea!" "That sounds promising!" This is dangerous when you're making big decisions. So I built `/challenge`.
 
 When you run `/challenge "I should learn Rust"`, it searches your vault for evidence, then argues against your position using six analytical lenses:
 
-1. **Opportunity Cost** — What are you NOT doing by learning Rust?
-2. **Survivorship Bias** — Are you only seeing Rust success stories?
-3. **Sunk Cost** — Would you start this if you hadn't already bought the book?
-4. **Contrarian Evidence** — What in your vault contradicts this?
-5. **Second-Order Effects** — What if you're right but the consequences are bad?
-6. **Anti-Pattern Match** — Does this match a historical failure? (Like "Learning Without Doing x3")
+1. **Opportunity Cost** - What are you NOT doing by learning Rust?
+2. **Survivorship Bias** - Are you only seeing Rust success stories?
+3. **Sunk Cost** - Would you start this if you hadn't already bought the book?
+4. **Contrarian Evidence** - What in your vault contradicts this?
+5. **Second-Order Effects** - What if you're right but the consequences are bad?
+6. **Anti-Pattern Match** - Does this match a historical failure? (Like "Learning Without Doing x3")
 
 The key is that it uses YOUR data. Not generic arguments. It searches your notes, your daily logs, your previous decisions. If you wrote six months ago that you wanted to focus on TypeScript, and now you're pivoting to Rust, it will find that note and ask you why.
 
@@ -151,9 +152,7 @@ The key is that it uses YOUR data. Not generic arguments. It searches your notes
 
 ## The Graduate Command
 
-This is the feature nobody else has.
-
-You write daily logs. Everyone does. But how many ideas die in those logs? You write "interesting thought about X" on a Tuesday, and by Friday it's buried under 20 other entries.
+You write daily logs. But how many ideas die in those logs? You write "interesting thought about X" on a Tuesday, and by Friday it's buried under 20 other entries.
 
 `/graduate` reads your recent daily logs and extracts ideas that deserve to be permanent notes. It looks for:
 
@@ -161,7 +160,7 @@ You write daily logs. Everyone does. But how many ideas die in those logs? You w
 - Recurring themes across multiple days
 - Ideas you mentioned but never developed
 
-Then it creates proper atomic notes in `03_Garden/` with backlinks, context, and connections to your existing knowledge.
+Then it creates proper atomic notes in `03_Garden/` with <Sidenote>backlinks<Fragment slot="note">**Bidirectional links between notes.** If note A links to note B, note B automatically knows about note A. This is how isolated ideas find each other over time.</Fragment></Sidenote>, context, and connections to your existing knowledge.
 
 Your daily logs become a mine. `/graduate` is the miner.
 
@@ -169,33 +168,31 @@ Your daily logs become a mine. `/graduate` is the miner.
 
 I'm studying math for ML, and I built a learning loop into the system:
 
-1. **Before a lesson**: `/prime linear-algebra` gives you a 3-minute briefing. What you already know, what prerequisites you need, and the key intuitions to watch for. It scaffolds your brain so the lesson sticks.
+1. **Before a lesson**: `/prime linear-algebra` gives you a 3-minute briefing. What you already know, what prerequisites you need, and the key intuitions to watch for. It primes your brain so the lesson sticks.
 
-2. **After a lesson**: `/learn eigenvalues` creates a structured note with the concept, your understanding, review questions, and connections to what you already know. It uses knowledge formulation principles: questions that force recall, not recognition.
+2. **After a lesson**: `/learn eigenvalues` creates a structured note with the concept, your understanding, review questions, and connections to what you already know. The questions force recall, not recognition.
 
-3. **Next morning**: `/recall` quizzes you from your own notes. Spaced retrieval. Not flashcards from the internet. Questions from YOUR understanding, in YOUR words.
+3. **Next morning**: `/recall` quizzes you from your own notes. <Sidenote>Spaced retrieval<Fragment slot="note">**Testing yourself at increasing intervals.** Harder than re-reading, but retention jumps from ~20% to ~80%. The struggle of recalling is what builds the memory.</Fragment></Sidenote>. Not flashcards from the internet. Questions from YOUR understanding, in YOUR words.
 
 4. **Tracking**: `/study` logs each session to a daily tracker so you can see streaks and gaps.
 
-The system knows what you studied, when you studied it, and what you haven't reviewed. It's spaced repetition built into your knowledge system, not a separate app.
+Spaced repetition built into your knowledge system. Not a separate app.
 
 ## Going Further
 
-What I open-sourced is the core system. 22 commands, the vault template, the CLAUDE.md template, and full documentation.
+What I open-sourced is the core system. 21 commands, the vault template, the CLAUDE.md template, and full documentation.
 
 But I use a more advanced version daily that includes:
 
 - **Kai**, an always-on WhatsApp assistant that responds to messages via webhook, runs cron jobs, and proactively nudges me based on events
-- **Multi-agent orchestration** where specialized AI agents (Bolt for code, Sage for review, Nova for research, Orion for planning) work on Linear issues autonomously
+- **Multi-agent orchestration** where specialized AI agents (Bolt for code, Sage for review, Nova for research, Orion for planning) work on <Sidenote href="https://linear.app">Linear<Fragment slot="note">**Project management tool** built for software teams. Issues, cycles, roadmaps. Each agent gets assigned issues and works them autonomously through the API.</Fragment></Sidenote> issues autonomously
 - **Voice input** through Whisper transcription
-- **Health tracking** synced with Apple Health data — 724+ daily health files automatically ingested into Obsidian, queried by Claude Code
+- **Health tracking** synced with Apple Health data, 724+ daily health files automatically ingested into Obsidian, queried by Claude Code
 - **Content pipeline** that turns daily work into tweets, blog posts, and videos
 
 That's Tier 3. It's not in the open source repo because it requires infrastructure (Cloudflare tunnels, WhatsApp API, custom webhooks). But the foundation is the same vault + commands system.
 
-The health tracking deserves its own post. I have Claude Code reading my Apple Health data (sleep, workouts, heart rate, steps) and cross-referencing it with my anti-patterns and productivity logs. When my sleep drops below 7 hours for a week, `/pulse` catches it. When I haven't worked out in 10 days, it flags it. The data lives in Obsidian, stays in sync, and the AI acts on it. I'm writing a full tutorial: **"How to Run Claude Code on Your Apple Health Data with Obsidian"** — keeping both in sync, building commands that query your body like they query your codebase. Stay tuned.
-
-If there's interest in the other advanced features, I'll write about those too.
+The health tracking deserves its own post. Claude Code reads my Apple Health data (sleep, workouts, heart rate, steps) and cross-references it with my anti-patterns. When my sleep drops below 7 hours for a week, `/pulse` catches it. When I haven't worked out in 10 days, it flags it. I'm writing a full tutorial: **"How to Run Claude Code on Your Apple Health Data with Obsidian"**, commands that query your body like they query your codebase.
 
 ## Get Started
 
@@ -226,16 +223,14 @@ First commands to try:
 
 The repo includes:
 
-- **22 commands** organized by workflow (daily, knowledge, thinking, learning, content)
+- **21 commands** organized by workflow (daily, knowledge, thinking, learning, content)
 - **Vault template** with the full 7-folder structure
 - **CLAUDE.md template** with placeholder sections for your identity, goals, and anti-patterns
 - **Two example CLAUDE.md files** (indie developer and employed engineer)
 - **Full documentation**: setup guide, command reference, philosophy, customization, advanced features
 
-<Callout type="note" title="What the mentees said">
-  After I shared this system in the mentoring sessions, Daniel Santos (data engineer) said it "blew his mind" seeing five Claude Code terminals connected to the same vault. Jhomar (technical PM) noted he needed to systematize his own workflow. Rodrigo Weilg (building from Italy) said it changed how he thinks about knowledge management.
-
-  If three developers independently ask the same question, the answer deserves to be public.
+<Callout type="note" title="Why I open-sourced this">
+  Three developers independently asked how this works: Daniel Santos (data engineer), Jhomar (technical PM), and Rodrigo Weilg (building a SaaS from Italy). If three people ask the same question unprompted, the answer deserves to be public.
 </Callout>
 
 The repo is at [github.com/Railly/second-brain](https://github.com/Railly/second-brain). Star it if it's useful. Open an issue if something's broken. And if you set it up and it changes how you work, I want to hear about it.

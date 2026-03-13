@@ -1,5 +1,6 @@
 {
   "lockfileVersion": 1,
+  "configVersion": 0,
   "workspaces": {
     "": {
       "name": "railly.dev",
@@ -9,6 +10,7 @@
         "@astrojs/rss": "^4.0.15",
         "@astrojs/sitemap": "^3.7.0",
         "@astrojs/vercel": "9.0.2",
+        "@crafter/mermaid": "0.0.3",
         "@fontsource/ibm-plex-mono": "^5.2.7",
         "@fontsource/ibm-plex-sans": "^5.2.8",
         "@fontsource/ibm-plex-serif": "^5.2.7",
@@ -116,6 +118,16 @@
     "@biomejs/cli-win32-x64": ["@biomejs/cli-win32-x64@2.3.11", "", { "os": "win32", "cpu": "x64" }, "sha512-43VrG813EW+b5+YbDbz31uUsheX+qFKCpXeY9kfdAx+ww3naKxeVkTD9zLIWxUPfJquANMHrmW3wbe/037G0Qg=="],
 
     "@capsizecss/unpack": ["@capsizecss/unpack@3.0.1", "", { "dependencies": { "fontkit": "^2.0.2" } }, "sha512-8XqW8xGn++Eqqbz3e9wKuK7mxryeRjs4LOHLxbh2lwKeSbuNR4NFifDZT4KzvjU6HMOPbiNTsWpniK5EJfTWkg=="],
+
+    "@crafter/mermaid": ["@crafter/mermaid@0.0.3", "", { "dependencies": { "@crafter/mermaid-layout": "0.0.3", "@crafter/mermaid-parser": "0.0.3", "@crafter/mermaid-renderer": "0.0.3", "@crafter/mermaid-themes": "0.0.3" } }, "sha512-2TrwosrASvXqGxN/H/ghsBXmND0V794b/MsKAIYXl974QsJJ1ZPgEH+rcw5B8HOgVKnYMSzNGhJUIQg/UU8IPw=="],
+
+    "@crafter/mermaid-layout": ["@crafter/mermaid-layout@0.0.3", "", { "dependencies": { "@crafter/mermaid-parser": "0.0.3" } }, "sha512-T9NGOvUrtWajPkTzWhYvzVOABNBlKtzTpqFt0TeG3d5YgAW9AG4ZXr1E9c8a4++Kzh9EKX1UL0xK1Yr0/T+HIg=="],
+
+    "@crafter/mermaid-parser": ["@crafter/mermaid-parser@0.0.3", "", {}, "sha512-nJsqOQk6CDDOgbKDqAtGBtHHYpk7fNpxiaFIPlaPTHkIPy7C2+lH/QeAM9c0EJK9uhZ3boJ6NUfNXQJ10K8Iaw=="],
+
+    "@crafter/mermaid-renderer": ["@crafter/mermaid-renderer@0.0.3", "", { "dependencies": { "@crafter/mermaid-layout": "0.0.3", "@crafter/mermaid-themes": "0.0.3" } }, "sha512-CwJC9ygrnIXyMG0sPNVSJ9BWpwl1NK/fN3aMd1e7xHUTHj/bzfJS+8fS7bsNWoqUPn2KX5FgcBbKxcTGwnh8EQ=="],
+
+    "@crafter/mermaid-themes": ["@crafter/mermaid-themes@0.0.3", "", {}, "sha512-Wt+Pf2J30g7k7FHOgbmz8LLjkzAZyi1HZhQtOm4PBA/M5cX0iLD1pLMniT307RHCa1ANAcCDiFQA30BcW09Xeg=="],
 
     "@emnapi/runtime": ["@emnapi/runtime@1.7.1", "", { "dependencies": { "tslib": "^2.4.0" } }, "sha512-PVtJr5CmLwYAU9PZDMITZoR5iAOShYREoR45EyyLrbntV50mdePTgUn4AmOw90Ifcj+x2kRjdzr1HP3RrNiHGA=="],
 
