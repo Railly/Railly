@@ -4,10 +4,17 @@ interface Comment {
 	id: string;
 	name: string;
 	text: string;
+	quote?: string;
 	x: number;
 	y: number;
 	timestamp: number;
 	resolved: boolean;
+}
+
+interface SelectionPopup {
+	x: number;
+	y: number;
+	text: string;
 }
 
 const COLORS = [
@@ -33,6 +40,18 @@ function timeAgo(ts: number) {
 	return `${Math.floor(hrs / 24)}d ago`;
 }
 
+function getSelectionInfo(): SelectionPopup | null {
+	const sel = window.getSelection();
+	if (!sel || sel.isCollapsed || !sel.toString().trim()) return null;
+	const range = sel.getRangeAt(0);
+	const rect = range.getBoundingClientRect();
+	return {
+		x: rect.left + rect.width / 2,
+		y: rect.top,
+		text: sel.toString().trim(),
+	};
+}
+
 export default function DraftComments({ draftId }: { draftId: string }) {
 	const [name, setName] = useState("");
 	const [nameConfirmed, setNameConfirmed] = useState(false);
@@ -40,11 +59,14 @@ export default function DraftComments({ draftId }: { draftId: string }) {
 	const [placing, setPlacing] = useState(false);
 	const [pendingPos, setPendingPos] = useState<{ x: number; y: number } | null>(null);
 	const [pendingText, setPendingText] = useState("");
+	const [pendingQuote, setPendingQuote] = useState("");
 	const [activeComment, setActiveComment] = useState<string | null>(null);
 	const [showNamePrompt, setShowNamePrompt] = useState(false);
+	const [selectionPopup, setSelectionPopup] = useState<SelectionPopup | null>(null);
 	const inputRef = useRef<HTMLInputElement>(null);
 	const nameInputRef = useRef<HTMLInputElement>(null);
 	const overlayRef = useRef<HTMLDivElement>(null);
+	const selectionPopupRef = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
 		const saved = localStorage.getItem("draft-reviewer-name");
@@ -75,6 +97,33 @@ export default function DraftComments({ draftId }: { draftId: string }) {
 		}
 	}, [pendingPos]);
 
+	useEffect(() => {
+		if (!nameConfirmed) return;
+
+		const handleMouseUp = () => {
+			setTimeout(() => {
+				const info = getSelectionInfo();
+				if (info && !pendingPos) {
+					setSelectionPopup(info);
+				} else {
+					setSelectionPopup(null);
+				}
+			}, 10);
+		};
+
+		const handleMouseDown = (e: MouseEvent) => {
+			if (selectionPopupRef.current?.contains(e.target as Node)) return;
+			setSelectionPopup(null);
+		};
+
+		document.addEventListener("mouseup", handleMouseUp);
+		document.addEventListener("mousedown", handleMouseDown);
+		return () => {
+			document.removeEventListener("mouseup", handleMouseUp);
+			document.removeEventListener("mousedown", handleMouseDown);
+		};
+	}, [nameConfirmed, pendingPos]);
+
 	const confirmName = () => {
 		if (!name.trim()) return;
 		localStorage.setItem("draft-reviewer-name", name.trim());
@@ -82,15 +131,37 @@ export default function DraftComments({ draftId }: { draftId: string }) {
 		setShowNamePrompt(false);
 	};
 
+	const startCommentFromSelection = (selInfo: SelectionPopup) => {
+		const xPercent = (selInfo.x / document.documentElement.clientWidth) * 100;
+		const yAbs = selInfo.y + window.scrollY;
+		setPendingPos({ x: xPercent, y: yAbs });
+		setPendingQuote(selInfo.text.slice(0, 120));
+		setPendingText("");
+		setSelectionPopup(null);
+		setActiveComment(null);
+		window.getSelection()?.removeAllRanges();
+		if (!placing) setPlacing(true);
+	};
+
 	const handleOverlayClick = (e: React.MouseEvent) => {
 		if (!nameConfirmed || !placing) return;
 		if ((e.target as HTMLElement).closest("[data-comment-pin]")) return;
 		if ((e.target as HTMLElement).closest("[data-comment-input]")) return;
 
+		const sel = window.getSelection();
+		if (sel && !sel.isCollapsed && sel.toString().trim()) {
+			const info = getSelectionInfo();
+			if (info) {
+				startCommentFromSelection(info);
+				return;
+			}
+		}
+
 		const xPercent = (e.clientX / document.documentElement.clientWidth) * 100;
 		const yAbs = e.clientY + window.scrollY;
 
 		setPendingPos({ x: xPercent, y: yAbs });
+		setPendingQuote("");
 		setPendingText("");
 		setActiveComment(null);
 	};
@@ -104,6 +175,7 @@ export default function DraftComments({ draftId }: { draftId: string }) {
 				draftId,
 				name: name.trim(),
 				text: pendingText.trim(),
+				quote: pendingQuote || undefined,
 				x: pendingPos.x,
 				y: pendingPos.y,
 			}),
@@ -113,6 +185,7 @@ export default function DraftComments({ draftId }: { draftId: string }) {
 			setComments((prev) => [...prev, data.comment]);
 			setPendingPos(null);
 			setPendingText("");
+			setPendingQuote("");
 		}
 	};
 
@@ -249,7 +322,9 @@ export default function DraftComments({ draftId }: { draftId: string }) {
 						onClick={() => {
 							setPlacing(!placing);
 							setPendingPos(null);
+							setPendingQuote("");
 							setActiveComment(null);
+							setSelectionPopup(null);
 						}}
 						style={{
 							display: "flex",
@@ -274,6 +349,70 @@ export default function DraftComments({ draftId }: { draftId: string }) {
 					<span style={{ fontSize: 12, color: "var(--color-flexoki-tx-3, #575653)" }}>
 						{comments.length} {comments.length === 1 ? "comment" : "comments"}
 					</span>
+				</div>
+			)}
+
+			{/* Text selection tooltip (when NOT in placing mode) */}
+			{selectionPopup && nameConfirmed && !placing && !pendingPos && (
+				<div
+					ref={selectionPopupRef}
+					style={{
+						position: "fixed",
+						left: selectionPopup.x,
+						top: selectionPopup.y - 8,
+						transform: "translate(-50%, -100%)",
+						zIndex: 9997,
+						animation: "fadeIn 0.12s ease-out",
+					}}
+				>
+					<button
+						type="button"
+						onClick={() => startCommentFromSelection(selectionPopup)}
+						style={{
+							display: "flex",
+							alignItems: "center",
+							gap: 5,
+							background: "var(--color-flexoki-bg-2, #1c1b1a)",
+							border: "1px solid var(--color-flexoki-ui, #343331)",
+							borderRadius: 8,
+							padding: "5px 10px",
+							fontSize: 12,
+							color: "var(--color-flexoki-tx-2, #878580)",
+							cursor: "pointer",
+							boxShadow: "0 4px 16px rgba(0,0,0,0.3)",
+							fontFamily: "inherit",
+							whiteSpace: "nowrap",
+							transition: "all 0.15s",
+						}}
+						onMouseEnter={(e) => {
+							(e.currentTarget as HTMLElement).style.borderColor = color;
+							(e.currentTarget as HTMLElement).style.color = "var(--color-flexoki-tx, #cecdc3)";
+						}}
+						onMouseLeave={(e) => {
+							(e.currentTarget as HTMLElement).style.borderColor = "var(--color-flexoki-ui, #343331)";
+							(e.currentTarget as HTMLElement).style.color = "var(--color-flexoki-tx-2, #878580)";
+						}}
+					>
+						<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+							<path d="M2 4h12M2 8h8M2 12h10" />
+						</svg>
+						Comment on selection
+					</button>
+					<div
+						style={{
+							width: 8,
+							height: 8,
+							background: "var(--color-flexoki-bg-2, #1c1b1a)",
+							border: "1px solid var(--color-flexoki-ui, #343331)",
+							borderTop: "none",
+							borderLeft: "none",
+							transform: "rotate(45deg)",
+							position: "absolute",
+							bottom: -5,
+							left: "50%",
+							marginLeft: -4,
+						}}
+					/>
 				</div>
 			)}
 
@@ -371,6 +510,21 @@ export default function DraftComments({ draftId }: { draftId: string }) {
 									{timeAgo(c.timestamp)}
 								</span>
 							</div>
+							{c.quote && (
+								<div
+									style={{
+										fontSize: 12,
+										lineHeight: 1.4,
+										color: "var(--color-flexoki-tx-3, #575653)",
+										borderLeft: `2px solid ${getColor(c.name)}40`,
+										paddingLeft: 8,
+										marginBottom: 6,
+										fontStyle: "italic",
+									}}
+								>
+									"{c.quote.length > 80 ? `${c.quote.slice(0, 80)}...` : c.quote}"
+								</div>
+							)}
 							<p style={{ fontSize: 13, lineHeight: 1.5, color: "var(--color-flexoki-tx-2, #878580)", margin: 0 }}>
 								{c.text}
 							</p>
@@ -423,6 +577,21 @@ export default function DraftComments({ draftId }: { draftId: string }) {
 							animation: "fadeIn 0.15s ease-out",
 						}}
 					>
+						{pendingQuote && (
+							<div
+								style={{
+									fontSize: 11,
+									lineHeight: 1.4,
+									color: "var(--color-flexoki-tx-3, #575653)",
+									borderLeft: `2px solid ${color}40`,
+									paddingLeft: 8,
+									marginBottom: 8,
+									fontStyle: "italic",
+								}}
+							>
+								"{pendingQuote.length > 80 ? `${pendingQuote.slice(0, 80)}...` : pendingQuote}"
+							</div>
+						)}
 						<input
 							ref={inputRef}
 							type="text"
@@ -434,6 +603,7 @@ export default function DraftComments({ draftId }: { draftId: string }) {
 								if (e.key === "Escape") {
 									setPendingPos(null);
 									setPendingText("");
+									setPendingQuote("");
 								}
 							}}
 							style={{
@@ -450,7 +620,7 @@ export default function DraftComments({ draftId }: { draftId: string }) {
 						<div style={{ display: "flex", justifyContent: "flex-end", gap: 4, marginTop: 8 }}>
 							<button
 								type="button"
-								onClick={() => { setPendingPos(null); setPendingText(""); }}
+								onClick={() => { setPendingPos(null); setPendingText(""); setPendingQuote(""); }}
 								style={{
 									background: "transparent",
 									border: "none",

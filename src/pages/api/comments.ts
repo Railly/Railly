@@ -7,6 +7,7 @@ interface Comment {
 	id: string;
 	name: string;
 	text: string;
+	quote?: string;
 	x: number;
 	y: number;
 	timestamp: number;
@@ -42,7 +43,7 @@ export const GET: APIRoute = async ({ url }) => {
 
 export const POST: APIRoute = async ({ request }) => {
 	const body = await request.json();
-	const { draftId, name, text, x, y } = body;
+	const { draftId, name, text, quote, x, y } = body;
 
 	if (!draftId || !name || !text || x == null || y == null) {
 		return json({ error: "Missing fields" }, 400);
@@ -60,6 +61,7 @@ export const POST: APIRoute = async ({ request }) => {
 		id: crypto.randomUUID().slice(0, 8),
 		name,
 		text,
+		...(quote ? { quote } : {}),
 		x,
 		y,
 		timestamp: Date.now(),
