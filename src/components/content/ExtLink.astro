@@ -1,0 +1,37 @@
+---
+interface Props {
+  href: string;
+}
+
+const { href } = Astro.props;
+---
+
+<a href={href} target="_blank" rel="noopener noreferrer" class="ext-link">
+  <slot />
+  <svg class="ext-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M6.5 3.5h-3a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-3" />
+    <path d="M9.5 2.5h4v4" />
+    <path d="M13.5 2.5l-6 6" />
+  </svg>
+</a>
+
+<style>
+  .ext-link {
+    text-decoration-color: var(--color-flexoki-tx-3);
+    text-underline-offset: 3px;
+  }
+
+  .ext-icon {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    margin-left: 2px;
+    vertical-align: -1px;
+    opacity: 0.5;
+    transition: opacity 0.15s ease;
+  }
+
+  .ext-link:hover .ext-icon {
+    opacity: 1;
+  }
+</style>

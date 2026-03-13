@@ -1,0 +1,46 @@
+---
+interface Props {
+  tip: string;
+}
+
+const { tip } = Astro.props;
+---
+
+<span class="tooltip-wrapper" data-tip={tip}>
+  <slot />
+  <span class="tooltip-bubble" role="tooltip">{tip}</span>
+</span>
+
+<style>
+  .tooltip-wrapper {
+    position: relative;
+    text-decoration: underline;
+    text-decoration-style: dotted;
+    text-underline-offset: 3px;
+    text-decoration-color: var(--color-flexoki-tx-3);
+    cursor: help;
+  }
+
+  .tooltip-bubble {
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%) translateY(4px);
+    padding: 6px 12px;
+    border-radius: 6px;
+    background: var(--color-flexoki-bg-2);
+    color: var(--color-flexoki-tx);
+    border: 1px solid var(--color-flexoki-ui);
+    font-size: 13px;
+    line-height: 1.4;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+
+  .tooltip-wrapper:hover .tooltip-bubble {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+</style>

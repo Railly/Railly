@@ -1,0 +1,35 @@
+---
+import { render } from "@crafter/mermaid";
+import type { CrafterMermaidOptions } from "@crafter/mermaid";
+
+interface Props {
+  chart: string;
+  class?: string;
+  options?: CrafterMermaidOptions;
+}
+
+const { chart, class: className, options = {} } = Astro.props;
+
+const defaultOptions: CrafterMermaidOptions = {
+  theme: { bg: "transparent", fg: "currentColor" },
+  transparent: true,
+  ...options,
+};
+
+const svg = render(chart.trim(), defaultOptions);
+---
+<div class:list={["mermaid-diagram my-8 overflow-x-auto", className]} set:html={svg} />
+
+<style>
+  .mermaid-diagram {
+    -webkit-overflow-scrolling: touch;
+  }
+  .mermaid-diagram :global(svg) {
+    max-width: 100%;
+    height: auto;
+    margin: 0 auto;
+  }
+  .mermaid-diagram :global(svg text) {
+    user-select: none;
+  }
+</style>
