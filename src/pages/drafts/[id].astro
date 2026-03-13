@@ -1,7 +1,6 @@
 ---
 import { getCollection } from "astro:content";
-import ClapButton from "../../components/blog/ClapButton";
-import ViewCounter from "../../components/blog/ViewCounter";
+import DraftComments from "../../components/drafts/DraftComments";
 import Link from "../../components/content/Link.astro";
 import Quote from "../../components/content/Quote.astro";
 import TableOfContents from "../../components/content/TableOfContents.astro";
@@ -45,7 +44,8 @@ const { words, minutes, text: readingTimeText } = getReadingTime(post.body || ""
 >
 	<meta slot="head" name="robots" content="noindex, nofollow" />
 
-	<div class="w-full mx-auto py-12 sm:py-24">
+	<DraftComments draftId={id!} client:only="react" />
+	<div class="w-full mx-auto py-12 sm:py-24" style="position: relative;">
 		<div
 			class="max-w-[83rem] mx-auto px-4 sm:px-6 lg:grid lg:grid-cols-[1fr_minmax(0,_2.5fr)_1fr] lg:gap-8"
 		>
