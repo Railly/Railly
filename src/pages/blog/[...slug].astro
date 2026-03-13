@@ -277,6 +277,15 @@ const { words, minutes, text: readingTimeText } = getReadingTime(post.body || ""
             scroll-margin-top: 2.5rem;
         }
 
+        .blog-content {
+            counter-reset: sidenote;
+            overflow: visible;
+        }
+
+        .blog-content > div {
+            overflow: visible;
+        }
+
         .blog-content :global(h2),
         .blog-content :global(h3) {
             scroll-margin-top: 2.5rem;
