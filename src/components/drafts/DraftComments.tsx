@@ -87,14 +87,8 @@ export default function DraftComments({ draftId }: { draftId: string }) {
 		if ((e.target as HTMLElement).closest("[data-comment-pin]")) return;
 		if ((e.target as HTMLElement).closest("[data-comment-input]")) return;
 
-		const rect = overlayRef.current?.getBoundingClientRect();
-		if (!rect) return;
-
-		const scrollX = window.scrollX;
-		const scrollY = window.scrollY;
-
-		const xPercent = ((e.clientX - rect.left + scrollX) / document.documentElement.scrollWidth) * 100;
-		const yAbs = e.clientY + scrollY;
+		const xPercent = (e.clientX / document.documentElement.clientWidth) * 100;
+		const yAbs = e.clientY + window.scrollY;
 
 		setPendingPos({ x: xPercent, y: yAbs });
 		setPendingText("");
@@ -289,11 +283,10 @@ export default function DraftComments({ draftId }: { draftId: string }) {
 					ref={overlayRef}
 					onClick={handleOverlayClick}
 					style={{
-						position: "absolute",
+						position: "fixed",
 						inset: 0,
 						zIndex: 9990,
 						cursor: `url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4 2L16 9L10 11L8 18L4 2Z' fill='${encodeURIComponent(color)}' stroke='white' stroke-width='1'/%3E%3C/svg%3E") 4 2, crosshair`,
-						minHeight: "100vh",
 					}}
 				/>
 			)}
