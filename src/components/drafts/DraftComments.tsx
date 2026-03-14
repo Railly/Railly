@@ -97,7 +97,7 @@ function highlightTextInPage(text: string, active: boolean) {
 	}
 	if (!text || !active) return;
 
-	const snippet = text.slice(0, 60);
+	const snippet = text;
 	const sel = window.getSelection();
 	if (!sel) return;
 	sel.removeAllRanges();
@@ -280,7 +280,7 @@ export default function DraftComments({ draftId }: { draftId: string }) {
 		const xPercent = (selInfo.x / document.documentElement.clientWidth) * 100;
 		const yAbs = selInfo.y + window.scrollY;
 		setPendingPos({ x: xPercent, y: yAbs });
-		setPendingQuote(selInfo.text.slice(0, 120));
+		setPendingQuote(selInfo.text);
 		setPendingText("");
 		setSelectionPopup(null);
 		setActiveComment(null);
