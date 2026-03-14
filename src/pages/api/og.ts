@@ -1,8 +1,6 @@
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
-import type { Font } from "@takumi-rs/core";
-import { ImageResponse } from "@takumi-rs/image-response/wasm";
-import module from "@takumi-rs/wasm/next";
+import { ImageResponse } from "@vercel/og";
 import type { APIRoute } from "astro";
 
 export const prerender = false;
@@ -46,10 +44,10 @@ export const GET: APIRoute = async ({ url }) => {
 	const logoBase64 = await logoPromise;
 	const logoSrc = `data:image/png;base64,${logoBase64}`;
 
-	const fonts: Font[] = [
-		{ name: "IBM Plex Sans", data: plexBold, weight: 700 },
-		{ name: "IBM Plex Sans", data: plexRegular, weight: 400 },
-		{ name: "IBM Plex Mono", data: plexMono, weight: 400 },
+	const fonts = [
+		{ name: "IBM Plex Sans", data: plexBold, weight: 700 as const, style: "normal" as const },
+		{ name: "IBM Plex Sans", data: plexRegular, weight: 400 as const, style: "normal" as const },
+		{ name: "IBM Plex Mono", data: plexMono, weight: 400 as const, style: "normal" as const },
 	];
 
 	const bg = isDark ? "#111111" : "#FDFDFC";
@@ -69,7 +67,8 @@ const truncatedDesc =
 				style: {
 					fontFamily: "IBM Plex Sans",
 					backgroundColor: bg,
-					backgroundImage: "noise-v1()",
+					backgroundImage: `radial-gradient(circle at 25px 25px, ${isDark ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.03)"} 1px, transparent 0)`,
+				backgroundSize: "50px 50px",
 				},
 				children: [
 					{
@@ -205,11 +204,9 @@ const truncatedDesc =
 			},
 		},
 		{
-			module,
 			width: 1200,
 			height: 630,
 			fonts,
-			format: "webp",
 		},
 	);
 };
