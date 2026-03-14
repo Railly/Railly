@@ -4,7 +4,7 @@
 	}
 
 	.astro-code {
-		border: 1px solid var(--color-flexoki-ui) !important;
+		border: 1px solid var(--color-ui) !important;
 		font-size: 13px;
 		position: relative !important;
 		isolation: isolate !important;
@@ -46,7 +46,7 @@
 		margin-right: 1.5rem !important;
 		display: inline-block !important;
 		text-align: right !important;
-		color: var(--color-flexoki-tx-2) !important;
+		color: var(--color-foreground-2) !important;
 		opacity: 0.5 !important;
 	}
 

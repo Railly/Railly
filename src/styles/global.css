@@ -16,93 +16,93 @@
 
     --color-primary: #525252;
 
-    --color-flexoki-bg: #FDFDFC;
-    --color-flexoki-bg-2: #f5f5f4;
-    --color-flexoki-ui: #e5e5e5;
-    --color-flexoki-ui-2: #d4d4d4;
-    --color-flexoki-ui-3: #c4c4c4;
-    --color-flexoki-tx: #111111;
-    --color-flexoki-tx-2: #525252;
-    --color-flexoki-tx-3: #a3a3a3;
+    --color-background: #FDFDFC;
+    --color-background-2: #f5f5f4;
+    --color-ui: #e5e5e5;
+    --color-ui-2: #d4d4d4;
+    --color-ui-3: #c4c4c4;
+    --color-foreground: #111111;
+    --color-foreground-2: #525252;
+    --color-foreground-3: #a3a3a3;
 
-    --color-flexoki-red: #525252;
-    --color-flexoki-orange: #525252;
-    --color-flexoki-yellow: #525252;
-    --color-flexoki-green: #525252;
-    --color-flexoki-cyan: #525252;
-    --color-flexoki-blue: #525252;
-    --color-flexoki-purple: #525252;
-    --color-flexoki-magenta: #525252;
-    --color-flexoki-amber: #525252;
-    --color-flexoki-lime: #525252;
-    --color-flexoki-emerald: #525252;
-    --color-flexoki-teal: #525252;
-    --color-flexoki-sky: #525252;
-    --color-flexoki-indigo: #525252;
-    --color-flexoki-violet: #525252;
-    --color-flexoki-fuchsia: #525252;
-    --color-flexoki-pink: #525252;
-    --color-flexoki-rose: #525252;
-    --color-flexoki-slate: #525252;
-    --color-flexoki-gray: #525252;
-    --color-flexoki-zinc: #525252;
-    --color-flexoki-neutral: #525252;
-    --color-flexoki-stone: #525252;
+    --color-red: #525252;
+    --color-orange: #525252;
+    --color-yellow: #525252;
+    --color-green: #525252;
+    --color-cyan: #525252;
+    --color-blue: #525252;
+    --color-purple: #525252;
+    --color-magenta: #525252;
+    --color-amber: #525252;
+    --color-lime: #525252;
+    --color-emerald: #525252;
+    --color-teal: #525252;
+    --color-sky: #525252;
+    --color-indigo: #525252;
+    --color-violet: #525252;
+    --color-fuchsia: #525252;
+    --color-pink: #525252;
+    --color-rose: #525252;
+    --color-slate: #525252;
+    --color-gray: #525252;
+    --color-zinc: #525252;
+    --color-neutral: #525252;
+    --color-stone: #525252;
 }
 
 @media (prefers-color-scheme: dark) {
     :root {
         --color-primary: #a3a3a3;
 
-        --color-flexoki-bg: #111111;
-        --color-flexoki-bg-2: #1a1a1a;
-        --color-flexoki-ui: #262626;
-        --color-flexoki-ui-2: #2e2e2e;
-        --color-flexoki-ui-3: #3a3a3a;
-        --color-flexoki-tx: #fafafa;
-        --color-flexoki-tx-2: #a3a3a3;
-        --color-flexoki-tx-3: #525252;
+        --color-background: #111111;
+        --color-background-2: #1a1a1a;
+        --color-ui: #262626;
+        --color-ui-2: #2e2e2e;
+        --color-ui-3: #3a3a3a;
+        --color-foreground: #fafafa;
+        --color-foreground-2: #a3a3a3;
+        --color-foreground-3: #525252;
 
-        --color-flexoki-red: #a3a3a3;
-        --color-flexoki-orange: #a3a3a3;
-        --color-flexoki-yellow: #a3a3a3;
-        --color-flexoki-green: #a3a3a3;
-        --color-flexoki-cyan: #a3a3a3;
-        --color-flexoki-blue: #a3a3a3;
-        --color-flexoki-purple: #a3a3a3;
-        --color-flexoki-magenta: #a3a3a3;
-        --color-flexoki-amber: #a3a3a3;
-        --color-flexoki-lime: #a3a3a3;
-        --color-flexoki-emerald: #a3a3a3;
-        --color-flexoki-teal: #a3a3a3;
-        --color-flexoki-sky: #a3a3a3;
-        --color-flexoki-indigo: #a3a3a3;
-        --color-flexoki-violet: #a3a3a3;
-        --color-flexoki-fuchsia: #a3a3a3;
-        --color-flexoki-pink: #a3a3a3;
-        --color-flexoki-rose: #a3a3a3;
-        --color-flexoki-slate: #a3a3a3;
-        --color-flexoki-gray: #a3a3a3;
-        --color-flexoki-zinc: #a3a3a3;
-        --color-flexoki-neutral: #a3a3a3;
-        --color-flexoki-stone: #a3a3a3;
+        --color-red: #a3a3a3;
+        --color-orange: #a3a3a3;
+        --color-yellow: #a3a3a3;
+        --color-green: #a3a3a3;
+        --color-cyan: #a3a3a3;
+        --color-blue: #a3a3a3;
+        --color-purple: #a3a3a3;
+        --color-magenta: #a3a3a3;
+        --color-amber: #a3a3a3;
+        --color-lime: #a3a3a3;
+        --color-emerald: #a3a3a3;
+        --color-teal: #a3a3a3;
+        --color-sky: #a3a3a3;
+        --color-indigo: #a3a3a3;
+        --color-violet: #a3a3a3;
+        --color-fuchsia: #a3a3a3;
+        --color-pink: #a3a3a3;
+        --color-rose: #a3a3a3;
+        --color-slate: #a3a3a3;
+        --color-gray: #a3a3a3;
+        --color-zinc: #a3a3a3;
+        --color-neutral: #a3a3a3;
+        --color-stone: #a3a3a3;
     }
 }
 
 ::selection {
-    background-color: var(--color-flexoki-ui-2);
-    color: var(--color-flexoki-tx);
+    background-color: var(--color-ui-2);
+    color: var(--color-foreground);
 }
 
 .underline {
     text-decoration: underline;
     text-underline-offset: 4px;
     text-decoration-thickness: 1px;
-    text-decoration-color: var(--color-flexoki-tx-3);
+    text-decoration-color: var(--color-foreground-3);
     transition: text-decoration-color 0.2s ease-in-out, color 0.2s ease-in-out, background-color 0.2s ease-in-out;
 
     &:hover {
-        color: var(--color-flexoki-bg);
-        background-color: var(--color-flexoki-tx);
+        color: var(--color-background);
+        background-color: var(--color-foreground);
     }
 }
