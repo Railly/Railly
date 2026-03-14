@@ -87,7 +87,7 @@ function ArrowDown({ size = 14 }: { size?: number }) {
 	);
 }
 
-function highlightQuotes(quotes: { text: string; active: boolean }[]) {
+function highlightQuotes(quotes: { text: string; active: boolean; commentId?: string }[]) {
 	for (const el of document.querySelectorAll("mark[data-dc-highlight]")) {
 		const parent = el.parentNode;
 		if (parent) {
@@ -113,12 +113,14 @@ function highlightQuotes(quotes: { text: string; active: boolean }[]) {
 
 		const mark = document.createElement("mark");
 		mark.setAttribute("data-dc-highlight", "");
+		if (q.commentId) mark.setAttribute("data-comment-id", q.commentId);
 		mark.style.borderRadius = "2px";
 		mark.style.padding = "1px 0";
 		mark.style.color = "inherit";
 		mark.style.textDecoration = "underline";
 		mark.style.textUnderlineOffset = "3px";
 		mark.style.textDecorationThickness = "2px";
+		mark.style.cursor = "pointer";
 
 		if (q.active) {
 			mark.style.background = "oklch(0.85 0.15 85 / 0.25)";
@@ -189,10 +191,34 @@ export default function DraftComments({ draftId }: { draftId: string }) {
 	}, [pendingPos]);
 
 	useEffect(() => {
-		const quotes: { text: string; active: boolean }[] = [];
+		const handleClick = (e: MouseEvent) => {
+			const target = e.target as HTMLElement;
+			const highlightMark = target.closest("mark[data-comment-id]");
+			if (highlightMark) {
+				const cid = highlightMark.getAttribute("data-comment-id");
+				if (cid) {
+					setActiveComment(cid);
+					const nc = stateRef.current.navComments;
+					setFocusedIdx(nc.findIndex((c) => c.id === cid));
+					return;
+				}
+			}
+			if (target.closest("[data-comment-pin]") || target.closest("[data-comment-input]")) return;
+			if (target.closest("button[style*='bottom: 24']")) return;
+			if (stateRef.current.focusedIdx !== -1) {
+				setActiveComment(null);
+				setFocusedIdx(-1);
+			}
+		};
+		document.addEventListener("click", handleClick);
+		return () => document.removeEventListener("click", handleClick);
+	}, []);
+
+	useEffect(() => {
+		const quotes: { text: string; active: boolean; commentId?: string }[] = [];
 		for (const c of comments) {
 			if (c.quote && !c.resolved) {
-				quotes.push({ text: c.quote, active: c.id === activeComment });
+				quotes.push({ text: c.quote, active: c.id === activeComment, commentId: c.id });
 			}
 		}
 		if (pendingQuote) {
