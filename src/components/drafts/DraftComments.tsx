@@ -114,10 +114,14 @@ function highlightTextInPage(text: string, active: boolean) {
 
 	const mark = document.createElement("mark");
 	mark.setAttribute("data-dc-highlight", "");
-	mark.style.background = "oklch(0.85 0.15 85 / 0.35)";
+	mark.style.background = "oklch(0.85 0.15 85 / 0.25)";
 	mark.style.borderRadius = "2px";
 	mark.style.padding = "1px 0";
 	mark.style.color = "inherit";
+	mark.style.textDecoration = "underline";
+	mark.style.textDecorationColor = "oklch(0.75 0.15 85 / 0.6)";
+	mark.style.textUnderlineOffset = "3px";
+	mark.style.textDecorationThickness = "2px";
 
 	try {
 		range.surroundContents(mark);
@@ -326,6 +330,7 @@ export default function DraftComments({ draftId }: { draftId: string }) {
 			setPendingPos(null);
 			setPendingText("");
 			setPendingQuote("");
+			if (data.comment.quote) setActiveComment(data.comment.id);
 		}
 	};
 
