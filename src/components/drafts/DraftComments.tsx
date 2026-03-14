@@ -140,8 +140,8 @@ export default function DraftComments({ draftId }: { draftId: string }) {
 	const replyInputRef = useRef<HTMLInputElement>(null);
 	const selectionPopupRef = useRef<HTMLDivElement>(null);
 
-	const unresolvedComments = comments.filter((c) => !c.resolved);
-	const resolvedComments = comments.filter((c) => c.resolved);
+	const unresolvedComments = comments.filter((c) => !c.resolved).sort((a, b) => a.y - b.y);
+	const resolvedComments = comments.filter((c) => c.resolved).sort((a, b) => a.y - b.y);
 	const navComments = [...unresolvedComments, ...resolvedComments];
 
 	useEffect(() => {
@@ -214,16 +214,16 @@ export default function DraftComments({ draftId }: { draftId: string }) {
 
 			if (e.key === "ArrowDown" && nc.length > 0) {
 				e.preventDefault();
-				const prev = fi > 0 ? fi - 1 : nc.length - 1;
-				setFocusedIdx(prev);
-				setActiveComment(nc[prev].id);
-				window.scrollTo({ top: nc[prev].y - window.innerHeight / 3, behavior: "smooth" });
-			} else if (e.key === "ArrowUp" && nc.length > 0) {
-				e.preventDefault();
 				const next = fi < nc.length - 1 ? fi + 1 : 0;
 				setFocusedIdx(next);
 				setActiveComment(nc[next].id);
 				window.scrollTo({ top: nc[next].y - window.innerHeight / 3, behavior: "smooth" });
+			} else if (e.key === "ArrowUp" && nc.length > 0) {
+				e.preventDefault();
+				const prev = fi > 0 ? fi - 1 : nc.length - 1;
+				setFocusedIdx(prev);
+				setActiveComment(nc[prev].id);
+				window.scrollTo({ top: nc[prev].y - window.innerHeight / 3, behavior: "smooth" });
 			} else if (e.key === "Escape") {
 				setActiveComment(null);
 				setFocusedIdx(-1);
@@ -436,7 +436,7 @@ export default function DraftComments({ draftId }: { draftId: string }) {
 						<>
 							<button
 								type="button"
-								onClick={() => navigateComments("down")}
+								onClick={() => navigateComments("up")}
 								title="Previous comment (Arrow Up)"
 								style={{ display: "flex", alignItems: "center", justifyContent: "center", background: "transparent", border: "none", color: "var(--color-flexoki-tx-3, #525252)", cursor: "pointer", padding: 2, borderRadius: 4, transition: "color 0.15s" }}
 								onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "var(--color-flexoki-tx, #fafafa)"; }}
@@ -446,7 +446,7 @@ export default function DraftComments({ draftId }: { draftId: string }) {
 							</button>
 							<button
 								type="button"
-								onClick={() => navigateComments("up")}
+								onClick={() => navigateComments("down")}
 								title="Next comment (Arrow Down)"
 								style={{ display: "flex", alignItems: "center", justifyContent: "center", background: "transparent", border: "none", color: "var(--color-flexoki-tx-3, #525252)", cursor: "pointer", padding: 2, borderRadius: 4, transition: "color 0.15s" }}
 								onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "var(--color-flexoki-tx, #fafafa)"; }}
