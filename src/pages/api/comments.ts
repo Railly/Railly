@@ -3,6 +3,13 @@ import type { APIRoute } from "astro";
 
 export const prerender = false;
 
+interface Reply {
+	id: string;
+	name: string;
+	text: string;
+	timestamp: number;
+}
+
 interface Comment {
 	id: string;
 	name: string;
@@ -12,6 +19,7 @@ interface Comment {
 	y: number;
 	timestamp: number;
 	resolved: boolean;
+	replies?: Reply[];
 }
 
 function getKv() {
@@ -72,4 +80,61 @@ export const POST: APIRoute = async ({ request }) => {
 	await kv.set(key, comments);
 
 	return json({ ok: true, comment });
+};
+
+export const PATCH: APIRoute = async ({ request }) => {
+	const body = await request.json();
+	const { draftId, commentId, action, name, text } = body;
+
+	if (!draftId || !commentId || !action) {
+		return json({ error: "Missing fields" }, 400);
+	}
+
+	if (import.meta.env.DEV) {
+		return json({ ok: true });
+	}
+
+	const kv = getKv();
+	const key = `draft-comments:${draftId}`;
+	const comments = await kv.get<Comment[]>(key) ?? [];
+	const idx = comments.findIndex((c) => c.id === commentId);
+	if (idx === -1) return json({ error: "Not found" }, 404);
+
+	if (action === "resolve") {
+		comments[idx].resolved = !comments[idx].resolved;
+	} else if (action === "reply" && name && text) {
+		if (!comments[idx].replies) comments[idx].replies = [];
+		comments[idx].replies!.push({
+			id: crypto.randomUUID().slice(0, 8),
+			name,
+			text,
+			timestamp: Date.now(),
+		});
+	}
+
+	await kv.set(key, comments);
+	return json({ ok: true, comment: comments[idx] });
+};
+
+export const DELETE: APIRoute = async ({ request }) => {
+	const body = await request.json();
+	const { draftId, commentId, name } = body;
+
+	if (!draftId || !commentId || !name) {
+		return json({ error: "Missing fields" }, 400);
+	}
+
+	if (import.meta.env.DEV) {
+		return json({ ok: true });
+	}
+
+	const kv = getKv();
+	const key = `draft-comments:${draftId}`;
+	const comments = await kv.get<Comment[]>(key) ?? [];
+	const idx = comments.findIndex((c) => c.id === commentId && c.name === name);
+	if (idx === -1) return json({ error: "Not found or not yours" }, 404);
+
+	comments.splice(idx, 1);
+	await kv.set(key, comments);
+	return json({ ok: true });
 };
