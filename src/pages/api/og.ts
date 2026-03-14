@@ -1,7 +1,8 @@
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import type { Font } from "@takumi-rs/core";
-import { ImageResponse } from "@takumi-rs/image-response";
+import { ImageResponse } from "@takumi-rs/image-response/wasm";
+import module from "@takumi-rs/wasm/next";
 import type { APIRoute } from "astro";
 
 export const prerender = false;
@@ -204,6 +205,7 @@ const truncatedDesc =
 			},
 		},
 		{
+			module,
 			width: 1200,
 			height: 630,
 			fonts,
