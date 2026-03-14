@@ -16,6 +16,7 @@
         "@midudev/tailwind-animations": "^0.1.0",
         "@tailwindcss/typography": "^0.5.19",
         "@tailwindcss/vite": "^4.1.17",
+        "@takumi-rs/core-linux-x64-gnu": "0.72.0",
         "@takumi-rs/image-response": "^0.72.0",
         "@types/react": "^19.2.7",
         "@types/react-dom": "^19.2.3",
