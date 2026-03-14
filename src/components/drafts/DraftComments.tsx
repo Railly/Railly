@@ -122,7 +122,10 @@ function highlightQuotes(quotes: { text: string; active: boolean; commentId?: st
 		mark.style.textDecorationThickness = "2px";
 		mark.style.cursor = "pointer";
 
+		mark.style.transition = "background 0.15s ease, text-decoration-color 0.15s ease";
+
 		if (q.active) {
+			mark.setAttribute("data-dc-active", "");
 			mark.style.background = "oklch(0.85 0.15 85 / 0.25)";
 			mark.style.textDecorationColor = "oklch(0.75 0.15 85 / 0.6)";
 		} else {
@@ -719,6 +722,14 @@ export default function DraftComments({ draftId }: { draftId: string }) {
 				@keyframes dc-fadeIn {
 					from { opacity: 0; transform: scale(0.95); }
 					to { opacity: 1; transform: scale(1); }
+				}
+				mark[data-dc-highlight]:not([data-dc-active]):hover {
+					background: oklch(0.85 0.15 85 / 0.18) !important;
+					text-decoration-color: oklch(0.75 0.15 85 / 0.45) !important;
+				}
+				mark[data-dc-highlight][data-dc-active]:hover {
+					background: oklch(0.85 0.15 85 / 0.32) !important;
+					text-decoration-color: oklch(0.75 0.15 85 / 0.7) !important;
 				}
 				::selection {
 					background: ${HIGHLIGHT_COLOR};
