@@ -8,8 +8,8 @@ import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "astro/config";
 import rehypeKatex from "rehype-katex";
 import remarkMath from "remark-math";
-import vesperDark from "./public/themes/vesper-flexoki.json";
-import vesperLight from "./public/themes/vesper-flexoki-light.json";
+import vesperDark from "./public/themes/vesper-dark.json";
+import vesperLight from "./public/themes/vesper-light.json";
 
 // https://astro.build/config
 export default defineConfig({

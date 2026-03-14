@@ -1,7 +1,7 @@
 {
-	"name": "vesper-flexoki-light",
+	"name": "vesper-light",
 	"type": "light",
-	"displayName": "Vesper Flexoki Light",
+	"displayName": "Vesper Light",
 	"colors": {
 		"editor.background": "#FAFAFA",
 		"editor.foreground": "#403E3C",

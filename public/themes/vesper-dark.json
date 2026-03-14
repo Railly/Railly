@@ -1,7 +1,7 @@
 {
-	"name": "vesper-flexoki",
+	"name": "vesper-dark",
 	"type": "dark",
-	"displayName": "Vesper Flexoki",
+	"displayName": "Vesper Dark",
 	"colors": {
 		"editor.background": "#101010",
 		"editor.foreground": "#b8b5ad",
