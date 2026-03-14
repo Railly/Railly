@@ -29,10 +29,10 @@
 
   <style>
     .t0-background {
-    fill: var(--color-flexoki-tx);
+    fill: var(--color-foreground);
     }
     .t0-foreground {
-    fill: var(--color-flexoki-bg);
+    fill: var(--color-background);
     }
 </style>
 </svg>

@@ -7,10 +7,10 @@
   </g>
   <style>
     .h0-background {
-      fill: var(--color-flexoki-tx);
+      fill: var(--color-foreground);
     }
     .h0-foreground {
-      fill: var(--color-flexoki-bg);
+      fill: var(--color-background);
     }
   </style>
 </svg>
