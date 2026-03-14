@@ -66,7 +66,10 @@ function getSelectionInfo(): SelectionPopup | null {
 	};
 }
 
-const CURSOR_SVG = `url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5 3C5 2.44772 5.44772 2 6 2C6.55228 2 7 2.44772 7 3L7 11.5858L9.29289 9.29289C9.68342 8.90237 10.3166 8.90237 10.7071 9.29289C11.0976 9.68342 11.0976 10.3166 10.7071 10.7071L6.70711 14.7071C6.31658 15.0976 5.68342 15.0976 5.29289 14.7071L1.29289 10.7071C0.902369 10.3166 0.902369 9.68342 1.29289 9.29289C1.68342 8.90237 2.31658 8.90237 2.70711 9.29289L5 11.5858L5 3Z' fill='white' stroke='%23111' stroke-width='0.5'/%3E%3Cpath d='M13 8C13 7.44772 13.4477 7 14 7H20C20.5523 7 21 7.44772 21 8C21 8.55228 20.5523 9 20 9H14C13.4477 9 13 8.55228 13 8Z' fill='white' stroke='%23111' stroke-width='0.5'/%3E%3Cpath d='M13 12C13 11.4477 13.4477 11 14 11H20C20.5523 11 21 11.4477 21 12C21 12.5523 20.5523 13 20 13H14C13.4477 13 13 12.5523 13 12Z' fill='white' stroke='%23111' stroke-width='0.5'/%3E%3Cpath d='M14 15C13.4477 15 13 15.4477 13 16C13 16.5523 13.4477 17 14 17H18C18.5523 17 19 16.5523 19 16C19 15.4477 18.5523 15 18 15H14Z' fill='white' stroke='%23111' stroke-width='0.5'/%3E%3C/svg%3E") 6 3, crosshair`;
+function makeCursor(fillColor: string) {
+	const encoded = encodeURIComponent(fillColor);
+	return `url("data:image/svg+xml,%3Csvg width='24' height='28' viewBox='0 0 24 28' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5.5 1L20.5 14H12L17 26L14 27L9 15.5L5.5 20V1Z' fill='${encoded}' stroke='white' stroke-width='1.5' stroke-linejoin='round'/%3E%3C/svg%3E") 5 1, crosshair`;
+}
 
 function ArrowUp({ size = 14 }: { size?: number }) {
 	return (
@@ -483,7 +486,7 @@ export default function DraftComments({ draftId }: { draftId: string }) {
 				<button
 					type="button"
 					onClick={handleOverlayClick}
-					style={{ position: "fixed", inset: 0, zIndex: 9990, cursor: CURSOR_SVG, background: "transparent", border: "none", padding: 0, margin: 0 }}
+					style={{ position: "fixed", inset: 0, zIndex: 9990, cursor: makeCursor(color), background: "transparent", border: "none", padding: 0, margin: 0 }}
 				/>
 			)}
 
