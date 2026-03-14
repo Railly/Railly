@@ -1,18 +1,19 @@
-## Railly Hugo ~ Hunter
+## Hunter
 
-### Design Engineer ~ Master's in AI ~ Open Source
+AI Software Engineer at [Clerk](https://clerk.com). Building developer tools from Lima, Peru.
 
-I work as a <i>software engineer</i> at [Clerk](https://clerk.com). <br />
-I also create open-source tools at [crafter-station](https:/crafter-station.com), pushing the boundaries of UI and developer experience.
+Founder of [Crafter Station](https://crafterstation.com) — building Peru's tech ecosystem through hackathons, open source, and community.
 
-### Projects
+### What I build
 
-- [elements](https://github.com/crafter-station/elements) ⊞ - full-stack shadcn/ui components - [trusted registry](https://github.com/shadcn-ui/ui/blob/fce5926265322f41e43a61c9f536d81d4e9abc90/apps/v4/public/r/registries.json#L24)
-- [text0](https://github.com/crafter-station/text0) ✍️ - absurdly smart (and personal) autocomplete - 🥇 Next.js Global Hackathon 25'
-- [tinte](https://github.com/Railly/tinte) 🖌️ - agent-native design system infrastructure (shadcn presets, VS Code, 19+ formats) - 🥉 Vercel + [Midu](https://midu.dev) Hackathon 24'
-- [one-hunter](https://github.com/Railly/one-hunter-vscode) 🎨 - stylish vscode theme inspired by vercel ▲ and one-dark-pro
+| Project | Description |
+|---------|-------------|
+| [tinte](https://tinte.dev) | Design system infrastructure — generate themes for VS Code, shadcn, 19+ formats `572★` |
+| [text0](https://github.com/crafter-station/text0) | Smart autocomplete — 1st place Next.js Global Hackathon '25 `447★` |
+| [elements](https://tryelements.dev) | Full-stack shadcn/ui components — [trusted registry](https://ui.shadcn.com/docs/registry) `403★` |
+| [shadcn-ui-customizer](https://github.com/Railly/shadcn-ui-customizer) | Theme editor for shadcn/ui `378★` |
+| [one-hunter](https://github.com/Railly/one-hunter-vscode) | VS Code theme inspired by Vercel and One Dark Pro `373★` |
 
 ### Links
 
-- [website](https://railly.dev) - railly.dev
-- [twitter / 𝕏](https://twitter.com/RaillyHugo) - @raillyhugo
+[railly.dev](https://railly.dev) · [twitter](https://twitter.com/RaillyHugo) · [linkedin](https://linkedin.com/in/raillyhugo)
