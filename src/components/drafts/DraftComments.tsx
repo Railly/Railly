@@ -173,9 +173,10 @@ export default function DraftComments({ draftId }: { draftId: string }) {
 
 	useEffect(() => {
 		const active = comments.find((c) => c.id === activeComment);
-		highlightTextInPage(active?.quote || "", !!activeComment);
+		const quoteToHighlight = active?.quote || pendingQuote;
+		highlightTextInPage(quoteToHighlight || "", !!(activeComment || pendingQuote));
 		return () => highlightTextInPage("", false);
-	}, [activeComment, comments]);
+	}, [activeComment, comments, pendingQuote]);
 
 	useEffect(() => {
 		if (replyingTo && replyInputRef.current) replyInputRef.current.focus();
@@ -619,13 +620,6 @@ export default function DraftComments({ draftId }: { draftId: string }) {
 						{name[0].toUpperCase()}
 					</div>
 					<div style={{ position: "absolute", top: 28, left: 0, background: "var(--color-flexoki-bg-2, #1a1a1a)", border: `1px solid ${color}`, borderRadius: 8, padding: 8, minWidth: 240, boxShadow: "0 8px 24px rgba(0,0,0,0.3)", animation: "dc-fadeIn 0.15s ease-out" }}>
-						{pendingQuote && (
-							<div style={{ padding: "4px 8px", marginBottom: 8, background: BADGE_BG_40, borderRadius: 4, borderLeft: `2px solid ${BADGE_BORDER}` }}>
-								<span style={{ fontSize: 11, lineHeight: "1.4", color: BADGE_TEXT, fontStyle: "italic" }}>
-									"{pendingQuote.length > 80 ? `${pendingQuote.slice(0, 80)}...` : pendingQuote}"
-								</span>
-							</div>
-						)}
 						<input
 							ref={inputRef}
 							type="text"
