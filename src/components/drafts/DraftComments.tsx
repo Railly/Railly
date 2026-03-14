@@ -87,7 +87,7 @@ function ArrowDown({ size = 14 }: { size?: number }) {
 	);
 }
 
-function highlightTextInPage(text: string, active: boolean) {
+function highlightQuotes(quotes: { text: string; active: boolean }[]) {
 	for (const el of document.querySelectorAll("mark[data-dc-highlight]")) {
 		const parent = el.parentNode;
 		if (parent) {
@@ -95,40 +95,46 @@ function highlightTextInPage(text: string, active: boolean) {
 			parent.normalize();
 		}
 	}
-	if (!text || !active) return;
+	if (quotes.length === 0) return;
 
-	const snippet = text;
 	const sel = window.getSelection();
 	if (!sel) return;
-	sel.removeAllRanges();
 
-	const found = (window as any).find(snippet, false, false, true, false, true, false);
-	if (!found) return;
-
-	const range = sel.getRangeAt(0);
-	const container = document.querySelector(".blog-content");
-	if (container && !container.contains(range.commonAncestorContainer)) {
+	for (const q of quotes) {
+		if (!q.text) continue;
 		sel.removeAllRanges();
-		return;
-	}
 
-	const mark = document.createElement("mark");
-	mark.setAttribute("data-dc-highlight", "");
-	mark.style.background = "oklch(0.85 0.15 85 / 0.25)";
-	mark.style.borderRadius = "2px";
-	mark.style.padding = "1px 0";
-	mark.style.color = "inherit";
-	mark.style.textDecoration = "underline";
-	mark.style.textDecorationColor = "oklch(0.75 0.15 85 / 0.6)";
-	mark.style.textUnderlineOffset = "3px";
-	mark.style.textDecorationThickness = "2px";
+		const found = (window as any).find(q.text, false, false, true, false, true, false);
+		if (!found) continue;
 
-	try {
-		range.surroundContents(mark);
-	} catch {
-		const fragment = range.extractContents();
-		mark.appendChild(fragment);
-		range.insertNode(mark);
+		const range = sel.getRangeAt(0);
+		const container = document.querySelector(".blog-content");
+		if (container && !container.contains(range.commonAncestorContainer)) continue;
+
+		const mark = document.createElement("mark");
+		mark.setAttribute("data-dc-highlight", "");
+		mark.style.borderRadius = "2px";
+		mark.style.padding = "1px 0";
+		mark.style.color = "inherit";
+		mark.style.textDecoration = "underline";
+		mark.style.textUnderlineOffset = "3px";
+		mark.style.textDecorationThickness = "2px";
+
+		if (q.active) {
+			mark.style.background = "oklch(0.85 0.15 85 / 0.25)";
+			mark.style.textDecorationColor = "oklch(0.75 0.15 85 / 0.6)";
+		} else {
+			mark.style.background = "oklch(0.85 0.15 85 / 0.1)";
+			mark.style.textDecorationColor = "oklch(0.75 0.15 85 / 0.25)";
+		}
+
+		try {
+			range.surroundContents(mark);
+		} catch {
+			const fragment = range.extractContents();
+			mark.appendChild(fragment);
+			range.insertNode(mark);
+		}
 	}
 	sel.removeAllRanges();
 }
@@ -183,10 +189,17 @@ export default function DraftComments({ draftId }: { draftId: string }) {
 	}, [pendingPos]);
 
 	useEffect(() => {
-		const active = comments.find((c) => c.id === activeComment);
-		const quoteToHighlight = active?.quote || pendingQuote;
-		highlightTextInPage(quoteToHighlight || "", !!(activeComment || pendingQuote));
-		return () => highlightTextInPage("", false);
+		const quotes: { text: string; active: boolean }[] = [];
+		for (const c of comments) {
+			if (c.quote && !c.resolved) {
+				quotes.push({ text: c.quote, active: c.id === activeComment });
+			}
+		}
+		if (pendingQuote) {
+			quotes.push({ text: pendingQuote, active: true });
+		}
+		highlightQuotes(quotes);
+		return () => highlightQuotes([]);
 	}, [activeComment, comments, pendingQuote]);
 
 	useEffect(() => {
