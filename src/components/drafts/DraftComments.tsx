@@ -97,28 +97,54 @@ function highlightTextInPage(text: string, active: boolean) {
 	}
 	if (!text || !active) return;
 
-	const walker = document.createTreeWalker(
-		document.querySelector(".blog-content") || document.body,
-		NodeFilter.SHOW_TEXT,
-	);
-	const snippet = text.slice(0, 60);
+	const container = document.querySelector(".blog-content") || document.body;
+	const snippet = text.slice(0, 80);
+	const fullText = container.textContent || "";
+	const matchIdx = fullText.indexOf(snippet);
+	if (matchIdx === -1) return;
+
+	const walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT);
+	let charCount = 0;
+	let startNode: Text | null = null;
+	let startOffset = 0;
+	let endNode: Text | null = null;
+	let endOffset = 0;
 	let node = walker.nextNode() as Text | null;
+
 	while (node) {
-		const idx = node.textContent?.indexOf(snippet) ?? -1;
-		if (idx !== -1) {
-			const range = document.createRange();
-			range.setStart(node, idx);
-			range.setEnd(node, idx + snippet.length);
-			const mark = document.createElement("mark");
-			mark.setAttribute("data-dc-highlight", "");
-			mark.style.background = "color-mix(in oklch, var(--color-flexoki-ui, #262626) 60%, transparent)";
-			mark.style.borderRadius = "2px";
-			mark.style.padding = "1px 0";
-			mark.style.color = "inherit";
-			range.surroundContents(mark);
+		const len = node.textContent?.length || 0;
+		if (!startNode && charCount + len > matchIdx) {
+			startNode = node;
+			startOffset = matchIdx - charCount;
+		}
+		if (startNode && charCount + len >= matchIdx + snippet.length) {
+			endNode = node;
+			endOffset = matchIdx + snippet.length - charCount;
 			break;
 		}
+		charCount += len;
 		node = walker.nextNode() as Text | null;
+	}
+
+	if (!startNode || !endNode) return;
+
+	const range = document.createRange();
+	range.setStart(startNode, startOffset);
+	range.setEnd(endNode, endOffset);
+
+	const mark = document.createElement("mark");
+	mark.setAttribute("data-dc-highlight", "");
+	mark.style.background = "color-mix(in oklch, var(--color-flexoki-ui, #262626) 60%, transparent)";
+	mark.style.borderRadius = "2px";
+	mark.style.padding = "1px 0";
+	mark.style.color = "inherit";
+
+	try {
+		range.surroundContents(mark);
+	} catch {
+		const fragment = range.extractContents();
+		mark.appendChild(fragment);
+		range.insertNode(mark);
 	}
 }
 
