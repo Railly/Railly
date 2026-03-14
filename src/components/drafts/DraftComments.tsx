@@ -225,6 +225,13 @@ export default function DraftComments({ draftId }: { draftId: string }) {
 				setFocusedIdx(prev);
 				setActiveComment(nc[prev].id);
 				window.scrollTo({ top: nc[prev].y - window.innerHeight / 3, behavior: "smooth" });
+			} else if (e.key === "c" || e.key === "C") {
+				e.preventDefault();
+				setPlacing(!pl);
+				setPendingPos(null);
+				setPendingQuote("");
+				setActiveComment(null);
+				setSelectionPopup(null);
 			} else if (e.key === "Escape") {
 				setActiveComment(null);
 				setFocusedIdx(-1);
