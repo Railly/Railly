@@ -68,7 +68,7 @@ function getSelectionInfo(): SelectionPopup | null {
 
 function makeCursor(fillColor: string) {
 	const encoded = encodeURIComponent(fillColor);
-	return `url("data:image/svg+xml,%3Csvg width='24' height='28' viewBox='0 0 24 28' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5.5 1L20.5 14H12L17 26L14 27L9 15.5L5.5 20V1Z' fill='${encoded}' stroke='white' stroke-width='1.5' stroke-linejoin='round'/%3E%3C/svg%3E") 5 1, crosshair`;
+	return `url("data:image/svg+xml,%3Csvg width='22' height='26' viewBox='0 0 396 434' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M49.7 29.8L346.2 199.7L202.3 244l-82.9 119.1L49.7 29.8Z' fill='${encoded}' stroke='white' stroke-width='20'/%3E%3C/svg%3E") 3 1, crosshair`;
 }
 
 function ArrowUp({ size = 14 }: { size?: number }) {
