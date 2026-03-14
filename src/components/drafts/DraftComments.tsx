@@ -97,40 +97,20 @@ function highlightTextInPage(text: string, active: boolean) {
 	}
 	if (!text || !active) return;
 
-	const container = document.querySelector(".blog-content") || document.body;
-	const snippet = text.slice(0, 80);
-	const fullText = container.textContent || "";
-	const matchIdx = fullText.indexOf(snippet);
-	if (matchIdx === -1) return;
+	const snippet = text.slice(0, 60);
+	const sel = window.getSelection();
+	if (!sel) return;
+	sel.removeAllRanges();
 
-	const walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT);
-	let charCount = 0;
-	let startNode: Text | null = null;
-	let startOffset = 0;
-	let endNode: Text | null = null;
-	let endOffset = 0;
-	let node = walker.nextNode() as Text | null;
+	const found = (window as any).find(snippet, false, false, true, false, true, false);
+	if (!found) return;
 
-	while (node) {
-		const len = node.textContent?.length || 0;
-		if (!startNode && charCount + len > matchIdx) {
-			startNode = node;
-			startOffset = matchIdx - charCount;
-		}
-		if (startNode && charCount + len >= matchIdx + snippet.length) {
-			endNode = node;
-			endOffset = matchIdx + snippet.length - charCount;
-			break;
-		}
-		charCount += len;
-		node = walker.nextNode() as Text | null;
+	const range = sel.getRangeAt(0);
+	const container = document.querySelector(".blog-content");
+	if (container && !container.contains(range.commonAncestorContainer)) {
+		sel.removeAllRanges();
+		return;
 	}
-
-	if (!startNode || !endNode) return;
-
-	const range = document.createRange();
-	range.setStart(startNode, startOffset);
-	range.setEnd(endNode, endOffset);
 
 	const mark = document.createElement("mark");
 	mark.setAttribute("data-dc-highlight", "");
@@ -146,6 +126,7 @@ function highlightTextInPage(text: string, active: boolean) {
 		mark.appendChild(fragment);
 		range.insertNode(mark);
 	}
+	sel.removeAllRanges();
 }
 
 export default function DraftComments({ draftId }: { draftId: string }) {
