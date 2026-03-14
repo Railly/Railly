@@ -18,7 +18,7 @@ export default function TilShareLink({ slug }: TilShareLinkProps) {
 		<button
 			onClick={copy}
 			style={{ fontSize: "13px" }}
-			className="inline-flex items-center gap-1 text-flexoki-tx-3 hover:text-flexoki-tx transition-colors cursor-pointer"
+			className="inline-flex items-center gap-1 text-foreground-3 hover:text-foreground transition-colors cursor-pointer"
 			title="Copy link to this TIL"
 		>
 			{copied ? (

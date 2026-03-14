@@ -212,23 +212,23 @@ const statusLabel: Record<Book["status"], string> = {
 	<PageLayout class="flex flex-col gap-8">
 		<SectionHeader title="Uses" />
 
-		<p class="text-flexoki-tx-2 leading-relaxed">
+		<p class="text-foreground-2 leading-relaxed">
 			Hardware, software, and tools I use daily. Inspired by <a
 				href="https://uses.tech"
 				target="_blank"
-				class="text-flexoki-tx underline decoration-flexoki-ui hover:bg-flexoki-tx hover:text-flexoki-bg transition-colors"
+				class="text-foreground underline decoration-ui hover:bg-foreground hover:text-background transition-colors"
 			>uses.tech</a>.
 		</p>
 
 		{sections.map((section) => (
 			<section class="w-full">
-				<h2 class="text-sm font-serif italic text-flexoki-tx-2 uppercase tracking-wider mb-3">
+				<h2 class="text-sm font-serif italic text-foreground-2 uppercase tracking-wider mb-3">
 					{section.title}
 				</h2>
 				<div class="space-y-0">
 					{section.items.map((item) => (
-						<div class="flex items-center gap-4 py-2.5 border-b border-flexoki-ui">
-							<span class="text-flexoki-tx font-medium text-sm shrink-0 w-52 flex items-center gap-2">
+						<div class="flex items-center gap-4 py-2.5 border-b border-ui">
+							<span class="text-foreground font-medium text-sm shrink-0 w-52 flex items-center gap-2">
 								{logoMap[item.name] && (
 									<img
 										src={logoMap[item.name].src}
@@ -243,7 +243,7 @@ const statusLabel: Record<Book["status"], string> = {
 									<a
 										href={item.url}
 										target="_blank"
-										class="hover:underline decoration-flexoki-ui"
+										class="hover:underline decoration-ui"
 									>
 										{item.name}
 									</a>
@@ -251,7 +251,7 @@ const statusLabel: Record<Book["status"], string> = {
 									item.name
 								)}
 							</span>
-							<span class="text-flexoki-tx-3 text-sm">
+							<span class="text-foreground-3 text-sm">
 								{item.description}
 							</span>
 						</div>
@@ -261,18 +261,18 @@ const statusLabel: Record<Book["status"], string> = {
 		))}
 
 		<section class="w-full">
-			<h2 class="text-sm font-serif italic text-flexoki-tx-2 uppercase tracking-wider mb-3">
+			<h2 class="text-sm font-serif italic text-foreground-2 uppercase tracking-wider mb-3">
 				Bookshelf
 			</h2>
 			<div class="space-y-0">
 				{books.map((book) => (
-					<div class="flex items-center gap-4 py-2.5 border-b border-flexoki-ui">
-						<span class="text-flexoki-tx font-medium text-sm shrink-0 w-52 flex items-center gap-2">
+					<div class="flex items-center gap-4 py-2.5 border-b border-ui">
+						<span class="text-foreground font-medium text-sm shrink-0 w-52 flex items-center gap-2">
 							{book.url ? (
 								<a
 									href={book.url}
 									target="_blank"
-									class="hover:underline decoration-flexoki-ui"
+									class="hover:underline decoration-ui"
 								>
 									{book.title}
 								</a>
@@ -280,14 +280,14 @@ const statusLabel: Record<Book["status"], string> = {
 								book.title
 							)}
 						</span>
-						<span class="text-flexoki-tx-3 text-sm flex-1">
+						<span class="text-foreground-3 text-sm flex-1">
 							{book.author}
 						</span>
 						<span class:list={[
 							"text-xs px-2 py-0.5 rounded-full shrink-0",
-							book.status === "reading" && "bg-flexoki-ye/20 text-flexoki-ye",
-							book.status === "completed" && "bg-flexoki-gr/20 text-flexoki-gr",
-							book.status === "queued" && "bg-flexoki-ui text-flexoki-tx-2",
+							book.status === "reading" && "bg-yellow/20 text-yellow",
+							book.status === "completed" && "bg-green/20 text-green",
+							book.status === "queued" && "bg-ui text-foreground-2",
 						]}>
 							{statusLabel[book.status]}
 						</span>

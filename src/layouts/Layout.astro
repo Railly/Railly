@@ -202,7 +202,7 @@ const socialImageURL = new URL(image, siteConfig.url);
         <slot name="head" />
     </head>
     <body
-        class="min-h-screen bg-flexoki-bg text-flexoki-tx selection:text-primary selection:bg-flexoki-bg-2"
+        class="min-h-screen bg-background text-foreground selection:text-primary selection:bg-background-2"
     >
         <slot />
         {import.meta.env.DEV && <script is:inline src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>}

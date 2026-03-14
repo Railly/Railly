@@ -33,8 +33,8 @@ function isActive(href: string): boolean {
                         class:list={[
                             "font-serif italic block py-0.5 transition-colors duration-200",
                             isActive(item.href)
-                                ? "text-flexoki-tx font-semibold"
-                                : "text-flexoki-tx-2 hover:text-flexoki-tx",
+                                ? "text-foreground font-semibold"
+                                : "text-foreground-2 hover:text-foreground",
                         ]}
                         href={item.href}
                     >
@@ -47,7 +47,7 @@ function isActive(href: string): boolean {
 </nav>
 
 <!-- Mobile Navigation -->
-<nav class="block lg:hidden mb-8 pb-2 border-b border-flexoki-ui/20 overflow-x-auto scrollbar-none">
+<nav class="block lg:hidden mb-8 pb-2 border-b border-ui/20 overflow-x-auto scrollbar-none">
     <ul class="flex gap-2 justify-end text-[13px] lowercase w-max ml-auto">
         {
             navItems.map((item) => (
@@ -56,8 +56,8 @@ function isActive(href: string): boolean {
                         class:list={[
                             "font-serif block px-2 py-1 transition-colors duration-200",
                             isActive(item.href)
-                                ? "text-flexoki-tx font-semibold"
-                                : "text-flexoki-tx-2 hover:text-flexoki-tx",
+                                ? "text-foreground font-semibold"
+                                : "text-foreground-2 hover:text-foreground",
                         ]}
                         href={item.href}
                     >

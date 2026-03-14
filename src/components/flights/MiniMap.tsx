@@ -89,7 +89,7 @@ export default function MiniMap({
 	);
 
 	return (
-		<div className="relative bg-flexoki-bg-2 rounded-lg border border-flexoki-ui p-4 overflow-hidden">
+		<div className="relative bg-background-2 rounded-lg border border-ui p-4 overflow-hidden">
 			<div
 				className="flex items-center justify-between"
 				style={{ gap: "1.5rem" }}
@@ -109,8 +109,8 @@ export default function MiniMap({
 									<path
 										key={i}
 										d={geoJsonToSvgPath(feature.geometry.coordinates)}
-										fill="var(--color-flexoki-ui-2)"
-										stroke="var(--color-flexoki-tx-3)"
+										fill="var(--color-ui-2)"
+										stroke="var(--color-foreground-3)"
 										strokeWidth="4"
 										opacity="0.7"
 									/>
@@ -120,8 +120,8 @@ export default function MiniMap({
 									cx={limaCoords.x}
 									cy={limaCoords.y}
 									r="8"
-									fill="var(--color-flexoki-yellow)"
-									stroke="var(--color-flexoki-bg)"
+									fill="var(--color-yellow)"
+									stroke="var(--color-background)"
 									strokeWidth="2"
 								/>
 							</>
@@ -132,35 +132,35 @@ export default function MiniMap({
 				{/* Stats Grid */}
 				<div className="flex-1 grid grid-cols-2" style={{ gap: "1rem" }}>
 					<div>
-						<div className="text-2xl font-bold text-flexoki-tx font-mono">
+						<div className="text-2xl font-bold text-foreground font-mono">
 							{visitedCountries}
 						</div>
-						<div className="text-xs text-flexoki-tx-3 uppercase tracking-wide">
+						<div className="text-xs text-foreground-3 uppercase tracking-wide">
 							Countries
 						</div>
 					</div>
 
 					<div>
-						<div className="text-2xl font-bold text-flexoki-tx font-mono">
+						<div className="text-2xl font-bold text-foreground font-mono">
 							{totalFlights}
 						</div>
-						<div className="text-xs text-flexoki-tx-3 uppercase tracking-wide">
+						<div className="text-xs text-foreground-3 uppercase tracking-wide">
 							Flights
 						</div>
 					</div>
 
 					<div className="col-span-2">
 						<div className="flex items-center justify-between mb-1">
-							<span className="text-xs text-flexoki-tx-3">
+							<span className="text-xs text-foreground-3">
 								South America Coverage
 							</span>
-							<span className="text-xs font-mono text-flexoki-tx-2">
+							<span className="text-xs font-mono text-foreground-2">
 								{visitedPercentage}%
 							</span>
 						</div>
-						<div className="h-1.5 bg-flexoki-ui rounded-full overflow-hidden">
+						<div className="h-1.5 bg-ui rounded-full overflow-hidden">
 							<div
-								className="h-full bg-flexoki-cyan rounded-full transition-all duration-1000"
+								className="h-full bg-cyan rounded-full transition-all duration-1000"
 								style={{ width: `${visitedPercentage}%` }}
 							/>
 						</div>
@@ -170,9 +170,9 @@ export default function MiniMap({
 
 			{/* Decorative dots */}
 			<div className="absolute top-2 right-2 flex" style={{ gap: "0.25rem" }}>
-				<div className="w-1 h-1 rounded-full bg-flexoki-tx-3 opacity-30" />
-				<div className="w-1 h-1 rounded-full bg-flexoki-tx-3 opacity-30" />
-				<div className="w-1 h-1 rounded-full bg-flexoki-tx-3 opacity-30" />
+				<div className="w-1 h-1 rounded-full bg-foreground-3 opacity-30" />
+				<div className="w-1 h-1 rounded-full bg-foreground-3 opacity-30" />
+				<div className="w-1 h-1 rounded-full bg-foreground-3 opacity-30" />
 			</div>
 		</div>
 	);

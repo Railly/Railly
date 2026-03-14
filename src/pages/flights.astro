@@ -172,7 +172,7 @@ const peruVisits = [
             <SectionHeader title="Flights" className="mb-0" />
             <a
                 href="/"
-                class="text-xs text-flexoki-tx-3 hover:text-flexoki-tx-2 transition-colors duration-200 flex items-center"
+                class="text-xs text-foreground-3 hover:text-foreground-2 transition-colors duration-200 flex items-center"
                 style="gap: 0.25rem;"
             >
                 <svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
@@ -253,7 +253,7 @@ const peruVisits = [
                 <SectionHeader title="Explorando Perú" className="mb-0" />
                 <span class="text-2xl">🇵🇪</span>
             </div>
-            <p class="text-sm text-flexoki-tx-2 font-serif italic -mt-2">
+            <p class="text-sm text-foreground-2 font-serif italic -mt-2">
                 Recorriendo mi país, descubriendo su diversidad
             </p>
             <PeruMap visits={peruVisits} client:load />
@@ -262,7 +262,7 @@ const peruVisits = [
         <!-- Flights List -->
         <div class="flex flex-col" style="gap: 1.5rem;">
             {flights.map((flight, index) => (
-                <div class="flight-card" style={`--delay: ${index * 0.1}s; --color: var(--color-flexoki-${flight.color})`}>
+                <div class="flight-card" style={`--delay: ${index * 0.1}s; --color: var(--color-${flight.color})`}>
                     <!-- Flight Path Visual -->
                     <div class="flight-path">
                         <div class="path-dot path-start"></div>
@@ -280,7 +280,7 @@ const peruVisits = [
                         <div class="flex items-start justify-between mb-3" style="gap: 1rem;">
                             <div class="flex-1">
                                 <div class="flex items-center mb-1" style="gap: 0.5rem;">
-                                    <span class="text-xs font-mono text-flexoki-tx-3">{flight.date}</span>
+                                    <span class="text-xs font-mono text-foreground-3">{flight.date}</span>
                                     <span class="continent-badge">{flight.continent}</span>
                                 </div>
                                 <div class="flight-route">
@@ -324,36 +324,36 @@ const peruVisits = [
         justify-content: center;
         padding: 1rem;
         border-radius: 0.5rem;
-        border: 1px solid var(--color-flexoki-ui);
-        background-color: var(--color-flexoki-bg);
+        border: 1px solid var(--color-ui);
+        background-color: var(--color-background);
         transition: all 300ms;
         gap: 0.5rem;
     }
 
     .stat-card:hover {
-        border-color: var(--color-flexoki-ui-2);
-        background-color: var(--color-flexoki-bg-2);
+        border-color: var(--color-ui-2);
+        background-color: var(--color-background-2);
     }
 
     .stat-icon {
-        color: var(--color-flexoki-tx-3);
+        color: var(--color-foreground-3);
         transition: color 300ms;
     }
 
     .stat-card:hover .stat-icon {
-        color: var(--color-flexoki-tx-2);
+        color: var(--color-foreground-2);
     }
 
     .stat-value {
         font-size: 1.5rem;
         font-weight: 600;
-        color: var(--color-flexoki-tx);
+        color: var(--color-foreground);
         font-family: var(--font-mono);
     }
 
     .stat-label {
         font-size: 0.75rem;
-        color: var(--color-flexoki-tx-3);
+        color: var(--color-foreground-3);
         text-transform: lowercase;
         font-family: var(--font-serif);
         font-style: italic;
@@ -366,8 +366,8 @@ const peruVisits = [
         flex-direction: column;
         padding: 1.5rem;
         border-radius: 0.5rem;
-        border: 1px solid var(--color-flexoki-ui);
-        background-color: var(--color-flexoki-bg);
+        border: 1px solid var(--color-ui);
+        background-color: var(--color-background);
         transition: all 500ms;
         gap: 1.5rem;
         animation: slideIn 0.6s ease-out both;
@@ -381,7 +381,7 @@ const peruVisits = [
     }
 
     .flight-card:hover {
-        border-color: var(--color-flexoki-ui-2);
+        border-color: var(--color-ui-2);
         box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
         transform: translateY(-2px);
     }
@@ -419,15 +419,15 @@ const peruVisits = [
         width: 0.75rem;
         height: 0.75rem;
         border-radius: 9999px;
-        border: 2px solid var(--color-flexoki-tx-3);
-        background-color: var(--color-flexoki-bg);
+        border: 2px solid var(--color-foreground-3);
+        background-color: var(--color-background);
         flex-shrink: 0;
         transition: all 300ms;
     }
 
     .flight-card:hover .path-start {
-        border-color: var(--color-flexoki-tx-2);
-        background-color: var(--color-flexoki-tx-2);
+        border-color: var(--color-foreground-2);
+        background-color: var(--color-foreground-2);
     }
 
     .flight-card:hover .path-end {
@@ -438,7 +438,7 @@ const peruVisits = [
     .path-line {
         flex: 1;
         height: 2px;
-        background: linear-gradient(to right, var(--color-flexoki-tx-3), var(--color-flexoki-ui-2));
+        background: linear-gradient(to right, var(--color-foreground-3), var(--color-ui-2));
         position: relative;
     }
 
@@ -446,7 +446,7 @@ const peruVisits = [
         .path-line {
             height: 100%;
             width: 2px;
-            background: linear-gradient(to bottom, var(--color-flexoki-tx-3), var(--color-flexoki-ui-2));
+            background: linear-gradient(to bottom, var(--color-foreground-3), var(--color-ui-2));
         }
     }
 
@@ -454,7 +454,7 @@ const peruVisits = [
         position: absolute;
         left: 50%;
         top: 50%;
-        color: var(--color-flexoki-tx-3);
+        color: var(--color-foreground-3);
         transition: all 500ms;
         transform: rotate(90deg) translate(-50%, -50%);
     }
@@ -499,8 +499,8 @@ const peruVisits = [
         font-size: 10px;
         padding: 0.125rem 0.5rem;
         border-radius: 9999px;
-        background-color: var(--color-flexoki-ui);
-        color: var(--color-flexoki-tx-2);
+        background-color: var(--color-ui);
+        color: var(--color-foreground-2);
         text-transform: uppercase;
         letter-spacing: 0.05em;
         font-family: var(--font-mono);
@@ -516,7 +516,7 @@ const peruVisits = [
     .route-from,
     .route-to {
         font-weight: 500;
-        color: var(--color-flexoki-tx);
+        color: var(--color-foreground);
     }
 
     .route-to {
@@ -524,13 +524,13 @@ const peruVisits = [
     }
 
     .route-arrow {
-        color: var(--color-flexoki-tx-3);
+        color: var(--color-foreground-3);
         flex-shrink: 0;
     }
 
     .flight-purpose {
         font-size: 0.875rem;
-        color: var(--color-flexoki-tx-2);
+        color: var(--color-foreground-2);
         margin-bottom: 0.75rem;
         font-family: var(--font-serif);
         font-style: italic;
@@ -547,7 +547,7 @@ const peruVisits = [
         display: flex;
         align-items: center;
         font-size: 0.75rem;
-        color: var(--color-flexoki-tx-3);
+        color: var(--color-foreground-3);
         gap: 0.5rem;
     }
 
@@ -558,6 +558,6 @@ const peruVisits = [
     }
 
     .flight-card:hover .highlight-item {
-        color: var(--color-flexoki-tx-2);
+        color: var(--color-foreground-2);
     }
 </style>

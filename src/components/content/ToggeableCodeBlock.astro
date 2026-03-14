@@ -47,13 +47,13 @@ const renderedContent = processKatex(await marked.parse(rawContent));
     </h2>
     <div class="flex gap-2">
       <button
-        class="toggle-button inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium text-flexoki-tx-2/70 hover:text-flexoki-tx transition-colors rounded-full border border-flexoki-ui hover:border-flexoki-tx-2 bg-background/50 hover:bg-background cursor-pointer"
+        class="toggle-button inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium text-foreground-2/70 hover:text-foreground transition-colors rounded-full border border-ui hover:border-foreground-2 bg-background/50 hover:bg-background cursor-pointer"
         type="button"
       >
         <span class="toggle-label text-[13px]">View Raw</span>
       </button>
       <button
-        class="expand-button inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium text-flexoki-tx-2/70 hover:text-flexoki-tx transition-colors rounded-full border border-flexoki-ui hover:border-flexoki-tx-2 bg-background/50 hover:bg-background cursor-pointer"
+        class="expand-button inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium text-foreground-2/70 hover:text-foreground transition-colors rounded-full border border-ui hover:border-foreground-2 bg-background/50 hover:bg-background cursor-pointer"
       >
         <svg
           class="w-3.5 h-3.5 transition-transform duration-200"
@@ -87,12 +87,12 @@ const renderedContent = processKatex(await marked.parse(rawContent));
     </div>
     <!-- Rendered view (initially hidden) -->
     <div
-      class="rendered-view border border-flexoki-ui rounded-lg markdown-view w-full flex-1 p-6 [font-size:85%] prose-flexoki prose !max-w-none prose-pre:!w-full prose-pre:!max-w-none prose-pre:!overflow-x-auto preview-wrapper mask-b-from-20% mask-b-to-80%"
+      class="rendered-view border border-ui rounded-lg markdown-view w-full flex-1 p-6 [font-size:85%] prose-theme prose !max-w-none prose-pre:!w-full prose-pre:!max-w-none prose-pre:!overflow-x-auto preview-wrapper mask-b-from-20% mask-b-to-80%"
       style={`max-height: ${previewHeight};`}
       set:html={renderedContent}
     />
     <div
-      class="pattern absolute inset-0 bg-gradient-to-tr from-flexoki-purple/[0.03] to-transparent opacity-50 pointer-events-none"
+      class="pattern absolute inset-0 bg-gradient-to-tr from-purple/[0.03] to-transparent opacity-50 pointer-events-none"
     >
     </div>
   </div>
@@ -108,11 +108,11 @@ const renderedContent = processKatex(await marked.parse(rawContent));
     inset: 0 !important;
     background-image: linear-gradient(
       45deg,
-      var(--color-flexoki-purple) 25%,
+      var(--color-purple) 25%,
       transparent 25%,
       transparent 50%,
-      var(--color-flexoki-purple) 50%,
-      var(--color-flexoki-purple) 75%,
+      var(--color-purple) 50%,
+      var(--color-purple) 75%,
       transparent 75%,
       transparent
     ) !important;

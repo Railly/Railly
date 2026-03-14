@@ -36,17 +36,17 @@ export default function PremiereCountdown({ pubDate }: PremiereCountdownProps) {
 
 	if (!timeLeft) {
 		return (
-			<span className="text-xs font-mono text-flexoki-tx-2">
+			<span className="text-xs font-mono text-foreground-2">
 				Available now
 			</span>
 		);
 	}
 
 	return (
-		<span className="inline-flex items-center gap-1.5 text-xs font-mono text-flexoki-tx-3 tabular-nums">
+		<span className="inline-flex items-center gap-1.5 text-xs font-mono text-foreground-3 tabular-nums">
 			<span className="relative flex h-1.5 w-1.5">
-				<span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-flexoki-tx-3 opacity-50" />
-				<span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-flexoki-tx-3" />
+				<span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-foreground-3 opacity-50" />
+				<span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-foreground-3" />
 			</span>
 			{formatCountdown(timeLeft)}
 		</span>

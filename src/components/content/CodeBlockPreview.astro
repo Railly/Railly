@@ -12,11 +12,11 @@ const { title = "Preview:", content, previewHeight = "250px" } = Astro.props;
 
 <div class="content-preview relative pt-[2em]">
     <div class="flex justify-between items-center mb-4">
-        <h2 class="text-lg font-medium text-flexoki-tx my-0">
+        <h2 class="text-lg font-medium text-foreground my-0">
             {title}
         </h2>
         <button
-            class="toggle-button inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium text-flexoki-tx-2/70 hover:text-flexoki-tx transition-colors rounded-full border border-flexoki-ui hover:border-flexoki-tx-2 bg-background/50 hover:bg-background cursor-pointer"
+            class="toggle-button inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium text-foreground-2/70 hover:text-foreground transition-colors rounded-full border border-ui hover:border-foreground-2 bg-background/50 hover:bg-background cursor-pointer"
         >
             <svg
                 class="w-3.5 h-3.5 transition-transform duration-200"
@@ -35,7 +35,7 @@ const { title = "Preview:", content, previewHeight = "250px" } = Astro.props;
         </button>
     </div>
     <div
-        class="preview-wrapper relative overflow-hidden rounded-lg border border-flexoki-ui mask-b-from-20% mask-b-to-80%"
+        class="preview-wrapper relative overflow-hidden rounded-lg border border-ui mask-b-from-20% mask-b-to-80%"
         style={`max-height: ${previewHeight};`}
     >
         <CustomCode

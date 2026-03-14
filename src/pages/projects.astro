@@ -103,21 +103,21 @@ type IconKey = keyof typeof iconMap;
         <div class="overflow-x-auto -mx-3">
             <table class="w-full text-sm">
                 <thead>
-                    <tr class="border-b border-flexoki-ui">
+                    <tr class="border-b border-ui">
                         <th
-                            class="text-left py-3 px-3 text-xs font-medium text-flexoki-tx-3 uppercase tracking-wider"
+                            class="text-left py-3 px-3 text-xs font-medium text-foreground-3 uppercase tracking-wider"
                             >Name</th
                         >
                         <th
-                            class="text-left py-3 px-3 text-xs font-medium text-flexoki-tx-3 uppercase tracking-wider"
+                            class="text-left py-3 px-3 text-xs font-medium text-foreground-3 uppercase tracking-wider"
                             >Stars</th
                         >
                         <th
-                            class="text-left py-3 px-3 text-xs font-medium text-flexoki-tx-3 uppercase tracking-wider hidden sm:table-cell"
+                            class="text-left py-3 px-3 text-xs font-medium text-foreground-3 uppercase tracking-wider hidden sm:table-cell"
                             >Description</th
                         >
                         <th
-                            class="text-left py-3 px-3 text-xs font-medium text-flexoki-tx-3 uppercase tracking-wider"
+                            class="text-left py-3 px-3 text-xs font-medium text-foreground-3 uppercase tracking-wider"
                             >Links</th
                         >
                     </tr>
@@ -128,7 +128,7 @@ type IconKey = keyof typeof iconMap;
                             const IconComponent =
                                 iconMap[project.icon as IconKey];
                             return (
-                                <tr class="border-b border-flexoki-ui hover:bg-flexoki-bg-2 transition-colors">
+                                <tr class="border-b border-ui hover:bg-background-2 transition-colors">
                                     <td class="py-3 px-3">
                                         <div class="flex items-center gap-2">
                                             <span class="w-5 h-5 flex items-center justify-center shrink-0">
@@ -136,30 +136,30 @@ type IconKey = keyof typeof iconMap;
                                                     <IconComponent
                                                         width={16}
                                                         height={16}
-                                                        class="text-flexoki-tx-2"
+                                                        class="text-foreground-2"
                                                     />
                                                 )}
                                             </span>
-                                            <span class="font-medium text-flexoki-tx">
+                                            <span class="font-medium text-foreground">
                                                 {project.name}
                                             </span>
                                         </div>
                                     </td>
                                     <td class="py-3 px-3">
-                                        <span class="flex items-center gap-1 text-flexoki-tx-2">
+                                        <span class="flex items-center gap-1 text-foreground-2">
                                             <svg
                                                 width="14"
                                                 height="14"
                                                 viewBox="0 0 24 24"
                                                 fill="currentColor"
-                                                class="text-flexoki-tx-3"
+                                                class="text-foreground-3"
                                             >
                                                 <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
                                             </svg>
                                             {project.stars}
                                         </span>
                                     </td>
-                                    <td class="py-3 px-3 text-flexoki-tx-2 hidden sm:table-cell max-w-xs">
+                                    <td class="py-3 px-3 text-foreground-2 hidden sm:table-cell max-w-xs">
                                         {project.description}
                                     </td>
                                     <td class="py-3 px-3">
@@ -168,7 +168,7 @@ type IconKey = keyof typeof iconMap;
                                                 href={project.github}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
-                                                class="text-flexoki-tx-3 hover:text-flexoki-tx transition-colors"
+                                                class="text-foreground-3 hover:text-foreground transition-colors"
                                                 title="GitHub"
                                             >
                                                 <svg
@@ -185,7 +185,7 @@ type IconKey = keyof typeof iconMap;
                                                     href={project.url}
                                                     target="_blank"
                                                     rel="noopener noreferrer"
-                                                    class="text-flexoki-tx-3 hover:text-flexoki-tx transition-colors"
+                                                    class="text-foreground-3 hover:text-foreground transition-colors"
                                                     title="Visit site"
                                                 >
                                                     <svg

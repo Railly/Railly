@@ -168,7 +168,7 @@ export default function PeruMap({ visits }: PeruMapProps) {
 	return (
 		<div className="relative w-full">
 			{/* Map Container */}
-			<div className="relative bg-flexoki-bg-2 rounded-lg border border-flexoki-ui overflow-hidden">
+			<div className="relative bg-background-2 rounded-lg border border-ui overflow-hidden">
 				<svg
 					viewBox="0 0 400 600"
 					className="w-full h-auto"
@@ -187,10 +187,10 @@ export default function PeruMap({ visits }: PeruMapProps) {
 									d={geoJsonToSvgPath(feature.geometry.coordinates)}
 									fill={
 										isVisited
-											? "var(--color-flexoki-cyan)"
-											: "var(--color-flexoki-ui-2)"
+											? "var(--color-cyan)"
+											: "var(--color-ui-2)"
 									}
-									stroke="var(--color-flexoki-tx-3)"
+									stroke="var(--color-foreground-3)"
 									strokeWidth="1.5"
 									opacity={isVisited ? 0.6 : 0.3}
 									initial={{ opacity: 0 }}
@@ -231,7 +231,7 @@ export default function PeruMap({ visits }: PeruMapProps) {
 										cx={city.x}
 										cy={city.y}
 										r="15"
-										fill={`var(--color-flexoki-${city.color})`}
+										fill={`var(--color-${city.color})`}
 										opacity="0.3"
 										animate={{ scale: [1, 1.3, 1] }}
 										transition={{ duration: 2, repeat: Infinity }}
@@ -244,16 +244,16 @@ export default function PeruMap({ visits }: PeruMapProps) {
 										cx={city.x}
 										cy={city.y}
 										r={isActive ? "7" : "5"}
-										fill={`var(--color-flexoki-${city.color})`}
-										stroke="var(--color-flexoki-bg)"
+										fill={`var(--color-${city.color})`}
+										stroke="var(--color-background)"
 										strokeWidth="2"
 										className="transition-all duration-300"
 									/>
 								) : (
 									<motion.path
 										d={`M ${city.x} ${city.y - 12} L ${city.x + 3} ${city.y - 5} L ${city.x + 10} ${city.y - 5} L ${city.x + 5} ${city.y} L ${city.x + 7} ${city.y + 6} L ${city.x} ${city.y + 2} L ${city.x - 7} ${city.y + 6} L ${city.x - 5} ${city.y} L ${city.x - 10} ${city.y - 5} L ${city.x - 3} ${city.y - 5} Z`}
-										fill={`var(--color-flexoki-${city.color})`}
-										stroke="var(--color-flexoki-bg)"
+										fill={`var(--color-${city.color})`}
+										stroke="var(--color-background)"
 										strokeWidth="2"
 									/>
 								)}
@@ -263,7 +263,7 @@ export default function PeruMap({ visits }: PeruMapProps) {
 									x={city.x}
 									y={city.y - (city.isHome ? 18 : 12)}
 									textAnchor="middle"
-									fill="var(--color-flexoki-tx)"
+									fill="var(--color-foreground)"
 									fontSize="10"
 									fontFamily="var(--font-sans)"
 									fontWeight={isActive ? "600" : "400"}
@@ -283,19 +283,19 @@ export default function PeruMap({ visits }: PeruMapProps) {
 						initial={{ opacity: 0, y: 20 }}
 						animate={{ opacity: 1, y: 0 }}
 						exit={{ opacity: 0, y: 20 }}
-						className="absolute bottom-4 left-4 right-4 bg-flexoki-bg border border-flexoki-ui rounded-lg p-4"
+						className="absolute bottom-4 left-4 right-4 bg-background border border-ui rounded-lg p-4"
 						style={{ backdropFilter: "blur(8px)" }}
 					>
 						<div className="flex items-start justify-between mb-2">
 							<div>
-								<h4 className="font-medium text-flexoki-tx">{selectedCity}</h4>
-								<p className="text-xs text-flexoki-tx-3">
+								<h4 className="font-medium text-foreground">{selectedCity}</h4>
+								<p className="text-xs text-foreground-3">
 									{selectedVisit.department}
 								</p>
 							</div>
 							<button
 								onClick={() => setSelectedCity(null)}
-								className="text-flexoki-tx-3 hover:text-flexoki-tx"
+								className="text-foreground-3 hover:text-foreground"
 							>
 								<svg
 									width="16"
@@ -313,7 +313,7 @@ export default function PeruMap({ visits }: PeruMapProps) {
 							{selectedVisit.highlights.map((highlight, i) => (
 								<div
 									key={i}
-									className="flex items-center text-xs text-flexoki-tx-3"
+									className="flex items-center text-xs text-foreground-3"
 									style={{ gap: "0.5rem" }}
 								>
 									<svg
@@ -340,24 +340,24 @@ export default function PeruMap({ visits }: PeruMapProps) {
 				style={{ gap: "1rem" }}
 			>
 				<div
-					className="flex items-center text-xs text-flexoki-tx-3"
+					className="flex items-center text-xs text-foreground-3"
 					style={{ gap: "0.5rem" }}
 				>
-					<div className="w-4 h-3 bg-flexoki-cyan opacity-60 border border-flexoki-tx-3" />
+					<div className="w-4 h-3 bg-cyan opacity-60 border border-foreground-3" />
 					<span>Visitado</span>
 				</div>
 				<div
-					className="flex items-center text-xs text-flexoki-tx-3"
+					className="flex items-center text-xs text-foreground-3"
 					style={{ gap: "0.5rem" }}
 				>
-					<div className="w-4 h-3 bg-flexoki-ui-2 opacity-30 border border-flexoki-tx-3" />
+					<div className="w-4 h-3 bg-ui-2 opacity-30 border border-foreground-3" />
 					<span>No visitado</span>
 				</div>
 				<div
-					className="flex items-center text-xs text-flexoki-tx-3"
+					className="flex items-center text-xs text-foreground-3"
 					style={{ gap: "0.5rem" }}
 				>
-					<div className="w-3 h-3 rounded-full bg-flexoki-yellow border-2 border-flexoki-bg" />
+					<div className="w-3 h-3 rounded-full bg-yellow border-2 border-background" />
 					<span>Casa</span>
 				</div>
 			</div>

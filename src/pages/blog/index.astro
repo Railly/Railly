@@ -42,7 +42,7 @@ const formatDate = (date: Date) => {
     description="Technical articles, tutorials, and thoughts on web development, AI, and building in public."
 >
   <main class="max-w-2xl mx-auto px-6 py-12">
-    <h1 class="text-3xl font-medium text-flexoki-tx mb-12">Writing</h1>
+    <h1 class="text-3xl font-medium text-foreground mb-12">Writing</h1>
     <div class="space-y-1">
       {
         years.map((year) => (
@@ -54,24 +54,24 @@ const formatDate = (date: Date) => {
                 <Element
                   {...(!isPremiere ? { href: `/blog/${post.slug}` } : {})}
                   class:list={[
-                    "group flex items-baseline gap-4 py-3 border-b border-flexoki-ui transition-colors -mx-3 px-3",
-                    isPremiere ? "cursor-default" : "hover:bg-flexoki-bg-2",
+                    "group flex items-baseline gap-4 py-3 border-b border-ui transition-colors -mx-3 px-3",
+                    isPremiere ? "cursor-default" : "hover:bg-background-2",
                   ]}
                 >
-                  <span class="text-flexoki-tx-3 tabular-nums w-12 shrink-0 text-sm">
+                  <span class="text-foreground-3 tabular-nums w-12 shrink-0 text-sm">
                     {index === 0 ? year : ""}
                   </span>
                   <span class:list={[
                     "flex-1 font-medium text-sm",
-                    isPremiere ? "text-flexoki-tx-3" : "text-flexoki-tx group-hover:text-flexoki-tx",
+                    isPremiere ? "text-foreground-3" : "text-foreground group-hover:text-foreground",
                   ]}>
                     {post.data.title}
                     {isPremiere ? (
-                      <span class="ml-2 text-xs font-normal px-1.5 py-0.5 border border-flexoki-ui rounded text-flexoki-tx-3">
+                      <span class="ml-2 text-xs font-normal px-1.5 py-0.5 border border-ui rounded text-foreground-3">
                         Premiere
                       </span>
                     ) : isNewest(post.slug) ? (
-                      <span class="ml-2 text-xs font-normal px-1.5 py-0.5 bg-flexoki-ui rounded text-flexoki-tx-2">
+                      <span class="ml-2 text-xs font-normal px-1.5 py-0.5 bg-ui rounded text-foreground-2">
                         Newest
                       </span>
                     ) : null}
@@ -79,7 +79,7 @@ const formatDate = (date: Date) => {
                   {isPremiere ? (
                     <PremiereCountdown pubDate={post.data.pubDate.toISOString()} client:only="react" />
                   ) : (
-                    <span class="text-flexoki-tx-3 tabular-nums text-sm shrink-0 flex items-center gap-2">
+                    <span class="text-foreground-3 tabular-nums text-sm shrink-0 flex items-center gap-2">
                       <span class="hidden sm:inline">{getReadingTime(post.body || "").text}</span>
                       <span class="hidden sm:inline">·</span>
                       {formatDate(post.data.pubDate)}

@@ -16,19 +16,19 @@ interface Props {
 const { color = "blue", padding = "" } = Astro.props;
 
 const colorMap = {
-	blue: "group-hover:bg-flexoki-blue/10",
-	teal: "group-hover:bg-flexoki-teal/10",
-	yellow: "group-hover:bg-flexoki-yellow/10",
-	cyan: "group-hover:bg-flexoki-cyan/10",
-	purple: "group-hover:bg-flexoki-purple/10",
-	magenta: "group-hover:bg-flexoki-magenta/10",
-	orange: "group-hover:bg-flexoki-orange/10",
+	blue: "group-hover:bg-blue/10",
+	teal: "group-hover:bg-teal/10",
+	yellow: "group-hover:bg-yellow/10",
+	cyan: "group-hover:bg-cyan/10",
+	purple: "group-hover:bg-purple/10",
+	magenta: "group-hover:bg-magenta/10",
+	orange: "group-hover:bg-orange/10",
 } as const;
 ---
 
 <div
     class:list={[
-        "flex-shrink-0 size-12 rounded-lg bg-flexoki-tx-3/5 transition-colors duration-300 flex items-center justify-center",
+        "flex-shrink-0 size-12 rounded-lg bg-foreground-3/5 transition-colors duration-300 flex items-center justify-center",
         colorMap[color],
         padding,
     ]}

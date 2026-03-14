@@ -221,7 +221,7 @@ type IconKey = keyof typeof iconMap;
                 <SectionHeader title="Projects" className="mb-0" />
                 <a
                     href="/projects"
-                    class="group text-xs text-flexoki-tx-3 hover:text-flexoki-tx-2 transition-colors duration-200"
+                    class="group text-xs text-foreground-3 hover:text-foreground-2 transition-colors duration-200"
                 >
                     <span class="flex items-center gap-1">
                         <span>view all</span>
@@ -253,21 +253,21 @@ type IconKey = keyof typeof iconMap;
                                 href={project.href}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                class="group flex items-center gap-4 py-3 border-b border-flexoki-ui hover:bg-flexoki-bg-2 transition-colors -mx-3 px-3"
+                                class="group flex items-center gap-4 py-3 border-b border-ui hover:bg-background-2 transition-colors -mx-3 px-3"
                             >
                                 <span class="w-6 h-6 flex items-center justify-center shrink-0">
                                     {IconComponent && (
                                         <IconComponent
                                             width={20}
                                             height={20}
-                                            class="text-flexoki-tx"
+                                            class="text-foreground"
                                         />
                                     )}
                                 </span>
-                                <span class="flex-1 text-flexoki-tx font-medium text-sm">
+                                <span class="flex-1 text-foreground font-medium text-sm">
                                     {project.title}
                                 </span>
-                                <span class="text-flexoki-tx-3 text-sm hidden sm:block">
+                                <span class="text-foreground-3 text-sm hidden sm:block">
                                     {project.description}
                                 </span>
                                 <svg
@@ -280,7 +280,7 @@ type IconKey = keyof typeof iconMap;
                                     stroke-linecap="round"
                                     stroke-linejoin="round"
                                     xmlns="http://www.w3.org/2000/svg"
-                                    class="text-flexoki-tx-3 group-hover:translate-x-0.5 transition-transform shrink-0"
+                                    class="text-foreground-3 group-hover:translate-x-0.5 transition-transform shrink-0"
                                 >
                                     <path d="M4.5 12h15m0 0-5.625-6m5.625 6-5.625 6" />
                                 </svg>
@@ -295,7 +295,7 @@ type IconKey = keyof typeof iconMap;
                 <SectionHeader title="Writing" className="mb-0" />
                 <a
                     href="/writing"
-                    class="group text-xs text-flexoki-tx-3 hover:text-flexoki-tx-2 transition-colors duration-200"
+                    class="group text-xs text-foreground-3 hover:text-foreground-2 transition-colors duration-200"
                 >
                     <span class="flex items-center gap-1">
                         <span>view all</span>
@@ -327,24 +327,24 @@ type IconKey = keyof typeof iconMap;
                                     <Element
                                         {...(!isPremiere ? { href: `/blog/${post.slug}` } : {})}
                                         class:list={[
-                                            "group flex items-baseline gap-4 py-3 border-b border-flexoki-ui transition-colors -mx-3 px-3",
-                                            isPremiere ? "cursor-default" : "hover:bg-flexoki-bg-2",
+                                            "group flex items-baseline gap-4 py-3 border-b border-ui transition-colors -mx-3 px-3",
+                                            isPremiere ? "cursor-default" : "hover:bg-background-2",
                                         ]}
                                     >
-                                        <span class="text-flexoki-tx-3 tabular-nums w-12 shrink-0 text-sm">
+                                        <span class="text-foreground-3 tabular-nums w-12 shrink-0 text-sm">
                                             {index === 0 ? year : ""}
                                         </span>
                                         <span class:list={[
                                             "flex-1 font-medium text-sm",
-                                            isPremiere ? "text-flexoki-tx-3" : "text-flexoki-tx group-hover:text-flexoki-tx",
+                                            isPremiere ? "text-foreground-3" : "text-foreground group-hover:text-foreground",
                                         ]}>
                                             {post.data.title}
                                             {isPremiere ? (
-                                                <span class="ml-2 text-xs font-normal px-1.5 py-0.5 border border-flexoki-ui rounded text-flexoki-tx-3">
+                                                <span class="ml-2 text-xs font-normal px-1.5 py-0.5 border border-ui rounded text-foreground-3">
                                                     Premiere
                                                 </span>
                                             ) : isNewest(post.slug) ? (
-                                                <span class="ml-2 text-xs font-normal px-1.5 py-0.5 bg-flexoki-ui rounded text-flexoki-tx-2">
+                                                <span class="ml-2 text-xs font-normal px-1.5 py-0.5 bg-ui rounded text-foreground-2">
                                                     Newest
                                                 </span>
                                             ) : null}
@@ -356,9 +356,9 @@ type IconKey = keyof typeof iconMap;
                                                 <ViewCounter
                                                     slug={post.slug}
                                                     client:only="react"
-                                                    className="text-xs text-flexoki-tx-3 tabular-nums shrink-0"
+                                                    className="text-xs text-foreground-3 tabular-nums shrink-0"
                                                 />
-                                                <span class="text-flexoki-tx-3 tabular-nums text-sm shrink-0">
+                                                <span class="text-foreground-3 tabular-nums text-sm shrink-0">
                                                     {formatDate(post.data.pubDate)}
                                                 </span>
                                             </>
@@ -372,7 +372,7 @@ type IconKey = keyof typeof iconMap;
                 {
                     recentPosts.length === 0 && (
                         <div class="py-12 text-center">
-                            <p class="text-flexoki-tx-2">
+                            <p class="text-foreground-2">
                                 More stories coming soon
                             </p>
                         </div>
@@ -391,11 +391,11 @@ type IconKey = keyof typeof iconMap;
                             index > 0 ? achievementsData[index - 1].year : null;
                         const showYear = item.year !== prevYear;
                         return (
-                            <div class="group flex items-baseline gap-4 py-3 border-b border-flexoki-ui hover:bg-flexoki-bg-2 transition-colors -mx-3 px-3">
-                                <span class="text-flexoki-tx-3 tabular-nums w-12 shrink-0 text-sm">
+                            <div class="group flex items-baseline gap-4 py-3 border-b border-ui hover:bg-background-2 transition-colors -mx-3 px-3">
+                                <span class="text-foreground-3 tabular-nums w-12 shrink-0 text-sm">
                                     {showYear ? item.year : ""}
                                 </span>
-                                <span class="w-36 shrink-0 text-flexoki-tx font-medium text-sm">
+                                <span class="w-36 shrink-0 text-foreground font-medium text-sm">
                                     {item.achievement}
                                 </span>
                                 <span class="flex-1 text-sm">
@@ -404,12 +404,12 @@ type IconKey = keyof typeof iconMap;
                                             href={item.eventUrl}
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            class="text-flexoki-tx-2 hover:text-flexoki-tx underline decoration-flexoki-ui/50 hover:decoration-flexoki-ui transition-colors"
+                                            class="text-foreground-2 hover:text-foreground underline decoration-ui/50 hover:decoration-ui transition-colors"
                                         >
                                             {item.event}
                                         </a>
                                     ) : (
-                                        <span class="text-flexoki-tx-2">
+                                        <span class="text-foreground-2">
                                             {item.event}
                                         </span>
                                     )}
@@ -420,12 +420,12 @@ type IconKey = keyof typeof iconMap;
                                             href={item.projectUrl}
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            class="text-flexoki-tx-3 hover:text-flexoki-tx underline decoration-flexoki-ui/50 hover:decoration-flexoki-ui transition-colors"
+                                            class="text-foreground-3 hover:text-foreground underline decoration-ui/50 hover:decoration-ui transition-colors"
                                         >
                                             {item.project}
                                         </a>
                                     ) : item.project ? (
-                                        <span class="text-flexoki-tx-3">
+                                        <span class="text-foreground-3">
                                             {item.project}
                                         </span>
                                     ) : null}
@@ -435,7 +435,7 @@ type IconKey = keyof typeof iconMap;
                                         <GlobeIcon
                                             width={16}
                                             height={16}
-                                            class="text-flexoki-tx-2"
+                                            class="text-foreground-2"
                                         />
                                     )}
                                     {item.scope === "pe" && (

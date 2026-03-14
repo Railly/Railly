@@ -19,7 +19,7 @@ const isDev = () => {
 export default function ViewCounter({
 	slug,
 	increment = false,
-	className = "text-sm text-flexoki-tx-2",
+	className = "text-sm text-foreground-2",
 }: ViewCounterProps) {
 	const [views, setViews] = useState<number | null>(null);
 	const hasFetchedRef = useRef(false);

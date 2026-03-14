@@ -20,10 +20,10 @@ const Wrapper = href ? "a" : "div";
     ]}
 >
     <span
-        class="quote-block relative block font-serif text-[24px] leading-[1.33] md:text-[30px] text-flexoki-tx [&_p]:font-serif [&_p]:font-medium [&_p]:leading-[inherit] [&_p]:mb-0"
+        class="quote-block relative block font-serif text-[24px] leading-[1.33] md:text-[30px] text-foreground [&_p]:font-serif [&_p]:font-medium [&_p]:leading-[inherit] [&_p]:mb-0"
     >
         <span
-            class="absolute -left-3 text-flexoki-tx-2/90 select-none"
+            class="absolute -left-3 text-foreground-2/90 select-none"
             style="font-family: Georgia;">"</span
         >
         <slot />
@@ -32,7 +32,7 @@ const Wrapper = href ? "a" : "div";
         .quote-block p:last-child::after {
             content: '"';
             font-family: Georgia;
-            color: var(--color-flexoki-tx-2);
+            color: var(--color-foreground-2);
             opacity: 0.9;
             margin-left: 2px;
         }
@@ -40,12 +40,12 @@ const Wrapper = href ? "a" : "div";
     {
         author && (
             <div class="ml-auto mt-6 flex w-full items-center gap-3 md:w-[60%]">
-                <div class="hidden h-px flex-grow bg-flexoki-tx-3/50 md:block" />
+                <div class="hidden h-px flex-grow bg-foreground-3/50 md:block" />
                 <div class="flex flex-col md:ml-auto md:text-right">
-                    <span class="text-[13px] font-medium leading-none text-flexoki-tx-2">
+                    <span class="text-[13px] font-medium leading-none text-foreground-2">
                         {author}
                         {source && (
-                            <span class="mt-1 block text-flexoki-tx-3 md:mt-0 md:inline">
+                            <span class="mt-1 block text-foreground-3 md:mt-0 md:inline">
                                 <span class="hidden md:inline-block">, </span>
                                 {source}
                             </span>

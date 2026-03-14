@@ -54,13 +54,13 @@ const { words, minutes, text: readingTimeText } = getReadingTime(post.body || ""
 			</div>
 
 			<div class="lg:col-start-2">
-				<div class="mb-4 px-3 py-2 rounded-md bg-flexoki-ui/40 border border-flexoki-ui text-flexoki-tx-3 text-sm">
+				<div class="mb-4 px-3 py-2 rounded-md bg-ui/40 border border-ui text-foreground-3 text-sm">
 					Draft preview, not published yet.
 				</div>
 
 				<header class="mb-10">
 					<h1
-						class="text-2xl font-semibold tracking-[-0.03em] mb-5 text-flexoki-tx"
+						class="text-2xl font-semibold tracking-[-0.03em] mb-5 text-foreground"
 						style="text-wrap: balance;"
 					>
 						{post.data.title}
@@ -68,25 +68,25 @@ const { words, minutes, text: readingTimeText } = getReadingTime(post.body || ""
 
 					{
 						post.data.description && (
-							<p class="text-[15px] leading-[1.6] tracking-[-0.01em] mb-5 text-flexoki-tx-2" style="text-wrap: pretty;">
+							<p class="text-[15px] leading-[1.6] tracking-[-0.01em] mb-5 text-foreground-2" style="text-wrap: pretty;">
 								{post.data.description}
 							</p>
 						)
 					}
 
-					<div class="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-flexoki-tx-3">
+					<div class="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-foreground-3">
 						<time datetime={post.data.pubDate.toISOString()}>
 							{publishedDate}
 						</time>
-						<span class="text-flexoki-tx-3">·</span>
+						<span class="text-foreground-3">·</span>
 						<span title={`${words.toLocaleString()} words`}>{readingTimeText}</span>
 						{
 							post.data.tags && post.data.tags.length > 0 && (
 								<>
-									<span class="text-flexoki-tx-3">·</span>
+									<span class="text-foreground-3">·</span>
 									<div class="flex flex-wrap gap-1.5">
 										{post.data.tags.slice(0, 3).map((tag) => (
-											<span class="text-flexoki-tx-3">
+											<span class="text-foreground-3">
 												#{tag}
 											</span>
 										))}
@@ -100,7 +100,7 @@ const { words, minutes, text: readingTimeText } = getReadingTime(post.body || ""
 				{
 					post.data.heroImage && (
 						<div class="mb-12">
-							<div class="relative w-full aspect-[2/1] rounded-lg overflow-hidden bg-muted border border-flexoki-ui">
+							<div class="relative w-full aspect-[2/1] rounded-lg overflow-hidden bg-muted border border-ui">
 								<img
 									src={post.data.heroImage.src}
 									alt={post.data.heroImage.alt}
@@ -114,27 +114,27 @@ const { words, minutes, text: readingTimeText } = getReadingTime(post.body || ""
 				<article class="blog-content">
 					<div
 						class:list={[
-							"prose prose-flexoki max-w-none",
-							"prose-headings:text-flexoki-tx prose-headings:font-semibold prose-headings:scroll-mt-10 prose-headings:tracking-[-0.02em]",
+							"prose prose-theme max-w-none",
+							"prose-headings:text-foreground prose-headings:font-semibold prose-headings:scroll-mt-10 prose-headings:tracking-[-0.02em]",
 							"prose-h2:text-lg prose-h2:mt-12 prose-h2:mb-4",
 							"prose-h3:text-base prose-h3:mt-8 prose-h3:mb-3 prose-h3:font-medium",
-							"prose-p:text-flexoki-tx-2 prose-p:text-[15px] prose-p:leading-[1.75] prose-p:tracking-[-0.01em] prose-p:[text-wrap:pretty]",
-							"prose-a:text-flexoki-tx-2 prose-a:underline prose-a:decoration-flexoki-tx-3/50 prose-a:underline-offset-2 prose-a:decoration-1 prose-a:hover:text-flexoki-tx prose-a:hover:decoration-flexoki-tx prose-a:transition-colors",
-							"prose-strong:text-flexoki-tx/90 prose-strong:font-medium",
-							"prose-li:text-flexoki-tx-2 prose-li:text-[15px] prose-li:leading-[1.75] prose-li:tracking-[-0.01em]",
-							"prose-li:marker:text-flexoki-tx-3",
+							"prose-p:text-foreground-2 prose-p:text-[15px] prose-p:leading-[1.75] prose-p:tracking-[-0.01em] prose-p:[text-wrap:pretty]",
+							"prose-a:text-foreground-2 prose-a:underline prose-a:decoration-foreground-3/50 prose-a:underline-offset-2 prose-a:decoration-1 prose-a:hover:text-foreground prose-a:hover:decoration-foreground prose-a:transition-colors",
+							"prose-strong:text-foreground/90 prose-strong:font-medium",
+							"prose-li:text-foreground-2 prose-li:text-[15px] prose-li:leading-[1.75] prose-li:tracking-[-0.01em]",
+							"prose-li:marker:text-foreground-3",
 							"prose-ul:my-5 prose-ul:space-y-1",
 							"prose-ol:my-5 prose-ol:space-y-1",
 							"prose-code:before:content-none prose-code:after:content-none",
-							"prose-table:text-flexoki-tx prose-table:border-flexoki-ui prose-table:border prose-table:rounded-lg",
-							"prose-tr:border-flexoki-ui prose-tr:border-b",
-							"prose-td:border-flexoki-ui prose-td:border-r",
-							"prose-td:p-2 prose-td:text-flexoki-tx-2",
-							"prose-th:p-2 prose-th:text-flexoki-tx",
-							"prose-img:rounded-xl prose-img:border-flexoki-ui/50 prose-img:border",
+							"prose-table:text-foreground prose-table:border-ui prose-table:border prose-table:rounded-lg",
+							"prose-tr:border-ui prose-tr:border-b",
+							"prose-td:border-ui prose-td:border-r",
+							"prose-td:p-2 prose-td:text-foreground-2",
+							"prose-th:p-2 prose-th:text-foreground",
+							"prose-img:rounded-xl prose-img:border-ui/50 prose-img:border",
 							"prose-blockquote:border-none prose-blockquote:not-italic prose-blockquote:p-0 prose-blockquote:m-0",
-							"prose-hr:border-flexoki-ui/50 prose-hr:my-10",
-							"prose-figcaption:text-sm prose-figcaption:text-flexoki-tx-3 prose-figcaption:mt-3 prose-figcaption:text-center",
+							"prose-hr:border-ui/50 prose-hr:my-10",
+							"prose-figcaption:text-sm prose-figcaption:text-foreground-3 prose-figcaption:mt-3 prose-figcaption:text-center",
 							"dark:prose-invert",
 						]}
 					>
@@ -147,7 +147,7 @@ const { words, minutes, text: readingTimeText } = getReadingTime(post.body || ""
 		</div>
 
 		<footer class="mt-20 max-w-3xl mx-auto px-4 sm:px-6">
-			<p class="text-sm text-flexoki-tx-3/60">
+			<p class="text-sm text-foreground-3/60">
 				Draft preview · Not indexed by search engines
 			</p>
 		</footer>
@@ -187,11 +187,11 @@ const { words, minutes, text: readingTimeText } = getReadingTime(post.body || ""
 		}
 
 		.blog-content :global(:not(pre) > code) {
-			background-color: var(--color-flexoki-bg-2);
+			background-color: var(--color-background-2);
 			padding: 0.125rem 0.375rem;
 			font-size: 0.875rem;
 			border-radius: 0.25rem;
-			color: var(--color-flexoki-tx);
+			color: var(--color-foreground);
 		}
 
 		.blog-content :global(pre code) {

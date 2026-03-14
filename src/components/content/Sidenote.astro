@@ -35,13 +35,13 @@ const { href } = Astro.props;
     text-decoration: underline;
     text-decoration-style: dotted;
     text-underline-offset: 3px;
-    text-decoration-color: var(--color-flexoki-tx-3);
+    text-decoration-color: var(--color-foreground-3);
     transition: text-decoration-color 0.2s ease;
   }
 
   .sn-ref {
     font-size: 0.65em;
-    color: var(--color-flexoki-tx-3);
+    color: var(--color-foreground-3);
     margin-left: 1px;
     vertical-align: super;
     line-height: 0;
@@ -53,7 +53,7 @@ const { href } = Astro.props;
 
   .sn-num {
     font-weight: 500;
-    color: var(--color-flexoki-tx-3);
+    color: var(--color-foreground-3);
     font-size: 12px;
   }
 
@@ -77,19 +77,19 @@ const { href } = Astro.props;
 
   .sn-content :global(strong) {
     font-weight: 600;
-    color: var(--color-flexoki-tx);
+    color: var(--color-foreground);
   }
 
   .sn-content :global(img) {
     margin-top: 0.5rem;
     border-radius: 4px;
     width: 100%;
-    border: 1px solid var(--color-flexoki-ui);
+    border: 1px solid var(--color-ui);
   }
 
   .sn-content :global(code) {
     font-size: 0.9em;
-    background: var(--color-flexoki-bg-2);
+    background: var(--color-background-2);
     padding: 1px 4px;
     border-radius: 3px;
   }
@@ -127,7 +127,7 @@ const { href } = Astro.props;
       border-left: 2px solid transparent;
       font-size: 13px;
       line-height: 1.5;
-      color: var(--color-flexoki-tx-2);
+      color: var(--color-foreground-2);
       opacity: 0.35;
       transition: opacity 0.25s ease, border-color 0.25s ease;
     }
@@ -139,17 +139,17 @@ const { href } = Astro.props;
     }
 
     .sn-wrap:hover .sn-term {
-      text-decoration-color: var(--color-flexoki-tx-2);
+      text-decoration-color: var(--color-foreground-2);
     }
 
     /* Click-activated: full opacity + border accent */
     .sn-wrap.active .sn {
       opacity: 1;
-      border-left-color: var(--color-flexoki-tx-3);
+      border-left-color: var(--color-foreground-3);
     }
 
     .sn-wrap.active .sn-term {
-      text-decoration-color: var(--color-flexoki-tx);
+      text-decoration-color: var(--color-foreground);
     }
   }
 
@@ -164,9 +164,9 @@ const { href } = Astro.props;
       padding: 8px 12px;
       margin: 6px 0;
       border-radius: 6px;
-      background: var(--color-flexoki-bg-2);
-      color: var(--color-flexoki-tx-2);
-      border: 1px solid var(--color-flexoki-ui);
+      background: var(--color-background-2);
+      color: var(--color-foreground-2);
+      border: 1px solid var(--color-ui);
       font-size: 13px;
       line-height: 1.5;
     }

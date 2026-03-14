@@ -149,7 +149,7 @@ export default function FlightMap({ flights }: FlightMapProps) {
 	return (
 		<div className="relative w-full">
 			{/* Map Container */}
-			<div className="relative bg-flexoki-bg-2 rounded-lg border border-flexoki-ui overflow-hidden">
+			<div className="relative bg-background-2 rounded-lg border border-ui overflow-hidden">
 				<svg
 					viewBox="0 0 500 700"
 					className="w-full h-auto"
@@ -162,8 +162,8 @@ export default function FlightMap({ flights }: FlightMapProps) {
 								<path
 									key={i}
 									d={geoJsonToSvgPath(feature.geometry.coordinates)}
-									fill="var(--color-flexoki-ui-2)"
-									stroke="var(--color-flexoki-tx-3)"
+									fill="var(--color-ui-2)"
+									stroke="var(--color-foreground-3)"
 									strokeWidth="2"
 									opacity="0.6"
 								/>
@@ -189,7 +189,7 @@ export default function FlightMap({ flights }: FlightMapProps) {
 								{/* Arc Path */}
 								<motion.path
 									d={generateArcPath(homeCity, toCity)}
-									stroke={`var(--color-flexoki-${flight.color})`}
+									stroke={`var(--color-${flight.color})`}
 									strokeWidth={isActive ? "3" : "2"}
 									fill="none"
 									strokeDasharray="5,5"
@@ -204,7 +204,7 @@ export default function FlightMap({ flights }: FlightMapProps) {
 								{isActive && (
 									<motion.circle
 										r="4"
-										fill={`var(--color-flexoki-${flight.color})`}
+										fill={`var(--color-${flight.color})`}
 										initial={{ offsetDistance: "0%" }}
 										animate={{ offsetDistance: "100%" }}
 										transition={{
@@ -250,7 +250,7 @@ export default function FlightMap({ flights }: FlightMapProps) {
 										cx={city.x}
 										cy={city.y}
 										r="20"
-										fill={`var(--color-flexoki-${city.color})`}
+										fill={`var(--color-${city.color})`}
 										opacity="0.2"
 										animate={{ scale: [1, 1.2, 1] }}
 										transition={{ duration: 2, repeat: Infinity }}
@@ -263,8 +263,8 @@ export default function FlightMap({ flights }: FlightMapProps) {
 										cx={city.x}
 										cy={city.y}
 										r={isActive ? "8" : "6"}
-										fill={`var(--color-flexoki-${city.color})`}
-										stroke="var(--color-flexoki-bg)"
+										fill={`var(--color-${city.color})`}
+										stroke="var(--color-background)"
 										strokeWidth="2"
 										className="transition-all duration-300"
 									/>
@@ -274,8 +274,8 @@ export default function FlightMap({ flights }: FlightMapProps) {
 								{city.isHome && (
 									<motion.path
 										d={`M ${city.x} ${city.y - 15} L ${city.x + 4} ${city.y - 7} L ${city.x + 12} ${city.y - 7} L ${city.x + 6} ${city.y - 1} L ${city.x + 8} ${city.y + 7} L ${city.x} ${city.y + 2} L ${city.x - 8} ${city.y + 7} L ${city.x - 6} ${city.y - 1} L ${city.x - 12} ${city.y - 7} L ${city.x - 4} ${city.y - 7} Z`}
-										fill={`var(--color-flexoki-${city.color})`}
-										stroke="var(--color-flexoki-bg)"
+										fill={`var(--color-${city.color})`}
+										stroke="var(--color-background)"
 										strokeWidth="2"
 										animate={{ rotate: [0, 360] }}
 										transition={{
@@ -292,7 +292,7 @@ export default function FlightMap({ flights }: FlightMapProps) {
 									x={city.x}
 									y={city.y - 15}
 									textAnchor="middle"
-									fill="var(--color-flexoki-tx)"
+									fill="var(--color-foreground)"
 									fontSize="11"
 									fontFamily="var(--font-sans)"
 									fontWeight={isActive ? "600" : "400"}
@@ -312,19 +312,19 @@ export default function FlightMap({ flights }: FlightMapProps) {
 						initial={{ opacity: 0, y: 20 }}
 						animate={{ opacity: 1, y: 0 }}
 						exit={{ opacity: 0, y: 20 }}
-						className="absolute bottom-4 left-4 right-4 bg-flexoki-bg border border-flexoki-ui rounded-lg p-4"
+						className="absolute bottom-4 left-4 right-4 bg-background border border-ui rounded-lg p-4"
 						style={{ backdropFilter: "blur(8px)" }}
 					>
 						<div className="flex items-start justify-between mb-2">
 							<div>
-								<h4 className="font-medium text-flexoki-tx">{selectedCity}</h4>
-								<p className="text-xs text-flexoki-tx-3 font-mono">
+								<h4 className="font-medium text-foreground">{selectedCity}</h4>
+								<p className="text-xs text-foreground-3 font-mono">
 									{selectedFlight.date}
 								</p>
 							</div>
 							<button
 								onClick={() => setSelectedCity(null)}
-								className="text-flexoki-tx-3 hover:text-flexoki-tx"
+								className="text-foreground-3 hover:text-foreground"
 							>
 								<svg
 									width="16"
@@ -338,14 +338,14 @@ export default function FlightMap({ flights }: FlightMapProps) {
 								</svg>
 							</button>
 						</div>
-						<p className="text-sm text-flexoki-tx-2 font-serif italic mb-2">
+						<p className="text-sm text-foreground-2 font-serif italic mb-2">
 							{selectedFlight.purpose}
 						</p>
 						<div className="flex flex-col" style={{ gap: "0.25rem" }}>
 							{selectedFlight.highlights.map((highlight, i) => (
 								<div
 									key={i}
-									className="flex items-center text-xs text-flexoki-tx-3"
+									className="flex items-center text-xs text-foreground-3"
 									style={{ gap: "0.5rem" }}
 								>
 									<svg
@@ -372,21 +372,21 @@ export default function FlightMap({ flights }: FlightMapProps) {
 				style={{ gap: "1rem" }}
 			>
 				<div
-					className="flex items-center text-xs text-flexoki-tx-3"
+					className="flex items-center text-xs text-foreground-3"
 					style={{ gap: "0.5rem" }}
 				>
-					<div className="w-3 h-3 rounded-full bg-flexoki-yellow border-2 border-flexoki-bg" />
+					<div className="w-3 h-3 rounded-full bg-yellow border-2 border-background" />
 					<span>Home Base</span>
 				</div>
 				<div
-					className="flex items-center text-xs text-flexoki-tx-3"
+					className="flex items-center text-xs text-foreground-3"
 					style={{ gap: "0.5rem" }}
 				>
 					<svg
 						width="16"
 						height="16"
 						viewBox="0 0 24 24"
-						stroke="var(--color-flexoki-tx-3)"
+						stroke="var(--color-foreground-3)"
 						strokeWidth="2"
 						fill="none"
 					>

@@ -81,7 +81,7 @@ function BurstParticles({ trigger }: { trigger: number }) {
 					return (
 						<motion.div
 							key={i}
-							className="absolute left-1/2 top-1/2 w-1 h-1 rounded-full bg-flexoki-tx-2"
+							className="absolute left-1/2 top-1/2 w-1 h-1 rounded-full bg-foreground-2"
 							initial={{
 								x: 0,
 								y: 0,
@@ -204,8 +204,8 @@ export default function ClapButton({ slug }: ClapButtonProps) {
 					disabled={myClaps >= MAX_SESSION_CLAPS}
 					className={`relative w-14 h-14 rounded-full border-2 flex items-center justify-center transition-colors duration-200 cursor-pointer disabled:cursor-default ${
 						hasClapped
-							? "border-flexoki-tx text-flexoki-tx"
-							: "border-flexoki-ui text-flexoki-tx-3 hover:border-flexoki-tx-3 hover:text-flexoki-tx-2"
+							? "border-foreground text-foreground"
+							: "border-ui text-foreground-3 hover:border-foreground-3 hover:text-foreground-2"
 					}`}
 					aria-label={`Clap for this post. ${totalClaps} claps total.`}
 				>
@@ -217,7 +217,7 @@ export default function ClapButton({ slug }: ClapButtonProps) {
 					{showFloat && (
 						<motion.span
 							key={myClaps}
-							className="absolute -top-2 left-1/2 text-xs font-mono font-medium text-flexoki-tx pointer-events-none"
+							className="absolute -top-2 left-1/2 text-xs font-mono font-medium text-foreground pointer-events-none"
 							initial={{ y: 0, opacity: 1, x: "-50%" }}
 							animate={{ y: -24, opacity: 0 }}
 							transition={{ duration: 0.7, ease: "easeOut" }}
@@ -229,7 +229,7 @@ export default function ClapButton({ slug }: ClapButtonProps) {
 				</AnimatePresence>
 			</div>
 
-			<div className="flex items-center gap-1.5 text-sm text-flexoki-tx-3">
+			<div className="flex items-center gap-1.5 text-sm text-foreground-3">
 				<OdometerNumber value={totalClaps} />
 				<span>claps</span>
 			</div>

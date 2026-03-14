@@ -13,7 +13,7 @@ const mainHeadings = headings.filter((heading) => heading.depth <= 3);
 >
     <a
         href="/writing"
-        class="flex items-center gap-1.5 text-sm mb-6 text-flexoki-tx-2 hover:text-flexoki-tx transition-colors duration-200"
+        class="flex items-center gap-1.5 text-sm mb-6 text-foreground-2 hover:text-foreground transition-colors duration-200"
     >
         <svg
             width="16"
@@ -32,13 +32,13 @@ const mainHeadings = headings.filter((heading) => heading.depth <= 3);
         <span>writing</span>
     </a>
 
-    <ul class="space-y-0.5 text-sm border-l border-flexoki-ui">
+    <ul class="space-y-0.5 text-sm border-l border-ui">
         {
             mainHeadings.map((heading) => (
                 <li class={heading.depth === 3 ? "ml-3" : ""}>
                     <a
                         href={`#${heading.slug}`}
-                        class="toc-link block py-1 px-3 text-sm border-l-2 -ml-px transition-all duration-200 border-transparent text-flexoki-tx-2 hover:text-flexoki-tx hover:border-flexoki-ui-2"
+                        class="toc-link block py-1 px-3 text-sm border-l-2 -ml-px transition-all duration-200 border-transparent text-foreground-2 hover:text-foreground hover:border-ui-2"
                         data-heading={heading.slug}
                     >
                         <span class="line-clamp-2">{heading.text}</span>
@@ -52,7 +52,7 @@ const mainHeadings = headings.filter((heading) => heading.depth <= 3);
 <nav class="sticky top-24 w-64 block lg:hidden">
     <a
         href="/writing"
-        class="flex items-center gap-1.5 text-sm mb-6 text-flexoki-tx-2 hover:text-flexoki-tx transition-colors duration-200"
+        class="flex items-center gap-1.5 text-sm mb-6 text-foreground-2 hover:text-foreground transition-colors duration-200"
     >
         <svg
             width="16"
@@ -106,24 +106,24 @@ const mainHeadings = headings.filter((heading) => heading.depth <= 3);
 
             if (currentActive) {
                 currentActive.classList.remove(
-                    "border-flexoki-tx",
-                    "text-flexoki-tx",
+                    "border-foreground",
+                    "text-foreground",
                     "font-medium",
                 );
                 currentActive.classList.add(
                     "border-transparent",
-                    "text-flexoki-tx-2",
+                    "text-foreground-2",
                 );
             }
 
             if (link) {
                 link.classList.remove(
                     "border-transparent",
-                    "text-flexoki-tx-2",
+                    "text-foreground-2",
                 );
                 link.classList.add(
-                    "border-flexoki-tx",
-                    "text-flexoki-tx",
+                    "border-foreground",
+                    "text-foreground",
                     "font-medium",
                 );
             }

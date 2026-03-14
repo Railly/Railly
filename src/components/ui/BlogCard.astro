@@ -51,7 +51,7 @@ const {
 >
     {
         image && (
-            <div class="relative w-full aspect-video overflow-hidden rounded-lg mb-2 flex items-center justify-center bg-flexoki-bg-2">
+            <div class="relative w-full aspect-video overflow-hidden rounded-lg mb-2 flex items-center justify-center bg-background-2">
                 <img
                     src={image}
                     alt={title}
@@ -74,26 +74,26 @@ const {
                         loading="lazy"
                     />
                 )}
-                <div class="absolute inset-0 border border-flexoki-ui-2 rounded-lg pointer-events-none" />
+                <div class="absolute inset-0 border border-ui-2 rounded-lg pointer-events-none" />
             </div>
         )
     }
     <div class={`relative z-10 ${image ? "p-1.5" : ""}`}>
         <div class="mb-1">
             <h3
-                class={`font-serif text-flexoki-tx group-hover:text-flexoki-${color} transition-colors font-medium`}
+                class={`font-serif text-foreground group-hover:text-${color} transition-colors font-medium`}
             >
                 {title}
             </h3>
         </div>
         {
             description && (
-                <p class="text-sm text-flexoki-tx-2 mt-1">{description}</p>
+                <p class="text-sm text-foreground-2 mt-1">{description}</p>
             )
         }
         {
             date && (
-                <div class="flex items-center justify-between gap-2 text-sm text-flexoki-tx-3 !my-0 !mt-3">
+                <div class="flex items-center justify-between gap-2 text-sm text-foreground-3 !my-0 !mt-3">
                     <div class="flex items-center gap-2">
                         <span>{date}</span>
                         {tag &&
@@ -103,7 +103,7 @@ const {
                                 tag === "crafter-station" ||
                                 tag === "unmsm") && (
                                 <>
-                                    <span class="text-flexoki-tx-3">·</span>
+                                    <span class="text-foreground-3">·</span>
                                     <div class="flex items-center justify-center size-4">
                                         {tag === "math" && (
                                             <svg
@@ -116,7 +116,7 @@ const {
                                                 stroke-width="2"
                                                 stroke-linecap="round"
                                                 stroke-linejoin="round"
-                                                class={`stroke-flexoki-tx-3 size-4`}
+                                                class={`stroke-foreground-3 size-4`}
                                             >
                                                 <path d="M18 7V4H6l6 8-6 8h12v-3" />
                                             </svg>
@@ -149,7 +149,7 @@ const {
                         <ViewCounter
                             slug={slug}
                             client:only="react"
-                            className="text-xs text-flexoki-tx-3"
+                            className="text-xs text-foreground-3"
                         />
                     )}
                 </div>
@@ -159,7 +159,7 @@ const {
     {
         !image && (
             <div
-                class={`absolute inset-0 bg-gradient-to-tr from-flexoki-${color}/[0.03] to-transparent opacity-80 [mask-image:linear-gradient(45deg,#000_25%,transparent_25%,transparent_50%,#000_50%,#000_75%,transparent_75%,transparent)] [mask-size:8px_8px] pointer-events-none`}
+                class={`absolute inset-0 bg-gradient-to-tr from-${color}/[0.03] to-transparent opacity-80 [mask-image:linear-gradient(45deg,#000_25%,transparent_25%,transparent_50%,#000_50%,#000_75%,transparent_75%,transparent)] [mask-size:8px_8px] pointer-events-none`}
             />
         )
     }

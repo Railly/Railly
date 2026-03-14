@@ -37,8 +37,8 @@ const formatDate = (date: Date) => {
 	description="Quick daily learnings on AI, infrastructure, design, and shipping from an AI Software Engineer in Lima, Peru."
 >
 	<PageLayout>
-		<h1 class="text-3xl font-medium text-flexoki-tx mb-4">TIL</h1>
-		<p class="text-flexoki-tx-2 mb-8 text-[15px]">
+		<h1 class="text-3xl font-medium text-foreground mb-4">TIL</h1>
+		<p class="text-foreground-2 mb-8 text-[15px]">
 			Learning new things every day. Writing them down to remember.
 		</p>
 		<TilFilters topics={topics} client:load />
@@ -49,21 +49,21 @@ const formatDate = (date: Date) => {
 						<div class="flex items-center gap-2 mb-2">
 							<time
 								datetime={til.data.pubDate.toISOString()}
-								class="text-sm text-flexoki-tx-3"
+								class="text-sm text-foreground-3"
 							>
 								{formatDate(til.data.pubDate)}
 							</time>
-							<span class="text-flexoki-tx-3">·</span>
-							<span class="text-xs text-flexoki-tx-3">
+							<span class="text-foreground-3">·</span>
+							<span class="text-xs text-foreground-3">
 								#{til.data.topic}
 							</span>
-							<span class="text-flexoki-tx-3">·</span>
+							<span class="text-foreground-3">·</span>
 							<TilShareLink slug={til.id.replace(/\.mdx?$/, "")} client:load />
 						</div>
-						<h2 class="text-lg font-medium text-flexoki-tx mb-3">
+						<h2 class="text-lg font-medium text-foreground mb-3">
 							{til.data.title}
 						</h2>
-						<div class="prose prose-flexoki prose-sm max-w-none text-flexoki-tx-2 prose-p:text-[15px] prose-p:leading-[1.75] prose-a:text-flexoki-tx-2 prose-a:underline prose-a:decoration-flexoki-tx-3/50 prose-a:underline-offset-2 prose-a:decoration-1 prose-a:hover:text-flexoki-tx prose-a:hover:decoration-flexoki-tx prose-a:transition-colors prose-code:before:content-none prose-code:after:content-none prose-code:px-1.5 prose-code:py-0.5 prose-code:text-sm prose-code:rounded">
+						<div class="prose prose-theme prose-sm max-w-none text-foreground-2 prose-p:text-[15px] prose-p:leading-[1.75] prose-a:text-foreground-2 prose-a:underline prose-a:decoration-foreground-3/50 prose-a:underline-offset-2 prose-a:decoration-1 prose-a:hover:text-foreground prose-a:hover:decoration-foreground prose-a:transition-colors prose-code:before:content-none prose-code:after:content-none prose-code:px-1.5 prose-code:py-0.5 prose-code:text-sm prose-code:rounded">
 							<Content components={{ a: Link }} />
 						</div>
 						{til.data.link && (
@@ -71,7 +71,7 @@ const formatDate = (date: Date) => {
 								href={til.data.link}
 								target="_blank"
 								rel="noopener noreferrer"
-								class="inline-flex items-center gap-1 text-sm text-flexoki-tx-3 hover:text-flexoki-tx transition-colors mt-3"
+								class="inline-flex items-center gap-1 text-sm text-foreground-3 hover:text-foreground transition-colors mt-3"
 							>
 								Learn more
 								<svg
@@ -97,11 +97,11 @@ const formatDate = (date: Date) => {
 	</PageLayout>
 <style>
 		.prose :global(:not(pre) > code) {
-			background-color: var(--color-flexoki-bg-2);
+			background-color: var(--color-background-2);
 			padding: 0.125rem 0.375rem;
 			font-size: 0.875rem;
 			border-radius: 0.25rem;
-			color: var(--color-flexoki-tx);
+			color: var(--color-foreground);
 		}
 
 		.prose :global(pre > code) {

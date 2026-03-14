@@ -18,7 +18,7 @@ interface Props {
 const { name, title } = Astro.props;
 
 const linkClass =
-	"text-flexoki-tx font-medium underline decoration-flexoki-ui hover:bg-flexoki-tx hover:text-flexoki-bg transition-colors";
+	"text-foreground font-medium underline decoration-ui hover:bg-foreground hover:text-background transition-colors";
 ---
 
 <header class="flex gap-2 items-center justify-start w-full">
@@ -27,18 +27,18 @@ const linkClass =
         alt="Railly Hugo favicon"
         class="size-5"
     />
-    <h1 class="text-lg tracking-tight font-medium text-flexoki-tx">
+    <h1 class="text-lg tracking-tight font-medium text-foreground">
         {name}
     </h1>
-    <span class="text-sm text-flexoki-tx-2"> ~ </span>
-    <span class="text-base font-serif text-flexoki-tx-2 font-light">
+    <span class="text-sm text-foreground-2"> ~ </span>
+    <span class="text-base font-serif text-foreground-2 font-light">
         {title}
     </span>
     <PeruFlag />
 </header>
 
 <section class="flex flex-col gap-2">
-    <p class="text-base text-flexoki-tx-2 !m-0">
+    <p class="text-base text-foreground-2 !m-0">
         I'm an <i>AI software engineer</i> at <ClerkLogo
             width={16}
             height={16}
@@ -58,7 +58,7 @@ const linkClass =
         >.
     </p>
 
-    <p class="text-base text-flexoki-tx-2 !m-0">
+    <p class="text-base text-foreground-2 !m-0">
         I teach Parallel Computing at <UNMSMLogo
             width={16}
             height={16}
@@ -78,7 +78,7 @@ const linkClass =
         >, the leading Hispanic tech streamer.
     </p>
 
-    <p class="text-base text-flexoki-tx-2 !m-0">
+    <p class="text-base text-foreground-2 !m-0">
         Winner of the <NextjsLogo
             width={16}
             height={16}
@@ -99,7 +99,7 @@ const linkClass =
             href="https://x.com/raillyhugo"
             target="_blank"
             aria-label="X (Twitter)"
-            class="inline-block underline decoration-flexoki-ui hover:bg-flexoki-tx hover:text-flexoki-bg transition-colors"
+            class="inline-block underline decoration-ui hover:bg-foreground hover:text-background transition-colors"
         ><XLogo
             width={14}
             height={14}
@@ -114,22 +114,22 @@ const linkClass =
         <a
             href="https://v0.app/@railly"
             target="_blank"
-            class="group inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md border border-flexoki-ui/50 hover:border-flexoki-ui transition-all duration-200"
+            class="group inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md border border-ui/50 hover:border-ui transition-all duration-200"
         >
-            <V0Logo width={16} height={16} class="text-flexoki-tx" />
+            <V0Logo width={16} height={16} class="text-foreground" />
             <span
-                class="text-xs text-flexoki-tx-2 group-hover:text-flexoki-tx transition-colors"
+                class="text-xs text-foreground-2 group-hover:text-foreground transition-colors"
                 >Ambassador</span
             >
         </a>
         <a
             href="https://github.com/Railly/tinte"
             target="_blank"
-            class="group inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md border border-flexoki-ui/50 hover:border-flexoki-ui transition-all duration-200"
+            class="group inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md border border-ui/50 hover:border-ui transition-all duration-200"
         >
-            <VercelLogo width={10} height={10} class="text-flexoki-tx" />
+            <VercelLogo width={10} height={10} class="text-foreground" />
             <span
-                class="text-xs text-flexoki-tx-2 group-hover:text-flexoki-tx transition-colors"
+                class="text-xs text-foreground-2 group-hover:text-foreground transition-colors"
                 >Vercel OSS Fall 2025</span
             >
         </a>

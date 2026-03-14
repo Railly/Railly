@@ -70,12 +70,12 @@ const hostMap = {
                     >
                     <div class="min-w-0">
                         <h3
-                            class="text-sm font-medium text-flexoki-tx leading-tight"
+                            class="text-sm font-medium text-foreground leading-tight"
                         >
                             {title.split(" ").slice(1).join(" ")}
                         </h3>
                         <div
-                            class="flex flex-wrap items-center gap-x-2 gap-y-0.5 mt-2 text-[11px] font-mono text-flexoki-tx-3"
+                            class="flex flex-wrap items-center gap-x-2 gap-y-0.5 mt-2 text-[11px] font-mono text-foreground-3"
                         >
                             {
                                 hosts && hosts.length > 0 && (
@@ -98,7 +98,7 @@ const hostMap = {
                                                                             host.svgPath
                                                                         }
                                                                         fill="currentColor"
-                                                                        class="text-flexoki-tx-2"
+                                                                        class="text-foreground-2"
                                                                     />
                                                                 </svg>
                                                             )}
@@ -113,7 +113,7 @@ const hostMap = {
                                                                     class="h-3 w-3"
                                                                 />
                                                             )}
-                                                            <span class="text-flexoki-tx-2">
+                                                            <span class="text-foreground-2">
                                                                 {host.name}
                                                             </span>
                                                         </div>
@@ -136,7 +136,7 @@ const hostMap = {
                                             <span>·</span>
                                         )}
                                         <span>project:</span>
-                                        <span class="text-flexoki-tx-2">
+                                        <span class="text-foreground-2">
                                             {project}
                                         </span>
                                     </>
@@ -147,13 +147,13 @@ const hostMap = {
                 </div>
                 <div class="flex items-center gap-2">
                     <span
-                        class="text-[10px] text-flexoki-tx-3 font-mono font-medium px-1.5 py-0.5 rounded border border-flexoki-tx-3/30 flex-shrink-0 flex items-center gap-1"
+                        class="text-[10px] text-foreground-3 font-mono font-medium px-1.5 py-0.5 rounded border border-foreground-3/30 flex-shrink-0 flex items-center gap-1"
                     >
                         {scope && <span class="text-sm">{scope}</span>}
                         {year}
                     </span>
                     <div
-                        class={`expand-btn size-6 rounded-md bg-flexoki-tx-3/10 hover:bg-flexoki-${color}/20 backdrop-blur-sm flex items-center justify-center text-flexoki-tx-2 hover:text-flexoki-${color} transition-all pointer-events-none`}
+                        class={`expand-btn size-6 rounded-md bg-foreground-3/10 hover:bg-${color}/20 backdrop-blur-sm flex items-center justify-center text-foreground-2 hover:text-${color} transition-all pointer-events-none`}
                         aria-label="Toggle content"
                         data-target={embedId}
                     >
