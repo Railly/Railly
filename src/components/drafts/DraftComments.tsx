@@ -34,7 +34,7 @@ const BADGE_BG = "var(--color-flexoki-ui, #262626)";
 const BADGE_BG_40 = "color-mix(in oklch, var(--color-flexoki-ui, #262626) 40%, transparent)";
 const BADGE_BORDER = "var(--color-flexoki-ui, #262626)";
 const BADGE_TEXT = "var(--color-flexoki-tx-3, #525252)";
-const HIGHLIGHT_COLOR = "color-mix(in oklch, var(--color-flexoki-ui, #262626) 50%, transparent)";
+const HIGHLIGHT_COLOR = "oklch(0.85 0.15 85 / 0.35)";
 
 function getColor(name: string) {
 	let hash = 0;
@@ -114,7 +114,7 @@ function highlightTextInPage(text: string, active: boolean) {
 
 	const mark = document.createElement("mark");
 	mark.setAttribute("data-dc-highlight", "");
-	mark.style.background = "color-mix(in oklch, var(--color-flexoki-ui, #262626) 60%, transparent)";
+	mark.style.background = "oklch(0.85 0.15 85 / 0.35)";
 	mark.style.borderRadius = "2px";
 	mark.style.padding = "1px 0";
 	mark.style.color = "inherit";
