@@ -71,7 +71,7 @@ const CURSOR_SVG = `url("data:image/svg+xml,%3Csvg width='24' height='24' viewBo
 function ArrowUp({ size = 14 }: { size?: number }) {
 	return (
 		<svg width={size} height={size} viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-			<path d="M8 13V3M3 8l5-5 5 5" />
+			<path d="M8 3v10M3 8l5-5 5 5" />
 		</svg>
 	);
 }
@@ -79,9 +79,44 @@ function ArrowUp({ size = 14 }: { size?: number }) {
 function ArrowDown({ size = 14 }: { size?: number }) {
 	return (
 		<svg width={size} height={size} viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-			<path d="M8 3v10M3 8l5 5 5-5" />
+			<path d="M8 13V3M3 8l5 5 5-5" />
 		</svg>
 	);
+}
+
+function highlightTextInPage(text: string, active: boolean) {
+	for (const el of document.querySelectorAll("mark[data-dc-highlight]")) {
+		const parent = el.parentNode;
+		if (parent) {
+			parent.replaceChild(document.createTextNode(el.textContent || ""), el);
+			parent.normalize();
+		}
+	}
+	if (!text || !active) return;
+
+	const walker = document.createTreeWalker(
+		document.querySelector(".blog-content") || document.body,
+		NodeFilter.SHOW_TEXT,
+	);
+	const snippet = text.slice(0, 60);
+	let node = walker.nextNode() as Text | null;
+	while (node) {
+		const idx = node.textContent?.indexOf(snippet) ?? -1;
+		if (idx !== -1) {
+			const range = document.createRange();
+			range.setStart(node, idx);
+			range.setEnd(node, idx + snippet.length);
+			const mark = document.createElement("mark");
+			mark.setAttribute("data-dc-highlight", "");
+			mark.style.background = "color-mix(in oklch, var(--color-flexoki-ui, #262626) 60%, transparent)";
+			mark.style.borderRadius = "2px";
+			mark.style.padding = "1px 0";
+			mark.style.color = "inherit";
+			range.surroundContents(mark);
+			break;
+		}
+		node = walker.nextNode() as Text | null;
+	}
 }
 
 export default function DraftComments({ draftId }: { draftId: string }) {
@@ -132,6 +167,12 @@ export default function DraftComments({ draftId }: { draftId: string }) {
 	useEffect(() => {
 		if (pendingPos && inputRef.current) inputRef.current.focus();
 	}, [pendingPos]);
+
+	useEffect(() => {
+		const active = comments.find((c) => c.id === activeComment);
+		highlightTextInPage(active?.quote || "", !!activeComment);
+		return () => highlightTextInPage("", false);
+	}, [activeComment, comments]);
 
 	useEffect(() => {
 		if (replyingTo && replyInputRef.current) replyInputRef.current.focus();
@@ -479,15 +520,6 @@ export default function DraftComments({ draftId }: { draftId: string }) {
 									<span style={{ fontSize: 12, fontWeight: 500, color: "var(--color-flexoki-tx, #fafafa)" }}>{c.name}</span>
 									<span style={{ fontSize: 11, color: "var(--color-flexoki-tx-3, #525252)", marginLeft: "auto" }}>{timeAgo(c.timestamp)}</span>
 								</div>
-
-								{/* Quote */}
-								{c.quote && (
-									<div style={{ margin: "0 12px 6px", padding: "6px 8px", background: BADGE_BG_40, borderRadius: 4, borderLeft: `2px solid ${BADGE_BORDER}` }}>
-										<span style={{ fontSize: 11, lineHeight: "1.4", color: BADGE_TEXT, fontStyle: "italic" }}>
-											"{c.quote.length > 80 ? `${c.quote.slice(0, 80)}...` : c.quote}"
-										</span>
-									</div>
-								)}
 
 								{/* Body */}
 								<p style={{ fontSize: 13, lineHeight: 1.5, color: "var(--color-flexoki-tx-2, #a3a3a3)", margin: 0, padding: "0 12px 8px" }}>
