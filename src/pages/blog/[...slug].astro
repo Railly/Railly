@@ -59,7 +59,8 @@ const updatedDate = post.data.updatedDate
 		})
 	: null;
 
-const ogImage = `/api/og?title=${encodeURIComponent(post.data.title)}&description=${encodeURIComponent(post.data.description || "")}`;
+const ogDate = post.data.pubDate.toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" });
+const ogImage = `/api/og?title=${encodeURIComponent(post.data.title)}&description=${encodeURIComponent(post.data.description || "")}&tag=blog&date=${encodeURIComponent(ogDate)}`;
 
 const { words, minutes, text: readingTimeText } = getReadingTime(post.body || "");
 ---

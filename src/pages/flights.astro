@@ -9,7 +9,7 @@ import Layout from "../layouts/Layout.astro";
 
 const ogTitle = "Flights";
 const ogDescription = "My travel journey around the world";
-const ogImage = `/api/og?title=${encodeURIComponent(ogTitle)}&description=${encodeURIComponent(ogDescription)}`;
+const ogImage = `/api/og?title=${encodeURIComponent(ogTitle)}&description=${encodeURIComponent(ogDescription)}&tag=flights`;
 
 interface Flight {
 	from: string;

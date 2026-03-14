@@ -29,7 +29,7 @@ const publishedDate = post.data.pubDate.toLocaleDateString("en-US", {
 	day: "numeric",
 });
 
-const ogImage = `/api/og?title=${encodeURIComponent(post.data.title)}&description=${encodeURIComponent(post.data.description || "")}`;
+const ogImage = `/api/og?title=${encodeURIComponent(post.data.title)}&description=${encodeURIComponent(post.data.description || "")}&tag=draft`;
 const { words, minutes, text: readingTimeText } = getReadingTime(post.body || "");
 ---
 

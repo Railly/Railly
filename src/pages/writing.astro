@@ -10,7 +10,7 @@ import Layout from "../layouts/Layout.astro";
 
 const ogTitle = "Writing";
 const ogDescription = "Technical articles on AI engineering, developer tools, context engineering, and building in public by Railly Hugo.";
-const ogImage = `/api/og?title=${encodeURIComponent(ogTitle)}&description=${encodeURIComponent(ogDescription)}`;
+const ogImage = `/api/og?title=${encodeURIComponent(ogTitle)}&description=${encodeURIComponent(ogDescription)}&tag=writing`;
 
 const allPosts = await getCollection("blog", ({ data }) => {
 	return import.meta.env.PROD ? data.status !== "draft" : true;
