@@ -19,6 +19,7 @@ export default defineConfig({
 		plugins: [tailwindcss()],
 		ssr: {
 			external: ["@takumi-rs/image-response"],
+			noExternal: ["react-tweet"],
 		},
 	},
 

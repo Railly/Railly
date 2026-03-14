@@ -1,0 +1,109 @@
+---
+title: "2,000 Stars Later: What I Learned Building Open Source Dev Tools"
+description: "From a VS Code theme to a Silicon Valley job. How building in public from Lima, Peru opened doors I didn't know existed."
+pubDate: 2026-03-14
+draft: true
+---
+
+import Figure from "../../components/content/Figure.astro";
+import { TweetCard } from "../../components/content/TweetCard";
+
+I never planned to become an open source developer. I started as a UX designer because I thought I wasn't good enough at programming. Then I got tired of not being able to build my own UIs, so I learned frontend. Then I needed a backend. Then I needed a community. Each step happened because the previous one wasn't enough.
+
+Five projects later, I have over 2,000 GitHub stars, a job at a Silicon Valley dev tools company, and a community of 500+ builders in Peru. None of it was planned. All of it was connected.
+
+<Figure src="/images/blog/2000-stars/github-profile.webp" alt="GitHub profile with pinned repos showing star counts" caption="Five repos, 2,000+ stars. Each one led to the next." size="full" />
+
+## It Started With a Tweet
+
+Before shadcn became famous, back when he had maybe 5,000 followers, he posted a tweet asking if someone could build a Vercel-inspired VS Code theme. I replied: "I built something similar, give me time."
+
+<TweetCard id="1603400439692763140" />
+
+I built [one-hunter-theme](https://github.com/Railly/one-hunter-vscode) in one night. The next day, shadcn tried it and started using it on ui.shadcn.com. That was a big moment for me, even though I didn't realize how big at the time.
+
+<Figure src="/images/shadcnuidocs.webp" alt="ui.shadcn.com docs using One Hunter Theme with dark syntax highlighting" caption="ui.shadcn.com running One Hunter Theme. shadcn used it before he even joined Vercel." size="full" />
+
+He eventually moved away from my theme when he joined Vercel and switched everything to light mode. But if you look at his old code snippets, he was using one-hunter with a Vercel variant. That still makes me smile.
+
+## From Theme to Generator to Registry
+
+<Figure src="/images/blog/2000-stars/evolution-timeline.webp" alt="Visual timeline: one-hunter theme to Tinte generator to Elements registry" caption="one-hunter (2022) → Tinte (2023) → Elements (2024). Each project was a natural evolution of the last." size="full" />
+
+Building a VS Code theme in those days was genuinely hard. A massive JSON object with hundreds of TextMate scopes, all needing careful color coordination. So I built a small algorithm that could generate a well-scaffolded theme from just 13 base colors.
+
+That algorithm became [Tinte](https://github.com/Railly/tinte), my theme generator. I submitted it last-minute to a midudev hackathon and placed third. Tinte started as a VS Code theme generator, but it evolved into a shadcn theme generator, and now it's becoming a full design system generator.
+
+After Tinte, the next step felt obvious. Why stop at themes? shadcn/ui had proved that distributing UI components through a registry was powerful, but what about full-stack components? Routes, API endpoints, database schemas, not just buttons and cards.
+
+That's how [Elements](https://tryelements.dev) was born. A full-stack shadcn registry, possibly the first one from Latin America. It grew significantly after the launch tweet and became my proudest project, not because of the star count, but because of what it unlocked.
+
+## The Door That Opened
+
+<TweetCard id="1985423622240907278" />
+
+I had applied to Supabase through the traditional route: submit CV, go through the pipeline. Four interview phases. I got rejected in the second one.
+
+Elements took a different path entirely. My current boss, Bryce Kalow, saw the project and reached out directly. The interview was fully conversational. I talked about my projects, how I built them, what was challenging. No algorithm puzzles, no system design whiteboard. Just a real conversation about real work I had shipped.
+
+That's the compound effect of building in public. Every project, every tweet, every hackathon, they all accumulate. The Clerk opportunity wasn't just about Elements. It was a fusion of everything I had been putting out there for years. The theme that shadcn used, the generator that placed in a hackathon, the registry that caught a hiring manager's attention.
+
+Building in public maximizes your luck area. Cold-applying minimizes it.
+
+## Hackathons as Training Grounds
+
+<Figure src="/images/blog/2000-stars/hackathon-team.webp" alt="Team photo at a hackathon" caption="Hackathons teach you what to build, how fast you can move, and when to let go of your own idea." size="full" />
+
+I've won multiple hackathons, including ElevenLabs and v0 x Sanity tracks. But I've also lost plenty. Here's what I've learned: there is no hackathon where you don't learn something. Even the ones where you run out of scope, can't finish, or don't present, those teach you what not to do next time.
+
+My approach:
+
+**Stay quiet at the beginning.** Throw ideas on the table, but actively listen to your team. You can fall into your ego thinking your idea is the best one. Maybe it is, but if it's too ambitious for the time you have, it doesn't matter. Learn when to leave your idea behind.
+
+**Go in with a winning mindset.** Even if you don't win, you need that energy. You need to believe in yourself, feel secure about what you're building. Being from Peru at an international hackathon doesn't make you less. Nationality doesn't determine capability. Ever.
+
+**Share everything.** Whatever you build at a hackathon, share it. Post about it. Even if your audience is 10 people. That's your online presence, your living CV.
+
+**Don't let it die.** A hackathon project is an MVP. You can let the project die, but don't let the idea die. Rebuild it, pivot it, grow it into something bigger.
+
+Participating in so many hackathons also made me fall in love with hosting them. That's how [peru.ai-hackathon.co](https://peru.ai-hackathon.co) happened, the biggest AI hackathon in Peru in 2025, with two more editions coming in 2026.
+
+## What Actually Matters in 2026
+
+My technical identity has evolved a lot: UX designer, frontend developer, full-stack developer, design engineer, and now AI software engineer at Clerk. Each transition happened because the previous role wasn't enough to build what I wanted to build.
+
+Now that AI can generate code so fast, the competitive advantage isn't writing code. It's orchestrating agents, having the mental bandwidth to handle multiple parallel workstreams, and most importantly, knowing what's worth building in the first place.
+
+I call the opposite "slop features." When code is cheap, you can pile feature after feature on top of a broken foundation. But the bugs are still there. The UX friction is still there. You're just building a slop layer on top of your codebase.
+
+What matters now is product thinking. Measuring what's actually valuable. Fixing what's broken before adding what's new. The line between developer and product engineer is disappearing, and I think that's a good thing.
+
+Everyone needs to become a product engineer. There won't be purely frontend roles for much longer. The question isn't "can you build it?" anymore. It's "should you build it, and for whom?"
+
+## Advice for LATAM Developers
+
+<Figure src="/images/blog/2000-stars/lima-setup.webp" alt="Crafter Station team at UTEC after v0 Prompt to Production event" caption="After v0 Prompt to Production at UTEC, Lima. Building for the world, from Peru." size="full" />
+
+If you're in Lima, Bogota, Mexico City, or anywhere in Latin America with zero GitHub stars and no audience, here's what I'd do in the first 90 days:
+
+1. **Build your website first.** Not a template, your own site. It's the entry point for everything: your socials, your writing, your projects. It's the one URL that represents you.
+2. **Write about what you know.** It doesn't have to be about tech. Your non-tech background combined with your tech skills, that intersectional knowledge, is the most valuable thing you can share. Everyone can write about React. Nobody else has your specific perspective.
+3. **Publish in English by default.** If you want to reach a global audience, there's no reason to limit yourself locally. I use English on X for global reach and Spanish on LinkedIn for my local network. But if you can go global from day one, do it.
+4. **Build with ambitious people.** Solo building is fine at the start, but what propels you the most is finding people who share your values and problems. Your core team of builders, these are the people you'll spend the next five years with. You are the average of the people who surround you. Choose them carefully.
+5. **Share everything you ship.** Even if 10 people see it. That's your CV. That's how companies find you. That's how opportunities compound.
+
+Being from Latin America is not a disadvantage. People with fewer resources learn to adapt and use what they have well. We don't overspend, we optimize. Go global by default and you increase your probability of success.
+
+## What I'm Building Toward
+
+In three years, I want to achieve something big enough that developers in Latin America look at it and think: "He's from Lima. He graduated from San Marcos. He had no natural connection to Silicon Valley. What's stopping me?"
+
+I want to break the mental limits that people impose on themselves just because they were born in Latin America. There is nothing fundamentally different between us and developers in San Francisco. If we believe in ourselves, really believe, we can do extraordinary things together, in our own countries, in our own continent.
+
+I don't want fame for ego. I want to be the proof that it's possible. The person who makes other people believe in themselves.
+
+We can make Peru great for the first time.
+
+---
+
+*I'm Railly Hugo, AI Software Engineer at [Clerk](https://clerk.com) and founder of [Crafter Station](https://crafterstation.com). I build open source dev tools from Lima, Peru. Find me on [X](https://x.com/raillyhugo) or [GitHub](https://github.com/railly).*
