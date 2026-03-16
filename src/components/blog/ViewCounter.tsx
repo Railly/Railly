@@ -6,7 +6,26 @@ interface ViewCounterProps {
 	className?: string;
 }
 
-const incrementedSlugs = new Set<string>();
+const STORAGE_KEY = "viewedSlugs";
+
+const getViewedSlugs = (): Set<string> => {
+	try {
+		const stored = sessionStorage.getItem(STORAGE_KEY);
+		return stored ? new Set(JSON.parse(stored)) : new Set();
+	} catch {
+		return new Set();
+	}
+};
+
+const markSlugViewed = (slug: string) => {
+	try {
+		const slugs = getViewedSlugs();
+		slugs.add(slug);
+		sessionStorage.setItem(STORAGE_KEY, JSON.stringify([...slugs]));
+	} catch {
+		// sessionStorage unavailable (e.g. private browsing)
+	}
+};
 
 const isDev = () => {
 	if (typeof window === "undefined") return false;
@@ -35,9 +54,10 @@ export default function ViewCounter({
 
 		hasFetchedRef.current = true;
 
-		const shouldIncrement = increment && !incrementedSlugs.has(slug);
+		const alreadyViewed = getViewedSlugs().has(slug);
+		const shouldIncrement = increment && !alreadyViewed;
 		if (shouldIncrement) {
-			incrementedSlugs.add(slug);
+			markSlugViewed(slug);
 		}
 
 		const params = new URLSearchParams({ id: slug });

@@ -7,6 +7,23 @@ export const GET: APIRoute = async ({ url }) => {
 	const id = url.searchParams.get("id");
 	const incr = url.searchParams.get("incr");
 
+	if (incr && incr !== "1") {
+		return new Response(
+			JSON.stringify({
+				error: {
+					message: 'Invalid "incr" value',
+					code: "INVALID_INCR",
+				},
+			}),
+			{
+				status: 400,
+				headers: {
+					"Content-Type": "application/json",
+				},
+			},
+		);
+	}
+
 	if (!id) {
 		return new Response(
 			JSON.stringify({
