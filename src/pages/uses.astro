@@ -31,11 +31,12 @@ import ResendLogo from "../assets/svgs/logos/resend.svg";
 import TailwindLogo from "../assets/svgs/logos/tailwindcss.svg";
 import TriggerLogo from "../assets/svgs/logos/trigger.svg";
 import TypescriptLogo from "../assets/svgs/logos/typescript.svg";
+import CodexLogo from "../assets/svgs/logos/codex.svg";
+import TogglLogo from "../assets/svgs/logos/toggl.svg";
 import VercelLogo from "../assets/svgs/logos/vercel.svg";
-import ZedLogo from "../assets/svgs/logos/zed.svg";
 
 const ogTitle = "Uses";
-const ogDescription = "Hardware, software, dev stack, and AI tools Railly Hugo uses daily. Bun, TypeScript, Next.js, Claude Code, Zed, and more.";
+const ogDescription = "Hardware, software, dev stack, and AI tools Railly Hugo uses daily. Bun, TypeScript, Next.js, Claude Code, Cursor, and more.";
 const ogImage = `/api/og?title=${encodeURIComponent(ogTitle)}&description=${encodeURIComponent(ogDescription)}&tag=uses`;
 
 const logoMap: Record<string, ImageMetadata> = {
@@ -49,7 +50,7 @@ const logoMap: Record<string, ImageMetadata> = {
 	"DJI Osmo Nano": DjiLogo,
 	"Meta Ray-Ban": MetaLogo,
 	"Arduino UNO R4 WiFi": ArduinoLogo,
-	"Zed": ZedLogo,
+	"Cursor": CursorLogo,
 	"Ghostty": GhosttyLogo,
 	"Bun": BunLogo,
 	"Biome": BiomeLogo,
@@ -62,13 +63,14 @@ const logoMap: Record<string, ImageMetadata> = {
 	"Trigger.dev": TriggerLogo,
 	"Resend": ResendLogo,
 	"Claude Code": ClaudeLogo,
-	"Cursor": CursorLogo,
+	"Codex": CodexLogo,
 	"Obsidian": ObsidianLogo,
 	"Raycast": RaycastLogo,
 	"Figma": FigmaLogo,
 	"Comet": PerplexityLogo,
 	"Discord & Slack": DiscordLogo,
 	"Notion Calendar": NotionLogo,
+	"Toggl Track": TogglLogo,
 	"Linear": LinearLogo,
 	"gh": GithubLogo,
 	"cloudflared": CloudflareLogo,
@@ -81,23 +83,16 @@ const logoMap: Record<string, ImageMetadata> = {
 const monoLogos = new Set([
 	"MacBook Pro M4 Pro", "iPad Pro", "iPhone 15 Plus", "Apple Watch S10", "AirPods Pro",
 	"Shure MV7+", "DJI Mic Mini", "DJI Osmo Nano", "Meta Ray-Ban", "Arduino UNO R4 WiFi",
-	"Zed", "Ghostty", "Biome",
+	"Cursor", "Ghostty", "Biome",
 	"Next.js 15", "Tailwind CSS", "Clerk", "Vercel", "Neon",
-	"Trigger.dev", "Resend", "Claude Code", "Cursor", "Obsidian", "Raycast",
-	"Figma", "Discord & Slack", "TypeScript", "Comet",
+	"Trigger.dev", "Resend", "Claude Code", "Codex", "Obsidian", "Raycast",
+	"Figma", "Discord & Slack", "TypeScript", "Comet", "Toggl Track",
 	"Linear", "gh", "cloudflared", "vercel", "clerk", "obsidian", "ffmpeg",
 ]);
 
 interface Item {
 	name: string;
 	description: string;
-	url?: string;
-}
-
-interface Book {
-	title: string;
-	author: string;
-	status: "reading" | "completed" | "queued";
 	url?: string;
 }
 
@@ -119,7 +114,7 @@ const sections: { title: string; items: Item[] }[] = [
 		items: [
 			{ name: "Shure MV7+", description: "Podcast microphone + boom arm", url: "https://shure.com/en-US/microphones/usb/mv7-plus" },
 			{ name: "DJI Mic Mini", description: "Wireless lavalier (2 TX + 1 RX)", url: "https://store.dji.com/product/dji-mic-mini" },
-			{ name: "DJI Osmo Nano", description: "Action camera, 128 GB", url: "https://store.dji.com/product/dji-osmo-nano" },
+			{ name: "DJI Osmo Nano", description: "Action camera, 128 GB", url: "https://store.dji.com/product/osmo-nano" },
 			{ name: "Meta Ray-Ban", description: "Smart glasses, Classic Black", url: "https://www.meta.com/smart-glasses" },
 		],
 	},
@@ -133,7 +128,7 @@ const sections: { title: string; items: Item[] }[] = [
 	{
 		title: "Editor & Terminal",
 		items: [
-			{ name: "Zed", description: "Primary editor, vim mode, Vesper theme", url: "https://zed.dev" },
+			{ name: "Cursor", description: "Primary editor, AI code editor", url: "https://cursor.com" },
 			{ name: "Ghostty", description: "Terminal, GeistMono Nerd Font, Vesper theme", url: "https://ghostty.org" },
 		],
 	},
@@ -156,7 +151,7 @@ const sections: { title: string; items: Item[] }[] = [
 		title: "AI",
 		items: [
 			{ name: "Claude Code", description: "Primary AI assistant", url: "https://claude.ai/claude-code" },
-			{ name: "Cursor", description: "AI code editor", url: "https://cursor.com" },
+			{ name: "Codex", description: "OpenAI coding agent", url: "https://codex.openai.com" },
 		],
 	},
 	{
@@ -186,26 +181,6 @@ const sections: { title: string; items: Item[] }[] = [
 	},
 ];
 
-const books: Book[] = [
-	{
-		title: "The Art of Doing Science and Engineering",
-		author: "Richard W. Hamming",
-		status: "reading",
-		url: "https://press.stripe.com/the-art-of-doing-science-and-engineering",
-	},
-	{
-		title: "Working in Public",
-		author: "Nadia Eghbal",
-		status: "reading",
-		url: "https://press.stripe.com/working-in-public",
-	},
-];
-
-const statusLabel: Record<Book["status"], string> = {
-	reading: "Reading",
-	completed: "Completed",
-	queued: "Queued",
-};
 ---
 
 <Layout title={`${ogTitle} — Railly Hugo`} description={ogDescription} image={ogImage}>
@@ -259,42 +234,6 @@ const statusLabel: Record<Book["status"], string> = {
 				</div>
 			</section>
 		))}
-
-		<section class="w-full">
-			<h2 class="text-sm font-serif italic text-foreground-2 uppercase tracking-wider mb-3">
-				Bookshelf
-			</h2>
-			<div class="space-y-0">
-				{books.map((book) => (
-					<div class="flex items-center gap-4 py-2.5 border-b border-ui">
-						<span class="text-foreground font-medium text-sm shrink-0 w-52 flex items-center gap-2">
-							{book.url ? (
-								<a
-									href={book.url}
-									target="_blank"
-									class="hover:underline decoration-ui"
-								>
-									{book.title}
-								</a>
-							) : (
-								book.title
-							)}
-						</span>
-						<span class="text-foreground-3 text-sm flex-1">
-							{book.author}
-						</span>
-						<span class:list={[
-							"text-xs px-2 py-0.5 rounded-full shrink-0",
-							book.status === "reading" && "bg-yellow/20 text-yellow",
-							book.status === "completed" && "bg-green/20 text-green",
-							book.status === "queued" && "bg-ui text-foreground-2",
-						]}>
-							{statusLabel[book.status]}
-						</span>
-					</div>
-				))}
-			</div>
-		</section>
 
 		<Footer />
 	</PageLayout>

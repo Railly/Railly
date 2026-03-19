@@ -10,6 +10,7 @@ import PlatanusHackLogo from "../components/brand/PlatanusHackLogo.astro";
 import ScrapiLogo from "../components/brand/ScrapiLogo.astro";
 import TinteLogo from "../components/brand/TinteLogo.astro";
 import UNMSMLogo from "../components/brand/UNMSMLogo.astro";
+import CodexLogo from "../components/brand/CodexLogo.astro";
 import V0Logo from "../components/brand/V0Logo.astro";
 import VercelLogo from "../components/brand/VercelLogo.astro";
 import XLogo from "../components/brand/XLogo.astro";
@@ -214,7 +215,16 @@ const ogImage = `/api/og?title=${encodeURIComponent(ogTitle)}&description=${enco
                 > (35k+ downloads).
             </p>
             <p class="text-foreground-2 leading-relaxed">
-                I'm a <a
+                I'm a <CodexLogo
+                    width={16}
+                    height={16}
+                    class="inline-block mr-0.5 mb-0.5 align-text-bottom"
+                /><a
+                    href="https://codex.openai.com"
+                    target="_blank"
+                    class="text-foreground underline decoration-ui hover:bg-foreground hover:text-background transition-colors"
+                    >Codex Ambassador</a
+                > and <a
                     href="https://v0.dev/chat/community"
                     target="_blank"
                     class="text-foreground underline decoration-ui hover:bg-foreground hover:text-background transition-colors"
@@ -224,7 +234,7 @@ const ogImage = `/api/og?title=${encodeURIComponent(ogTitle)}&description=${enco
                         height={16}
                         class="inline-block mr-0.5 mb-0.5 align-text-bottom"
                     /><span class="sr-only">v0 </span><span>Ambassador</span></a
-                > and consider myself a builder at heart. I ship fast, iterate in
+                >. I consider myself a builder at heart. I ship fast, iterate in
                 public, and believe everything compounds.
             </p>
             <p class="text-foreground-2 leading-relaxed">

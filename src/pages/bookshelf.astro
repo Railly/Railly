@@ -1,0 +1,386 @@
+---
+import Footer from "../components/layout/Footer.astro";
+import PageLayout from "../components/layout/PageLayout.astro";
+import SectionHeader from "../components/layout/SectionHeader.astro";
+import Layout from "../layouts/Layout.astro";
+
+const ogTitle = "Bookshelf";
+const ogDescription = "Books I'm reading, have read, and plan to read. A curated collection on engineering, open source, and thinking.";
+const ogImage = `/api/og?title=${encodeURIComponent(ogTitle)}&description=${encodeURIComponent(ogDescription)}&tag=bookshelf`;
+
+interface Book {
+	title: string;
+	author: string;
+	status: "reading" | "completed" | "queued";
+	url?: string;
+	pages?: number;
+	note?: string;
+	year?: string;
+	color: string;
+}
+
+const books: Book[] = [
+	{
+		title: "The Art of Doing Science and Engineering",
+		author: "Richard W. Hamming",
+		status: "reading",
+		url: "https://press.stripe.com/the-art-of-doing-science-and-engineering",
+		pages: 432,
+		note: "Learning to learn. Hamming's lectures on thinking clearly about your career and craft.",
+		year: "2026",
+		color: "#1a3a5c",
+	},
+	{
+		title: "Working in Public",
+		author: "Nadia Eghbal",
+		status: "reading",
+		url: "https://press.stripe.com/working-in-public",
+		pages: 256,
+		note: "The making and maintenance of open source software. Resonates deeply with Elements and Tinte.",
+		year: "2026",
+		color: "#2d5a3d",
+	},
+];
+
+const totalPages = books.reduce((sum, b) => sum + (b.pages || 0), 0);
+
+const statusOrder = ["reading", "completed", "queued"] as const;
+const statusConfig = {
+	reading: { label: "Reading", symbol: "~" },
+	completed: { label: "Read", symbol: "+" },
+	queued: { label: "Queue", symbol: ">" },
+} as const;
+
+const spineWidth = (pages?: number) => {
+	if (!pages) return 28;
+	if (pages < 200) return 24;
+	if (pages < 350) return 32;
+	return 40;
+};
+---
+
+<Layout title={`${ogTitle} — Railly Hugo`} description={ogDescription} image={ogImage}>
+	<PageLayout class="flex flex-col gap-8">
+		<SectionHeader title="Bookshelf" />
+
+		<p class="text-foreground-2 leading-relaxed text-base">
+			What I'm reading, what shaped my thinking, and what's next.
+			<span class="text-foreground-3 text-sm ml-1">
+				{books.length} books{totalPages > 0 && <> &middot; {totalPages.toLocaleString()} pages</>}
+			</span>
+		</p>
+
+		<div class="shelf-container">
+			<div class="shelf-books">
+				{books.map((book, i) => (
+					<a
+						href={book.url}
+						target="_blank"
+						rel="noopener noreferrer"
+						class="spine-wrapper"
+						style={`--delay: ${i * 0.08}s; --w: ${spineWidth(book.pages)}px; --accent: ${book.color}`}
+						data-status={book.status}
+					>
+						<div class="spine">
+							<span class="spine-status">{statusConfig[book.status].symbol}</span>
+							<span class="spine-title">{book.title}</span>
+							<span class="spine-author">{book.author}</span>
+						</div>
+						<div class="spine-tooltip">
+							<span class="tooltip-title">{book.title}</span>
+							<span class="tooltip-author">{book.author}</span>
+							{book.pages && <span class="tooltip-pages">{book.pages}p</span>}
+						</div>
+					</a>
+				))}
+			</div>
+			<div class="shelf-edge" />
+			<div class="shelf-shadow" />
+		</div>
+
+		{statusOrder.map(status => {
+			const group = books.filter(b => b.status === status);
+			if (group.length === 0) return null;
+			return (
+				<section class="w-full">
+					<h2 class="text-sm font-serif italic text-foreground-2 uppercase tracking-wider mb-3">
+						{statusConfig[status].label}
+					</h2>
+					<div class="space-y-0">
+						{group.map(book => (
+							<div class="book-row group" style={`--accent: ${book.color}`}>
+								<div class="book-indicator" />
+								<div class="flex-1 min-w-0">
+									<div class="flex items-baseline gap-3">
+										<span class="text-foreground font-medium text-sm truncate">
+											{book.url ? (
+												<a
+													href={book.url}
+													target="_blank"
+													rel="noopener noreferrer"
+													class="hover:underline decoration-ui"
+												>
+													{book.title}
+												</a>
+											) : book.title}
+										</span>
+										{book.pages && (
+											<span class="text-foreground-3 text-xs font-mono shrink-0">
+												{book.pages}p
+											</span>
+										)}
+									</div>
+									<span class="text-foreground-3 text-sm font-serif italic">
+										{book.author}
+									</span>
+									{book.note && (
+										<p class="text-foreground-3 text-xs mt-1 leading-relaxed max-w-lg">
+											{book.note}
+										</p>
+									)}
+								</div>
+								{book.year && (
+									<span class="text-foreground-3 tabular-nums text-sm shrink-0 hidden sm:block">
+										{book.year}
+									</span>
+								)}
+							</div>
+						))}
+					</div>
+				</section>
+			);
+		})}
+
+		<Footer />
+	</PageLayout>
+</Layout>
+
+<style>
+	.shelf-container {
+		position: relative;
+		padding: 2rem 0 0;
+	}
+
+	.shelf-books {
+		display: flex;
+		align-items: flex-end;
+		gap: 3px;
+		padding: 0 1rem;
+		min-height: 180px;
+	}
+
+	.spine-wrapper {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		animation: shelfSlideIn 0.4s ease-out both;
+		animation-delay: var(--delay);
+		text-decoration: none;
+		position: relative;
+	}
+
+	.spine {
+		width: var(--w);
+		height: 160px;
+		border: 1px solid color-mix(in srgb, var(--accent) 25%, var(--color-ui-2));
+		border-bottom: none;
+		border-top: 3px solid var(--accent);
+		border-radius: 2px 2px 0 0;
+		background: linear-gradient(
+			to bottom,
+			color-mix(in srgb, var(--accent) 12%, var(--color-background)),
+			color-mix(in srgb, var(--accent) 5%, var(--color-background))
+		);
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		gap: 0.5rem;
+		padding: 0.75rem 0.25rem;
+		cursor: pointer;
+		transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+					border-color 0.2s,
+					background-color 0.2s,
+					box-shadow 0.2s;
+		position: relative;
+		overflow: hidden;
+		box-shadow: inset -2px 0 4px -2px rgba(0, 0, 0, 0.1);
+	}
+
+	.spine-wrapper:hover .spine {
+		transform: translateY(-12px);
+		border-color: color-mix(in srgb, var(--accent) 50%, var(--color-ui-2));
+		background: linear-gradient(
+			to bottom,
+			color-mix(in srgb, var(--accent) 18%, var(--color-background)),
+			color-mix(in srgb, var(--accent) 8%, var(--color-background))
+		);
+		box-shadow: inset -2px 0 4px -2px rgba(0, 0, 0, 0.15),
+					0 -4px 12px -4px color-mix(in srgb, var(--accent) 20%, transparent);
+	}
+
+	.spine-wrapper[data-status="queued"] .spine {
+		opacity: 0.6;
+		border-style: dashed;
+	}
+
+	.spine-status {
+		font-family: var(--font-mono);
+		font-size: 10px;
+		color: var(--color-foreground-3);
+		line-height: 1;
+	}
+
+	.spine-title {
+		writing-mode: vertical-rl;
+		text-orientation: mixed;
+		font-size: 11px;
+		font-weight: 500;
+		color: var(--color-foreground);
+		line-height: 1.2;
+		max-height: 100px;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		letter-spacing: 0.01em;
+	}
+
+	.spine-author {
+		writing-mode: vertical-rl;
+		text-orientation: mixed;
+		font-size: 9px;
+		font-family: var(--font-serif);
+		font-style: italic;
+		color: var(--color-foreground-3);
+		line-height: 1;
+		max-height: 60px;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+	.spine-tooltip {
+		position: absolute;
+		bottom: calc(100% + 8px);
+		left: 50%;
+		transform: translateX(-50%);
+		background: var(--color-foreground);
+		color: var(--color-background);
+		padding: 0.5rem 0.75rem;
+		border-radius: 6px;
+		font-size: 11px;
+		white-space: nowrap;
+		display: flex;
+		flex-direction: column;
+		gap: 2px;
+		opacity: 0;
+		pointer-events: none;
+		transition: opacity 0.2s;
+		z-index: 10;
+	}
+
+	.spine-tooltip::after {
+		content: "";
+		position: absolute;
+		top: 100%;
+		left: 50%;
+		transform: translateX(-50%);
+		border: 5px solid transparent;
+		border-top-color: var(--color-foreground);
+	}
+
+	.spine-wrapper:hover .spine-tooltip {
+		opacity: 1;
+	}
+
+	.tooltip-title {
+		font-weight: 500;
+		font-size: 11px;
+	}
+
+	.tooltip-author {
+		font-family: var(--font-serif);
+		font-style: italic;
+		font-size: 10px;
+		opacity: 0.7;
+	}
+
+	.tooltip-pages {
+		font-family: var(--font-mono);
+		font-size: 10px;
+		opacity: 0.5;
+	}
+
+	.shelf-edge {
+		height: 6px;
+		background: var(--color-ui);
+		border-top: 1px solid var(--color-ui-2);
+		border-radius: 0 0 2px 2px;
+	}
+
+	.shelf-shadow {
+		height: 8px;
+		background: linear-gradient(to bottom, var(--color-ui), transparent);
+		opacity: 0.3;
+	}
+
+	@keyframes shelfSlideIn {
+		from {
+			opacity: 0;
+			transform: translateY(20px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	.book-row {
+		display: flex;
+		align-items: flex-start;
+		gap: 0.75rem;
+		padding: 0.75rem 0;
+		border-bottom: 1px solid var(--color-ui);
+		transition: background-color 0.2s;
+		margin: 0 -0.75rem;
+		padding-left: 0.75rem;
+		padding-right: 0.75rem;
+	}
+
+	.book-row:hover {
+		background-color: var(--color-background-2);
+	}
+
+	.book-indicator {
+		width: 3px;
+		height: 32px;
+		border-radius: 2px;
+		margin-top: 2px;
+		flex-shrink: 0;
+		transition: height 0.2s;
+	}
+
+	.book-indicator {
+		background: var(--accent);
+	}
+
+	.book-row:hover .book-indicator {
+		height: 100%;
+	}
+
+	@media (max-width: 640px) {
+		.shelf-books {
+			overflow-x: auto;
+			scrollbar-width: none;
+			padding-bottom: 2px;
+		}
+
+		.shelf-books::-webkit-scrollbar {
+			display: none;
+		}
+
+		.spine {
+			height: 140px;
+		}
+	}
+</style>
