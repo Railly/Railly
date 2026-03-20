@@ -13,6 +13,7 @@ import ScrapiLogo from "../components/brand/ScrapiLogo.astro";
 import TinteLogo from "../components/brand/TinteLogo.astro";
 import PremiereCountdown from "../components/blog/PremiereCountdown";
 import ViewCounter from "../components/blog/ViewCounter";
+import NewsletterSection from "../components/newsletter/NewsletterSection.astro";
 import Footer from "../components/layout/Footer.astro";
 import HeroSection from "../components/layout/HeroSection.astro";
 import PageLayout from "../components/layout/PageLayout.astro";
@@ -457,6 +458,7 @@ type IconKey = keyof typeof iconMap;
                 }
             </div>
         </section>
+        <NewsletterSection />
         <Footer />
     </PageLayout>
 </Layout>
