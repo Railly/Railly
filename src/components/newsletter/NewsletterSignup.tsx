@@ -7,7 +7,9 @@ interface Props {
 type Status = "idle" | "loading" | "success" | "error" | "already";
 
 export default function NewsletterSignup({ className = "" }: Props) {
+	const [name, setName] = useState("");
 	const [email, setEmail] = useState("");
+	const [honeypot, setHoneypot] = useState("");
 	const [status, setStatus] = useState<Status>("idle");
 
 	const handleSubmit = async (e: FormEvent) => {
@@ -20,13 +22,18 @@ export default function NewsletterSignup({ className = "" }: Props) {
 			const res = await fetch("/api/subscribe", {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({ email: email.trim() }),
+				body: JSON.stringify({
+					email: email.trim(),
+					firstName: name.trim() || undefined,
+					...(honeypot && { honeypot }),
+				}),
 			});
 
 			const data = await res.json();
 
 			if (res.ok) {
 				setStatus("success");
+				setName("");
 				setEmail("");
 			} else if (data.error?.code === "ALREADY_SUBSCRIBED") {
 				setStatus("already");
@@ -59,6 +66,23 @@ export default function NewsletterSignup({ className = "" }: Props) {
 			onSubmit={handleSubmit}
 			className={`flex flex-col sm:flex-row gap-2 ${className}`}
 		>
+			<input
+				type="text"
+				name="website"
+				value={honeypot}
+				onChange={(e) => setHoneypot(e.target.value)}
+				tabIndex={-1}
+				autoComplete="off"
+				aria-hidden="true"
+				style={{ position: "absolute", left: "-9999px", opacity: 0 }}
+			/>
+			<input
+				type="text"
+				value={name}
+				onChange={(e) => setName(e.target.value)}
+				placeholder="First name"
+				className="sm:w-28 border border-ui focus:border-foreground-2 bg-transparent text-foreground text-sm px-3 py-2 rounded-md outline-none transition-colors font-sans placeholder:text-foreground-3"
+			/>
 			<input
 				type="email"
 				value={email}

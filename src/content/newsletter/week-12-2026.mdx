@@ -1,0 +1,27 @@
+---
+title: "Week 12: Codex Themes, 49 Agent Logos, and a Newsletter That Writes Itself"
+subject: "Week 12: Codex Themes, 49 Agent Logos, and a Newsletter That Writes Itself"
+pubDate: 2026-03-20
+weekNumber: 12
+---
+
+## What I Shipped
+
+- Built a full [Codex (OpenAI)](https://codex.openai.com) theme provider for [tinte](https://github.com/Railly/tinte) -- reverse-engineered the desktop app's asar bundle to extract 55 valid Shiki theme IDs
+- Added [29 tech logo components](https://tryelements.dev) to the Elements registry (Algolia, Convex, PostHog, Nvidia, Ollama, LangChain, and more) -- all theme-adaptive for dark/light mode
+- Shipped an [agent-stack dashboard](https://github.com/crafter-station/agent-stack) with 49 AI services, competition rankings, and OG images
+- Built a full newsletter system for [railly.dev](https://www.railly.dev) -- subscribe API, broadcast send, archive pages, all auto-generated from daily logs using the [Resend CLI](https://github.com/resend/resend-cli)
+- Got accepted into the [Codex Ambassador](https://codex.openai.com) program (now both v0 + Codex Ambassador)
+- Pitched and got approved for a v0 workshop series with [Vercel](https://vercel.com) for LATAM
+
+## TIL
+
+OpenAI's Codex desktop app validates theme imports against exactly 55 built-in Shiki `codeThemeId` values. Custom slugs like "one-hunter" fail silently -- you have to hardcode a valid ID like `light-plus` or `dark-plus` and let the colors do the work. Found this by unpacking the Electron asar bundle and reading their Zod schema.
+
+## Worth Checking Out
+
+[Resend CLI](https://github.com/resend/resend-cli) - 53 commands for managing emails, domains, contacts, broadcasts, and webhooks from your terminal. Ships with both human-friendly (spinners, tables) and agent-friendly (`--json`, `--quiet`) modes. Natural language scheduling built in.
+
+## One Thought
+
+*The best content pipeline is one where writing is a byproduct of work you already do. I built this newsletter so it auto-extracts from my daily logs -- zero extra writing effort. If your workflow doesn't produce shareable artifacts, you're doing invisible work.*
