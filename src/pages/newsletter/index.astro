@@ -1,0 +1,68 @@
+---
+import { getCollection } from "astro:content";
+import NewsletterSignup from "../../components/newsletter/NewsletterSignup";
+import Footer from "../../components/layout/Footer.astro";
+import PageLayout from "../../components/layout/PageLayout.astro";
+import SectionHeader from "../../components/layout/SectionHeader.astro";
+import Layout from "../../layouts/Layout.astro";
+
+const ogTitle = "Newsletter";
+const ogDescription = "Weekly notes on what I shipped, learned, and found useful.";
+const ogImage = `/api/og?title=${encodeURIComponent(ogTitle)}&description=${encodeURIComponent(ogDescription)}&tag=newsletter`;
+
+const issues = await getCollection("newsletter");
+const sortedIssues = issues.sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+
+const formatDate = (date: Date) => {
+	const day = date.getDate().toString().padStart(2, "0");
+	const month = (date.getMonth() + 1).toString().padStart(2, "0");
+	return `${day}/${month}`;
+};
+---
+
+<Layout
+    title="Newsletter - Railly Hugo"
+    description={ogDescription}
+    image={ogImage}
+>
+    <PageLayout class="flex flex-col gap-8">
+        <div>
+            <SectionHeader title="Newsletter" className="mb-4" />
+            <p class="text-foreground-3 text-sm mb-4">
+                Weekly notes on what I shipped, learned, and found useful.
+            </p>
+            <NewsletterSignup client:only="react" />
+        </div>
+
+        {sortedIssues.length > 0 ? (
+            <div class="space-y-0">
+                {sortedIssues.map((issue) => (
+                    <a
+                        href={`/newsletter/${issue.slug}`}
+                        class="group flex items-baseline gap-4 py-3 border-b border-ui hover:bg-background-2 transition-colors -mx-3 px-3"
+                    >
+                        <span class="text-foreground-3 tabular-nums text-sm shrink-0 font-mono">
+                            #{issue.data.weekNumber}
+                        </span>
+                        <span class="flex-1 text-foreground font-medium text-sm">
+                            {issue.data.title}
+                        </span>
+                        <span class="text-foreground-3 tabular-nums text-sm shrink-0">
+                            {formatDate(issue.data.pubDate)}
+                        </span>
+                    </a>
+                ))}
+            </div>
+        ) : (
+            <div class="py-12 text-center">
+                <p class="text-foreground-3 text-sm">
+                    First issue coming soon.
+                </p>
+            </div>
+        )}
+
+        <Footer />
+    </PageLayout>
+</Layout>
