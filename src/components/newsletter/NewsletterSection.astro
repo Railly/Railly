@@ -1,0 +1,14 @@
+---
+import SectionHeader from "../layout/SectionHeader.astro";
+import NewsletterSignup from "./NewsletterSignup";
+---
+
+<section class="w-full">
+    <div class="mb-4">
+        <SectionHeader title="Newsletter" className="mb-0" />
+    </div>
+    <p class="text-foreground-3 text-sm mb-4">
+        Weekly notes on what I shipped, learned, and found useful.
+    </p>
+    <NewsletterSignup client:only="react" />
+</section>
