@@ -43,6 +43,7 @@
 		"react-tweet": "^3.3.0",
 		"rehype-katex": "^7.0.1",
 		"remark-math": "^6.0.0",
+		"resend": "^6.9.4",
 		"tailwindcss": "^4.1.17",
 		"use-sound": "^5.0.0"
 	},
