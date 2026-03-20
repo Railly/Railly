@@ -43,7 +43,20 @@ const til = defineCollection({
 	}),
 });
 
+const newsletter = defineCollection({
+	type: "content",
+	schema: z.object({
+		title: z.string(),
+		subject: z.string(),
+		pubDate: z
+			.union([z.coerce.date(), z.string().datetime()])
+			.transform((val) => new Date(val)),
+		weekNumber: z.number(),
+	}),
+});
+
 export const collections = {
 	blog,
 	til,
+	newsletter,
 };
