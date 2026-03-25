@@ -1,5 +1,6 @@
 ---
 import Hack0Logo from "../assets/svgs/h0-logo.svg";
+import PeruFinanciaLogo from "../components/brand/PeruFinanciaLogo.astro";
 import Text0Logo from "../assets/svgs/t0-logo.svg";
 import ElementsLogo from "../components/brand/ElementsLogo.astro";
 import OneHunterLogo from "../components/brand/OneHunterLogo.astro";
@@ -57,6 +58,13 @@ const projectsData = [
         url: "https://hack0.dev",
         icon: "hack0" as const,
     },
+    {
+        name: "peru-financia",
+        repo: "crafter-research/peru-financia",
+        description: "Political finance transparency for Peru - ONPE data",
+        url: "https://peru-financia.crafter.ing",
+        icon: "peruFinancia" as const,
+    },
 ];
 
 async function getStars(repo: string): Promise<number> {
@@ -87,6 +95,7 @@ const iconMap = {
     oneHunter: OneHunterLogo,
     scrapi: ScrapiLogo,
     hack0: Hack0Logo,
+    peruFinancia: PeruFinanciaLogo,
 } as const;
 
 type IconKey = keyof typeof iconMap;

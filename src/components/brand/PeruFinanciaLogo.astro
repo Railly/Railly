@@ -1,0 +1,23 @@
+---
+interface Props {
+	width?: number;
+	height?: number;
+	class?: string;
+}
+
+const { width = 16, height = 16, class: className } = Astro.props;
+---
+
+<svg
+	width={width}
+	height={height}
+	viewBox="0 0 32 32"
+	fill="none"
+	xmlns="http://www.w3.org/2000/svg"
+	class={className}
+>
+	<title>peru-financia</title>
+	<rect width="32" height="32" rx="4.8" fill="#0a0a0a"/>
+	<rect x="0" y="0" width="32" height="1.92" rx="0.96" fill="#c084fc" opacity="0.8"/>
+	<text x="16" y="23" text-anchor="middle" font-family="system-ui, sans-serif" font-size="17.6" font-weight="800" fill="#c084fc">F</text>
+</svg>
