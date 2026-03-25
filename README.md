@@ -14,6 +14,8 @@ Founder of [Crafter Station](https://crafterstation.com), building Peru's tech e
 | [shadcn-ui-customizer](https://github.com/Railly/shadcn-ui-customizer) | Theme editor for shadcn/ui `378★` |
 | [one-hunter](https://github.com/Railly/one-hunter-vscode) | VS Code theme inspired by Vercel and One Dark Pro `373★` |
 
+Also running [Crafter Research](https://research.crafter.ing) — open-source civic tech for Peru.
+
 ### Links
 
 [railly.dev](https://railly.dev) · [twitter](https://twitter.com/RaillyHugo) · [linkedin](https://linkedin.com/in/raillyhugo)
