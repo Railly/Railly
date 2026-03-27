@@ -1,0 +1,47 @@
+---
+interface Props {
+	href: string;
+	text: string;
+}
+
+const { href, text } = Astro.props;
+---
+
+<div
+	id="announcement-banner"
+	class="sticky top-0 z-50 bg-foreground text-background text-sm font-medium py-2 px-4 text-center transition-all"
+>
+	<a
+		href={href}
+		target="_blank"
+		class="hover:underline"
+	>
+		{text} <span aria-hidden="true">&rarr;</span>
+	</a>
+	<button
+		id="banner-close"
+		class="absolute right-3 top-1/2 -translate-y-1/2 hover:opacity-60 transition-opacity cursor-pointer"
+		aria-label="Close announcement"
+	>
+		<svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+			<path d="M1 1L13 13M1 13L13 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+		</svg>
+	</button>
+</div>
+
+<script is:inline>
+(function() {
+	var KEY = "banner-dismissed-thelast30";
+	var banner = document.getElementById("announcement-banner");
+	var btn = document.getElementById("banner-close");
+	if (!banner || !btn) return;
+	if (localStorage.getItem(KEY)) {
+		banner.remove();
+		return;
+	}
+	btn.addEventListener("click", function() {
+		localStorage.setItem(KEY, "1");
+		banner.remove();
+	});
+})();
+</script>

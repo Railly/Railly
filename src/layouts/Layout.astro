@@ -1,6 +1,7 @@
 ---
 import { ClientRouter } from "astro:transitions";
 import { siteConfig } from "../config/site";
+import AnnouncementBanner from "../components/layout/AnnouncementBanner.astro";
 import "../styles/global.css";
 
 interface Props {
@@ -205,6 +206,10 @@ const socialImageURL = new URL(image, siteConfig.url);
     <body
         class="min-h-screen bg-background text-foreground selection:text-primary selection:bg-background-2"
     >
+        <AnnouncementBanner
+            href="https://thelast30.railly.dev"
+            text="The Last 30% — Software engineering for vibe coders. Join the waitlist."
+        />
         <slot />
         {import.meta.env.DEV && <script is:inline src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>}
     </body>
