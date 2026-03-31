@@ -75,7 +75,7 @@ Here's what nobody expects when I show this system. The vault isn't just for not
 
 Not in the project repo. In the vault. Because CLAUDE.md (or AGENTS.md for Codex) loads on startup, the AI already knows my stack preferences (Bun, not npm. Biome, not ESLint. Clerk for auth. Tailwind. Server Components first.), where every repo lives on my machine, and the context of what I've been working on across all projects.
 
-The `07_System/context-files/` folder is the secret weapon, deep context files for each project, loaded on demand with the `@` reference syntax:
+The `07_System/context-files/` folder is the secret weapon, deep context files for each project, loaded at session start with the `@` reference syntax:
 
 ```
 @07_System/context-files/clerk-context.md
