@@ -1,10 +1,10 @@
 ---
-title: "Claude Code + Obsidian: A Second Brain That Actually Works"
-description: "An open-source knowledge system where Claude Code maintains your Obsidian vault: processing clips, connecting ideas, tracking goals, and calling out your recurring failures."
+title: "Obsidian as a Personal OS for AI Coding Agents"
+description: "I open every coding session from an Obsidian vault. Claude Code and Codex know my 20+ repos, scaffold apps to production in 2 minutes, and warn me when I'm repeating old mistakes."
 slug: "agentic-second-brain"
-pubDate: "2026-03-12"
-tags: ["ai", "obsidian", "claude", "productivity", "knowledge-management", "open-source"]
-status: "draft"
+pubDate: "2026-03-31"
+tags: ["ai", "obsidian", "claude", "codex", "productivity", "knowledge-management", "open-source"]
+status: "published"
 ---
 
 import Callout from "../../components/content/Callout.astro";
@@ -12,26 +12,27 @@ import Figure from "../../components/content/Figure.astro";
 import KnowledgeFlowDiagram from "../../components/content/KnowledgeFlowDiagram.astro";
 import CoreLoopDiagram from "../../components/content/CoreLoopDiagram.astro";
 import Sidenote from "../../components/content/Sidenote.astro";
+import ScaffoldFlowDiagram from "../../components/content/ScaffoldFlowDiagram.astro";
 
-Last week three developers asked me the same question. A data engineer in Lima, a PM in Bogota, a founder building from Italy. None of them coordinated.
+Last week three developers asked me the same question, independently. A data engineer in Lima, a PM in Bogota, a founder building from Italy.
 
 **"How does your AI workflow actually work?"**
 
-One of them, after I walked him through the setup, said "me volaste la cabeza." It's one system I've been running daily for 4+ months.
+They all described the same frustration: AI tools that forget everything between sessions. I've been running a system that solves this for 4+ months.
 
-Not a note-taking app. Not a Claude Code config. A **knowledge operating system**: the AI processes your web clips into atomic notes, extracts ideas buried in daily logs, finds connections you missed, and warns you when you're repeating old mistakes.
+Not a note-taking app. Not an AI config file. A **personal OS** where the AI already knows your stack, your repos, your goals, your recurring failures, and your entire work history before you type a single prompt. The result: I ship production code across 10+ projects in parallel, each terminal session starting from the same vault, each one able to cross-reference any other project, and the AI gets better at helping me every day because it remembers everything.
 
 I open-sourced it.
 
 ## The Problem
 
-Every knowledge management system dies the same way. You start excited. You take notes for a week. Maybe two. Then life gets busy, you stop processing, and your vault becomes a graveyard of unconnected ideas.
+Every AI coding tool starts from zero. You open Claude Code, Codex, Cursor, and the first thing you do is explain context. "I'm building a Next.js app with Clerk auth, Bun, Biome, deployed on Vercel." Every. Single. Session.
 
-The problem isn't discipline. The problem is that traditional <Sidenote>PKM<Fragment slot="note">**Personal Knowledge Management.** The practice of capturing, organizing, and connecting your own information. Most PKM systems assume you'll do the organizing yourself.</Fragment></Sidenote> systems require you to be the librarian, the connector, the reviewer, and the writer. You have to process your own clips. Find your own connections. Review your own goals. That's a lot of cognitive overhead on top of the actual work.
+That's the real problem. Not that AI can't code, it absolutely can. The problem is that AI doesn't know *you*. It doesn't know your stack preferences, your repo layout, your past decisions, or why you chose Biome over ESLint. So it gives you generic answers, and you spend half the session correcting it.
 
-What if the AI did all of that?
+What if the AI already knew all of that?
 
-Not "AI-assisted note-taking" where you paste text and get a summary. I mean a system where the AI knows your goals, your recurring failures, your vault structure, and it actively works on your knowledge while you sleep, eat, or ship code.
+Not "AI-assisted note-taking" where you paste text and get a summary. A personal operating system where the AI knows your goals, your recurring failures, your vault structure, and the context of every project you've ever worked on, and it uses all of that to write better code, faster.
 
 That's what I built.
 
@@ -46,62 +47,106 @@ The system has three layers:
 02_Journal/      -> Daily logs, weekly plans, reflections
 03_Garden/       -> Evergreen atomic notes (concepts, people, meetings)
 04_Projects/     -> Active project work
-05_Areas/        -> Ongoing life contexts (learning, content, work)
+05_Areas/        -> Ongoing life contexts (work, content, health)
 06_Content/      -> Ready-to-publish drafts
-07_System/       -> System configuration and context files
+07_System/       -> Context files and configuration
 ```
 
-**Claude Code** is the execution layer. 21 slash commands that process, connect, analyze, and create. Each command reads from the vault, makes decisions, and writes back.
+**Claude Code / Codex** is the execution layer. 14 slash commands (Claude Code) or skills (Codex) that process, connect, analyze, and create. Each one reads from the vault, makes decisions, and writes back.
 
-**CLAUDE.md** is the personality layer. It contains your identity, goals, stack preferences, anti-patterns, and communication style. Every time Claude Code starts, it reads this file and knows who you are.
+**CLAUDE.md / AGENTS.md** is the personality layer. It contains your identity, goals, stack preferences, anti-patterns, and communication style. Claude Code reads `CLAUDE.md`, Codex reads `AGENTS.md`, same content, native format for each tool. Every session starts knowing who you are.
 
-Here's the flow:
+The vault also includes system-level files at the root that give any AI agent (Claude Code, Codex, or anything that reads markdown) full context:
+
+| File | Purpose |
+|------|---------|
+| `CLAUDE.md` / `AGENTS.md` | Identity, stack, goals, anti-patterns, commands (same content, native format per tool) |
+| `PURPOSE.md` | Why this vault exists, architecture decisions, for any LLM that needs orientation |
+| `HOME.md` | Vault stats, quick start, entry points |
+| `HUMAN.md` | How-to guide for the human: daily workflow, folder guide, tips |
+
+This means any AI tool you point at the vault immediately understands what it is, how it works, and what you expect.
 
 <KnowledgeFlowDiagram />
 
-Knowledge flows in one direction: from raw capture to published content. The AI handles every transition.
+## The Leverage: Programming With Persistent Memory
 
-## The Core Loop
+Here's what nobody expects when I show this system. The vault isn't just for notes. **Every programming session I open starts here.**
 
-Here's what a typical day looks like.
+Not in the project repo. In the vault. Because CLAUDE.md (or AGENTS.md for Codex) loads on startup, the AI already knows my stack preferences (Bun, not npm. Biome, not ESLint. Clerk for auth. Tailwind. Server Components first.), where every repo lives on my machine, and the context of what I've been working on across all projects.
 
-1. **Morning**: I run `/morning`. It pulls my calendar, pending tasks, and recent activity. It gives me three <Sidenote>MITs<Fragment slot="note">**Most Important Things.** The 3 tasks that, if completed, make the day a success regardless of everything else. Set each morning, reviewed each night.</Fragment></Sidenote> for the day. I know exactly what to focus on before I open any code editor.
+The `07_System/context-files/` folder is the secret weapon, deep context files for each project, loaded on demand with the `@` reference syntax:
 
-2. **During the day**: Every time I ship something, `/ship` commits and pushes my code, then logs the commit to my daily journal automatically. If I have a quick thought, `/log "idea about X"` adds a timestamped entry to today's file. No context switching.
+```
+@07_System/context-files/clerk-context.md
+@07_System/context-files/crafter-station-context.md
+@07_System/context-files/repos-map.md
+```
 
-3. **Processing**: When my <Sidenote>Obsidian Web Clipper<Fragment slot="note">**Browser extension** that saves web pages directly into your vault as markdown files. Articles, tweets, documentation, anything. It becomes the entry point for all external knowledge.</Fragment></Sidenote> has accumulated articles, I run `/inbox`. It reads each clip, extracts the core ideas, creates atomic notes in `03_Garden/` with proper backlinks, and marks the clips as processed. One command, 10 articles processed in under 3 minutes.
+My `repos-map.md` lists every repo I work on, the stack, the local path. My `clerk-context.md` has my team, my ownership areas, active Linear issues, common patterns across 16 repos. When I say "fix the flaky test in clerk-evals", the AI already knows the repo is at `~/Clerk/clerk-evals`, it uses Bun and Biome, and the eval system uses AI SDK with MCP server support. Zero preamble. It just goes.
 
-4. **End of day**: `/today` also handles reflection. It audits your planned tasks vs actual, checks MIT progress, integrates health and study data, and asks for a day rating. Carry-over items automatically become tomorrow's planned tasks.
+This means every terminal I open starts from the vault, and any session can reach into any project. I run 10+ sessions in parallel, each one cross-referencing repos as needed. "Fix the auth bug in the dashboard, then update the docs site, then push both", zero re-explaining, because every session inherits the same context. The AI knows where everything is and how each project works.
 
-5. **Weekly**: `/pulse` runs a <Sidenote>Pareto analysis<Fragment slot="note">**The 80/20 rule applied to your work.** Finds the 20% of activities producing 80% of your results. `/pulse` ranks your interests by engagement weight and flags the vital few.</Fragment></Sidenote> on my engagement. It reads my daily logs, notes created, and projects touched, then compares them against my stated goals in CLAUDE.md.
+<Callout type="important" title="Why this matters">
+  Without persistent context, every AI session is a cold start. With it, session 100 is dramatically more useful than session 1, because the AI has been accumulating knowledge about you, your codebase, and your decisions the entire time.
+</Callout>
+
+And it compounds. The <Sidenote>auto-memory system<Fragment slot="note">**File-based memory in `~/.claude/projects/memory/`.** Claude Code automatically saves user preferences, feedback, project context, and reference pointers. Each memory is a markdown file with frontmatter. A `MEMORY.md` index keeps everything discoverable across sessions.</Fragment></Sidenote> means every correction I make ("don't use npm", "always use Server Components first", "Biome not ESLint") gets saved and applied in every future session. I never repeat myself. The AI learns my taste.
+
+### Zero to Production in 2 Minutes
+
+The compound effect is most visible with <Sidenote>skills<Fragment slot="note">**Reusable agent capabilities.** Skills are installed globally (`~/.claude/skills/` for Claude Code, `~/.agents/skills/` for Codex) and available in every session. Unlike commands (per-project), skills carry specialized knowledge across all your work.</Fragment></Sidenote>, global capabilities that work across every project.
+
+`/scaffold` creates a full production app from a single command:
+
+```bash
+/scaffold cook with nextjs "A cooking recipe app"
+```
+
+That one line:
+
+1. Creates a Next.js 15 app with TypeScript, Tailwind, and shadcn
+2. Replaces ESLint with Biome (my linting standard)
+3. Generates a branded README
+4. Creates a GitHub repo and pushes
+5. Deploys to Vercel
+6. Sets up a custom subdomain
+
+<ScaffoldFlowDiagram />
+
+Two minutes. From nothing to a live URL. The skill knows my org, my deploy target, my tooling preferences, because it reads from the same config that powers everything else.
+
+I have skills for deploying to Vercel, generating OG images, creating Clerk auth flows, building UI components, and dozens more. Each one carries specialized knowledge that would otherwise live in my head or in a bookmark I'd never find again.
+
+<Callout type="tip" title="Commands vs Skills">
+  Commands are project-specific (how to process *this* vault). Skills are universal (how to scaffold *any* project, deploy *anywhere*, generate *any* asset). The combination is what makes the system compound.
+</Callout>
+
+## The Daily System
+
+The vault maintains itself through a daily loop. This isn't busywork, it's what keeps the persistent memory accurate and the AI context fresh.
+
+1. **Morning**: `/morning` pulls my calendar, pending tasks, carry-over from yesterday, open PRs, and Linear issues. Three <Sidenote>MITs<Fragment slot="note">**Most Important Things.** The 3 tasks that, if completed, make the day a success regardless of everything else. Set each morning, reviewed each night.</Fragment></Sidenote> for the day. I know what to focus on before opening any editor.
+
+2. **During the day**: `/ship` commits code and auto-logs to the daily journal. `/log "idea"` timestamps quick thoughts. No context switching, everything flows into `02_Journal/`.
+
+3. **Processing**: `/inbox` reads <Sidenote>Web Clipper<Fragment slot="note">**Browser extension** that saves web pages directly into your vault as markdown files. Articles, tweets, documentation, anything. It becomes the entry point for all external knowledge.</Fragment></Sidenote> captures, extracts core ideas, creates atomic notes in `03_Garden/` with backlinks, and marks clips as processed. 10 articles in under 3 minutes.
+
+4. **End of day**: `/today` audits planned vs actual, checks MIT progress, asks for a day rating. Carry-over items become tomorrow's tasks.
+
+5. **Weekly**: `/pulse` runs a <Sidenote>Pareto analysis<Fragment slot="note">**The 80/20 rule applied to your work.** Finds the 20% of activities producing 80% of your results. `/pulse` ranks your interests by engagement weight and flags the vital few.</Fragment></Sidenote>, reads daily logs, notes created, and projects touched, then compares against stated goals. More on this next.
 
 <CoreLoopDiagram />
 
-The output looks like this:
-
-```
-VITAL 20%
-1. Auth/Clerk    ████████████ 45%
-2. AI Agents     ██████░░░░░░ 25%
-3. Community     ████░░░░░░░░ 15%
-
-BLIND SPOTS
-- "Math for ML" - No engagement in 14 days
-- "Content creation" - 5 ideas queued, 0 published
-
-DRIFT
-- "Real-time WebSockets" - High engagement, NOT in your goals
-```
-
-This is where it gets personal. That "Math for ML" blind spot? It's been there for months. I keep saying I want to learn it, but `/pulse` doesn't lie. The data shows I haven't touched it. That kind of honesty is uncomfortable. That's why it works.
+This loop is what keeps the system alive. Skip it for a month and your vault becomes stale. Run it daily and your AI gets smarter every week.
 
 ## The Anti-Pattern Engine
 
-This is the feature that made someone say "me volaste la cabeza."
+This is the feature that surprises people the most.
 
-Where do these patterns come from? Every year I answer <Sidenote href="https://stephango.com/40-questions">40 questions<Fragment slot="note">**Annual self-reflection exercise** by Steph Ango, CEO of Obsidian. Questions like "What was your biggest failure?" and "What did you waste time on?" force honest pattern recognition across years.</Fragment></Sidenote>. Things like "What was your biggest failure this year?", "What did you waste time on?", "What habit do you keep failing to build?" The answers are brutally honest because nobody reads them except me and my AI. After a few years, the patterns become obvious. Same failures, different year.
+Every year I answer <Sidenote href="https://stephango.com/40-questions">40 questions<Fragment slot="note">**Annual self-reflection exercise** by Steph Ango, CEO of Obsidian. Questions like "What was your biggest failure?" and "What did you waste time on?" force honest pattern recognition across years.</Fragment></Sidenote>. "What was your biggest failure?", "What did you waste time on?", "What habit do you keep failing to build?" After a few years, the patterns become obvious. Same failures, different year.
 
-So I formalized them. In your CLAUDE.md, you write your recurring failures. Honestly. Not the version you tell recruiters. The real ones:
+So I formalized them. In your CLAUDE.md / AGENTS.md, you write your recurring failures. Honestly:
 
 ```markdown
 ### Sleep Schedule (x2)
@@ -115,126 +160,120 @@ So I formalized them. In your CLAUDE.md, you write your recurring failures. Hone
 **Intervention**: "Close the tutorial. Open your editor. Build the thing."
 ```
 
-The `(xN)` is how many times this pattern has appeared in yearly reviews. The higher the number, the more the system insists.
-
-When you run `/pulse`, it checks these patterns against your actual data. If you haven't exercised in 10 days and your anti-patterns say "No gym consistency (x2)", you'll see:
+The `(xN)` is how many times this pattern has appeared in yearly reviews. When `/pulse` runs, it checks these against your actual data:
 
 ```
-PATTERN ALERT: No exercise logs in 10 days (recurring x2 in reviews)
+VITAL 20%
+1. Auth/Clerk    ████████████ 45%
+2. AI Agents     ██████░░░░░░ 25%
+3. Community     ████░░░░░░░░ 15%
+
+BLIND SPOTS
+- "Math for ML" - No engagement in 14 days
+
+PATTERN ALERT: No exercise logs in 10 days (recurring x2)
 ```
 
 <Callout type="important" title="Why this works">
   Most productivity systems tell you what to do. This one tells you what you keep failing at. There's a difference between a to-do list and a mirror.
 </Callout>
 
-Nobody wants to write down their failures. But once you do, and once an AI holds you accountable weekly, the patterns start breaking.
+This feeds back into the programming workflow. When `/morning` runs, it includes anti-pattern checks. If I've been coding past midnight for a week, it flags it before I start another late session. The system doesn't just make me a faster programmer, it makes me a more sustainable one.
 
-## The /challenge Command
+## The /ship Command
 
-I built <Sidenote>anti-sycophancy<Fragment slot="note">**Making the AI disagree with you.** Most AI assistants default to agreement ("Great idea!"). `/challenge` forces it to argue against your position using your own vault data as evidence.</Fragment></Sidenote> into my knowledge system.
+This is the command I run most. Multiple times a day.
 
-Every AI assistant wants to agree with you. "Great idea!" "That sounds promising!" This is dangerous when you're making big decisions. So I built `/challenge`.
+```bash
+/ship
+```
 
-When you run `/challenge "I should learn Rust"`, it searches your vault for evidence, then argues against your position using six analytical lenses:
+It commits your code, pushes to GitHub, and auto-logs the commit to your daily journal, all in one command. But the logging is what matters. Every `/ship` adds a timestamped entry to `02_Journal/daily/`:
 
-1. **Opportunity Cost** - What are you NOT doing by learning Rust?
-2. **Survivorship Bias** - Are you only seeing Rust success stories?
-3. **Sunk Cost** - Would you start this if you hadn't already bought the book?
-4. **Contrarian Evidence** - What in your vault contradicts this?
-5. **Second-Order Effects** - What if you're right but the consequences are bad?
-6. **Anti-Pattern Match** - Does this match a historical failure? (Like "Learning Without Doing x3")
+```
+- [14:32] *shipped*: fix(auth): preserve return URL through OAuth callback
+- [16:10] *shipped*: feat(settings): add dark mode toggle
+- [17:45] *shipped*: refactor(settings): extract SettingsSection components
+```
 
-The key is that it uses YOUR data. Not generic arguments. It searches your notes, your daily logs, your previous decisions. If you wrote six months ago that you wanted to focus on TypeScript, and now you're pivoting to Rust, it will find that note and ask you why.
+This is how the system builds memory without effort. I never manually write "today I worked on auth", `/ship` captures it automatically. When `/morning` runs tomorrow, it sees what I shipped yesterday. When `/pulse` runs on Sunday, it knows exactly which projects got attention and which didn't. When I ask "what did I work on last week?", the data is already there.
 
-<Callout type="tip" title="When to use /challenge">
-  Before any big decision: career moves, project pivots, learning commitments. The 5 minutes it takes might save you 5 months of going in the wrong direction.
-</Callout>
+Every `/ship` is a data point. Over months, those data points become a complete record of what you actually do (vs what you think you do). That's the raw material that makes `/pulse` accurate and the anti-pattern engine honest.
 
-## The Graduate Command
-
-You write daily logs. But how many ideas die in those logs? You write "interesting thought about X" on a Tuesday, and by Friday it's buried under 20 other entries.
-
-`/graduate` reads your recent daily logs and extracts ideas that deserve to be permanent notes. It looks for:
-
-- Insights that connect to existing notes in your garden
-- Recurring themes across multiple days
-- Ideas you mentioned but never developed
-
-Then it creates proper atomic notes in `03_Garden/` with <Sidenote>backlinks<Fragment slot="note">**Bidirectional links between notes.** If note A links to note B, note B automatically knows about note A. This is how isolated ideas find each other over time.</Fragment></Sidenote>, context, and connections to your existing knowledge.
-
-Your daily logs become a mine. `/graduate` is the miner.
-
-## The Learning System
-
-I'm studying math for ML, and I built a learning loop into the system:
-
-1. **Before a lesson**: `/prime linear-algebra` gives you a 3-minute briefing. What you already know, what prerequisites you need, and the key intuitions to watch for. It primes your brain so the lesson sticks.
-
-2. **After a lesson**: `/learn eigenvalues` creates a structured note with the concept, your understanding, review questions, and connections to what you already know. The questions force recall, not recognition.
-
-3. **Next morning**: `/recall` quizzes you from your own notes. <Sidenote>Spaced retrieval<Fragment slot="note">**Testing yourself at increasing intervals.** Harder than re-reading, but retention jumps from ~20% to ~80%. The struggle of recalling is what builds the memory.</Fragment></Sidenote>. Not flashcards from the internet. Questions from YOUR understanding, in YOUR words.
-
-4. **Tracking**: `/study` logs each session to a daily tracker so you can see streaks and gaps.
-
-Spaced repetition built into your knowledge system. Not a separate app.
+The other commands that round out the system: `/challenge` argues against your own beliefs using vault evidence (anti-sycophancy engine with six analytical lenses), `/relink` finds missing connections between notes, and `/de-ai` strips AI-generated jargon from your writing. They're all in the repo.
 
 ## Going Further
 
-What I open-sourced is the core system. 21 commands, the vault template, the CLAUDE.md template, and full documentation.
+What I open-sourced is the core system. 15 commands, the vault template, the CLAUDE.md / AGENTS.md template, and full documentation.
 
-But I use a more advanced version daily that includes:
+But I run 40+ commands privately. The advanced version includes:
 
 - **Kai**, an always-on WhatsApp assistant that responds to messages via webhook, runs cron jobs, and proactively nudges me based on events
-- **Multi-agent orchestration** where specialized AI agents (Bolt for code, Sage for review, Nova for research, Orion for planning) work on <Sidenote href="https://linear.app">Linear<Fragment slot="note">**Project management tool** built for software teams. Issues, cycles, roadmaps. Each agent gets assigned issues and works them autonomously through the API.</Fragment></Sidenote> issues autonomously
-- **Voice input** through Whisper transcription
-- **Health tracking** synced with Apple Health data, 724+ daily health files automatically ingested into Obsidian, queried by Claude Code
+- **Multi-agent orchestration** where 9 specialized AI agents (Bolt for code, Sage for review, Nova for research, Orion for planning) work on <Sidenote href="https://linear.app">Linear<Fragment slot="note">**Project management tool** built for software teams. Issues, cycles, roadmaps. Each agent gets assigned issues and works them autonomously through the API.</Fragment></Sidenote> issues autonomously, each with their own GitHub App and Linear OAuth identity
+- **QMD**, a local search engine over 2,900+ vault documents. Keyword search in ~30ms, semantic search in ~2s, deep search (auto-expands queries, reranks) in ~10s. This is the backbone that makes every command fast
+- **Autopilot daemon** that queues tasks for <Sidenote href="https://openai.com/index/introducing-codex/">Codex<Fragment slot="note">**OpenAI's cloud coding agent.** Runs autonomously in a sandbox. I queue tasks before sleeping and wake up to PRs. The autopilot daemon dispatches them with concurrency control.</Fragment></Sidenote> and dispatches them while I sleep. I queue 5-10 tasks at night and wake up to PRs
+- **`/autobiography`**, a language learning wizard where you write your life story, translate it, analyze grammar errors, generate Anki cards, and do daily speaking practice. Built from a method by <Sidenote href="https://www.instagram.com/jovannareyesc/">Jovanna Reyes<Fragment slot="note">**Language teacher** whose autobiography method replaces textbook exercises with personal storytelling. You learn vocabulary you'll actually use because it's about your own life.</Fragment></Sidenote>
+- **`/workout`**, a full fitness system: program generation, session logging, and recovery-aware coaching based on Apple Health data
+- **`/grill-me`**, inspired by <Sidenote href="https://www.aihero.dev/my-grill-me-skill-has-gone-viral">Matt Pocock's viral skill<Fragment slot="note">**Structured interrogation.** The AI asks you question after question about a plan or design until reaching shared understanding, resolving each branch of the decision tree. ~45 min sessions that surface assumptions you didn't know you had.</Fragment></Sidenote>. Rubber ducking where the duck fights back, interviewing you relentlessly about a plan until every branch of the decision tree is resolved
+- **[trx](https://github.com/crafter-station/trx)**, an open-source agent-first CLI for transcription. Feed it a YouTube URL, a Google Meet recording, or a local file, and it outputs clean text via Whisper. The `/meeting` command uses it to transcribe recordings before extracting decisions and action items
+- **Health tracking** synced with Apple Health data, 724+ daily files automatically ingested into Obsidian, queried by AI agents
 - **Content pipeline** that turns daily work into tweets, blog posts, and videos
 
-That's Tier 3. It's not in the open source repo because it requires infrastructure (Cloudflare tunnels, WhatsApp API, custom webhooks). But the foundation is the same vault + commands system.
+That's not in the open source repo because it requires infrastructure (Cloudflare tunnels, WhatsApp API, custom webhooks, Codex access). But the foundation is the same vault + commands system.
 
-The health tracking deserves its own post. Claude Code reads my Apple Health data (sleep, workouts, heart rate, steps) and cross-references it with my anti-patterns. When my sleep drops below 7 hours for a week, `/pulse` catches it. When I haven't worked out in 10 days, it flags it. I'm writing a full tutorial: **"How to Run Claude Code on Your Apple Health Data with Obsidian"**, commands that query your body like they query your codebase.
+## What's Next
+
+This is the first post in a series. The personal OS is the foundation, but the real power is in the verticals built on top of it.
+
+**Domain series**, one post per life area, each with its own commands and config patterns:
+
+- **AI Agents for Language Learning**: How `/autobiography` replaced my TOEFL prep with a system that actually sticks. Writing your life story in a target language, getting grammar analysis, generating Anki cards, and doing daily timed speaking practice.
+- **AI Agents for Fitness**: How `/workout` and `/health` read your Apple Health data and build programs that adapt. Commands that query your body like they query your codebase.
+- **AI Agents for Content Creation**: How `/draft`, `/ship-in-public`, and the content pipeline turn daily engineering work into tweets, threads, and blog posts without extra effort.
+- **AI Agents for Research**: How `/lab` and the Hunter Research Lab run 50-100 iteration loops overnight, with Claude and Codex agents working in parallel.
+
+**Skills series**, deep dives into the global skills that make the whole system compound:
+
+- **The Scaffold Skill**: Zero to production in 2 minutes. How `/scaffold` creates, deploys, and configures a full app from a single sentence.
+- **The Agent Browser Skill**: Visual verification, screenshot comparison, and pixel-perfect iteration loops.
+- **The Clerk Skill**: One-shot authentication setup for any project.
+- **Building Your Own Skills**: How to create, test, and share agent skills that work across tools.
+
+Each post will include the commands, the config patterns, and real examples.
 
 ## Get Started
 
-```bash
-git clone https://github.com/Railly/second-brain.git
-cd second-brain
-
-# Copy vault to your location
-cp -r vault/ ~/my-brain/
-
-# Copy commands
-cp -r .claude/ ~/my-brain/.claude/
-
-# Edit CLAUDE.md with your info
-cp CLAUDE.md ~/my-brain/CLAUDE.md
-
-# Open in Obsidian, then run Claude Code
-cd ~/my-brain && claude
-```
-
-First commands to try:
+Three commands:
 
 ```bash
-/log "Setting up my second brain"     # Quick entry
-/inbox                                 # Process any clips
-/challenge "I should use AI for everything"  # Test the anti-sycophancy engine
+git clone https://github.com/Railly/agent-brain.git
+cd agent-brain && claude
+/init
 ```
 
-The repo includes:
+`/init` is a guided wizard. It asks your name, your stack, your goals, and one recurring failure you keep repeating. Then it creates your vault, generates a personalized CLAUDE.md and AGENTS.md, copies all 15 commands, scans your machine for git repos, and creates your first daily log. Two minutes, zero manual setup.
 
-- **21 commands** organized by workflow (daily, knowledge, thinking, learning, content)
-- **Vault template** with the full 7-folder structure
-- **CLAUDE.md template** with placeholder sections for your identity, goals, and anti-patterns
-- **Two example CLAUDE.md files** (indie developer and employed engineer)
-- **Full documentation**: setup guide, command reference, philosophy, customization, advanced features
+After that, open the vault in Obsidian and try `/morning` from a new terminal.
+
+The repo also includes:
+
+- **Vault template** with example notes across all 7 folders
+- **CLAUDE.md + AGENTS.md templates** with placeholder sections for identity, goals, and anti-patterns
+- **Two example configs** (indie developer and employed engineer)
+- **Full documentation**: setup guide, command reference, philosophy, customization
 
 <Callout type="note" title="Why I open-sourced this">
-  Three developers independently asked how this works: Daniel Santos (data engineer), Jhomar (technical PM), and Rodrigo Weilg (building a SaaS from Italy). If three people ask the same question unprompted, the answer deserves to be public.
+  Three developers independently asked how this works: [Daniel Santos](https://www.linkedin.com/in/danielsantosp/) (data engineer), [Jhomar Astuyauri](https://personal-portfolio-nu-one-62.vercel.app) (technical PM), and [Rodrigo Weilg](https://drigo.ro/) (building a SaaS from Italy). If three people ask the same question unprompted, the answer deserves to be public.
 </Callout>
 
-The repo is at [github.com/Railly/second-brain](https://github.com/Railly/second-brain). Star it if it's useful. Open an issue if something's broken. And if you set it up and it changes how you work, I want to hear about it.
+The repo is at [github.com/Railly/agent-brain](https://github.com/Railly/agent-brain). Star it if it's useful. Open an issue if something's broken. And if you set it up and it changes how you work, I want to hear about it.
 
-This is not a dotfiles repo. It's a system. The commands reference each other. `/today` feeds `/pulse`. `/inbox` feeds `/graduate`. `/graduate` feeds `/draft`. The flow is the product.
+This is not a dotfiles repo. It's a system. The commands reference each other. `/today` feeds `/pulse`. `/inbox` feeds the garden. `/relink` connects the dots. `/draft` turns insights into content. The flow is the product.
+
+Shoutout to [Luis Fernando Yupanqui](https://github.com/lout33) whose [symbiotic-ai](https://github.com/lout33/symbiotic-ai) (690+ stars) inspired me to finally share my own system publicly. Different approach, same philosophy: your AI should remember who you are.
 
 Your AI should know your failures better than you do. That's the point.
+
+---
+
+I'm also building [The Last 30%](https://thelast30.railly.dev/), a course series on the software engineering fundamentals that AI skips. The first mini-course, *Debugging AI-Generated Code* (14 lessons), is completely free. Everyone who completes it gets perks for the rest of the series.

@@ -1,0 +1,49 @@
+---
+---
+<div class="scaffold-flow-diagram my-8 overflow-x-auto">
+  <svg viewBox="0 0 780 80" xmlns="http://www.w3.org/2000/svg" class="w-full max-w-[780px] mx-auto">
+    <defs>
+      <marker id="sfArrowR" viewBox="0 0 10 7" refX="9" refY="3.5" markerWidth="8" markerHeight="6" orient="0">
+        <path d="M 0 0 L 10 3.5 L 0 7 z" fill="var(--color-foreground-3)" />
+      </marker>
+    </defs>
+
+    <rect x="10" y="16" width="120" height="44" rx="8" fill="var(--color-foreground)" stroke="var(--color-foreground)" stroke-width="1.5" />
+    <text x="70" y="34" text-anchor="middle" fill="var(--color-background)" font-size="13" font-weight="600" font-family="ui-monospace, monospace">/scaffold</text>
+    <text x="70" y="50" text-anchor="middle" fill="var(--color-background-2)" font-size="9" font-family="ui-sans-serif, system-ui" opacity="0.7">name + framework</text>
+
+    <line x1="130" y1="38" x2="158" y2="38" stroke="var(--color-foreground-3)" stroke-width="1.5" marker-end="url(#sfArrowR)" />
+
+    <rect x="166" y="16" width="110" height="44" rx="8" fill="var(--color-background-2)" stroke="var(--color-ui)" stroke-width="1.5" />
+    <text x="221" y="34" text-anchor="middle" fill="var(--color-foreground)" font-size="11" font-weight="500" font-family="ui-monospace, monospace">Next.js + Biome</text>
+    <text x="221" y="50" text-anchor="middle" fill="var(--color-foreground-3)" font-size="9" font-family="ui-sans-serif, system-ui">shadcn + Tailwind</text>
+
+    <line x1="276" y1="38" x2="304" y2="38" stroke="var(--color-foreground-3)" stroke-width="1.5" marker-end="url(#sfArrowR)" />
+
+    <rect x="312" y="16" width="100" height="44" rx="8" fill="var(--color-background-2)" stroke="var(--color-ui)" stroke-width="1.5" />
+    <text x="362" y="34" text-anchor="middle" fill="var(--color-foreground)" font-size="11" font-weight="500" font-family="ui-monospace, monospace">GitHub repo</text>
+    <text x="362" y="50" text-anchor="middle" fill="var(--color-foreground-3)" font-size="9" font-family="ui-sans-serif, system-ui">git init + push</text>
+
+    <line x1="412" y1="38" x2="440" y2="38" stroke="var(--color-foreground-3)" stroke-width="1.5" marker-end="url(#sfArrowR)" />
+
+    <rect x="448" y="16" width="110" height="44" rx="8" fill="var(--color-background-2)" stroke="var(--color-ui)" stroke-width="1.5" />
+    <text x="503" y="34" text-anchor="middle" fill="var(--color-foreground)" font-size="11" font-weight="500" font-family="ui-monospace, monospace">Vercel deploy</text>
+    <text x="503" y="50" text-anchor="middle" fill="var(--color-foreground-3)" font-size="9" font-family="ui-sans-serif, system-ui">production URL</text>
+
+    <line x1="558" y1="38" x2="586" y2="38" stroke="var(--color-foreground-3)" stroke-width="1.5" marker-end="url(#sfArrowR)" />
+
+    <rect x="594" y="16" width="140" height="44" rx="8" fill="var(--color-foreground)" stroke="var(--color-foreground)" stroke-width="1.5" />
+    <text x="664" y="34" text-anchor="middle" fill="var(--color-background)" font-size="13" font-weight="600" font-family="ui-monospace, monospace">app.crafter.run</text>
+    <text x="664" y="50" text-anchor="middle" fill="var(--color-background-2)" font-size="9" font-family="ui-sans-serif, system-ui" opacity="0.7">live in ~2 min</text>
+
+  </svg>
+</div>
+
+<style>
+  .scaffold-flow-diagram {
+    -webkit-overflow-scrolling: touch;
+  }
+  .scaffold-flow-diagram svg text {
+    user-select: none;
+  }
+</style>

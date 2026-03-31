@@ -6,6 +6,11 @@
 	.astro-code {
 		border: 1px solid var(--color-ui) !important;
 		font-size: 13px;
+		scrollbar-width: none !important;
+
+		&::-webkit-scrollbar {
+			display: none !important;
+		}
 		position: relative !important;
 		isolation: isolate !important;
 		background-color: transparent !important;
