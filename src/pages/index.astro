@@ -2,6 +2,7 @@
 import { getCollection } from "astro:content";
 import Hack0Logo from "../assets/svgs/h0-logo.svg";
 import Text0Logo from "../assets/svgs/t0-logo.svg";
+import AgentfilesLogo from "../components/brand/AgentfilesLogo.astro";
 import BrazilFlag from "../components/brand/BrazilFlag.astro";
 import ChileFlag from "../components/brand/ChileFlag.astro";
 import ColombiaFlag from "../components/brand/ColombiaFlag.astro";
@@ -11,6 +12,7 @@ import OneHunterLogo from "../components/brand/OneHunterLogo.astro";
 import PeruFlag from "../components/brand/PeruFlag.astro";
 import ScrapiLogo from "../components/brand/ScrapiLogo.astro";
 import TinteLogo from "../components/brand/TinteLogo.astro";
+import TrxLogo from "../components/brand/TrxLogo.astro";
 import PremiereCountdown from "../components/blog/PremiereCountdown";
 import ViewCounter from "../components/blog/ViewCounter";
 import NewsletterSection from "../components/newsletter/NewsletterSection.astro";
@@ -66,22 +68,22 @@ const heroData = {
 
 const projectsData = [
 	{
+		title: "Tinte",
+		description: "Multiplatform theme builder",
+		href: "https://tinte.dev",
+		icon: "tinte" as IconKey,
+	},
+	{
 		title: "Elements",
 		description: "Full-stack shadcn components",
 		href: "https://tryelements.dev",
 		icon: "elements" as IconKey,
 	},
 	{
-		title: "text0",
-		description: "AI-powered text editor",
-		href: "https://text0.dev",
-		icon: "text0" as IconKey,
-	},
-	{
-		title: "Tinte",
-		description: "Multiplatform theme builder",
-		href: "https://tinte.dev",
-		icon: "tinte" as IconKey,
+		title: "Agentfiles",
+		description: "AI agent files in Obsidian",
+		href: "https://github.com/Railly/agentfiles",
+		icon: "agentfiles" as IconKey,
 	},
 	{
 		title: "One Hunter Theme",
@@ -90,10 +92,10 @@ const projectsData = [
 		icon: "oneHunter" as IconKey,
 	},
 	{
-		title: "Scrapi",
-		description: "Fast web scraper",
-		href: "https://www.scrapi.fast",
-		icon: "scrapi" as IconKey,
+		title: "trx",
+		description: "Agent-first transcription CLI",
+		href: "https://github.com/crafter-station/trx",
+		icon: "trx" as IconKey,
 	},
 	{
 		title: "hack0",
@@ -204,6 +206,8 @@ const iconMap = {
 	oneHunter: OneHunterLogo,
 	scrapi: ScrapiLogo,
 	hack0: Hack0Logo,
+	agentfiles: AgentfilesLogo,
+	trx: TrxLogo,
 } as const;
 
 type IconKey = keyof typeof iconMap;
