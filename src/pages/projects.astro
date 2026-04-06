@@ -1,28 +1,32 @@
 ---
 import Hack0Logo from "../assets/svgs/h0-logo.svg";
-import PeruFinanciaLogo from "../components/brand/PeruFinanciaLogo.astro";
 import Text0Logo from "../assets/svgs/t0-logo.svg";
+import AgentBrainLogo from "../components/brand/AgentBrainLogo.astro";
+import AgentfilesLogo from "../components/brand/AgentfilesLogo.astro";
+import CodexGlobeLogo from "../components/brand/CodexGlobeLogo.astro";
 import ElementsLogo from "../components/brand/ElementsLogo.astro";
+import HypemanLogo from "../components/brand/HypemanLogo.astro";
+import IAHackLogo from "../components/brand/IAHackLogo.astro";
 import OneHunterLogo from "../components/brand/OneHunterLogo.astro";
+import RoastRouletteLogo from "../components/brand/RoastRouletteLogo.astro";
 import ScrapiLogo from "../components/brand/ScrapiLogo.astro";
+import SkillKitLogo from "../components/brand/SkillKitLogo.astro";
+import SkillsLogo from "../components/brand/SkillsLogo.astro";
+import SpotiCliLogo from "../components/brand/SpotiCliLogo.astro";
 import TinteLogo from "../components/brand/TinteLogo.astro";
+import TrxLogo from "../components/brand/TrxLogo.astro";
+import VoxtypeLogo from "../components/brand/VoxtypeLogo.astro";
+import ZonesLogo from "../components/brand/ZonesLogo.astro";
 import Footer from "../components/layout/Footer.astro";
 import PageLayout from "../components/layout/PageLayout.astro";
 import SectionHeader from "../components/layout/SectionHeader.astro";
 import Layout from "../layouts/Layout.astro";
 
 const ogTitle = "Projects";
-const ogDescription = "Open source developer tools by Railly Hugo: Tinte, Elements, text0, One Hunter Theme, and more.";
+const ogDescription = "Open source developer tools by Railly Hugo: Tinte, Elements, Agentfiles, trx, and more.";
 const ogImage = `/api/og?title=${encodeURIComponent(ogTitle)}&description=${encodeURIComponent(ogDescription)}&tag=projects`;
 
 const projectsData = [
-    {
-        name: "Elements",
-        repo: "crafter-station/elements",
-        description: "Full-stack shadcn components for auth, ai, and more",
-        url: "https://tryelements.dev",
-        icon: "elements" as const,
-    },
     {
         name: "Tinte",
         repo: "Railly/tinte",
@@ -31,11 +35,109 @@ const projectsData = [
         icon: "tinte" as const,
     },
     {
+        name: "Elements",
+        repo: "crafter-station/elements",
+        description: "Full-stack shadcn components for auth, ai, and more",
+        url: "https://tryelements.dev",
+        icon: "elements" as const,
+    },
+    {
+        name: "Agentfiles",
+        repo: "Railly/agentfiles",
+        description: "Browse, create, and edit AI agent files from Obsidian",
+        url: "https://github.com/Railly/agentfiles",
+        icon: "agentfiles" as const,
+    },
+    {
         name: "One Hunter",
         repo: "Railly/one-hunter-vscode",
         description: "VS Code theme inspired by Vercel and One Dark Pro",
         url: "https://marketplace.visualstudio.com/items?itemName=RaillyHugo.one-hunter",
         icon: "oneHunter" as const,
+    },
+    {
+        name: "trx",
+        repo: "crafter-station/trx",
+        description: "Agent-first CLI for audio/video transcription",
+        url: "https://github.com/crafter-station/trx",
+        icon: "trx" as const,
+    },
+    {
+        name: "SkillKit",
+        repo: "crafter-station/skill-kit",
+        description: "Local-first analytics for AI agent skills",
+        url: "https://github.com/crafter-station/skill-kit",
+        icon: "skillKit" as const,
+    },
+    {
+        name: "Skills",
+        repo: "crafter-station/skills",
+        description: "Agent skills, starting with context engineering",
+        url: "https://github.com/crafter-station/skills",
+        icon: "skills" as const,
+    },
+    {
+        name: "hack0",
+        repo: "crafter-station/hack0",
+        description: "Mapping LATAM's tech ecosystem - hackathons + events",
+        url: "https://hack0.dev",
+        icon: "hack0" as const,
+    },
+    {
+        name: "IA Hackathon Peru",
+        repo: "crafter-station/peru.ai-hackathon.co",
+        description: "Biggest AI hackathon in Peru - 3 editions in 2025-2026",
+        url: "https://peru.ai-hackathon.co",
+        icon: "iaHack" as const,
+    },
+    {
+        name: "Voxtype",
+        repo: "Railly/voxtype",
+        description: "3D typography in pure SVG - voxel sculptures, zero WebGL",
+        url: "https://github.com/Railly/voxtype",
+        icon: "voxtype" as const,
+    },
+    {
+        name: "Agent Brain",
+        repo: "Railly/agent-brain",
+        description: "Agent-powered knowledge system on Obsidian + Claude Code",
+        url: "https://github.com/Railly/agent-brain",
+        icon: "agentBrain" as const,
+    },
+    {
+        name: "Roast Roulette",
+        repo: "Railly/roast-roulette",
+        description: "Paste any URL, get roasted by AI with sound effects",
+        url: "https://github.com/Railly/roast-roulette",
+        icon: "roastRoulette" as const,
+    },
+    {
+        name: "Codex Globe",
+        repo: "crafter-station/codex-globe",
+        description: "Interactive 3D globe mapping Codex Ambassadors worldwide",
+        url: "https://github.com/crafter-station/codex-globe",
+        icon: "codexGlobe" as const,
+    },
+    {
+        name: "spoti-cli",
+        repo: "crafter-station/spoti-cli",
+        description: "Spotify Web API from your terminal, built for AI agents",
+        url: "https://github.com/crafter-station/spoti-cli",
+        icon: "spotiCli" as const,
+    },
+    {
+        name: "Zones",
+        repo: "Railly/zones",
+        description: "Timezone dashboard for remote teams",
+        url: "https://github.com/Railly/zones",
+        icon: "zones" as const,
+    },
+    {
+        name: "Hypeman",
+        repo: "Railly/hypeman",
+        description: "AI-powered hype generation platform",
+        url: "https://github.com/Railly/hypeman",
+        icon: "hypeman" as const,
     },
     {
         name: "text0",
@@ -50,20 +152,6 @@ const projectsData = [
         description: "Fast web scraper with AI-powered data extraction",
         url: "https://scrapi.fast",
         icon: "scrapi" as const,
-    },
-    {
-        name: "hack0",
-        repo: "crafter-station/hack0",
-        description: "Mapping LATAM's tech ecosystem - hackathons + events",
-        url: "https://hack0.dev",
-        icon: "hack0" as const,
-    },
-    {
-        name: "peru-financia",
-        repo: "crafter-research/peru-financia",
-        description: "Political finance transparency for Peru - ONPE data",
-        url: "https://peru-financia.crafter.ing",
-        icon: "peruFinancia" as const,
     },
 ];
 
@@ -95,7 +183,18 @@ const iconMap = {
     oneHunter: OneHunterLogo,
     scrapi: ScrapiLogo,
     hack0: Hack0Logo,
-    peruFinancia: PeruFinanciaLogo,
+    agentfiles: AgentfilesLogo,
+    trx: TrxLogo,
+    skillKit: SkillKitLogo,
+    skills: SkillsLogo,
+    iaHack: IAHackLogo,
+    voxtype: VoxtypeLogo,
+    agentBrain: AgentBrainLogo,
+    roastRoulette: RoastRouletteLogo,
+    codexGlobe: CodexGlobeLogo,
+    spotiCli: SpotiCliLogo,
+    zones: ZonesLogo,
+    hypeman: HypemanLogo,
 } as const;
 
 type IconKey = keyof typeof iconMap;
