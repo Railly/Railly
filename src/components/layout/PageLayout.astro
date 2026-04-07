@@ -22,7 +22,9 @@ const { class: className } = Astro.props;
             <slot />
         </div>
 
-        <!-- Right Sidebar (empty for balance) -->
-        <div class="lg:col-start-3"></div>
+        <!-- Right Sidebar -->
+        <div class="lg:col-start-3">
+            <slot name="rightSidebar" />
+        </div>
     </div>
 </main>
