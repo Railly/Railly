@@ -1,4 +1,4 @@
-## Hunter
+## <img src="https://railly.dev/favicon/favicon-32x32.png" width="24" height="24" align="center" alt="" /> Railly Hugo ~ Hunter
 
 AI Software Engineer at [Clerk](https://clerk.com). Building developer tools from Lima, Peru.
 
