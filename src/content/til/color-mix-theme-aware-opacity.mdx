@@ -1,0 +1,21 @@
+---
+title: "color-mix() Replaces the --fg-20, --fg-40 Dance"
+pubDate: 2026-03-04
+topic: CSS
+---
+
+`color-mix(in srgb, var(--fg) 20%, transparent)` is the native CSS way to do theme-aware dynamic opacity. No hex+alpha juggling, no rgba split, no need to generate a whole ladder of `--fg-10`, `--fg-20`, `--fg-40` tokens.
+
+```css
+/* Before: define every opacity variant per theme */
+--fg-20: rgba(255, 255, 255, 0.2);
+--fg-40: rgba(255, 255, 255, 0.4);
+
+/* After: one variable, arbitrary opacity at use-site */
+border: 1px solid color-mix(in srgb, var(--fg) 20%, transparent);
+background: color-mix(in srgb, var(--accent) 40%, transparent);
+```
+
+Works with any color syntax (hex, rgb, hsl, oklch, CSS vars), respects the active theme automatically because `var(--fg)` resolves at paint time, and lets you pick the exact blend ratio inline instead of committing to a fixed set of tokens.
+
+Also useful for hover states. `color-mix(in srgb, var(--accent) 85%, white)` lightens 15% on hover, theme-aware and cheap.

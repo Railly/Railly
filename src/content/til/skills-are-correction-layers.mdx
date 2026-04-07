@@ -1,0 +1,18 @@
+---
+title: "Skills Are Correction Layers, Not Tutorials"
+pubDate: 2026-04-01
+topic: AI Tools
+link: https://www.philschmid.de/testing-skills
+---
+
+After building and evaluating 23+ agent skills across GPT-5, Sonnet 4.5, and Gemini 3, one meta-principle became obvious. Skills patch the knowledge gaps of SOTA models. They don't teach the basics.
+
+Three things that surfaced from the evals:
+
+1. **The model already knows the basics.** A skill explaining "how to install Clerk" doesn't move the needle. A skill that says "ClerkProvider goes in `layout.tsx`, NOT `page.tsx`" moves eval scores from 0% to 100%. The value is catching what the model hallucinates, not teaching what it already knows.
+
+2. **Every model has different gaps.** GPT-5, Sonnet 4.5, and Gemini 3 fail at different things because their training cutoffs and datasets differ. A skill that's optimal for Sonnet can lower GPT-5's score if it's too directive about something GPT-5 already handles correctly. There is no "perfect skill". There's only "the perfect skill for model X's knowledge gap at moment Y". Evaluate per model, patch per model.
+
+3. **The description is 80% of the work.** Phil Schmid [took his Gemini Interactions API skill from 66.7% to 100% pass rate](https://www.philschmid.de/testing-skills), and rewriting the `description` field alone fixed 5 of 7 failures. The description is what the router uses to decide if the skill loads at all. If it doesn't match user intent, the rest of the content never runs. Optimize description before instructions.
+
+Corollary: skills are a moving target. Every new model release means re-evaluating which patches are still needed and which are obsolete because the model learned them in its new cutoff. Maintaining a skill library is closer to maintaining a browser compatibility shim than writing documentation.

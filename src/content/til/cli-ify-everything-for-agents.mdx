@@ -1,0 +1,21 @@
+---
+title: "CLI-ify Everything in the Agent Era"
+pubDate: 2026-04-06
+topic: AI Tools
+---
+
+Agents don't operate GUIs. They operate text. Every daily activity without a CLI is an activity your agents can't automate for you.
+
+This inverts traditional DX priority. The CLI used to be the optional hacker mode, with the GUI as the product. Now the CLI *is* the product, and the GUI is the optional wrapper for humans.
+
+Three principles for CLI-ifying well for agents:
+
+1. **`--json` is non-negotiable.** Agents need parseable output, not pretty ASCII tables. Every command needs `--json`, and errors must be structured JSON with codes. `{"code":"AUTH_EXPIRED"}` is actionable. `Error: something went wrong` is not.
+
+2. **Schema introspection beats documentation.** Exposing `cli <command> --schema` returns a JSON schema of flags, types, and defaults. Agents discover capabilities without reading textual `--help` and stop hallucinating flag names.
+
+3. **Encode the invariants agents can't intuit.** If adding a model requires editing 3 files in a specific order, that's tribal knowledge that breaks agents. The CLI should expose `cli add-model <name>` that does all 3 atomically.
+
+CLI + Skill is the combo. The CLI provides the *capabilities*. The skill provides the *when and why* (gotchas, correction layers for model hallucinations). Neither works alone. A skill without a CLI is dead documentation. A CLI without a skill leaves the agent guessing when to invoke it.
+
+Practical corollary: every time you catch yourself clicking through a GUI repeatedly, write the CLI. Every repeated manual workflow is automation debt for your future agent.

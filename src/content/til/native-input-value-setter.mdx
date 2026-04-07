@@ -1,0 +1,23 @@
+---
+title: "nativeInputValueSetter Bypasses React Input Masks"
+pubDate: 2026-03-25
+topic: DOM
+---
+
+React (and Angular, Vue) override the native `value` setter on inputs to intercept writes and keep internal state in sync. This means `input.value = 'foo'` from the outside, from a browser extension, Playwright, or an agent-browser driver, silently fails. The DOM updates but the framework doesn't notice and reverts it on next render.
+
+The fix is to call the *original* native setter directly:
+
+```js
+const setter = Object.getOwnPropertyDescriptor(
+  HTMLInputElement.prototype,
+  'value'
+).set;
+
+setter.call(input, 'foo');
+input.dispatchEvent(new Event('input', { bubbles: true }));
+```
+
+This bypasses the framework's wrapper and triggers the native input event, which React then picks up as a legitimate user input. Works identically on `HTMLTextAreaElement.prototype`.
+
+Framework-independent, version-independent, and the only reliable way to drive controlled inputs from outside the framework's world. Essential for browser automation, testing tools, and extensions that inject values into third-party apps.
