@@ -30,6 +30,13 @@ const formatDate = (date: Date) => {
 		day: "numeric",
 	});
 };
+
+const formatDateShort = (date: Date) => {
+	return date.toLocaleDateString("en-US", {
+		month: "short",
+		day: "numeric",
+	});
+};
 ---
 
 <Layout
@@ -37,6 +44,36 @@ const formatDate = (date: Date) => {
 	description="Quick daily learnings on AI, infrastructure, design, and shipping from an AI Software Engineer in Lima, Peru."
 >
 	<PageLayout>
+		<nav
+			slot="rightSidebar"
+			class="sticky top-24 w-40 ml-auto hidden lg:block opacity-65 hover:opacity-100 transition-opacity duration-300 text-right"
+			id="til-toc"
+		>
+			<div class="text-xs uppercase tracking-wider text-foreground-3 mb-4">
+				Index
+			</div>
+			<ul class="space-y-0.5 text-xs border-r border-ui">
+				{
+					sortedTils.map((til) => (
+						<li>
+							<a
+								href={`#${til.id.replace(/\.mdx?$/, "")}`}
+								class="toc-link block py-1 px-3 border-r-2 -mr-px transition-all duration-200 border-transparent text-foreground-3 hover:text-foreground hover:border-ui-2"
+								data-heading={til.id.replace(/\.mdx?$/, "")}
+								title={til.data.title}
+							>
+								<time
+									datetime={til.data.pubDate.toISOString()}
+									class="tabular-nums tracking-tight"
+								>
+									{formatDateShort(til.data.pubDate)}
+								</time>
+							</a>
+						</li>
+					))
+				}
+			</ul>
+		</nav>
 		<h1 class="text-3xl font-medium text-foreground mb-4">TIL</h1>
 		<p class="text-foreground-2 mb-8 text-[15px]">
 			Learning new things every day. Writing them down to remember.
@@ -96,6 +133,10 @@ const formatDate = (date: Date) => {
 		</div>
 	</PageLayout>
 <style>
+		article {
+			scroll-margin-top: 6rem;
+		}
+
 		.prose :global(strong) {
 			color: var(--color-foreground);
 			font-weight: 600;
@@ -124,4 +165,82 @@ const formatDate = (date: Date) => {
 			font-size: 0.75em;
 		}
 	</style>
+	<script>
+		function setupTilToc() {
+			const toc = document.getElementById("til-toc");
+			if (!toc) return;
+
+			const tocLinks = toc.querySelectorAll(".toc-link");
+			const sections = Array.from(tocLinks)
+				.map((link) => {
+					const slug = link.getAttribute("data-heading");
+					return slug ? document.getElementById(slug) : null;
+				})
+				.filter((s): s is HTMLElement => s !== null);
+
+			let currentActive: Element | null = null;
+
+			function setActiveLink(link: Element | null) {
+				if (currentActive === link) return;
+				if (currentActive) {
+					currentActive.classList.remove(
+						"border-foreground",
+						"text-foreground",
+						"font-semibold",
+					);
+					currentActive.classList.add(
+						"border-transparent",
+						"text-foreground-3",
+					);
+				}
+				if (link) {
+					link.classList.remove("border-transparent", "text-foreground-2");
+					link.classList.add(
+						"border-foreground",
+						"text-foreground",
+						"font-semibold",
+					);
+				}
+				currentActive = link;
+			}
+
+			tocLinks.forEach((link) => {
+				link.addEventListener("click", (e) => {
+					e.preventDefault();
+					const slug = link.getAttribute("data-heading");
+					const target = slug ? document.getElementById(slug) : null;
+					if (target) {
+						target.scrollIntoView({ behavior: "smooth", block: "start" });
+						setActiveLink(link);
+						history.pushState(null, "", `#${slug}`);
+					}
+				});
+			});
+
+			const observer = new IntersectionObserver(
+				(entries) => {
+					entries.forEach((entry) => {
+						if (entry.isIntersecting) {
+							const slug = entry.target.id;
+							const link = toc.querySelector(`[data-heading="${slug}"]`);
+							setActiveLink(link);
+						}
+					});
+				},
+				{ rootMargin: "-80px 0px -70% 0px", threshold: 0 },
+			);
+			sections.forEach((section) => observer.observe(section));
+
+			if (window.location.hash) {
+				const slug = window.location.hash.slice(1);
+				const link = toc.querySelector(`[data-heading="${slug}"]`);
+				setActiveLink(link);
+			} else if (sections.length > 0) {
+				setActiveLink(toc.querySelector(".toc-link"));
+			}
+		}
+
+		setupTilToc();
+		document.addEventListener("astro:page-load", setupTilToc);
+	</script>
 </Layout>
