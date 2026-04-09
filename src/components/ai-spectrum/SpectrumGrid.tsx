@@ -2,7 +2,7 @@ import { useState } from "react";
 import type { Category } from "./data";
 import CategoryChart from "./CategoryChart";
 
-const CATEGORIES: Category[] = ["chat", "ide", "cli", "infra"];
+const CATEGORIES: Category[] = ["chat", "ide", "cli", "builder", "infra"];
 
 export default function SpectrumGrid() {
   const [compareMax, setCompareMax] = useState(false);

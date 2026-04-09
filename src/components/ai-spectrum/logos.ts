@@ -37,6 +37,15 @@ import deepinfra from "../../assets/svgs/logos/deepinfra.svg?raw";
 import aider from "../../assets/svgs/logos/aider.svg?raw";
 import crush from "../../assets/svgs/logos/crush.svg?raw";
 import zai from "../../assets/svgs/logos/zai.svg?raw";
+import lovable from "../../assets/svgs/logos/lovable.svg?raw";
+import v0 from "../../assets/svgs/logos/v0.svg?raw";
+import figma from "../../assets/svgs/logos/figma.svg?raw";
+import openhands from "../../assets/svgs/logos/openhands.svg?raw";
+import fireworks from "../../assets/svgs/logos/fireworks.svg?raw";
+import cerebras from "../../assets/svgs/logos/cerebras.svg?raw";
+import jetbrainsAi from "../../assets/svgs/logos/jetbrains-ai.svg?raw";
+import warp from "../../assets/svgs/logos/warp.svg?raw";
+import bolt from "../../assets/svgs/logos/bolt.svg?raw";
 
 export const LOGOS: Record<string, string> = {
   // chats
@@ -74,10 +83,20 @@ export const LOGOS: Record<string, string> = {
   "roo-code": rooCode,
   "kilo-code": kiloCode,
   replit,
+  "replit-design": replit,
   deepinfra,
   aider,
   crush,
   zai,
+  lovable,
+  v0,
+  "figma-make": figma,
+  openhands,
+  fireworks,
+  cerebras,
+  "jetbrains-ai": jetbrainsAi,
+  warp,
+  bolt,
 };
 
 // Extract just the inner contents of an <svg>...</svg> string so we can re-embed
