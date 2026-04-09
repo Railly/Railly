@@ -1,3 +1,18 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
-  <path d="M6 21V3h12M6 12h8" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+<svg version="1.0" xmlns="http://www.w3.org/2000/svg"
+ width="150.000000pt" height="150.000000pt" viewBox="0 0 150.000000 150.000000"
+ preserveAspectRatio="xMidYMid meet">
+<metadata>
+Created by potrace 1.16, written by Peter Selinger 2001-2019
+</metadata>
+<g transform="translate(0.000000,150.000000) scale(0.100000,-0.100000)"
+fill="currentColor" stroke="none">
+<path d="M1 1288 l0 -213 18 61 c46 162 183 299 344 345 l62 18 -212 0 -213 1
+1 -212z"/>
+<path d="M1136 1481 c162 -46 299 -183 345 -344 l18 -62 0 213 1 212 -212 -1
+-213 0 61 -18z"/>
+<path d="M1 213 l-1 -213 213 1 212 0 -62 18 c-161 46 -298 183 -344 345 l-18
+61 0 -212z"/>
+<path d="M1481 366 c-33 -150 -183 -301 -344 -347 l-62 -18 213 0 212 -1 0
+210 c0 116 -2 210 -3 210 -2 0 -9 -24 -16 -54z"/>
+</g>
 </svg>

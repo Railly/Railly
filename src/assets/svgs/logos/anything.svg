@@ -1,7 +1,19 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
-  <rect x="3" y="3" width="18" height="18" rx="3" stroke="currentColor" stroke-width="2"/>
-  <path d="M8 16V8M12 16V8M16 16V8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-  <circle cx="8" cy="8" r="1" fill="currentColor"/>
-  <circle cx="12" cy="16" r="1" fill="currentColor"/>
-  <circle cx="16" cy="8" r="1" fill="currentColor"/>
+<svg version="1.0" xmlns="http://www.w3.org/2000/svg"
+ width="500.000000pt" height="500.000000pt" viewBox="0 0 500.000000 500.000000"
+ preserveAspectRatio="xMidYMid meet">
+<metadata>
+Created by potrace 1.16, written by Peter Selinger 2001-2019
+</metadata>
+<g transform="translate(0.000000,500.000000) scale(0.100000,-0.100000)"
+fill="currentColor" stroke="none">
+<path d="M3070 3830 c-390 -85 -949 -411 -1615 -944 -303 -242 -517 -436 -480
+-436 4 0 66 29 139 64 72 35 205 93 296 129 373 147 634 210 910 223 159 7
+260 -5 375 -44 208 -72 431 -275 540 -491 122 -243 212 -667 236 -1116 12
+-227 17 -275 29 -275 11 0 18 25 69 246 172 736 230 1128 238 1599 5 300 -5
+435 -48 615 -56 238 -204 405 -388 440 -80 15 -205 11 -301 -10z"/>
+<path d="M2220 2523 c-108 -17 -202 -40 -305 -75 -147 -50 -485 -212 -485
+-233 0 -18 -7 -18 81 0 355 75 632 63 854 -37 153 -68 245 -147 361 -308 82
+-114 214 -360 267 -500 46 -122 67 -164 77 -154 11 11 -4 388 -20 509 -39 295
+-125 511 -255 640 -120 121 -242 166 -439 164 -61 -1 -122 -4 -136 -6z"/>
+</g>
 </svg>
