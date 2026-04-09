@@ -1,0 +1,113 @@
+---
+import Footer from "../components/layout/Footer.astro";
+import PageLayout from "../components/layout/PageLayout.astro";
+import SectionHeader from "../components/layout/SectionHeader.astro";
+import Layout from "../layouts/Layout.astro";
+import SpectrumGrid from "../components/ai-spectrum/SpectrumGrid.tsx";
+
+const ogTitle = "AI Coding Tools Spectrum";
+const ogDescription =
+	"An interactive map of every AI coding tool (chats, IDEs, CLIs, gateways) plotted by price and capability. Drag your budget, see what fits.";
+const ogImage = `/api/og?title=${encodeURIComponent(ogTitle)}&description=${encodeURIComponent(ogDescription)}&tag=ai`;
+---
+
+<Layout title={`${ogTitle} · Railly Hugo`} description={ogDescription} image={ogImage}>
+	<PageLayout class="flex flex-col gap-8">
+		<SectionHeader title="AI Tools Spectrum" />
+
+		<p class="text-foreground-2 leading-relaxed max-w-2xl">
+			Every AI coding tool I could find, plotted by monthly cost (X) and
+			capability (Y). Drag the <span class="text-foreground font-mono">budget</span> slider
+			to dim what's out of reach. Filter by category. Click any tool to pin its details.
+			Data current as of April 2026.
+		</p>
+
+		<SpectrumGrid client:only="react" />
+
+		<section class="flex flex-col gap-4 max-w-2xl">
+			<h2 class="text-sm font-serif italic text-foreground-2 uppercase tracking-wider">
+				How to read it
+			</h2>
+			<ul class="text-foreground-2 leading-relaxed list-disc pl-5 space-y-2">
+				<li>
+					<span class="text-foreground">Four charts, four dimensions.</span> Chat, IDE,
+					CLI, and Infra each get their own plot because comparing a chat window to a
+					CLI agent on the same Y axis is nonsense.
+				</li>
+				<li>
+					<span class="text-foreground">X axis (shared)</span>: realistic monthly cost
+					in USD, log scale. Not entry price, what you'd actually pay to use the tool
+					seriously. Free tiers burn out.
+				</li>
+				<li>
+					<span class="text-foreground">Y axis (per chart)</span>:
+					<ul class="list-[circle] pl-5 mt-1">
+						<li><b>Chat</b>: context window size (32K to 1M tokens)</li>
+						<li><b>IDE</b>: autonomy (autocomplete to autonomous)</li>
+						<li><b>CLI</b>: scope (pair programmer to swarm)</li>
+						<li><b>Infra</b>: number of models supported (log)</li>
+					</ul>
+				</li>
+				<li>
+					<span class="text-foreground">Dashed ring</span> around a logo means
+					<em>genuinely free</em> (Gemini CLI, Copilot Student, DeepSeek chat, etc).
+					<span class="text-foreground">Dimmed logos</span> are out of your current budget.
+				</li>
+			</ul>
+		</section>
+
+		<section class="flex flex-col gap-4 max-w-2xl">
+			<h2 class="text-sm font-serif italic text-foreground-2 uppercase tracking-wider">
+				Recommended starter stacks
+			</h2>
+			<div class="grid sm:grid-cols-3 gap-4 text-sm">
+				<div class="border border-ui rounded p-4">
+					<div class="text-xs uppercase tracking-wider text-foreground-3 font-mono mb-2">
+						$0 / mo
+					</div>
+					<div class="text-foreground font-bold mb-2">Student / starter</div>
+					<ul class="text-foreground-2 space-y-1">
+						<li>Gemini (web)</li>
+						<li>Gemini CLI or Codex CLI</li>
+						<li>VS Code + Copilot (Student Pack)</li>
+					</ul>
+				</div>
+				<div class="border border-ui rounded p-4">
+					<div class="text-xs uppercase tracking-wider text-foreground-3 font-mono mb-2">
+						$20 / mo
+					</div>
+					<div class="text-foreground font-bold mb-2">Indie dev</div>
+					<ul class="text-foreground-2 space-y-1">
+						<li>Claude Pro (incl. Claude Code)</li>
+						<li>Cursor free or Windsurf Pro</li>
+						<li>OpenRouter for API misc</li>
+					</ul>
+				</div>
+				<div class="border border-ui rounded p-4">
+					<div class="text-xs uppercase tracking-wider text-foreground-3 font-mono mb-2">
+						$100+ / mo
+					</div>
+					<div class="text-foreground font-bold mb-2">Heavy user</div>
+					<ul class="text-foreground-2 space-y-1">
+						<li>Claude Max (5x or 20x)</li>
+						<li>Cursor Pro+</li>
+						<li>Vercel AI Gateway for prod</li>
+					</ul>
+				</div>
+			</div>
+		</section>
+
+		<p class="text-xs text-foreground-3 font-mono">
+			See something missing or out of date?{" "}
+			<a
+				href="https://github.com/Railly/railly.dev"
+				target="_blank"
+				class="underline hover:text-foreground"
+			>
+				PR welcome
+			</a>.
+		</p>
+
+		<Footer />
+	</PageLayout>
+</Layout>
