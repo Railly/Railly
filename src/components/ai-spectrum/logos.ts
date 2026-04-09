@@ -46,6 +46,15 @@ import cerebras from "../../assets/svgs/logos/cerebras.svg?raw";
 import jetbrainsAi from "../../assets/svgs/logos/jetbrains-ai.svg?raw";
 import warp from "../../assets/svgs/logos/warp.svg?raw";
 import bolt from "../../assets/svgs/logos/bolt.svg?raw";
+import devin from "../../assets/svgs/logos/devin.svg?raw";
+import hyperbolic from "../../assets/svgs/logos/hyperbolic.svg?raw";
+import emergent from "../../assets/svgs/logos/emergent.svg?raw";
+import anything from "../../assets/svgs/logos/anything.svg?raw";
+import floot from "../../assets/svgs/logos/floot.svg?raw";
+import magicPatterns from "../../assets/svgs/logos/magic-patterns.svg?raw";
+import base44 from "../../assets/svgs/logos/base44.svg?raw";
+import phind from "../../assets/svgs/logos/phind.svg?raw";
+import aws from "../../assets/svgs/logos/aws.svg?raw";
 
 export const LOGOS: Record<string, string> = {
   // chats
@@ -97,6 +106,15 @@ export const LOGOS: Record<string, string> = {
   "jetbrains-ai": jetbrainsAi,
   warp,
   bolt,
+  devin,
+  hyperbolic,
+  emergent,
+  anything,
+  floot,
+  "magic-patterns": magicPatterns,
+  base44,
+  phind,
+  "amazon-q": aws,
 };
 
 // Extract just the inner contents of an <svg>...</svg> string so we can re-embed
