@@ -1,11 +1,25 @@
 <svg
-      viewBox="-9.5 0 57 57"
+      
+      viewBox="280 310 470 660"
       xmlns="http://www.w3.org/2000/svg"
+      
     >
-      <title>Figma</title>
-      <path fill-rule="evenodd" clip-rule="evenodd" d="M19 28.5a9.5 9.5 0 1 1 19 0 9.5 9.5 0 0 1-19 0Z" fill="currentColor"/>
-      <path fill-rule="evenodd" clip-rule="evenodd" d="M0 47.5A9.5 9.5 0 0 1 9.5 38H19v9.5a9.5 9.5 0 1 1-19 0Z" fill="currentColor"/>
-      <path fill-rule="evenodd" clip-rule="evenodd" d="M19 0v19h9.5a9.5 9.5 0 1 0 0-19H19Z" fill="currentColor"/>
-      <path fill-rule="evenodd" clip-rule="evenodd" d="M0 9.5A9.5 9.5 0 0 0 9.5 19H19V0H9.5A9.5 9.5 0 0 0 0 9.5Z" fill="currentColor"/>
-      <path fill-rule="evenodd" clip-rule="evenodd" d="M0 28.5A9.5 9.5 0 0 0 9.5 38H19V19H9.5A9.5 9.5 0 0 0 0 28.5Z" fill="currentColor"/>
+      
+      <path
+        d="M312 840C312 784.772 356.772 740 412 740H512V840C512 895.228 467.228 940 412 940C356.772 940 312 895.228 312 840Z"
+        fill="currentColor"
+      />
+      <path
+        d="M512 340V540H612C667.228 540 712 495.228 712 440C712 384.772 667.228 340 612 340H512Z"
+        fill="currentColor"
+      />
+      <circle cx="611.167" cy="640" r="100" fill="currentColor" />
+      <path
+        d="M312 440C312 495.228 356.772 540 412 540H512V340H412C356.772 340 312 384.772 312 440Z"
+        fill="currentColor"
+      />
+      <path
+        d="M312 640C312 695.228 356.772 740 412 740H512V540H412C356.772 540 312 584.772 312 640Z"
+        fill="currentColor"
+      />
     </svg>
