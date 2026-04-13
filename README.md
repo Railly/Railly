@@ -10,11 +10,11 @@ Founder of [Crafter Station](https://crafterstation.com), building Peru's tech e
 | Project | Description |
 |---------|-------------|
 | [Tinte](https://tinte.dev) | Theme builder for VS Code, shadcn, and more `581★` |
-| [Agentfiles](https://github.com/Railly/agentfiles) | Browse, create, and edit AI agent files from Obsidian `497★` |
+| [Agentfiles](https://github.com/Railly/agentfiles) | Browse, create, and edit AI agent files from Obsidian `501★` |
 | [Elements](https://tryelements.dev) | Full-stack shadcn components for auth, ai, and more `485★` |
 | [text0](https://text0.dev) | AI-powered text editor with real-time collaboration `446★` |
-| [One Hunter](https://marketplace.visualstudio.com/items?itemName=RaillyHugo.one-hunter) | VS Code theme inspired by Vercel and One Dark Pro `378★` |
-| [trx](https://github.com/crafter-station/trx) | Agent-first CLI for audio/video transcription `74★` |
+| [One Hunter](https://marketplace.visualstudio.com/items?itemName=RaillyHugo.one-hunter) | VS Code theme inspired by Vercel and One Dark Pro `379★` |
+| [trx](https://github.com/crafter-station/trx) | Agent-first CLI for audio/video transcription `75★` |
 <!-- END:PROJECTS -->
 
 See [all projects →](https://railly.dev/projects)
