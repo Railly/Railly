@@ -11,28 +11,15 @@ const { width = 16, height = 16, class: className } = Astro.props;
 <svg
     width={width}
     height={height}
-    viewBox="0 0 24 24"
-    fill="none"
+    viewBox="0 0 32 32"
     xmlns="http://www.w3.org/2000/svg"
     class={className}
 >
     <title>Voxtype</title>
-    <path
-        d="M12 2L2 7l10 5 10-5-10-5Z"
-        stroke="currentColor"
-        stroke-width="1.5"
-        stroke-linejoin="round"
-    />
-    <path
-        d="M2 17l10 5 10-5"
-        stroke="currentColor"
-        stroke-width="1.5"
-        stroke-linejoin="round"
-    />
-    <path
-        d="M2 12l10 5 10-5"
-        stroke="currentColor"
-        stroke-width="1.5"
-        stroke-linejoin="round"
-    />
+    <rect width="32" height="32" rx="6" fill="#0a0a0a"/>
+    <g transform="translate(7 6)">
+        <path d="M9 0L18 5.5V16.5L9 22L0 16.5V5.5L9 0Z" fill="#E97B1A" opacity="0.9"/>
+        <path d="M9 0L18 5.5V16.5L9 11V0Z" fill="#D06A10" opacity="0.8"/>
+        <path d="M9 11L18 16.5L9 22L0 16.5L9 11Z" fill="#C05A08" opacity="0.7"/>
+    </g>
 </svg>
