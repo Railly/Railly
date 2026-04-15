@@ -3,16 +3,25 @@ import Hack0Logo from "../assets/svgs/h0-logo.svg";
 import Text0Logo from "../assets/svgs/t0-logo.svg";
 import AgentBrainLogo from "../components/brand/AgentBrainLogo.astro";
 import AgentfilesLogo from "../components/brand/AgentfilesLogo.astro";
+import ChessBattleLogo from "../components/brand/ChessBattleLogo.astro";
+import CligenticLogo from "../components/brand/CligenticLogo.astro";
 import CodexGlobeLogo from "../components/brand/CodexGlobeLogo.astro";
 import ElementsLogo from "../components/brand/ElementsLogo.astro";
+import FlowLogo from "../components/brand/FlowLogo.astro";
+import GithunterLogo from "../components/brand/GithunterLogo.astro";
+import HapiCliLogo from "../components/brand/HapiCliLogo.astro";
 import HypemanLogo from "../components/brand/HypemanLogo.astro";
 import IAHackLogo from "../components/brand/IAHackLogo.astro";
+import Latex0Logo from "../components/brand/Latex0Logo.astro";
 import OneHunterLogo from "../components/brand/OneHunterLogo.astro";
+import PawboardLogo from "../components/brand/PawboardLogo.astro";
+import PintelLogo from "../components/brand/PintelLogo.astro";
 import RoastRouletteLogo from "../components/brand/RoastRouletteLogo.astro";
 import ScrapiLogo from "../components/brand/ScrapiLogo.astro";
 import SkillKitLogo from "../components/brand/SkillKitLogo.astro";
 import SkillsLogo from "../components/brand/SkillsLogo.astro";
 import SpotiCliLogo from "../components/brand/SpotiCliLogo.astro";
+import SunatCliLogo from "../components/brand/SunatCliLogo.astro";
 import TinteLogo from "../components/brand/TinteLogo.astro";
 import TrxLogo from "../components/brand/TrxLogo.astro";
 import VoxtypeLogo from "../components/brand/VoxtypeLogo.astro";
@@ -153,6 +162,69 @@ const projectsData = [
         url: "https://scrapi.fast",
         icon: "scrapi" as const,
     },
+    {
+        name: "sunat-cli",
+        repo: "Railly/sunat-cli",
+        description: "Agent-first CLI for SUNAT tax automation in Peru",
+        url: "https://github.com/Railly/sunat-cli",
+        icon: "sunatCli" as const,
+    },
+    {
+        name: "hapi-cli",
+        repo: "crafter-station/hapi-cli",
+        description: "Agent-first CLI for Hapi Trade brokerage",
+        url: "https://github.com/crafter-station/hapi-cli",
+        icon: "hapiCli" as const,
+    },
+    {
+        name: "cligentic",
+        repo: "Railly/cligentic",
+        description: "Copy-paste CLI blocks for the agent era",
+        url: "https://cligentic.railly.dev",
+        icon: "cligentic" as const,
+    },
+    {
+        name: "Pintel",
+        repo: "crafter-station/pintel",
+        description: "Draw, guess, evaluate - a multimodal AI evaluation game",
+        url: "https://github.com/crafter-station/pintel",
+        icon: "pintel" as const,
+    },
+    {
+        name: "Chess Battle",
+        repo: "crafter-station/chess-battle",
+        description: "Real-time AI-vs-AI chess battles for benchmarking LLMs",
+        url: "https://github.com/crafter-station/chess-battle",
+        icon: "chessBattle" as const,
+    },
+    {
+        name: "Pawboard",
+        repo: "crafter-station/pawboard",
+        description: "Real-time collaborative ideation board",
+        url: "https://github.com/crafter-station/pawboard",
+        icon: "pawboard" as const,
+    },
+    {
+        name: "GitHunter",
+        repo: "crafter-station/githunter",
+        description: "GitHub user discovery and analysis platform",
+        url: "https://github.com/crafter-station/githunter",
+        icon: "githunter" as const,
+    },
+    {
+        name: "latex0",
+        repo: "crafter-station/latex0",
+        description: "The future of typesetting - LaTeX editor",
+        url: "https://github.com/crafter-station/latex0",
+        icon: "latex0" as const,
+    },
+    {
+        name: "Flow",
+        repo: "crafter-station/flow",
+        description: "Zero-dependency tree layout and infinite canvas for React",
+        url: "https://github.com/crafter-station/flow",
+        icon: "flow" as const,
+    },
 ];
 
 async function getStars(repo: string): Promise<number> {
@@ -195,6 +267,15 @@ const iconMap = {
     spotiCli: SpotiCliLogo,
     zones: ZonesLogo,
     hypeman: HypemanLogo,
+    sunatCli: SunatCliLogo,
+    hapiCli: HapiCliLogo,
+    cligentic: CligenticLogo,
+    pintel: PintelLogo,
+    chessBattle: ChessBattleLogo,
+    pawboard: PawboardLogo,
+    githunter: GithunterLogo,
+    latex0: Latex0Logo,
+    flow: FlowLogo,
 } as const;
 
 type IconKey = keyof typeof iconMap;

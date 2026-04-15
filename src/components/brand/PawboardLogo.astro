@@ -1,0 +1,26 @@
+---
+interface Props {
+	width?: number;
+	height?: number;
+	class?: string;
+}
+
+const { width = 16, height = 16, class: className } = Astro.props;
+---
+
+<svg
+    width={width}
+    height={height}
+    viewBox="0 0 24 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    class={className}
+>
+    <title>Pawboard</title>
+    <ellipse cx="7" cy="5" rx="2" ry="2.5" fill="currentColor"/>
+    <ellipse cx="12" cy="3.5" rx="2" ry="2.5" fill="currentColor"/>
+    <ellipse cx="17" cy="5" rx="2" ry="2.5" fill="currentColor"/>
+    <ellipse cx="5" cy="10" rx="2" ry="2.5" fill="currentColor"/>
+    <ellipse cx="19" cy="10" rx="2" ry="2.5" fill="currentColor"/>
+    <path d="M7 14c0-3 2.5-5 5-5s5 2 5 5c0 4-2 7-5 7s-5-3-5-7z" fill="currentColor"/>
+</svg>

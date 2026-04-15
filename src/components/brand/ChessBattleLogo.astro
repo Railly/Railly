@@ -1,0 +1,27 @@
+---
+interface Props {
+	width?: number;
+	height?: number;
+	class?: string;
+}
+
+const { width = 16, height = 16, class: className } = Astro.props;
+---
+
+<svg
+    width={width}
+    height={height}
+    viewBox="0 0 24 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    class={className}
+>
+    <title>Chess Battle</title>
+    <path d="M9 2h2v2H9zM13 2h2v2h-2z" fill="currentColor"/>
+    <path d="M8 4h8v2H8z" fill="currentColor"/>
+    <path d="M10 6h4v3h-4z" fill="currentColor"/>
+    <path d="M7 9h10v2H7z" fill="currentColor"/>
+    <path d="M9 11h6v5H9z" fill="currentColor"/>
+    <path d="M7 16h10v2H7z" fill="currentColor"/>
+    <path d="M6 18h12v2H6z" fill="currentColor"/>
+</svg>

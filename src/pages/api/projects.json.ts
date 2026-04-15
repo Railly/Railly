@@ -109,6 +109,60 @@ const projectsData = [
 		description: "Fast web scraper with AI-powered data extraction",
 		url: "https://scrapi.fast",
 	},
+	{
+		name: "sunat-cli",
+		repo: "Railly/sunat-cli",
+		description: "Agent-first CLI for SUNAT tax automation in Peru",
+		url: "https://github.com/Railly/sunat-cli",
+	},
+	{
+		name: "hapi-cli",
+		repo: "crafter-station/hapi-cli",
+		description: "Agent-first CLI for Hapi Trade brokerage",
+		url: "https://github.com/crafter-station/hapi-cli",
+	},
+	{
+		name: "cligentic",
+		repo: "Railly/cligentic",
+		description: "Copy-paste CLI blocks for the agent era",
+		url: "https://cligentic.railly.dev",
+	},
+	{
+		name: "Pintel",
+		repo: "crafter-station/pintel",
+		description: "Draw, guess, evaluate - a multimodal AI evaluation game",
+		url: "https://github.com/crafter-station/pintel",
+	},
+	{
+		name: "Chess Battle",
+		repo: "crafter-station/chess-battle",
+		description: "Real-time AI-vs-AI chess battles for benchmarking LLMs",
+		url: "https://github.com/crafter-station/chess-battle",
+	},
+	{
+		name: "Pawboard",
+		repo: "crafter-station/pawboard",
+		description: "Real-time collaborative ideation board",
+		url: "https://github.com/crafter-station/pawboard",
+	},
+	{
+		name: "GitHunter",
+		repo: "crafter-station/githunter",
+		description: "GitHub user discovery and analysis platform",
+		url: "https://github.com/crafter-station/githunter",
+	},
+	{
+		name: "latex0",
+		repo: "crafter-station/latex0",
+		description: "The future of typesetting - LaTeX editor",
+		url: "https://github.com/crafter-station/latex0",
+	},
+	{
+		name: "Flow",
+		repo: "crafter-station/flow",
+		description: "Zero-dependency tree layout and infinite canvas for React",
+		url: "https://github.com/crafter-station/flow",
+	},
 ];
 
 async function getStars(repo: string): Promise<number> {
