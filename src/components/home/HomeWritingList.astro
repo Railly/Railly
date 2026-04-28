@@ -1,0 +1,48 @@
+---
+import type { CollectionEntry } from "astro:content";
+import PremiereCountdown from "@/components/blog/PremiereCountdown";
+import ViewCounter from "@/components/blog/ViewCounter";
+import ListRow from "@/components/ui/ListRow.astro";
+
+interface Props {
+	years: number[];
+	postsByYear: Record<number, CollectionEntry<"blog">[]>;
+	isNewest: (slug: string) => boolean;
+	formatDate: (date: Date) => string;
+}
+
+const { years, postsByYear, isNewest, formatDate } = Astro.props;
+---
+
+<div class="space-y-0">
+	{years.map((year) => (
+		<>
+			{postsByYear[year].map((post, index) => {
+				const isPremiere = post.data.status === "premiere" && new Date() < post.data.pubDate;
+				return (
+					<ListRow href={!isPremiere ? `/blog/${post.slug}` : undefined} interactive={!isPremiere}>
+						<span slot="leading" class="text-foreground-3 tabular-nums block">{index === 0 ? year : ""}</span>
+						<span class:list={["font-medium", isPremiere ? "text-foreground-3" : "text-foreground group-hover:text-foreground"]}>
+							{post.data.title}
+							{isPremiere ? (
+								<span class="ml-2 text-xs font-normal px-1.5 py-0.5 border border-ui rounded text-foreground-3">Premiere</span>
+							) : isNewest(post.slug) ? (
+								<span class="ml-2 text-xs font-normal px-1.5 py-0.5 bg-ui rounded text-foreground-2">Newest</span>
+							) : null}
+						</span>
+						<span slot="trailing" class="flex items-center gap-4">
+							{isPremiere ? (
+								<PremiereCountdown pubDate={post.data.pubDate.toISOString()} client:only="react" />
+							) : (
+								<>
+									<ViewCounter slug={post.slug} client:only="react" className="text-xs text-foreground-3 tabular-nums shrink-0" />
+									<span class="text-foreground-3 tabular-nums shrink-0">{formatDate(post.data.pubDate)}</span>
+								</>
+							)}
+						</span>
+					</ListRow>
+				);
+			})}
+		</>
+	))}
+</div>

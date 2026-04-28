@@ -1,0 +1,17 @@
+---
+import ListRow from "@/components/ui/ListRow.astro";
+import { homeProjectsData } from "@/data/projects";
+import BrandIcon from "../brand/BrandIcon.astro";
+---
+
+<div class="space-y-0">
+	{homeProjectsData.map((project) => (
+		<ListRow href={project.href} external showArrow>
+			<span slot="leading" class="w-6 h-6 flex items-center justify-center shrink-0">
+				<BrandIcon name={project.icon} width={20} height={20} class="text-foreground" />
+			</span>
+			<span class="text-foreground font-medium">{project.title}</span>
+			<span slot="trailing" class="text-foreground-3 hidden sm:block">{project.description}</span>
+		</ListRow>
+	))}
+</div>

@@ -1,6 +1,6 @@
 ---
 import Linkedin from "@/assets/svgs/linkedin.svg";
-import V0Logo from "@/components/brand/V0Logo.astro";
+import BrandIcon from "../brand/BrandIcon.astro";
 
 interface SocialLink {
 	name: string;
@@ -85,7 +85,7 @@ const socialLinks: SocialLink[] = [
                 )}
 
                 {link.icon === "v0" && (
-                    <V0Logo width={16} height={16} class="text-current" />
+                    <BrandIcon name="v0"  width={16} height={16} class="text-current" />
                 )}
 
                 {link.icon === "email" && (

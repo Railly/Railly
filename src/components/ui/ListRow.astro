@@ -1,0 +1,53 @@
+---
+import ArrowIcon from "./ArrowIcon.astro";
+
+interface Props {
+	href?: string;
+	external?: boolean;
+	interactive?: boolean;
+	showArrow?: boolean;
+	class?: string;
+}
+
+const {
+	href,
+	external = false,
+	interactive = true,
+	showArrow = false,
+	class: className,
+} = Astro.props;
+
+const Component = href ? "a" : "div";
+const linkProps = href
+	? external
+		? { href, target: "_blank", rel: "noopener noreferrer" }
+		: { href }
+	: {};
+---
+
+<Component
+	{...linkProps}
+	class:list={[
+		"group -mx-3 flex items-baseline gap-4 border-b border-ui px-3 py-3 transition-colors",
+		interactive && "hover:bg-background-2",
+		!href && !interactive && "cursor-default",
+		className,
+	]}
+>
+	<div class="w-12 shrink-0 text-sm">
+		<slot name="leading" />
+	</div>
+	<div class="min-w-0 flex-1 text-sm">
+		<slot />
+	</div>
+	<div class="shrink-0">
+		<slot name="trailing" />
+	</div>
+	{
+		showArrow && (
+			<ArrowIcon
+				class="shrink-0 text-foreground-3 transition-transform group-hover:translate-x-0.5"
+			/>
+		)
+	}
+</Component>

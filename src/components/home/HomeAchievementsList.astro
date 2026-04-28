@@ -1,0 +1,48 @@
+---
+import ListRow from "@/components/ui/ListRow.astro";
+import { achievements } from "@/data/achievements";
+import Flag from "../brand/Flag.astro";
+
+const scopeMap = {
+	global: "globe",
+	pe: "pe",
+	cl: "cl",
+	co: "co",
+	br: "br",
+} as const;
+---
+
+<div class="space-y-0">
+	{achievements.map((item, index) => {
+		const showYear = item.year !== achievements[index - 1]?.year;
+		return (
+			<ListRow>
+				<span slot="leading" class="text-foreground-3 tabular-nums block">{showYear ? item.year : ""}</span>
+				<div class="flex items-baseline gap-4">
+					<span class="w-36 shrink-0 text-foreground font-medium">{item.achievement}</span>
+					<span class="flex-1">
+						{item.eventUrl ? (
+							<a href={item.eventUrl} target="_blank" rel="noopener noreferrer" class="text-foreground-2 hover:text-foreground underline decoration-ui/50 hover:decoration-ui transition-colors">
+								{item.event}
+							</a>
+						) : (
+							<span class="text-foreground-2">{item.event}</span>
+						)}
+					</span>
+				</div>
+				<span slot="trailing" class="flex items-center gap-4">
+					{item.project && (
+						item.projectUrl ? (
+							<a href={item.projectUrl} target="_blank" rel="noopener noreferrer" class="text-foreground-3 hover:text-foreground underline decoration-ui/50 hover:decoration-ui transition-colors hidden sm:block">
+								{item.project}
+							</a>
+						) : (
+							<span class="text-foreground-3 hidden sm:block">{item.project}</span>
+						)
+					)}
+					<Flag country={scopeMap[item.scope]} width={16} height={16} class={item.scope === "global" ? "text-foreground-2" : undefined} />
+				</span>
+			</ListRow>
+		);
+	})}
+</div>

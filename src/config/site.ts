@@ -1,11 +1,23 @@
 import type { SiteConfig } from "@/types";
 
+interface OgUrlOptions {
+	title: string;
+	description: string;
+	tag?: string;
+	date?: string;
+}
+
 export const siteConfig: SiteConfig = {
 	name: "Railly Hugo",
 	description:
 		"AI Software Engineer at Clerk and Founder of Crafter Station. Building open-source developer tools, winning hackathons, and growing Peru's tech ecosystem from Lima.",
 	url: "https://www.railly.dev",
 	ogImage: "https://www.railly.dev/images/og.webp",
+	hero: {
+		title: "Hunter",
+		role: "AI Software Engineer",
+		location: "Lima, Peru",
+	},
 	author: "Railly Hugo",
 	email: "contact@railly.dev",
 	links: {
@@ -40,3 +52,20 @@ export const siteConfig: SiteConfig = {
 	},
 	manifest: "/favicon/site.webmanifest",
 };
+
+export function ogUrl({ title, description, tag, date }: OgUrlOptions) {
+	const searchParams = new URLSearchParams({
+		title,
+		description,
+	});
+
+	if (tag) {
+		searchParams.set("tag", tag);
+	}
+
+	if (date) {
+		searchParams.set("date", date);
+	}
+
+	return `/api/og?${searchParams.toString()}`;
+}
