@@ -1,0 +1,64 @@
+---
+import BrazilFlag from "../brand/BrazilFlag.astro";
+import ChileFlag from "../brand/ChileFlag.astro";
+import ColombiaFlag from "../brand/ColombiaFlag.astro";
+import GlobeIcon from "../brand/GlobeIcon.astro";
+import PeruFlag from "../brand/PeruFlag.astro";
+
+interface Props {
+	item: {
+		year: string;
+		achievement: string;
+		event: string;
+		eventUrl?: string;
+		project?: string;
+		projectUrl?: string;
+		scope: "global" | "pe" | "cl" | "co" | "br";
+	};
+	showYear: boolean;
+}
+
+const { item, showYear } = Astro.props;
+---
+
+<div class="group -mx-3 flex items-baseline gap-4 border-b border-ui px-3 py-3 transition-colors hover:bg-background-2">
+	<span class="w-12 shrink-0 text-sm tabular-nums text-foreground-3">
+		{showYear ? item.year : ""}
+	</span>
+	<span class="w-36 shrink-0 text-sm font-medium text-foreground">{item.achievement}</span>
+	<span class="flex-1 text-sm">
+		{item.eventUrl ? (
+			<a
+				href={item.eventUrl}
+				target="_blank"
+				rel="noopener noreferrer"
+				class="text-foreground-2 underline decoration-ui/50 transition-colors hover:text-foreground hover:decoration-ui"
+			>
+				{item.event}
+			</a>
+		) : (
+			<span class="text-foreground-2">{item.event}</span>
+		)}
+	</span>
+	<span class="hidden shrink-0 text-sm sm:block">
+		{item.project && item.projectUrl ? (
+			<a
+				href={item.projectUrl}
+				target="_blank"
+				rel="noopener noreferrer"
+				class="text-foreground-3 underline decoration-ui/50 transition-colors hover:text-foreground hover:decoration-ui"
+			>
+				{item.project}
+			</a>
+		) : item.project ? (
+			<span class="text-foreground-3">{item.project}</span>
+		) : null}
+	</span>
+	<span class="shrink-0">
+		{item.scope === "global" && <GlobeIcon width={16} height={16} class="text-foreground-2" />}
+		{item.scope === "pe" && <PeruFlag width={16} height={16} />}
+		{item.scope === "cl" && <ChileFlag width={16} height={16} />}
+		{item.scope === "co" && <ColombiaFlag width={16} height={16} />}
+		{item.scope === "br" && <BrazilFlag width={16} height={16} />}
+	</span>
+</div>
