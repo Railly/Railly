@@ -1,5 +1,6 @@
 import { createClient } from "@vercel/kv";
 import type { APIRoute } from "astro";
+import { httpError, json } from "@/lib/http";
 
 export const prerender = false;
 
@@ -8,17 +9,11 @@ export const GET: APIRoute = async ({ url }) => {
 	const incr = url.searchParams.get("incr");
 
 	if (!id) {
-		return new Response(
-			JSON.stringify({ error: { message: 'Missing "id" query', code: "MISSING_ID" } }),
-			{ status: 400, headers: { "Content-Type": "application/json" } },
-		);
+		return httpError('Missing "id" query', "MISSING_ID", 400);
 	}
 
 	if (import.meta.env.DEV) {
-		return new Response(
-			JSON.stringify({ slug: id, claps: 42, dev: true }),
-			{ status: 200, headers: { "Content-Type": "application/json" } },
-		);
+		return json({ slug: id, claps: 42, dev: true });
 	}
 
 	try {
@@ -36,14 +31,8 @@ export const GET: APIRoute = async ({ url }) => {
 			claps = result ? Number(result) : 0;
 		}
 
-		return new Response(
-			JSON.stringify({ slug: id, claps }),
-			{ status: 200, headers: { "Content-Type": "application/json" } },
-		);
-	} catch (error) {
-		return new Response(
-			JSON.stringify({ error: { message: "Internal server error", code: "SERVER_ERROR" } }),
-			{ status: 500, headers: { "Content-Type": "application/json" } },
-		);
+		return json({ slug: id, claps });
+	} catch {
+		return httpError("Internal server error", "SERVER_ERROR", 500);
 	}
 };

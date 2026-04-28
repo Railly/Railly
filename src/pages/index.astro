@@ -1,30 +1,31 @@
 ---
 import { getCollection } from "astro:content";
-import Hack0Logo from "../assets/svgs/h0-logo.svg";
-import Text0Logo from "../assets/svgs/t0-logo.svg";
-import AgentfilesLogo from "../components/brand/AgentfilesLogo.astro";
-import BrazilFlag from "../components/brand/BrazilFlag.astro";
-import ChileFlag from "../components/brand/ChileFlag.astro";
-import ColombiaFlag from "../components/brand/ColombiaFlag.astro";
-import ElementsLogo from "../components/brand/ElementsLogo.astro";
-import GlobeIcon from "../components/brand/GlobeIcon.astro";
-import OneHunterLogo from "../components/brand/OneHunterLogo.astro";
-import PeruFlag from "../components/brand/PeruFlag.astro";
-import ScrapiLogo from "../components/brand/ScrapiLogo.astro";
-import TinteLogo from "../components/brand/TinteLogo.astro";
-import TrxLogo from "../components/brand/TrxLogo.astro";
-import PremiereCountdown from "../components/blog/PremiereCountdown";
-import ViewCounter from "../components/blog/ViewCounter";
-import NewsletterSection from "../components/newsletter/NewsletterSection.astro";
-import Footer from "../components/layout/Footer.astro";
-import HeroSection from "../components/layout/HeroSection.astro";
-import PageLayout from "../components/layout/PageLayout.astro";
-import SectionHeader from "../components/layout/SectionHeader.astro";
-import { isPostListable } from "../config/blog";
-import Layout from "../layouts/Layout.astro";
+import Hack0Logo from "@/assets/svgs/h0-logo.svg";
+import Text0Logo from "@/assets/svgs/t0-logo.svg";
+import PremiereCountdown from "@/components/blog/PremiereCountdown";
+import ViewCounter from "@/components/blog/ViewCounter";
+import AgentfilesLogo from "@/components/brand/AgentfilesLogo.astro";
+import BrazilFlag from "@/components/brand/BrazilFlag.astro";
+import ChileFlag from "@/components/brand/ChileFlag.astro";
+import ColombiaFlag from "@/components/brand/ColombiaFlag.astro";
+import ElementsLogo from "@/components/brand/ElementsLogo.astro";
+import GlobeIcon from "@/components/brand/GlobeIcon.astro";
+import OneHunterLogo from "@/components/brand/OneHunterLogo.astro";
+import PeruFlag from "@/components/brand/PeruFlag.astro";
+import ScrapiLogo from "@/components/brand/ScrapiLogo.astro";
+import TinteLogo from "@/components/brand/TinteLogo.astro";
+import TrxLogo from "@/components/brand/TrxLogo.astro";
+import Footer from "@/components/layout/Footer.astro";
+import HeroSection from "@/components/layout/HeroSection.astro";
+import PageLayout from "@/components/layout/PageLayout.astro";
+import SectionHeader from "@/components/layout/SectionHeader.astro";
+import NewsletterSection from "@/components/newsletter/NewsletterSection.astro";
+import { isPostListable } from "@/config/blog";
+import Layout from "@/layouts/Layout.astro";
 
 const ogTitle = "Railly Hugo";
-const ogDescription = "AI Software Engineer at Clerk, Founder of Crafter Station. Lima, Peru.";
+const ogDescription =
+	"AI Software Engineer at Clerk, Founder of Crafter Station. Lima, Peru.";
 const ogImage = `/api/og?title=${encodeURIComponent(ogTitle)}&description=${encodeURIComponent(ogDescription)}`;
 
 const allPosts = await getCollection("blog", ({ data }) => {
@@ -110,7 +111,8 @@ const achievementsData = [
 		year: "2026",
 		achievement: "ElevenLabs Prize",
 		event: "Agents Hackathon Brazil",
-		eventUrl: "https://www.linkedin.com/posts/railly-hugo_aiagents-hackathon-buildinginpublic-activity-7423521448687919104-ybiq",
+		eventUrl:
+			"https://www.linkedin.com/posts/railly-hugo_aiagents-hackathon-buildinginpublic-activity-7423521448687919104-ybiq",
 		project: "i18n",
 		projectUrl: "https://i18n.crafter.run",
 		scope: "br" as const,
@@ -119,7 +121,8 @@ const achievementsData = [
 		year: "2026",
 		achievement: "2nd Place",
 		event: "v0 × Sanity Builder Challenge",
-		eventUrl: "https://www.sanity.io/blog/v0-sanity-builder-challenge-the-winners",
+		eventUrl:
+			"https://www.sanity.io/blog/v0-sanity-builder-challenge-the-winners",
 		project: "Annual Calendar 2026",
 		projectUrl: "https://v0-annual-calendar.vercel.app",
 		scope: "global" as const,

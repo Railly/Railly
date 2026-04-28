@@ -1,15 +1,11 @@
 import type { SiteConfig } from "@/types";
 
-const BASE_URL = import.meta.env.PROD
-	? "https://www.railly.dev"
-	: "http://localhost:4321";
-
 export const siteConfig: SiteConfig = {
 	name: "Railly Hugo",
 	description:
 		"AI Software Engineer at Clerk and Founder of Crafter Station. Building open-source developer tools, winning hackathons, and growing Peru's tech ecosystem from Lima.",
-	url: BASE_URL,
-	ogImage: `${BASE_URL}/images/og.webp`,
+	url: "https://www.railly.dev",
+	ogImage: "https://www.railly.dev/images/og.webp",
 	author: "Railly Hugo",
 	email: "contact@railly.dev",
 	links: {

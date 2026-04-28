@@ -16,14 +16,21 @@ function getTimeLeft(target: Date) {
 	return { days, hours, minutes, seconds };
 }
 
-function formatCountdown(t: { days: number; hours: number; minutes: number; seconds: number }) {
+function formatCountdown(t: {
+	days: number;
+	hours: number;
+	minutes: number;
+	seconds: number;
+}) {
 	if (t.days > 0) return `${t.days}d ${t.hours}h ${t.minutes}m`;
 	if (t.hours > 0) return `${t.hours}h ${t.minutes}m ${t.seconds}s`;
 	return `${t.minutes}m ${t.seconds}s`;
 }
 
 export default function PremiereCountdown({ pubDate }: PremiereCountdownProps) {
-	const [timeLeft, setTimeLeft] = useState(() => getTimeLeft(new Date(pubDate)));
+	const [timeLeft, setTimeLeft] = useState(() =>
+		getTimeLeft(new Date(pubDate)),
+	);
 
 	useEffect(() => {
 		const id = setInterval(() => {
@@ -36,9 +43,7 @@ export default function PremiereCountdown({ pubDate }: PremiereCountdownProps) {
 
 	if (!timeLeft) {
 		return (
-			<span className="text-xs font-mono text-foreground-2">
-				Available now
-			</span>
+			<span className="text-xs font-mono text-foreground-2">Available now</span>
 		);
 	}
 

@@ -1,8 +1,8 @@
 ---
 import { ClientRouter } from "astro:transitions";
-import { siteConfig } from "../config/site";
-import AnnouncementBanner from "../components/layout/AnnouncementBanner.astro";
-import "../styles/global.css";
+import AnnouncementBanner from "@/components/layout/AnnouncementBanner.astro";
+import { siteConfig } from "@/config/site";
+import "@/styles/global.css";
 
 interface Props {
 	title?: string;

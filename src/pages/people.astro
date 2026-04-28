@@ -1,9 +1,10 @@
 ---
-import SectionHeader from "../components/layout/SectionHeader.astro";
-import Layout from "../layouts/Layout.astro";
+import SectionHeader from "@/components/layout/SectionHeader.astro";
+import Layout from "@/layouts/Layout.astro";
 
 const ogTitle = "People";
-const ogDescription = "People who inspire my work in tech, open source, and community building.";
+const ogDescription =
+	"People who inspire my work in tech, open source, and community building.";
 const ogImage = `/api/og?title=${encodeURIComponent(ogTitle)}&description=${encodeURIComponent(ogDescription)}&tag=people`;
 
 const people = [
