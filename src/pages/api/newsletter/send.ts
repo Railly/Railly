@@ -1,5 +1,6 @@
 import type { APIRoute } from "astro";
 import { Resend } from "resend";
+import { httpError, json } from "@/lib/http";
 
 export const prerender = false;
 
@@ -8,33 +9,17 @@ export const POST: APIRoute = async ({ request }) => {
 	const secret = import.meta.env.NEWSLETTER_API_SECRET;
 
 	if (!auth || auth !== `Bearer ${secret}`) {
-		return new Response(
-			JSON.stringify({
-				error: { message: "Unauthorized", code: "UNAUTHORIZED" },
-			}),
-			{ status: 401, headers: { "Content-Type": "application/json" } },
-		);
+		return httpError("Unauthorized", "UNAUTHORIZED", 401);
 	}
 
 	const body = await request.json().catch(() => null);
 
 	if (!body?.subject || !body?.html) {
-		return new Response(
-			JSON.stringify({
-				error: {
-					message: "Missing subject or html",
-					code: "MISSING_FIELDS",
-				},
-			}),
-			{ status: 400, headers: { "Content-Type": "application/json" } },
-		);
+		return httpError("Missing subject or html", "MISSING_FIELDS", 400);
 	}
 
 	if (import.meta.env.DEV) {
-		return new Response(
-			JSON.stringify({ success: true, dev: true, id: "dev_broadcast" }),
-			{ status: 200, headers: { "Content-Type": "application/json" } },
-		);
+		return json({ success: true, dev: true, id: "dev_broadcast" });
 	}
 
 	try {
@@ -48,12 +33,7 @@ export const POST: APIRoute = async ({ request }) => {
 		});
 
 		if (error) {
-			return new Response(
-				JSON.stringify({
-					error: { message: error.message, code: "BROADCAST_ERROR" },
-				}),
-				{ status: 400, headers: { "Content-Type": "application/json" } },
-			);
+			return httpError(error.message, "BROADCAST_ERROR", 400);
 		}
 
 		const broadcastId = data?.id;
@@ -62,16 +42,8 @@ export const POST: APIRoute = async ({ request }) => {
 			await resend.broadcasts.send(broadcastId);
 		}
 
-		return new Response(JSON.stringify({ success: true, id: broadcastId }), {
-			status: 200,
-			headers: { "Content-Type": "application/json" },
-		});
+		return json({ success: true, id: broadcastId });
 	} catch (_error) {
-		return new Response(
-			JSON.stringify({
-				error: { message: "Internal server error", code: "SERVER_ERROR" },
-			}),
-			{ status: 500, headers: { "Content-Type": "application/json" } },
-		);
+		return httpError("Internal server error", "SERVER_ERROR", 500);
 	}
 };
