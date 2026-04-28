@@ -1,27 +1,27 @@
 ---
 import { getCollection } from "astro:content";
+import Hack0Logo from "@/assets/svgs/h0-logo.svg";
+import Text0Logo from "@/assets/svgs/t0-logo.svg";
+import PremiereCountdown from "@/components/blog/PremiereCountdown";
+import ViewCounter from "@/components/blog/ViewCounter";
+import AgentfilesLogo from "@/components/brand/AgentfilesLogo.astro";
+import ElementsLogo from "@/components/brand/ElementsLogo.astro";
+import OneHunterLogo from "@/components/brand/OneHunterLogo.astro";
+import ScrapiLogo from "@/components/brand/ScrapiLogo.astro";
+import TinteLogo from "@/components/brand/TinteLogo.astro";
+import TrxLogo from "@/components/brand/TrxLogo.astro";
+import AchievementRow from "@/components/home/AchievementRow.astro";
+import FeaturedProjectRow from "@/components/home/FeaturedProjectRow.astro";
+import Footer from "@/components/layout/Footer.astro";
+import HeroSection from "@/components/layout/HeroSection.astro";
+import PageLayout from "@/components/layout/PageLayout.astro";
+import SectionHeader from "@/components/layout/SectionHeader.astro";
+import NewsletterSection from "@/components/newsletter/NewsletterSection.astro";
+import { isPostListable } from "@/config/blog";
 import { ogUrl, siteConfig } from "@/config/site";
 import { achievements } from "@/data/achievements";
 import { featuredProjects } from "@/data/projects";
-import Hack0Logo from "../assets/svgs/h0-logo.svg";
-import Text0Logo from "../assets/svgs/t0-logo.svg";
-import PremiereCountdown from "../components/blog/PremiereCountdown";
-import ViewCounter from "../components/blog/ViewCounter";
-import AgentfilesLogo from "../components/brand/AgentfilesLogo.astro";
-import ElementsLogo from "../components/brand/ElementsLogo.astro";
-import OneHunterLogo from "../components/brand/OneHunterLogo.astro";
-import ScrapiLogo from "../components/brand/ScrapiLogo.astro";
-import TinteLogo from "../components/brand/TinteLogo.astro";
-import TrxLogo from "../components/brand/TrxLogo.astro";
-import AchievementRow from "../components/home/AchievementRow.astro";
-import FeaturedProjectRow from "../components/home/FeaturedProjectRow.astro";
-import Footer from "../components/layout/Footer.astro";
-import HeroSection from "../components/layout/HeroSection.astro";
-import PageLayout from "../components/layout/PageLayout.astro";
-import SectionHeader from "../components/layout/SectionHeader.astro";
-import NewsletterSection from "../components/newsletter/NewsletterSection.astro";
-import { isPostListable } from "../config/blog";
-import Layout from "../layouts/Layout.astro";
+import Layout from "@/layouts/Layout.astro";
 
 const ogImage = ogUrl({
 	title: "Railly Hugo",

@@ -1,37 +1,37 @@
 ---
+import Hack0Logo from "@/assets/svgs/h0-logo.svg";
+import Text0Logo from "@/assets/svgs/t0-logo.svg";
+import AgentBrainLogo from "@/components/brand/AgentBrainLogo.astro";
+import AgentfilesLogo from "@/components/brand/AgentfilesLogo.astro";
+import ChessBattleLogo from "@/components/brand/ChessBattleLogo.astro";
+import CligenticLogo from "@/components/brand/CligenticLogo.astro";
+import CodexGlobeLogo from "@/components/brand/CodexGlobeLogo.astro";
+import ElementsLogo from "@/components/brand/ElementsLogo.astro";
+import FlowLogo from "@/components/brand/FlowLogo.astro";
+import GithunterLogo from "@/components/brand/GithunterLogo.astro";
+import HapiCliLogo from "@/components/brand/HapiCliLogo.astro";
+import HypemanLogo from "@/components/brand/HypemanLogo.astro";
+import IAHackLogo from "@/components/brand/IAHackLogo.astro";
+import Latex0Logo from "@/components/brand/Latex0Logo.astro";
+import OneHunterLogo from "@/components/brand/OneHunterLogo.astro";
+import PawboardLogo from "@/components/brand/PawboardLogo.astro";
+import PintelLogo from "@/components/brand/PintelLogo.astro";
+import RoastRouletteLogo from "@/components/brand/RoastRouletteLogo.astro";
+import ScrapiLogo from "@/components/brand/ScrapiLogo.astro";
+import SkillKitLogo from "@/components/brand/SkillKitLogo.astro";
+import SkillsLogo from "@/components/brand/SkillsLogo.astro";
+import SpotiCliLogo from "@/components/brand/SpotiCliLogo.astro";
+import SunatCliLogo from "@/components/brand/SunatCliLogo.astro";
+import TinteLogo from "@/components/brand/TinteLogo.astro";
+import TrxLogo from "@/components/brand/TrxLogo.astro";
+import VoxtypeLogo from "@/components/brand/VoxtypeLogo.astro";
+import ZonesLogo from "@/components/brand/ZonesLogo.astro";
+import Footer from "@/components/layout/Footer.astro";
+import PageLayout from "@/components/layout/PageLayout.astro";
+import SectionHeader from "@/components/layout/SectionHeader.astro";
 import { ogUrl } from "@/config/site";
 import { projects as projectsData } from "@/data/projects";
-import Hack0Logo from "../assets/svgs/h0-logo.svg";
-import Text0Logo from "../assets/svgs/t0-logo.svg";
-import AgentBrainLogo from "../components/brand/AgentBrainLogo.astro";
-import AgentfilesLogo from "../components/brand/AgentfilesLogo.astro";
-import ChessBattleLogo from "../components/brand/ChessBattleLogo.astro";
-import CligenticLogo from "../components/brand/CligenticLogo.astro";
-import CodexGlobeLogo from "../components/brand/CodexGlobeLogo.astro";
-import ElementsLogo from "../components/brand/ElementsLogo.astro";
-import FlowLogo from "../components/brand/FlowLogo.astro";
-import GithunterLogo from "../components/brand/GithunterLogo.astro";
-import HapiCliLogo from "../components/brand/HapiCliLogo.astro";
-import HypemanLogo from "../components/brand/HypemanLogo.astro";
-import IAHackLogo from "../components/brand/IAHackLogo.astro";
-import Latex0Logo from "../components/brand/Latex0Logo.astro";
-import OneHunterLogo from "../components/brand/OneHunterLogo.astro";
-import PawboardLogo from "../components/brand/PawboardLogo.astro";
-import PintelLogo from "../components/brand/PintelLogo.astro";
-import RoastRouletteLogo from "../components/brand/RoastRouletteLogo.astro";
-import ScrapiLogo from "../components/brand/ScrapiLogo.astro";
-import SkillKitLogo from "../components/brand/SkillKitLogo.astro";
-import SkillsLogo from "../components/brand/SkillsLogo.astro";
-import SpotiCliLogo from "../components/brand/SpotiCliLogo.astro";
-import SunatCliLogo from "../components/brand/SunatCliLogo.astro";
-import TinteLogo from "../components/brand/TinteLogo.astro";
-import TrxLogo from "../components/brand/TrxLogo.astro";
-import VoxtypeLogo from "../components/brand/VoxtypeLogo.astro";
-import ZonesLogo from "../components/brand/ZonesLogo.astro";
-import Footer from "../components/layout/Footer.astro";
-import PageLayout from "../components/layout/PageLayout.astro";
-import SectionHeader from "../components/layout/SectionHeader.astro";
-import Layout from "../layouts/Layout.astro";
+import Layout from "@/layouts/Layout.astro";
 
 const ogDescription =
 	"Open source developer tools by Railly Hugo: Tinte, Elements, Agentfiles, trx, and more.";
@@ -44,7 +44,9 @@ const ogImage = ogUrl({
 async function getStars(repo: string): Promise<number> {
 	try {
 		const res = await fetch(`https://api.github.com/repos/${repo}`);
-		if (!res.ok) return 0;
+		if (!res.ok) {
+			return 0;
+		}
 		const data = await res.json();
 		return data.stargazers_count || 0;
 	} catch {
