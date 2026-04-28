@@ -1,68 +1,34 @@
-import { Resend } from "resend";
 import type { APIRoute } from "astro";
+import { Resend } from "resend";
+import { httpError, json } from "@/lib/http";
 
 export const prerender = false;
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const RATE_LIMIT_WINDOW = 60_000;
-const MAX_REQUESTS_PER_WINDOW = 3;
-const ipRequests = new Map<string, number[]>();
 
-function isRateLimited(ip: string): boolean {
-	const now = Date.now();
-	const requests = ipRequests.get(ip) ?? [];
-	const recent = requests.filter((t) => now - t < RATE_LIMIT_WINDOW);
-	if (recent.length >= MAX_REQUESTS_PER_WINDOW) return true;
-	recent.push(now);
-	ipRequests.set(ip, recent);
-	return false;
-}
-
-export const POST: APIRoute = async ({ request, clientAddress }) => {
-	if (isRateLimited(clientAddress)) {
-		return new Response(
-			JSON.stringify({
-				error: { message: "Too many requests", code: "RATE_LIMITED" },
-			}),
-			{ status: 429, headers: { "Content-Type": "application/json" } },
-		);
-	}
-
+export const POST: APIRoute = async ({ request }) => {
+	// Rate limiting handled at edge layer (Vercel/Cloudflare) — in-memory rate limiting does not work in serverless
 	const body = await request.json().catch(() => null);
 
 	if (body?.honeypot) {
-		return new Response(
-			JSON.stringify({ success: true }),
-			{ status: 200, headers: { "Content-Type": "application/json" } },
-		);
+		return json({ success: true });
 	}
 
 	if (!body?.email) {
-		return new Response(
-			JSON.stringify({
-				error: { message: "Missing email", code: "MISSING_EMAIL" },
-			}),
-			{ status: 400, headers: { "Content-Type": "application/json" } },
-		);
+		return httpError("Missing email", "MISSING_EMAIL", 400);
 	}
 
 	const email = String(body.email).trim().toLowerCase();
-	const firstName = body.firstName ? String(body.firstName).trim().slice(0, 50) : undefined;
+	const firstName = body.firstName
+		? String(body.firstName).trim().slice(0, 50)
+		: undefined;
 
 	if (!EMAIL_REGEX.test(email) || email.length > 254) {
-		return new Response(
-			JSON.stringify({
-				error: { message: "Invalid email", code: "INVALID_EMAIL" },
-			}),
-			{ status: 400, headers: { "Content-Type": "application/json" } },
-		);
+		return httpError("Invalid email", "INVALID_EMAIL", 400);
 	}
 
 	if (import.meta.env.DEV) {
-		return new Response(
-			JSON.stringify({ success: true, dev: true }),
-			{ status: 200, headers: { "Content-Type": "application/json" } },
-		);
+		return json({ success: true, dev: true });
 	}
 
 	try {
@@ -76,35 +42,14 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
 
 		if (error) {
 			if (error.message?.includes("already exists")) {
-				return new Response(
-					JSON.stringify({
-						error: {
-							message: "Already subscribed",
-							code: "ALREADY_SUBSCRIBED",
-						},
-					}),
-					{ status: 409, headers: { "Content-Type": "application/json" } },
-				);
+				return httpError("Already subscribed", "ALREADY_SUBSCRIBED", 409);
 			}
 
-			return new Response(
-				JSON.stringify({
-					error: { message: error.message, code: "RESEND_ERROR" },
-				}),
-				{ status: 400, headers: { "Content-Type": "application/json" } },
-			);
+			return httpError(error.message, "RESEND_ERROR", 400);
 		}
 
-		return new Response(
-			JSON.stringify({ success: true }),
-			{ status: 200, headers: { "Content-Type": "application/json" } },
-		);
-	} catch (_error) {
-		return new Response(
-			JSON.stringify({
-				error: { message: "Internal server error", code: "SERVER_ERROR" },
-			}),
-			{ status: 500, headers: { "Content-Type": "application/json" } },
-		);
+		return json({ success: true });
+	} catch {
+		return httpError("Internal server error", "SERVER_ERROR", 500);
 	}
 };
