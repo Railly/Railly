@@ -1,6 +1,9 @@
 ---
 import { ClientRouter } from "astro:transitions";
 import AnnouncementBanner from "@/components/layout/AnnouncementBanner.astro";
+import Favicons from "@/components/seo/Favicons.astro";
+import MetaTags from "@/components/seo/MetaTags.astro";
+import StructuredData from "@/components/seo/StructuredData.astro";
 import { siteConfig } from "@/config/site";
 import "@/styles/global.css";
 
@@ -32,237 +35,57 @@ const socialImageURL = new URL(image, siteConfig.url);
 
 <!doctype html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width" />
-        <link rel="canonical" href={canonicalURL} />
-
-        {/* Primary Meta Tags */}
-        <title>{title}</title>
-        <meta name="title" content={title} />
-        <meta name="description" content={description} />
-        <meta name="author" content={siteConfig.author} />
-        <meta name="keywords" content={siteConfig.keywords.join(", ")} />
-
-        {/* Theme Color */}
-        <meta
-            name="theme-color"
-            content={siteConfig.themeColor.light}
-            media="(prefers-color-scheme: light)"
-        />
-        <meta
-            name="theme-color"
-            content={siteConfig.themeColor.dark}
-            media="(prefers-color-scheme: dark)"
-        />
-
-        {/* Open Graph / Facebook */}
-        <meta property="og:type" content={article ? "article" : "website"} />
-        <meta property="og:site_name" content={siteConfig.name} />
-        <meta property="og:url" content={canonicalURL} />
-        <meta property="og:title" content={title} />
-        <meta property="og:description" content={description} />
-        <meta property="og:image" content={socialImageURL} />
-        <meta property="og:image:type" content="image/png" />
-        <meta property="og:image:width" content="1200" />
-        <meta property="og:image:height" content="628" />
-        <meta property="og:image:alt" content={`${title} - ${siteConfig.name}`} />
-        <meta property="og:locale" content={siteConfig.locale} />
-        {article && (
-            <>
-                <meta property="article:author" content={siteConfig.author} />
-                {publishedTime && (
-                    <meta property="article:published_time" content={publishedTime.toISOString()} />
-                )}
-                {modifiedTime && (
-                    <meta property="article:modified_time" content={modifiedTime.toISOString()} />
-                )}
-            </>
-        )}
-
-        {/* Twitter */}
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:site" content="@raillyhugo" />
-        <meta name="twitter:creator" content="@raillyhugo" />
-        <meta name="twitter:title" content={title} />
-        <meta name="twitter:description" content={description} />
-        <meta name="twitter:image" content={socialImageURL} />
-        <meta name="twitter:image:alt" content={`${title} - Railly Hugo`} />
-
-        {/* Favicons */}
-        <link rel="icon" type="image/x-icon" href={siteConfig.icons.icon} />
-        <link
-            rel="icon"
-            type="image/png"
-            sizes="16x16"
-            href="/favicon/favicon-16x16.png"
-        />
-        <link
-            rel="icon"
-            type="image/png"
-            sizes="32x32"
-            href="/favicon/favicon-32x32.png"
-        />
-        <link
-            rel="apple-touch-icon"
-            sizes="180x180"
-            href={siteConfig.icons.apple}
-        />
-        <link rel="manifest" href={siteConfig.manifest} />
-        <meta name="msapplication-config" content="/favicon/browserconfig.xml" />
-
-        {/* RSS Feed */}
-        <link
-            rel="alternate"
-            type="application/rss+xml"
-            title={`RSS Feed for ${siteConfig.name}`}
-            href="/rss.xml"
-        />
-
-        {/* JSON-LD Structured Data */}
-        <script type="application/ld+json" set:html={JSON.stringify((() => {
-            const graph: Record<string, unknown>[] = [
-                {
-                    "@type": "WebSite",
-                    "@id": `${siteConfig.url}/#website`,
-                    "url": siteConfig.url,
-                    "name": siteConfig.name,
-                    "description": siteConfig.description,
-                    "inLanguage": "en-US"
-                },
-                {
-                    "@type": "Person",
-                    "@id": `${siteConfig.url}/#person`,
-                    "name": siteConfig.author,
-                    "url": siteConfig.url,
-                    "image": `${siteConfig.url}/images/profile.webp`,
-                    "sameAs": [
-                        siteConfig.links.twitter,
-                        siteConfig.links.github,
-                        siteConfig.links.linkedin
-                    ],
-                    "jobTitle": "AI Software Engineer",
-                    "worksFor": {
-                        "@type": "Organization",
-                        "name": "Clerk",
-                        "url": "https://clerk.com"
-                    },
-                    "founder": {
-                        "@type": "Organization",
-                        "name": "Crafter Station",
-                        "url": "https://crafterstation.com"
-                    },
-                    "alumniOf": {
-                        "@type": "CollegeOrUniversity",
-                        "name": "Universidad Nacional Mayor de San Marcos",
-                        "url": "https://unmsm.edu.pe"
-                    }
-                }
-            ];
-            if (article && publishedTime) {
-                const blogPosting: Record<string, unknown> = {
-                    "@type": "BlogPosting",
-                    "headline": title,
-                    "description": description,
-                    "image": socialImageURL.toString(),
-                    "datePublished": publishedTime.toISOString(),
-                    "dateModified": (modifiedTime || publishedTime).toISOString(),
-                    "author": { "@id": `${siteConfig.url}/#person` },
-                    "publisher": { "@id": `${siteConfig.url}/#person` },
-                    "mainEntityOfPage": { "@id": canonicalURL.toString() }
-                };
-                if (readingTimeMinutes) {
-                    blogPosting.timeRequired = `PT${readingTimeMinutes}M`;
-                }
-                if (wordCount) {
-                    blogPosting.wordCount = wordCount;
-                }
-                graph.push(blogPosting);
-            }
-            const breadcrumbItems: Record<string, unknown>[] = [
-                { "@type": "ListItem", "position": 1, "name": "Home", "item": siteConfig.url }
-            ];
-            if (article) {
-                breadcrumbItems.push({ "@type": "ListItem", "position": 2, "name": "Writing", "item": `${siteConfig.url}/writing` });
-                breadcrumbItems.push({ "@type": "ListItem", "position": 3, "name": title });
-            } else if (title !== siteConfig.name && title !== "Railly Hugo - AI Software Engineer | Crafter Station Founder") {
-                breadcrumbItems.push({ "@type": "ListItem", "position": 2, "name": title });
-            }
-            if (breadcrumbItems.length > 1) {
-                graph.push({
-                    "@type": "BreadcrumbList",
-                    "itemListElement": breadcrumbItems
-                });
-            }
-            return { "@context": "https://schema.org", "@graph": graph };
-        })())} />
-
-        {/* View Transitions */}
-        <ClientRouter />
-
-        <slot name="head" />
-        <script defer src="https://counterscale.raillyhugo.workers.dev/tracker.js" data-site-id="railly-dev"></script>
-    </head>
-    <body
-        class="min-h-screen bg-background text-foreground selection:text-primary selection:bg-background-2"
-    >
-        <AnnouncementBanner
-            href="https://thelast30.railly.dev"
-            text="The Last 30% - Software engineering for vibe coders. Join the waitlist."
-        />
-        <slot />
-        {import.meta.env.DEV && <script is:inline src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>}
-    </body>
+	<head>
+		<MetaTags
+			title={title}
+			description={description}
+			canonicalURL={canonicalURL}
+			socialImageURL={socialImageURL}
+			article={article}
+			publishedTime={publishedTime}
+			modifiedTime={modifiedTime}
+		/>
+		<Favicons />
+		<link
+			rel="alternate"
+			type="application/rss+xml"
+			title={`RSS Feed for ${siteConfig.name}`}
+			href="/rss.xml"
+		/>
+		<StructuredData
+			title={title}
+			description={description}
+			canonicalURL={canonicalURL}
+			socialImageURL={socialImageURL}
+			article={article}
+			publishedTime={publishedTime}
+			modifiedTime={modifiedTime}
+			readingTimeMinutes={readingTimeMinutes}
+			wordCount={wordCount}
+		/>
+		<ClientRouter />
+		<slot name="head" />
+		<script defer src="https://counterscale.raillyhugo.workers.dev/tracker.js" data-site-id="railly-dev"></script>
+	</head>
+	<body class="min-h-screen bg-background text-foreground selection:text-primary selection:bg-background-2">
+		<AnnouncementBanner href="https://thelast30.railly.dev" text="The Last 30% - Software engineering for vibe coders. Join the waitlist." />
+		<slot />
+	</body>
 </html>
 
 <style is:global>
-    /* View Transition Animations */
-    @keyframes blur-scale-in {
-        from {
-            opacity: 0;
-            filter: blur(8px);
-            transform: scale(0.98);
-        }
-        to {
-            opacity: 1;
-            filter: blur(0);
-            transform: scale(1);
-        }
-    }
-
-    @keyframes blur-scale-out {
-        from {
-            opacity: 1;
-            filter: blur(0);
-            transform: scale(1);
-        }
-        to {
-            opacity: 0;
-            filter: blur(8px);
-            transform: scale(0.98);
-        }
-    }
-
-    /* Apply to all view transitions */
-    ::view-transition-old(root) {
-        animation: blur-scale-out 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-    }
-
-    ::view-transition-new(root) {
-        animation: blur-scale-in 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-    }
-
-    /* Smooth cross-fade between old and new */
-    ::view-transition-old(root),
-    ::view-transition-new(root) {
-        mix-blend-mode: normal;
-    }
-
-    /* Reduce motion for accessibility */
-    @media (prefers-reduced-motion: reduce) {
-        ::view-transition-old(root),
-        ::view-transition-new(root) {
-            animation-duration: 0.001s !important;
-        }
-    }
+	@keyframes blur-scale-in {
+		from { opacity: 0; filter: blur(8px); transform: scale(0.98); }
+		to { opacity: 1; filter: blur(0); transform: scale(1); }
+	}
+	@keyframes blur-scale-out {
+		from { opacity: 1; filter: blur(0); transform: scale(1); }
+		to { opacity: 0; filter: blur(8px); transform: scale(0.98); }
+	}
+	::view-transition-old(root) { animation: blur-scale-out 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+	::view-transition-new(root) { animation: blur-scale-in 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+	::view-transition-old(root), ::view-transition-new(root) { mix-blend-mode: normal; }
+	@media (prefers-reduced-motion: reduce) {
+		::view-transition-old(root), ::view-transition-new(root) { animation-duration: 0.001s !important; }
+	}
 </style>

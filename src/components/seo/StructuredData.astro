@@ -1,0 +1,7 @@
+---
+import { buildSchemaGraph, type SchemaProps } from "@/lib/schema";
+
+const props = Astro.props as SchemaProps;
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(buildSchemaGraph(props))} />
