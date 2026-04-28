@@ -1,4 +1,5 @@
 import type { APIRoute } from "astro";
+import { httpError, json } from "@/lib/http";
 
 export const prerender = false;
 
@@ -10,17 +11,15 @@ export const GET: APIRoute = async ({ request }) => {
 
 	const hookUrl = import.meta.env.VERCEL_DEPLOY_HOOK;
 	if (!hookUrl) {
-		return new Response(
-			JSON.stringify({ error: "VERCEL_DEPLOY_HOOK not configured" }),
-			{ status: 500, headers: { "Content-Type": "application/json" } },
+		return httpError(
+			"VERCEL_DEPLOY_HOOK not configured",
+			"MISSING_DEPLOY_HOOK",
+			500,
 		);
 	}
 
 	const res = await fetch(hookUrl, { method: "POST" });
 	const data = await res.json();
 
-	return new Response(JSON.stringify({ ok: true, deploy: data }), {
-		status: 200,
-		headers: { "Content-Type": "application/json" },
-	});
+	return json({ ok: true, deploy: data });
 };
