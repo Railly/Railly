@@ -1,7 +1,7 @@
-import rss from "@astrojs/rss";
 import { getCollection } from "astro:content";
-import { isPostVisible } from "../config/blog";
-import { siteConfig } from "../config/site";
+import rss from "@astrojs/rss";
+import { isPostVisible } from "@/config/blog";
+import { siteConfig } from "@/config/site";
 
 export async function GET(context: { site: URL }) {
 	const posts = await getCollection("blog", ({ data }) => {

@@ -36,11 +36,10 @@ export function geoJsonToSvgPath(
 
 	const project = ([lon, lat]: number[]): [number, number] => {
 		const x = centerX + (lon - lonCenter) * scale;
-		const y = centerY - (lat - latCenter) * scale; // Invert Y axis
+		const y = centerY - (lat - latCenter) * scale;
 		return [x, y];
 	};
 
-	// Convert rings to SVG path
 	return coordinates
 		.map((ring) => {
 			const points = ring.map(project);
@@ -56,7 +55,6 @@ export function geoJsonToSvgPath(
 		.join(" ");
 }
 
-// City coordinates in lon/lat
 export const cityCoordinates: Record<string, { lon: number; lat: number }> = {
 	"Lima, Peru": { lon: -77.0428, lat: -12.0464 },
 	"Buenos Aires, Argentina": { lon: -58.3816, lat: -34.6037 },
@@ -67,7 +65,6 @@ export const cityCoordinates: Record<string, { lon: number; lat: number }> = {
 	"Bogotá, Colombia": { lon: -74.0721, lat: 4.711 },
 };
 
-// Project a single city coordinate to SVG space
 export function projectCity(
 	lon: number,
 	lat: number,
@@ -93,7 +90,6 @@ export function projectCity(
 	return { x, y };
 }
 
-// South America bounds (from GeoJSON)
 export const southAmericaBounds = {
 	minLon: -81.41,
 	maxLon: -34.73,

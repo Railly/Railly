@@ -1,42 +1,42 @@
 ---
-import Footer from "../components/layout/Footer.astro";
-import PageLayout from "../components/layout/PageLayout.astro";
-import SectionHeader from "../components/layout/SectionHeader.astro";
-import Layout from "../layouts/Layout.astro";
-
-import AppleLogo from "../assets/svgs/logos/apple.svg";
-import ArduinoLogo from "../assets/svgs/logos/arduino.svg";
-import BiomeLogo from "../assets/svgs/logos/biome.svg";
-import BunLogo from "../assets/svgs/logos/bun.svg";
-import ClaudeLogo from "../assets/svgs/logos/claude.svg";
-import ClerkLogo from "../assets/svgs/logos/clerk.svg";
-import CloudflareLogo from "../assets/svgs/logos/cloudflare.svg";
-import CursorLogo from "../assets/svgs/logos/cursor.svg";
-import DiscordLogo from "../assets/svgs/logos/discord.svg";
-import DjiLogo from "../assets/svgs/logos/dji.svg";
-import ShureLogo from "../assets/svgs/logos/shure.svg";
-import FfmpegLogo from "../assets/svgs/logos/ffmpeg.svg";
-import FigmaLogo from "../assets/svgs/logos/figma.svg";
-import GhosttyLogo from "../assets/svgs/logos/ghostty.svg";
-import GithubLogo from "../assets/svgs/logos/github.svg";
-import LinearLogo from "../assets/svgs/logos/linear.svg";
-import MetaLogo from "../assets/svgs/logos/meta.svg";
-import NeonLogo from "../assets/svgs/logos/neon.svg";
-import NextjsLogo from "../assets/svgs/logos/nextjs.svg";
-import NotionLogo from "../assets/svgs/logos/notion.svg";
-import ObsidianLogo from "../assets/svgs/logos/obsidian.svg";
-import PerplexityLogo from "../assets/svgs/logos/perplexity.svg";
-import RaycastLogo from "../assets/svgs/logos/raycast.svg";
-import ResendLogo from "../assets/svgs/logos/resend.svg";
-import TailwindLogo from "../assets/svgs/logos/tailwindcss.svg";
-import TriggerLogo from "../assets/svgs/logos/trigger.svg";
-import TypescriptLogo from "../assets/svgs/logos/typescript.svg";
-import CodexLogo from "../assets/svgs/logos/codex.svg";
-import TogglLogo from "../assets/svgs/logos/toggl.svg";
-import VercelLogo from "../assets/svgs/logos/vercel.svg";
+import AppleLogo from "@/assets/svgs/logos/apple.svg";
+import ArduinoLogo from "@/assets/svgs/logos/arduino.svg";
+import BiomeLogo from "@/assets/svgs/logos/biome.svg";
+import BunLogo from "@/assets/svgs/logos/bun.svg";
+import ClaudeLogo from "@/assets/svgs/logos/claude.svg";
+import ClerkLogo from "@/assets/svgs/logos/clerk.svg";
+import CloudflareLogo from "@/assets/svgs/logos/cloudflare.svg";
+import CodexLogo from "@/assets/svgs/logos/codex.svg";
+import CursorLogo from "@/assets/svgs/logos/cursor.svg";
+import DiscordLogo from "@/assets/svgs/logos/discord.svg";
+import DjiLogo from "@/assets/svgs/logos/dji.svg";
+import FfmpegLogo from "@/assets/svgs/logos/ffmpeg.svg";
+import FigmaLogo from "@/assets/svgs/logos/figma.svg";
+import GhosttyLogo from "@/assets/svgs/logos/ghostty.svg";
+import GithubLogo from "@/assets/svgs/logos/github.svg";
+import LinearLogo from "@/assets/svgs/logos/linear.svg";
+import MetaLogo from "@/assets/svgs/logos/meta.svg";
+import NeonLogo from "@/assets/svgs/logos/neon.svg";
+import NextjsLogo from "@/assets/svgs/logos/nextjs.svg";
+import NotionLogo from "@/assets/svgs/logos/notion.svg";
+import ObsidianLogo from "@/assets/svgs/logos/obsidian.svg";
+import PerplexityLogo from "@/assets/svgs/logos/perplexity.svg";
+import RaycastLogo from "@/assets/svgs/logos/raycast.svg";
+import ResendLogo from "@/assets/svgs/logos/resend.svg";
+import ShureLogo from "@/assets/svgs/logos/shure.svg";
+import TailwindLogo from "@/assets/svgs/logos/tailwindcss.svg";
+import TogglLogo from "@/assets/svgs/logos/toggl.svg";
+import TriggerLogo from "@/assets/svgs/logos/trigger.svg";
+import TypescriptLogo from "@/assets/svgs/logos/typescript.svg";
+import VercelLogo from "@/assets/svgs/logos/vercel.svg";
+import Footer from "@/components/layout/Footer.astro";
+import PageLayout from "@/components/layout/PageLayout.astro";
+import SectionHeader from "@/components/layout/SectionHeader.astro";
+import Layout from "@/layouts/Layout.astro";
 
 const ogTitle = "Uses";
-const ogDescription = "Hardware, software, dev stack, and AI tools Railly Hugo uses daily. Bun, TypeScript, Next.js, Claude Code, Cursor, and more.";
+const ogDescription =
+	"Hardware, software, dev stack, and AI tools Railly Hugo uses daily. Bun, TypeScript, Next.js, Claude Code, Cursor, and more.";
 const ogImage = `/api/og?title=${encodeURIComponent(ogTitle)}&description=${encodeURIComponent(ogDescription)}&tag=uses`;
 
 const logoMap: Record<string, ImageMetadata> = {
@@ -50,44 +50,73 @@ const logoMap: Record<string, ImageMetadata> = {
 	"DJI Osmo Nano": DjiLogo,
 	"Meta Ray-Ban": MetaLogo,
 	"Arduino UNO R4 WiFi": ArduinoLogo,
-	"Cursor": CursorLogo,
-	"Ghostty": GhosttyLogo,
-	"Bun": BunLogo,
-	"Biome": BiomeLogo,
-	"TypeScript": TypescriptLogo,
+	Cursor: CursorLogo,
+	Ghostty: GhosttyLogo,
+	Bun: BunLogo,
+	Biome: BiomeLogo,
+	TypeScript: TypescriptLogo,
 	"Next.js 15": NextjsLogo,
 	"Tailwind CSS": TailwindLogo,
-	"Clerk": ClerkLogo,
-	"Vercel": VercelLogo,
-	"Neon": NeonLogo,
+	Clerk: ClerkLogo,
+	Vercel: VercelLogo,
+	Neon: NeonLogo,
 	"Trigger.dev": TriggerLogo,
-	"Resend": ResendLogo,
+	Resend: ResendLogo,
 	"Claude Code": ClaudeLogo,
-	"Codex": CodexLogo,
-	"Obsidian": ObsidianLogo,
-	"Raycast": RaycastLogo,
-	"Figma": FigmaLogo,
-	"Comet": PerplexityLogo,
+	Codex: CodexLogo,
+	Obsidian: ObsidianLogo,
+	Raycast: RaycastLogo,
+	Figma: FigmaLogo,
+	Comet: PerplexityLogo,
 	"Discord & Slack": DiscordLogo,
 	"Notion Calendar": NotionLogo,
 	"Toggl Track": TogglLogo,
-	"Linear": LinearLogo,
-	"gh": GithubLogo,
-	"cloudflared": CloudflareLogo,
-	"vercel": VercelLogo,
-	"clerk": ClerkLogo,
-	"obsidian": ObsidianLogo,
-	"ffmpeg": FfmpegLogo,
+	Linear: LinearLogo,
+	gh: GithubLogo,
+	cloudflared: CloudflareLogo,
+	vercel: VercelLogo,
+	clerk: ClerkLogo,
+	obsidian: ObsidianLogo,
+	ffmpeg: FfmpegLogo,
 };
 
 const monoLogos = new Set([
-	"MacBook Pro M4 Pro", "iPad Pro", "iPhone 15 Plus", "Apple Watch S10", "AirPods Pro",
-	"Shure MV7+", "DJI Mic Mini", "DJI Osmo Nano", "Meta Ray-Ban", "Arduino UNO R4 WiFi",
-	"Cursor", "Ghostty", "Biome",
-	"Next.js 15", "Tailwind CSS", "Clerk", "Vercel", "Neon",
-	"Trigger.dev", "Resend", "Claude Code", "Codex", "Obsidian", "Raycast",
-	"Figma", "Discord & Slack", "TypeScript", "Comet", "Toggl Track",
-	"Linear", "gh", "cloudflared", "vercel", "clerk", "obsidian", "ffmpeg",
+	"MacBook Pro M4 Pro",
+	"iPad Pro",
+	"iPhone 15 Plus",
+	"Apple Watch S10",
+	"AirPods Pro",
+	"Shure MV7+",
+	"DJI Mic Mini",
+	"DJI Osmo Nano",
+	"Meta Ray-Ban",
+	"Arduino UNO R4 WiFi",
+	"Cursor",
+	"Ghostty",
+	"Biome",
+	"Next.js 15",
+	"Tailwind CSS",
+	"Clerk",
+	"Vercel",
+	"Neon",
+	"Trigger.dev",
+	"Resend",
+	"Claude Code",
+	"Codex",
+	"Obsidian",
+	"Raycast",
+	"Figma",
+	"Discord & Slack",
+	"TypeScript",
+	"Comet",
+	"Toggl Track",
+	"Linear",
+	"gh",
+	"cloudflared",
+	"vercel",
+	"clerk",
+	"obsidian",
+	"ffmpeg",
 ]);
 
 interface Item {
@@ -100,87 +129,234 @@ const sections: { title: string; items: Item[] }[] = [
 	{
 		title: "Hardware",
 		items: [
-			{ name: "MacBook Pro M4 Pro", description: "14\", 24 GB RAM, 2025", url: "https://apple.com/macbook-pro" },
-			{ name: "iPad Pro", description: "M-series chip", url: "https://apple.com/ipad-pro" },
-			{ name: "iPhone 15 Plus", description: "Daily driver", url: "https://apple.com/iphone-15" },
-			{ name: "Apple Watch S10", description: "Health tracking", url: "https://apple.com/apple-watch-series-10" },
-			{ name: "AirPods Pro", description: "Noise cancellation", url: "https://apple.com/airpods-pro" },
-			{ name: "Keychron K2", description: "Mechanical keyboard", url: "https://keychron.com/products/keychron-k2" },
-			{ name: "Cougar E-STAR 140", description: "Electric standing desk", url: "https://cougargaming.com" },
+			{
+				name: "MacBook Pro M4 Pro",
+				description: '14", 24 GB RAM, 2025',
+				url: "https://apple.com/macbook-pro",
+			},
+			{
+				name: "iPad Pro",
+				description: "M-series chip",
+				url: "https://apple.com/ipad-pro",
+			},
+			{
+				name: "iPhone 15 Plus",
+				description: "Daily driver",
+				url: "https://apple.com/iphone-15",
+			},
+			{
+				name: "Apple Watch S10",
+				description: "Health tracking",
+				url: "https://apple.com/apple-watch-series-10",
+			},
+			{
+				name: "AirPods Pro",
+				description: "Noise cancellation",
+				url: "https://apple.com/airpods-pro",
+			},
+			{
+				name: "Keychron K2",
+				description: "Mechanical keyboard",
+				url: "https://keychron.com/products/keychron-k2",
+			},
+			{
+				name: "Cougar E-STAR 140",
+				description: "Electric standing desk",
+				url: "https://cougargaming.com",
+			},
 		],
 	},
 	{
 		title: "Audio & Video",
 		items: [
-			{ name: "Shure MV7+", description: "Podcast microphone + boom arm", url: "https://shure.com/en-US/microphones/usb/mv7-plus" },
-			{ name: "DJI Mic Mini", description: "Wireless lavalier (2 TX + 1 RX)", url: "https://store.dji.com/product/dji-mic-mini" },
-			{ name: "DJI Osmo Nano", description: "Action camera, 128 GB", url: "https://store.dji.com/product/osmo-nano" },
-			{ name: "Meta Ray-Ban", description: "Smart glasses, Classic Black", url: "https://www.meta.com/smart-glasses" },
+			{
+				name: "Shure MV7+",
+				description: "Podcast microphone + boom arm",
+				url: "https://shure.com/en-US/microphones/usb/mv7-plus",
+			},
+			{
+				name: "DJI Mic Mini",
+				description: "Wireless lavalier (2 TX + 1 RX)",
+				url: "https://store.dji.com/product/dji-mic-mini",
+			},
+			{
+				name: "DJI Osmo Nano",
+				description: "Action camera, 128 GB",
+				url: "https://store.dji.com/product/osmo-nano",
+			},
+			{
+				name: "Meta Ray-Ban",
+				description: "Smart glasses, Classic Black",
+				url: "https://www.meta.com/smart-glasses",
+			},
 		],
 	},
 	{
 		title: "Accessories",
 		items: [
-			{ name: "Anker 737 Power Bank", description: "PowerCore 24K, portable charger", url: "https://anker.com" },
-			{ name: "Arduino UNO R4 WiFi", description: "2 GB RAM, IoT projects", url: "https://store.arduino.cc/products/uno-r4-wifi" },
+			{
+				name: "Anker 737 Power Bank",
+				description: "PowerCore 24K, portable charger",
+				url: "https://anker.com",
+			},
+			{
+				name: "Arduino UNO R4 WiFi",
+				description: "2 GB RAM, IoT projects",
+				url: "https://store.arduino.cc/products/uno-r4-wifi",
+			},
 		],
 	},
 	{
 		title: "Editor & Terminal",
 		items: [
-			{ name: "Cursor", description: "Primary editor, AI code editor", url: "https://cursor.com" },
-			{ name: "Ghostty", description: "Terminal, GeistMono Nerd Font, Vesper theme", url: "https://ghostty.org" },
+			{
+				name: "Cursor",
+				description: "Primary editor, AI code editor",
+				url: "https://cursor.com",
+			},
+			{
+				name: "Ghostty",
+				description: "Terminal, GeistMono Nerd Font, Vesper theme",
+				url: "https://ghostty.org",
+			},
 		],
 	},
 	{
 		title: "Dev Stack",
 		items: [
-			{ name: "Bun", description: "Runtime, package manager, test runner", url: "https://bun.sh" },
-			{ name: "Biome", description: "Lint + format (never ESLint/Prettier)", url: "https://biomejs.dev" },
-			{ name: "TypeScript", description: "Strict mode, always", url: "https://typescriptlang.org" },
-			{ name: "Next.js 15", description: "React 19, Server Components first", url: "https://nextjs.org" },
-			{ name: "Tailwind CSS", description: "Styling", url: "https://tailwindcss.com" },
-			{ name: "Clerk", description: "Authentication", url: "https://clerk.com" },
+			{
+				name: "Bun",
+				description: "Runtime, package manager, test runner",
+				url: "https://bun.sh",
+			},
+			{
+				name: "Biome",
+				description: "Lint + format (never ESLint/Prettier)",
+				url: "https://biomejs.dev",
+			},
+			{
+				name: "TypeScript",
+				description: "Strict mode, always",
+				url: "https://typescriptlang.org",
+			},
+			{
+				name: "Next.js 15",
+				description: "React 19, Server Components first",
+				url: "https://nextjs.org",
+			},
+			{
+				name: "Tailwind CSS",
+				description: "Styling",
+				url: "https://tailwindcss.com",
+			},
+			{
+				name: "Clerk",
+				description: "Authentication",
+				url: "https://clerk.com",
+			},
 			{ name: "Vercel", description: "Deploy", url: "https://vercel.com" },
 			{ name: "Neon", description: "Postgres", url: "https://neon.tech" },
-			{ name: "Trigger.dev", description: "Background jobs", url: "https://trigger.dev" },
+			{
+				name: "Trigger.dev",
+				description: "Background jobs",
+				url: "https://trigger.dev",
+			},
 			{ name: "Resend", description: "Email", url: "https://resend.com" },
 		],
 	},
 	{
 		title: "AI",
 		items: [
-			{ name: "Claude Code", description: "Primary AI assistant", url: "https://claude.ai/claude-code" },
-			{ name: "Codex", description: "OpenAI coding agent", url: "https://openai.com/codex/" },
+			{
+				name: "Claude Code",
+				description: "Primary AI assistant",
+				url: "https://claude.ai/claude-code",
+			},
+			{
+				name: "Codex",
+				description: "OpenAI coding agent",
+				url: "https://openai.com/codex/",
+			},
 		],
 	},
 	{
 		title: "Apps",
 		items: [
-			{ name: "Obsidian", description: "Notes, Zettelkasten", url: "https://obsidian.md" },
-			{ name: "Raycast", description: "Launcher, snippets, clipboard", url: "https://raycast.com" },
-			{ name: "Comet", description: "Browser (by Perplexity)", url: "https://www.perplexity.ai/comet" },
+			{
+				name: "Obsidian",
+				description: "Notes, Zettelkasten",
+				url: "https://obsidian.md",
+			},
+			{
+				name: "Raycast",
+				description: "Launcher, snippets, clipboard",
+				url: "https://raycast.com",
+			},
+			{
+				name: "Comet",
+				description: "Browser (by Perplexity)",
+				url: "https://www.perplexity.ai/comet",
+			},
 			{ name: "Figma", description: "Design", url: "https://figma.com" },
-			{ name: "Screen Studio", description: "Screen recording", url: "https://screen.studio" },
-			{ name: "Linear", description: "Project management", url: "https://linear.app" },
-			{ name: "Toggl Track", description: "Time tracking", url: "https://toggl.com/track" },
-			{ name: "Discord & Slack", description: "Communication", url: "https://discord.com" },
-			{ name: "Notion Calendar", description: "Scheduling", url: "https://notion.so/product/calendar" },
+			{
+				name: "Screen Studio",
+				description: "Screen recording",
+				url: "https://screen.studio",
+			},
+			{
+				name: "Linear",
+				description: "Project management",
+				url: "https://linear.app",
+			},
+			{
+				name: "Toggl Track",
+				description: "Time tracking",
+				url: "https://toggl.com/track",
+			},
+			{
+				name: "Discord & Slack",
+				description: "Communication",
+				url: "https://discord.com",
+			},
+			{
+				name: "Notion Calendar",
+				description: "Scheduling",
+				url: "https://notion.so/product/calendar",
+			},
 		],
 	},
 	{
 		title: "CLI",
 		items: [
 			{ name: "gh", description: "GitHub", url: "https://cli.github.com" },
-			{ name: "vercel", description: "Deploys", url: "https://vercel.com/docs/cli" },
-			{ name: "clerk", description: "Authentication", url: "https://clerk.com/docs/cli" },
-			{ name: "obsidian", description: "Vault management", url: "https://help.obsidian.md/cli" },
-			{ name: "cloudflared", description: "Tunnels", url: "https://developers.cloudflare.com/cloudflare-one/connections/connect-networks" },
-			{ name: "ffmpeg", description: "Media processing", url: "https://ffmpeg.org" },
+			{
+				name: "vercel",
+				description: "Deploys",
+				url: "https://vercel.com/docs/cli",
+			},
+			{
+				name: "clerk",
+				description: "Authentication",
+				url: "https://clerk.com/docs/cli",
+			},
+			{
+				name: "obsidian",
+				description: "Vault management",
+				url: "https://help.obsidian.md/cli",
+			},
+			{
+				name: "cloudflared",
+				description: "Tunnels",
+				url: "https://developers.cloudflare.com/cloudflare-one/connections/connect-networks",
+			},
+			{
+				name: "ffmpeg",
+				description: "Media processing",
+				url: "https://ffmpeg.org",
+			},
 		],
 	},
 ];
-
 ---
 
 <Layout title={`${ogTitle} — Railly Hugo`} description={ogDescription} image={ogImage}>

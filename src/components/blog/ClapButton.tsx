@@ -38,7 +38,10 @@ function OdometerDigit({ value }: { value: number }) {
 function OdometerNumber({ value }: { value: number }) {
 	const digits = String(value).split("").map(Number);
 	return (
-		<span className="inline-flex font-mono" style={{ fontVariantNumeric: "tabular-nums" }}>
+		<span
+			className="inline-flex font-mono"
+			style={{ fontVariantNumeric: "tabular-nums" }}
+		>
 			{digits.map((d, i) => (
 				<OdometerDigit key={`${digits.length}-${i}`} value={d} />
 			))}
@@ -115,7 +118,10 @@ function playPop(rate: number) {
 
 		osc.type = "sine";
 		osc.frequency.setValueAtTime(600 * rate, ctx.currentTime);
-		osc.frequency.exponentialRampToValueAtTime(200 * rate, ctx.currentTime + 0.06);
+		osc.frequency.exponentialRampToValueAtTime(
+			200 * rate,
+			ctx.currentTime + 0.06,
+		);
 
 		gain.gain.setValueAtTime(0.15, ctx.currentTime);
 		gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.08);
@@ -158,7 +164,9 @@ export default function ClapButton({ slug }: ClapButtonProps) {
 		if (pendingRef.current <= 0 || isDev()) return;
 		const n = pendingRef.current;
 		pendingRef.current = 0;
-		fetch(`/api/claps?id=${encodeURIComponent(slug)}&incr=${n}`).catch(() => {});
+		fetch(`/api/claps?id=${encodeURIComponent(slug)}&incr=${n}`).catch(
+			() => {},
+		);
 	}, [slug]);
 
 	const handleClap = useCallback(() => {

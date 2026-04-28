@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { projectCity, southAmericaBounds } from "../../utils/geoUtils";
+import { projectCity, southAmericaBounds } from "@/lib/geo";
 
 interface MiniMapProps {
 	totalCountries: number;

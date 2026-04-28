@@ -19,8 +19,8 @@ export const GET: APIRoute = async ({ request }) => {
 	const res = await fetch(hookUrl, { method: "POST" });
 	const data = await res.json();
 
-	return new Response(
-		JSON.stringify({ ok: true, deploy: data }),
-		{ status: 200, headers: { "Content-Type": "application/json" } },
-	);
+	return new Response(JSON.stringify({ ok: true, deploy: data }), {
+		status: 200,
+		headers: { "Content-Type": "application/json" },
+	});
 };

@@ -1,13 +1,14 @@
 ---
 import { getCollection } from "astro:content";
-import NewsletterSignup from "../../components/newsletter/NewsletterSignup";
-import Footer from "../../components/layout/Footer.astro";
-import PageLayout from "../../components/layout/PageLayout.astro";
-import SectionHeader from "../../components/layout/SectionHeader.astro";
-import Layout from "../../layouts/Layout.astro";
+import Footer from "@/components/layout/Footer.astro";
+import PageLayout from "@/components/layout/PageLayout.astro";
+import SectionHeader from "@/components/layout/SectionHeader.astro";
+import NewsletterSignup from "@/components/newsletter/NewsletterSignup";
+import Layout from "@/layouts/Layout.astro";
 
 const ogTitle = "Newsletter";
-const ogDescription = "Weekly notes on what I shipped, learned, and found useful.";
+const ogDescription =
+	"Weekly notes on what I shipped, learned, and found useful.";
 const ogImage = `/api/og?title=${encodeURIComponent(ogTitle)}&description=${encodeURIComponent(ogDescription)}&tag=newsletter`;
 
 const issues = await getCollection("newsletter");
