@@ -1,10 +1,6 @@
 import { motion } from "motion/react";
 import { useEffect, useState } from "react";
-import {
-	cityCoordinates,
-	projectCity,
-	southAmericaBounds,
-} from "../../utils/geoUtils";
+import { cityCoordinates, projectCity, southAmericaBounds } from "@/lib/geo";
 
 interface City {
 	name: string;

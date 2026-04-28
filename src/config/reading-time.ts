@@ -15,9 +15,7 @@ export function getReadingTime(content: string): {
 		.replace(/\[([^\]]*)\]\(.*?\)/g, "$1")
 		.replace(/[#*_~>|=-]/g, "");
 
-	const words = clean
-		.split(/\s+/)
-		.filter((word) => word.length > 0).length;
+	const words = clean.split(/\s+/).filter((word) => word.length > 0).length;
 
 	const minutes = Math.max(1, Math.ceil(words / WORDS_PER_MINUTE));
 

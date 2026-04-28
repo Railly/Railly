@@ -1,13 +1,13 @@
 ---
 import { type CollectionEntry, getCollection } from "astro:content";
-import ClapButton from "../../components/blog/ClapButton";
-import ViewCounter from "../../components/blog/ViewCounter";
-import Link from "../../components/content/Link.astro";
-import Quote from "../../components/content/Quote.astro";
-import TableOfContents from "../../components/content/TableOfContents.astro";
-import { isPostVisible } from "../../config/blog";
-import { getReadingTime } from "../../config/reading-time";
-import Layout from "../../layouts/Layout.astro";
+import ClapButton from "@/components/blog/ClapButton";
+import ViewCounter from "@/components/blog/ViewCounter";
+import Link from "@/components/content/Link.astro";
+import Quote from "@/components/content/Quote.astro";
+import TableOfContents from "@/components/content/TableOfContents.astro";
+import { isPostVisible } from "@/config/blog";
+import { getReadingTime } from "@/config/reading-time";
+import Layout from "@/layouts/Layout.astro";
 
 export async function getStaticPaths() {
 	const posts = await getCollection("blog", ({ data }) => {
@@ -59,10 +59,18 @@ const updatedDate = post.data.updatedDate
 		})
 	: null;
 
-const ogDate = post.data.pubDate.toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" });
+const ogDate = post.data.pubDate.toLocaleDateString("en-US", {
+	year: "numeric",
+	month: "short",
+	day: "numeric",
+});
 const ogImage = `/api/og?title=${encodeURIComponent(post.data.title)}&description=${encodeURIComponent(post.data.description || "")}&tag=blog&date=${encodeURIComponent(ogDate)}`;
 
-const { words, minutes, text: readingTimeText } = getReadingTime(post.body || "");
+const {
+	words,
+	minutes,
+	text: readingTimeText,
+} = getReadingTime(post.body || "");
 ---
 
 <Layout

@@ -1,9 +1,9 @@
 ---
 import { getCollection } from "astro:content";
-import PremiereCountdown from "../../components/blog/PremiereCountdown";
-import { isPostListable } from "../../config/blog";
-import { getReadingTime } from "../../config/reading-time";
-import Layout from "../../layouts/Layout.astro";
+import PremiereCountdown from "@/components/blog/PremiereCountdown";
+import { isPostListable } from "@/config/blog";
+import { getReadingTime } from "@/config/reading-time";
+import Layout from "@/layouts/Layout.astro";
 
 const posts = await getCollection("blog", ({ data }) => {
 	return import.meta.env.PROD ? isPostListable(data) : true;

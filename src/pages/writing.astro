@@ -1,15 +1,16 @@
 ---
 import { getCollection } from "astro:content";
-import PremiereCountdown from "../components/blog/PremiereCountdown";
-import ViewCounter from "../components/blog/ViewCounter";
-import Footer from "../components/layout/Footer.astro";
-import PageLayout from "../components/layout/PageLayout.astro";
-import SectionHeader from "../components/layout/SectionHeader.astro";
-import { isPostListable } from "../config/blog";
-import Layout from "../layouts/Layout.astro";
+import PremiereCountdown from "@/components/blog/PremiereCountdown";
+import ViewCounter from "@/components/blog/ViewCounter";
+import Footer from "@/components/layout/Footer.astro";
+import PageLayout from "@/components/layout/PageLayout.astro";
+import SectionHeader from "@/components/layout/SectionHeader.astro";
+import { isPostListable } from "@/config/blog";
+import Layout from "@/layouts/Layout.astro";
 
 const ogTitle = "Writing";
-const ogDescription = "Technical articles on AI engineering, developer tools, context engineering, and building in public by Railly Hugo.";
+const ogDescription =
+	"Technical articles on AI engineering, developer tools, context engineering, and building in public by Railly Hugo.";
 const ogImage = `/api/og?title=${encodeURIComponent(ogTitle)}&description=${encodeURIComponent(ogDescription)}&tag=writing`;
 
 const allPosts = await getCollection("blog", ({ data }) => {

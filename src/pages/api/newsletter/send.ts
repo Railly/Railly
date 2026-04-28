@@ -1,5 +1,5 @@
-import { Resend } from "resend";
 import type { APIRoute } from "astro";
+import { Resend } from "resend";
 
 export const prerender = false;
 
@@ -62,10 +62,10 @@ export const POST: APIRoute = async ({ request }) => {
 			await resend.broadcasts.send(broadcastId);
 		}
 
-		return new Response(
-			JSON.stringify({ success: true, id: broadcastId }),
-			{ status: 200, headers: { "Content-Type": "application/json" } },
-		);
+		return new Response(JSON.stringify({ success: true, id: broadcastId }), {
+			status: 200,
+			headers: { "Content-Type": "application/json" },
+		});
 	} catch (_error) {
 		return new Response(
 			JSON.stringify({

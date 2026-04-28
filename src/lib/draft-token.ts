@@ -9,10 +9,7 @@ export function generateDraftToken(slug: string): string {
 		.slice(0, 12);
 }
 
-export function findSlugByToken(
-	token: string,
-	slugs: string[],
-): string | null {
+export function findSlugByToken(token: string, slugs: string[]): string | null {
 	for (const slug of slugs) {
 		if (generateDraftToken(slug) === token) {
 			return slug;
