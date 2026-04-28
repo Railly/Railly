@@ -1,5 +1,5 @@
-import { Resend } from "resend";
 import type { APIRoute } from "astro";
+import { Resend } from "resend";
 
 export const prerender = false;
 
@@ -31,10 +31,10 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
 	const body = await request.json().catch(() => null);
 
 	if (body?.honeypot) {
-		return new Response(
-			JSON.stringify({ success: true }),
-			{ status: 200, headers: { "Content-Type": "application/json" } },
-		);
+		return new Response(JSON.stringify({ success: true }), {
+			status: 200,
+			headers: { "Content-Type": "application/json" },
+		});
 	}
 
 	if (!body?.email) {
@@ -47,7 +47,9 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
 	}
 
 	const email = String(body.email).trim().toLowerCase();
-	const firstName = body.firstName ? String(body.firstName).trim().slice(0, 50) : undefined;
+	const firstName = body.firstName
+		? String(body.firstName).trim().slice(0, 50)
+		: undefined;
 
 	if (!EMAIL_REGEX.test(email) || email.length > 254) {
 		return new Response(
@@ -59,10 +61,10 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
 	}
 
 	if (import.meta.env.DEV) {
-		return new Response(
-			JSON.stringify({ success: true, dev: true }),
-			{ status: 200, headers: { "Content-Type": "application/json" } },
-		);
+		return new Response(JSON.stringify({ success: true, dev: true }), {
+			status: 200,
+			headers: { "Content-Type": "application/json" },
+		});
 	}
 
 	try {
@@ -95,10 +97,10 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
 			);
 		}
 
-		return new Response(
-			JSON.stringify({ success: true }),
-			{ status: 200, headers: { "Content-Type": "application/json" } },
-		);
+		return new Response(JSON.stringify({ success: true }), {
+			status: 200,
+			headers: { "Content-Type": "application/json" },
+		});
 	} catch (_error) {
 		return new Response(
 			JSON.stringify({

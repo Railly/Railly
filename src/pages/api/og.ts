@@ -45,16 +45,31 @@ export const GET: APIRoute = async ({ url }) => {
 	const logoSrc = `data:image/png;base64,${logoBase64}`;
 
 	const fonts = [
-		{ name: "IBM Plex Sans", data: plexBold, weight: 700 as const, style: "normal" as const },
-		{ name: "IBM Plex Sans", data: plexRegular, weight: 400 as const, style: "normal" as const },
-		{ name: "IBM Plex Mono", data: plexMono, weight: 400 as const, style: "normal" as const },
+		{
+			name: "IBM Plex Sans",
+			data: plexBold,
+			weight: 700 as const,
+			style: "normal" as const,
+		},
+		{
+			name: "IBM Plex Sans",
+			data: plexRegular,
+			weight: 400 as const,
+			style: "normal" as const,
+		},
+		{
+			name: "IBM Plex Mono",
+			data: plexMono,
+			weight: 400 as const,
+			style: "normal" as const,
+		},
 	];
 
 	const bg = isDark ? "#111111" : "#FDFDFC";
 	const fg = isDark ? "#fafafa" : "#111111";
 	const muted = isDark ? "#a3a3a3" : "#525252";
 	const border = isDark ? "#262626" : "#e5e5e5";
-const truncatedDesc =
+	const truncatedDesc =
 		description.length > 120 ? `${description.slice(0, 120)}...` : description;
 
 	const titleSize = title.length > 30 ? "52px" : "62px";
@@ -68,7 +83,7 @@ const truncatedDesc =
 					fontFamily: "IBM Plex Sans",
 					backgroundColor: bg,
 					backgroundImage: `radial-gradient(circle at 25px 25px, ${isDark ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.03)"} 1px, transparent 0)`,
-				backgroundSize: "50px 50px",
+					backgroundSize: "50px 50px",
 				},
 				children: [
 					{

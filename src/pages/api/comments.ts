@@ -45,7 +45,7 @@ export const GET: APIRoute = async ({ url }) => {
 	}
 
 	const kv = getKv();
-	const comments = await kv.get<Comment[]>(`draft-comments:${draftId}`) ?? [];
+	const comments = (await kv.get<Comment[]>(`draft-comments:${draftId}`)) ?? [];
 	return json({ draftId, comments });
 };
 
@@ -58,12 +58,23 @@ export const POST: APIRoute = async ({ request }) => {
 	}
 
 	if (import.meta.env.DEV) {
-		return json({ ok: true, comment: { id: "dev", name, text, x, y, timestamp: Date.now(), resolved: false } });
+		return json({
+			ok: true,
+			comment: {
+				id: "dev",
+				name,
+				text,
+				x,
+				y,
+				timestamp: Date.now(),
+				resolved: false,
+			},
+		});
 	}
 
 	const kv = getKv();
 	const key = `draft-comments:${draftId}`;
-	const comments = await kv.get<Comment[]>(key) ?? [];
+	const comments = (await kv.get<Comment[]>(key)) ?? [];
 
 	const comment: Comment = {
 		id: crypto.randomUUID().slice(0, 8),
@@ -96,7 +107,7 @@ export const PATCH: APIRoute = async ({ request }) => {
 
 	const kv = getKv();
 	const key = `draft-comments:${draftId}`;
-	const comments = await kv.get<Comment[]>(key) ?? [];
+	const comments = (await kv.get<Comment[]>(key)) ?? [];
 	const idx = comments.findIndex((c) => c.id === commentId);
 	if (idx === -1) return json({ error: "Not found" }, 404);
 
@@ -130,7 +141,7 @@ export const DELETE: APIRoute = async ({ request }) => {
 
 	const kv = getKv();
 	const key = `draft-comments:${draftId}`;
-	const comments = await kv.get<Comment[]>(key) ?? [];
+	const comments = (await kv.get<Comment[]>(key)) ?? [];
 	const idx = comments.findIndex((c) => c.id === commentId && c.name === name);
 	if (idx === -1) return json({ error: "Not found or not yours" }, 404);
 

@@ -1,15 +1,7 @@
 ---
+import type { ColorName } from "@/lib/colors";
 import EmbedContainer from "../content/EmbedContainer.astro";
 import Card from "./Card.astro";
-
-type ColorName =
-	| "blue"
-	| "teal"
-	| "yellow"
-	| "cyan"
-	| "purple"
-	| "magenta"
-	| "orange";
 
 interface Props {
 	title: string;

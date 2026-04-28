@@ -1,0 +1,25 @@
+---
+import SectionHeader from "../layout/SectionHeader.astro";
+import ArrowIcon from "./ArrowIcon.astro";
+
+interface Props {
+	title: string;
+	href: string;
+	viewAllLabel?: string;
+}
+
+const { title, href, viewAllLabel = "view all" } = Astro.props;
+---
+
+<div class="mb-4 flex items-center justify-between">
+	<SectionHeader title={title} className="mb-0" />
+	<a
+		href={href}
+		class="group text-xs text-foreground-3 transition-colors duration-200 hover:text-foreground-2"
+	>
+		<span class="flex items-center gap-1">
+			<span>{viewAllLabel}</span>
+			<ArrowIcon size={10} />
+		</span>
+	</a>
+</div>

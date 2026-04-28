@@ -1,6 +1,8 @@
 ---
+import ArrowIcon from "../ui/ArrowIcon.astro";
+
 interface Props {
-    headings: { depth: number; slug: string; text: string }[];
+	headings: { depth: number; slug: string; text: string }[];
 }
 
 const { headings } = Astro.props;
@@ -15,20 +17,7 @@ const mainHeadings = headings.filter((heading) => heading.depth <= 3);
         href="/writing"
         class="flex items-center gap-1.5 text-sm mb-6 text-foreground-2 hover:text-foreground transition-colors duration-200"
     >
-        <svg
-            width="16"
-            height="16"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.5"
-            viewBox="0 0 24 24"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            xmlns="http://www.w3.org/2000/svg"
-            class="rotate-180"
-        >
-            <path d="M4.5 12h15m0 0-5.625-6m5.625 6-5.625 6"></path>
-        </svg>
+        <ArrowIcon size={16} class="rotate-180" />
         <span>writing</span>
     </a>
 
@@ -54,20 +43,7 @@ const mainHeadings = headings.filter((heading) => heading.depth <= 3);
         href="/writing"
         class="flex items-center gap-1.5 text-sm mb-6 text-foreground-2 hover:text-foreground transition-colors duration-200"
     >
-        <svg
-            width="16"
-            height="16"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.5"
-            viewBox="0 0 24 24"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            xmlns="http://www.w3.org/2000/svg"
-            class="rotate-180"
-        >
-            <path d="M4.5 12h15m0 0-5.625-6m5.625 6-5.625 6"></path>
-        </svg>
+        <ArrowIcon size={16} class="rotate-180" />
         <span>writing</span>
     </a>
 </nav>

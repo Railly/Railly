@@ -5,7 +5,8 @@ import SectionHeader from "../components/layout/SectionHeader.astro";
 import Layout from "../layouts/Layout.astro";
 
 const ogTitle = "Bookshelf";
-const ogDescription = "Books I'm reading, have read, and plan to read. A curated collection on engineering, open source, and thinking.";
+const ogDescription =
+	"Books I'm reading, have read, and plan to read. A curated collection on engineering, open source, and thinking.";
 const ogImage = `/api/og?title=${encodeURIComponent(ogTitle)}&description=${encodeURIComponent(ogDescription)}&tag=bookshelf`;
 
 interface Book {

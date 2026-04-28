@@ -1,5 +1,5 @@
-import rss from "@astrojs/rss";
 import { getCollection } from "astro:content";
+import rss from "@astrojs/rss";
 import { isPostVisible } from "../config/blog";
 import { siteConfig } from "../config/site";
 

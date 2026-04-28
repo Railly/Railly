@@ -15,8 +15,7 @@ function escapeHtml(str: string): string {
 		.replace(/"/g, "&quot;");
 }
 
-const LOGO_URL =
-	"https://www.railly.dev/favicon/favicon-96x96.png";
+const LOGO_URL = "https://www.railly.dev/favicon/favicon-96x96.png";
 
 export function buildNewsletterHTML(data: NewsletterData): string {
 	const shippedItems = data.shipped

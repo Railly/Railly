@@ -1,15 +1,8 @@
 ---
+import type { ColorName } from "@/lib/colors";
+import ArrowIcon from "./ArrowIcon.astro";
 import Card from "./Card.astro";
 import CardIcon from "./CardIcon.astro";
-
-type ColorName =
-	| "blue"
-	| "teal"
-	| "yellow"
-	| "cyan"
-	| "purple"
-	| "magenta"
-	| "orange";
 
 interface Props {
 	title: string;
@@ -54,9 +47,7 @@ const {
         >
           {title}
         </h3>
-        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" class="text-foreground-3 group-hover:translate-x-1 transition-transform">
-          <path d='M4.5 12h15m0 0-5.625-6m5.625 6-5.625 6'/>
-        </svg>
+        <ArrowIcon class="text-foreground-3 group-hover:translate-x-1 transition-transform" size={16} />
       </div>
       <p class="text-sm text-foreground-2 !m-0">
         {description}

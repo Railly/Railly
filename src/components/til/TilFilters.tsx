@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 interface TilFiltersProps {
 	topics: string[];
@@ -17,13 +17,18 @@ export default function TilFilters({ topics }: TilFiltersProps) {
 		if (hash) {
 			const el = document.getElementById(hash);
 			if (el) {
-				setTimeout(() => el.scrollIntoView({ behavior: "smooth", block: "start" }), 100);
+				setTimeout(
+					() => el.scrollIntoView({ behavior: "smooth", block: "start" }),
+					100,
+				);
 			}
 		}
-	}, []);
+	}, [topics]);
 
 	useEffect(() => {
-		const articles = document.querySelectorAll<HTMLElement>("article[data-topic]");
+		const articles = document.querySelectorAll<HTMLElement>(
+			"article[data-topic]",
+		);
 		articles.forEach((article) => {
 			if (!active || article.dataset.topic === active) {
 				article.style.display = "";
