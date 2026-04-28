@@ -1,10 +1,10 @@
 ---
 import { getCollection, render } from "astro:content";
-import Layout from "../../layouts/Layout.astro";
-import PageLayout from "../../components/layout/PageLayout.astro";
-import Link from "../../components/content/Link.astro";
-import TilFilters from "../../components/til/TilFilters.tsx";
-import TilShareLink from "../../components/til/TilShareLink.tsx";
+import Link from "@/components/content/Link.astro";
+import PageLayout from "@/components/layout/PageLayout.astro";
+import TilFilters from "@/components/til/TilFilters.tsx";
+import TilShareLink from "@/components/til/TilShareLink.tsx";
+import Layout from "@/layouts/Layout.astro";
 
 const tils = await getCollection("til", ({ data }) => {
 	return import.meta.env.PROD ? data.status === "published" : true;

@@ -1,18 +1,21 @@
 ---
 import { getCollection } from "astro:content";
-import DraftComments from "../../components/drafts/DraftComments";
-import Link from "../../components/content/Link.astro";
-import Quote from "../../components/content/Quote.astro";
-import TableOfContents from "../../components/content/TableOfContents.astro";
-import { getReadingTime } from "../../config/reading-time";
-import Layout from "../../layouts/Layout.astro";
-import { findSlugByToken } from "../../lib/draft-token";
+import Link from "@/components/content/Link.astro";
+import Quote from "@/components/content/Quote.astro";
+import TableOfContents from "@/components/content/TableOfContents.astro";
+import DraftComments from "@/components/drafts/DraftComments";
+import { getReadingTime } from "@/config/reading-time";
+import Layout from "@/layouts/Layout.astro";
+import { findSlugByToken } from "@/lib/draft-token";
 
 export const prerender = false;
 
 const { id } = Astro.params;
 
-const drafts = await getCollection("blog", ({ data }) => data.status === "draft");
+const drafts = await getCollection(
+	"blog",
+	({ data }) => data.status === "draft",
+);
 const slugs = drafts.map((p) => p.slug);
 const matchedSlug = findSlugByToken(id!, slugs);
 
@@ -30,7 +33,11 @@ const publishedDate = post.data.pubDate.toLocaleDateString("en-US", {
 });
 
 const ogImage = `/api/og?title=${encodeURIComponent(post.data.title)}&description=${encodeURIComponent(post.data.description || "")}&tag=draft`;
-const { words, minutes, text: readingTimeText } = getReadingTime(post.body || "");
+const {
+	words,
+	minutes,
+	text: readingTimeText,
+} = getReadingTime(post.body || "");
 ---
 
 <Layout

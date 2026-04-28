@@ -185,11 +185,7 @@ export default function PeruMap({ visits }: PeruMapProps) {
 								<motion.path
 									key={i}
 									d={geoJsonToSvgPath(feature.geometry.coordinates)}
-									fill={
-										isVisited
-											? "var(--color-cyan)"
-											: "var(--color-ui-2)"
-									}
+									fill={isVisited ? "var(--color-cyan)" : "var(--color-ui-2)"}
 									stroke="var(--color-foreground-3)"
 									strokeWidth="1.5"
 									opacity={isVisited ? 0.6 : 0.3}

@@ -1,5 +1,6 @@
 import { createClient } from "@vercel/kv";
 import type { APIRoute } from "astro";
+import { httpError, json } from "@/lib/http";
 
 export const prerender = false;
 
@@ -29,23 +30,16 @@ function getKv() {
 	});
 }
 
-function json(data: unknown, status = 200) {
-	return new Response(JSON.stringify(data), {
-		status,
-		headers: { "Content-Type": "application/json" },
-	});
-}
-
 export const GET: APIRoute = async ({ url }) => {
 	const draftId = url.searchParams.get("draftId");
-	if (!draftId) return json({ error: "Missing draftId" }, 400);
+	if (!draftId) return httpError("Missing draftId", "MISSING_DRAFT_ID", 400);
 
 	if (import.meta.env.DEV) {
 		return json({ draftId, comments: [] });
 	}
 
 	const kv = getKv();
-	const comments = await kv.get<Comment[]>(`draft-comments:${draftId}`) ?? [];
+	const comments = (await kv.get<Comment[]>(`draft-comments:${draftId}`)) ?? [];
 	return json({ draftId, comments });
 };
 
@@ -54,16 +48,27 @@ export const POST: APIRoute = async ({ request }) => {
 	const { draftId, name, text, quote, x, y } = body;
 
 	if (!draftId || !name || !text || x == null || y == null) {
-		return json({ error: "Missing fields" }, 400);
+		return httpError("Missing fields", "MISSING_FIELDS", 400);
 	}
 
 	if (import.meta.env.DEV) {
-		return json({ ok: true, comment: { id: "dev", name, text, x, y, timestamp: Date.now(), resolved: false } });
+		return json({
+			ok: true,
+			comment: {
+				id: "dev",
+				name,
+				text,
+				x,
+				y,
+				timestamp: Date.now(),
+				resolved: false,
+			},
+		});
 	}
 
 	const kv = getKv();
 	const key = `draft-comments:${draftId}`;
-	const comments = await kv.get<Comment[]>(key) ?? [];
+	const comments = (await kv.get<Comment[]>(key)) ?? [];
 
 	const comment: Comment = {
 		id: crypto.randomUUID().slice(0, 8),
@@ -87,7 +92,7 @@ export const PATCH: APIRoute = async ({ request }) => {
 	const { draftId, commentId, action, name, text } = body;
 
 	if (!draftId || !commentId || !action) {
-		return json({ error: "Missing fields" }, 400);
+		return httpError("Missing fields", "MISSING_FIELDS", 400);
 	}
 
 	if (import.meta.env.DEV) {
@@ -96,9 +101,9 @@ export const PATCH: APIRoute = async ({ request }) => {
 
 	const kv = getKv();
 	const key = `draft-comments:${draftId}`;
-	const comments = await kv.get<Comment[]>(key) ?? [];
+	const comments = (await kv.get<Comment[]>(key)) ?? [];
 	const idx = comments.findIndex((c) => c.id === commentId);
-	if (idx === -1) return json({ error: "Not found" }, 404);
+	if (idx === -1) return httpError("Not found", "NOT_FOUND", 404);
 
 	if (action === "resolve") {
 		comments[idx].resolved = !comments[idx].resolved;
@@ -121,7 +126,7 @@ export const DELETE: APIRoute = async ({ request }) => {
 	const { draftId, commentId, name } = body;
 
 	if (!draftId || !commentId || !name) {
-		return json({ error: "Missing fields" }, 400);
+		return httpError("Missing fields", "MISSING_FIELDS", 400);
 	}
 
 	if (import.meta.env.DEV) {
@@ -130,9 +135,11 @@ export const DELETE: APIRoute = async ({ request }) => {
 
 	const kv = getKv();
 	const key = `draft-comments:${draftId}`;
-	const comments = await kv.get<Comment[]>(key) ?? [];
+	const comments = (await kv.get<Comment[]>(key)) ?? [];
 	const idx = comments.findIndex((c) => c.id === commentId && c.name === name);
-	if (idx === -1) return json({ error: "Not found or not yours" }, 404);
+	if (idx === -1) {
+		return httpError("Not found or not yours", "NOT_FOUND_OR_NOT_YOURS", 404);
+	}
 
 	comments.splice(idx, 1);
 	await kv.set(key, comments);

@@ -1,19 +1,19 @@
 ---
-import { render } from "@crafter/mermaid";
 import type { CrafterMermaidOptions } from "@crafter/mermaid";
+import { render } from "@crafter/mermaid";
 
 interface Props {
-  chart: string;
-  class?: string;
-  options?: CrafterMermaidOptions;
+	chart: string;
+	class?: string;
+	options?: CrafterMermaidOptions;
 }
 
 const { chart, class: className, options = {} } = Astro.props;
 
 const defaultOptions: CrafterMermaidOptions = {
-  theme: { bg: "transparent", fg: "currentColor" },
-  transparent: true,
-  ...options,
+	theme: { bg: "transparent", fg: "currentColor" },
+	transparent: true,
+	...options,
 };
 
 const svg = render(chart.trim(), defaultOptions);

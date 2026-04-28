@@ -26,15 +26,23 @@ interface SelectionPopup {
 }
 
 const COLORS = [
-	"#E93D82", "#3E63DD", "#30A46C", "#E5484D",
-	"#6E56CF", "#F76B15", "#12A594", "#7C66DC",
+	"#E93D82",
+	"#3E63DD",
+	"#30A46C",
+	"#E5484D",
+	"#6E56CF",
+	"#F76B15",
+	"#12A594",
+	"#7C66DC",
 ];
 
 const BADGE_BG = "var(--color-ui, #262626)";
-const BADGE_BG_40 = "color-mix(in oklch, var(--color-ui, #262626) 40%, transparent)";
+const BADGE_BG_40 =
+	"color-mix(in oklch, var(--color-ui, #262626) 40%, transparent)";
 const BADGE_BORDER = "var(--color-ui, #262626)";
 const BADGE_TEXT = "var(--color-foreground-3, #525252)";
-const HIGHLIGHT_COLOR = "color-mix(in oklch, var(--color-ui, #262626) 50%, transparent)";
+const HIGHLIGHT_COLOR =
+	"color-mix(in oklch, var(--color-ui, #262626) 50%, transparent)";
 
 function getColor(name: string) {
 	let hash = 0;
@@ -73,7 +81,16 @@ function makeCursor(fillColor: string) {
 
 function ArrowUp({ size = 14 }: { size?: number }) {
 	return (
-		<svg width={size} height={size} viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+		<svg
+			width={size}
+			height={size}
+			viewBox="0 0 16 16"
+			fill="none"
+			stroke="currentColor"
+			strokeWidth="1.5"
+			strokeLinecap="round"
+			strokeLinejoin="round"
+		>
 			<path d="M8 3v10M3 8l5-5 5 5" />
 		</svg>
 	);
@@ -81,13 +98,24 @@ function ArrowUp({ size = 14 }: { size?: number }) {
 
 function ArrowDown({ size = 14 }: { size?: number }) {
 	return (
-		<svg width={size} height={size} viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+		<svg
+			width={size}
+			height={size}
+			viewBox="0 0 16 16"
+			fill="none"
+			stroke="currentColor"
+			strokeWidth="1.5"
+			strokeLinecap="round"
+			strokeLinejoin="round"
+		>
 			<path d="M8 13V3M3 8l5 5 5-5" />
 		</svg>
 	);
 }
 
-function highlightQuotes(quotes: { text: string; active: boolean; commentId?: string }[]) {
+function highlightQuotes(
+	quotes: { text: string; active: boolean; commentId?: string }[],
+) {
 	for (const el of document.querySelectorAll("mark[data-dc-highlight]")) {
 		const parent = el.parentNode;
 		if (parent) {
@@ -104,12 +132,21 @@ function highlightQuotes(quotes: { text: string; active: boolean; commentId?: st
 		if (!q.text) continue;
 		sel.removeAllRanges();
 
-		const found = (window as any).find(q.text, false, false, true, false, true, false);
+		const found = (window as any).find(
+			q.text,
+			false,
+			false,
+			true,
+			false,
+			true,
+			false,
+		);
 		if (!found) continue;
 
 		const range = sel.getRangeAt(0);
 		const container = document.querySelector(".blog-content");
-		if (container && !container.contains(range.commonAncestorContainer)) continue;
+		if (container && !container.contains(range.commonAncestorContainer))
+			continue;
 
 		const mark = document.createElement("mark");
 		mark.setAttribute("data-dc-highlight", "");
@@ -122,7 +159,8 @@ function highlightQuotes(quotes: { text: string; active: boolean; commentId?: st
 		mark.style.textDecorationThickness = "2px";
 		mark.style.cursor = "pointer";
 
-		mark.style.transition = "background 0.15s ease, text-decoration-color 0.15s ease";
+		mark.style.transition =
+			"background 0.15s ease, text-decoration-color 0.15s ease";
 
 		if (q.active) {
 			mark.setAttribute("data-dc-active", "");
@@ -149,12 +187,16 @@ export default function DraftComments({ draftId }: { draftId: string }) {
 	const [nameConfirmed, setNameConfirmed] = useState(false);
 	const [comments, setComments] = useState<Comment[]>([]);
 	const [placing, setPlacing] = useState(false);
-	const [pendingPos, setPendingPos] = useState<{ x: number; y: number } | null>(null);
+	const [pendingPos, setPendingPos] = useState<{ x: number; y: number } | null>(
+		null,
+	);
 	const [pendingText, setPendingText] = useState("");
 	const [pendingQuote, setPendingQuote] = useState("");
 	const [activeComment, setActiveComment] = useState<string | null>(null);
 	const [showNamePrompt, setShowNamePrompt] = useState(false);
-	const [selectionPopup, setSelectionPopup] = useState<SelectionPopup | null>(null);
+	const [selectionPopup, setSelectionPopup] = useState<SelectionPopup | null>(
+		null,
+	);
 	const [replyingTo, setReplyingTo] = useState<string | null>(null);
 	const [replyText, setReplyText] = useState("");
 	const [focusedIdx, setFocusedIdx] = useState(-1);
@@ -162,8 +204,12 @@ export default function DraftComments({ draftId }: { draftId: string }) {
 	const replyInputRef = useRef<HTMLInputElement>(null);
 	const selectionPopupRef = useRef<HTMLDivElement>(null);
 
-	const unresolvedComments = comments.filter((c) => !c.resolved).sort((a, b) => a.y - b.y);
-	const resolvedComments = comments.filter((c) => c.resolved).sort((a, b) => a.y - b.y);
+	const unresolvedComments = comments
+		.filter((c) => !c.resolved)
+		.sort((a, b) => a.y - b.y);
+	const resolvedComments = comments
+		.filter((c) => c.resolved)
+		.sort((a, b) => a.y - b.y);
 	const navComments = [...unresolvedComments, ...resolvedComments];
 
 	useEffect(() => {
@@ -206,7 +252,11 @@ export default function DraftComments({ draftId }: { draftId: string }) {
 					return;
 				}
 			}
-			if (target.closest("[data-comment-pin]") || target.closest("[data-comment-input]")) return;
+			if (
+				target.closest("[data-comment-pin]") ||
+				target.closest("[data-comment-input]")
+			)
+				return;
 			if (target.closest("button[style*='bottom: 24']")) return;
 			if (stateRef.current.focusedIdx !== -1) {
 				setActiveComment(null);
@@ -221,7 +271,11 @@ export default function DraftComments({ draftId }: { draftId: string }) {
 		const quotes: { text: string; active: boolean; commentId?: string }[] = [];
 		for (const c of comments) {
 			if (c.quote && !c.resolved) {
-				quotes.push({ text: c.quote, active: c.id === activeComment, commentId: c.id });
+				quotes.push({
+					text: c.quote,
+					active: c.id === activeComment,
+					commentId: c.id,
+				});
 			}
 		}
 		if (pendingQuote) {
@@ -271,13 +325,19 @@ export default function DraftComments({ draftId }: { draftId: string }) {
 				const next = fi < nc.length - 1 ? fi + 1 : 0;
 				setFocusedIdx(next);
 				setActiveComment(nc[next].id);
-				window.scrollTo({ top: nc[next].y - window.innerHeight / 3, behavior: "smooth" });
+				window.scrollTo({
+					top: nc[next].y - window.innerHeight / 3,
+					behavior: "smooth",
+				});
 			} else if (e.key === "ArrowUp" && nc.length > 0) {
 				e.preventDefault();
 				const prev = fi > 0 ? fi - 1 : nc.length - 1;
 				setFocusedIdx(prev);
 				setActiveComment(nc[prev].id);
-				window.scrollTo({ top: nc[prev].y - window.innerHeight / 3, behavior: "smooth" });
+				window.scrollTo({
+					top: nc[prev].y - window.innerHeight / 3,
+					behavior: "smooth",
+				});
 			} else if (e.key === "c" || e.key === "C") {
 				e.preventDefault();
 				setPlacing(!pl);
@@ -308,7 +368,10 @@ export default function DraftComments({ draftId }: { draftId: string }) {
 		}
 		setFocusedIdx(next);
 		setActiveComment(navComments[next].id);
-		window.scrollTo({ top: navComments[next].y - window.innerHeight / 3, behavior: "smooth" });
+		window.scrollTo({
+			top: navComments[next].y - window.innerHeight / 3,
+			behavior: "smooth",
+		});
 	};
 
 	const confirmName = () => {
@@ -383,7 +446,9 @@ export default function DraftComments({ draftId }: { draftId: string }) {
 			body: JSON.stringify({ draftId, commentId, action: "resolve" }),
 		});
 		setComments((prev) =>
-			prev.map((c) => (c.id === commentId ? { ...c, resolved: !c.resolved } : c)),
+			prev.map((c) =>
+				c.id === commentId ? { ...c, resolved: !c.resolved } : c,
+			),
 		);
 	};
 
@@ -392,7 +457,13 @@ export default function DraftComments({ draftId }: { draftId: string }) {
 		const res = await fetch("/api/comments", {
 			method: "PATCH",
 			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify({ draftId, commentId, action: "reply", name: name.trim(), text: replyText.trim() }),
+			body: JSON.stringify({
+				draftId,
+				commentId,
+				action: "reply",
+				name: name.trim(),
+				text: replyText.trim(),
+			}),
 		});
 		const data = await res.json();
 		if (data.ok && data.comment) {
@@ -446,9 +517,43 @@ export default function DraftComments({ draftId }: { draftId: string }) {
 		<>
 			{/* Name prompt */}
 			{showNamePrompt && !nameConfirmed && (
-				<div style={{ position: "fixed", bottom: 24, left: "50%", transform: "translateX(-50%)", zIndex: 9999, animation: "dc-slideUp 0.3s ease-out" }}>
-					<div style={{ display: "flex", alignItems: "center", gap: 8, background: "var(--color-background-2, #1a1a1a)", border: "1px solid var(--color-ui, #262626)", borderRadius: 10, padding: "8px 12px", boxShadow: "0 8px 32px rgba(0,0,0,0.3)" }}>
-						<div style={{ width: 24, height: 24, borderRadius: "50%", background: color, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, fontWeight: 600, color: "#fff", flexShrink: 0 }}>
+				<div
+					style={{
+						position: "fixed",
+						bottom: 24,
+						left: "50%",
+						transform: "translateX(-50%)",
+						zIndex: 9999,
+						animation: "dc-slideUp 0.3s ease-out",
+					}}
+				>
+					<div
+						style={{
+							display: "flex",
+							alignItems: "center",
+							gap: 8,
+							background: "var(--color-background-2, #1a1a1a)",
+							border: "1px solid var(--color-ui, #262626)",
+							borderRadius: 10,
+							padding: "8px 12px",
+							boxShadow: "0 8px 32px rgba(0,0,0,0.3)",
+						}}
+					>
+						<div
+							style={{
+								width: 24,
+								height: 24,
+								borderRadius: "50%",
+								background: color,
+								display: "flex",
+								alignItems: "center",
+								justifyContent: "center",
+								fontSize: 11,
+								fontWeight: 600,
+								color: "#fff",
+								flexShrink: 0,
+							}}
+						>
 							{name ? name[0].toUpperCase() : "?"}
 						</div>
 						<input
@@ -458,13 +563,33 @@ export default function DraftComments({ draftId }: { draftId: string }) {
 							onChange={(e) => setName(e.target.value)}
 							onKeyDown={(e) => e.key === "Enter" && confirmName()}
 							ref={(el) => el?.focus()}
-							style={{ background: "transparent", border: "none", outline: "none", color: "var(--color-foreground, #fafafa)", fontSize: 14, width: 220, fontFamily: "inherit" }}
+							style={{
+								background: "transparent",
+								border: "none",
+								outline: "none",
+								color: "var(--color-foreground, #fafafa)",
+								fontSize: 14,
+								width: 220,
+								fontFamily: "inherit",
+							}}
 						/>
 						<button
 							type="button"
 							onClick={confirmName}
 							disabled={!name.trim()}
-							style={{ background: name.trim() ? color : "var(--color-ui, #262626)", border: "none", borderRadius: 6, padding: "4px 12px", fontSize: 13, fontWeight: 500, color: "#fff", cursor: name.trim() ? "pointer" : "default", opacity: name.trim() ? 1 : 0.4, transition: "all 0.15s", fontFamily: "inherit" }}
+							style={{
+								background: name.trim() ? color : "var(--color-ui, #262626)",
+								border: "none",
+								borderRadius: 6,
+								padding: "4px 12px",
+								fontSize: 13,
+								fontWeight: 500,
+								color: "#fff",
+								cursor: name.trim() ? "pointer" : "default",
+								opacity: name.trim() ? 1 : 0.4,
+								transition: "all 0.15s",
+								fontFamily: "inherit",
+							}}
 						>
 							Join
 						</button>
@@ -474,24 +599,109 @@ export default function DraftComments({ draftId }: { draftId: string }) {
 
 			{/* Floating toolbar */}
 			{nameConfirmed && (
-				<div style={{ position: "fixed", bottom: 24, left: "50%", transform: "translateX(-50%)", zIndex: 9998, display: "flex", alignItems: "center", gap: 6, background: "var(--color-background-2, #1a1a1a)", border: `1px solid ${placing ? color : "var(--color-ui, #262626)"}`, borderRadius: 10, padding: "6px 10px", boxShadow: "0 8px 32px rgba(0,0,0,0.3)", transition: "border-color 0.2s" }}>
-					<div style={{ width: 22, height: 22, borderRadius: "50%", background: color, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 10, fontWeight: 600, color: "#fff", flexShrink: 0 }}>
+				<div
+					style={{
+						position: "fixed",
+						bottom: 24,
+						left: "50%",
+						transform: "translateX(-50%)",
+						zIndex: 9998,
+						display: "flex",
+						alignItems: "center",
+						gap: 6,
+						background: "var(--color-background-2, #1a1a1a)",
+						border: `1px solid ${placing ? color : "var(--color-ui, #262626)"}`,
+						borderRadius: 10,
+						padding: "6px 10px",
+						boxShadow: "0 8px 32px rgba(0,0,0,0.3)",
+						transition: "border-color 0.2s",
+					}}
+				>
+					<div
+						style={{
+							width: 22,
+							height: 22,
+							borderRadius: "50%",
+							background: color,
+							display: "flex",
+							alignItems: "center",
+							justifyContent: "center",
+							fontSize: 10,
+							fontWeight: 600,
+							color: "#fff",
+							flexShrink: 0,
+						}}
+					>
 						{name[0].toUpperCase()}
 					</div>
-					<span style={{ fontSize: 13, color: "var(--color-foreground-2, #a3a3a3)" }}>{name}</span>
-					<div style={{ width: 1, height: 16, background: "var(--color-ui, #262626)" }} />
+					<span
+						style={{
+							fontSize: 13,
+							color: "var(--color-foreground-2, #a3a3a3)",
+						}}
+					>
+						{name}
+					</span>
+					<div
+						style={{
+							width: 1,
+							height: 16,
+							background: "var(--color-ui, #262626)",
+						}}
+					/>
 					<button
 						type="button"
-						onClick={() => { setPlacing(!placing); setPendingPos(null); setPendingQuote(""); setActiveComment(null); setSelectionPopup(null); }}
-						style={{ display: "flex", alignItems: "center", gap: 6, background: placing ? color : "transparent", border: "none", borderRadius: 6, padding: "4px 10px", fontSize: 13, color: placing ? "#fff" : "var(--color-foreground-2, #a3a3a3)", cursor: "pointer", transition: "all 0.15s", fontFamily: "inherit" }}
+						onClick={() => {
+							setPlacing(!placing);
+							setPendingPos(null);
+							setPendingQuote("");
+							setActiveComment(null);
+							setSelectionPopup(null);
+						}}
+						style={{
+							display: "flex",
+							alignItems: "center",
+							gap: 6,
+							background: placing ? color : "transparent",
+							border: "none",
+							borderRadius: 6,
+							padding: "4px 10px",
+							fontSize: 13,
+							color: placing ? "#fff" : "var(--color-foreground-2, #a3a3a3)",
+							cursor: "pointer",
+							transition: "all 0.15s",
+							fontFamily: "inherit",
+						}}
 					>
-						<svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+						<svg
+							width="14"
+							height="14"
+							viewBox="0 0 16 16"
+							fill="none"
+							stroke="currentColor"
+							strokeWidth="1.5"
+							strokeLinecap="round"
+							strokeLinejoin="round"
+						>
 							<path d="M3 2l10 5.5L8 9l-1.5 5z" />
 						</svg>
 						{placing ? "Click anywhere..." : "Comment"}
 					</button>
-					<div style={{ width: 1, height: 16, background: "var(--color-ui, #262626)" }} />
-					<span style={{ fontSize: 12, color: "var(--color-foreground-3, #525252)", minWidth: 20, textAlign: "center" }}>
+					<div
+						style={{
+							width: 1,
+							height: 16,
+							background: "var(--color-ui, #262626)",
+						}}
+					/>
+					<span
+						style={{
+							fontSize: 12,
+							color: "var(--color-foreground-3, #525252)",
+							minWidth: 20,
+							textAlign: "center",
+						}}
+					>
 						{comments.length}
 					</span>
 					{comments.length > 0 && (
@@ -500,9 +710,26 @@ export default function DraftComments({ draftId }: { draftId: string }) {
 								type="button"
 								onClick={() => navigateComments("up")}
 								title="Previous comment (Arrow Up)"
-								style={{ display: "flex", alignItems: "center", justifyContent: "center", background: "transparent", border: "none", color: "var(--color-foreground-3, #525252)", cursor: "pointer", padding: 2, borderRadius: 4, transition: "color 0.15s" }}
-								onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "var(--color-foreground, #fafafa)"; }}
-								onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "var(--color-foreground-3, #525252)"; }}
+								style={{
+									display: "flex",
+									alignItems: "center",
+									justifyContent: "center",
+									background: "transparent",
+									border: "none",
+									color: "var(--color-foreground-3, #525252)",
+									cursor: "pointer",
+									padding: 2,
+									borderRadius: 4,
+									transition: "color 0.15s",
+								}}
+								onMouseEnter={(e) => {
+									(e.currentTarget as HTMLElement).style.color =
+										"var(--color-foreground, #fafafa)";
+								}}
+								onMouseLeave={(e) => {
+									(e.currentTarget as HTMLElement).style.color =
+										"var(--color-foreground-3, #525252)";
+								}}
 							>
 								<ArrowUp size={14} />
 							</button>
@@ -510,9 +737,26 @@ export default function DraftComments({ draftId }: { draftId: string }) {
 								type="button"
 								onClick={() => navigateComments("down")}
 								title="Next comment (Arrow Down)"
-								style={{ display: "flex", alignItems: "center", justifyContent: "center", background: "transparent", border: "none", color: "var(--color-foreground-3, #525252)", cursor: "pointer", padding: 2, borderRadius: 4, transition: "color 0.15s" }}
-								onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "var(--color-foreground, #fafafa)"; }}
-								onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "var(--color-foreground-3, #525252)"; }}
+								style={{
+									display: "flex",
+									alignItems: "center",
+									justifyContent: "center",
+									background: "transparent",
+									border: "none",
+									color: "var(--color-foreground-3, #525252)",
+									cursor: "pointer",
+									padding: 2,
+									borderRadius: 4,
+									transition: "color 0.15s",
+								}}
+								onMouseEnter={(e) => {
+									(e.currentTarget as HTMLElement).style.color =
+										"var(--color-foreground, #fafafa)";
+								}}
+								onMouseLeave={(e) => {
+									(e.currentTarget as HTMLElement).style.color =
+										"var(--color-foreground-3, #525252)";
+								}}
 							>
 								<ArrowDown size={14} />
 							</button>
@@ -525,21 +769,75 @@ export default function DraftComments({ draftId }: { draftId: string }) {
 			{selectionPopup && nameConfirmed && !placing && !pendingPos && (
 				<div
 					ref={selectionPopupRef}
-					style={{ position: "fixed", left: selectionPopup.x, top: selectionPopup.y - 8, transform: "translate(-50%, -100%)", zIndex: 9997, animation: "dc-fadeIn 0.12s ease-out" }}
+					style={{
+						position: "fixed",
+						left: selectionPopup.x,
+						top: selectionPopup.y - 8,
+						transform: "translate(-50%, -100%)",
+						zIndex: 9997,
+						animation: "dc-fadeIn 0.12s ease-out",
+					}}
 				>
 					<button
 						type="button"
 						onClick={() => startCommentFromSelection(selectionPopup)}
-						style={{ display: "flex", alignItems: "center", gap: 5, background: "var(--color-background-2, #1a1a1a)", border: "1px solid var(--color-ui, #262626)", borderRadius: 8, padding: "5px 10px", fontSize: 12, color: "var(--color-foreground-2, #a3a3a3)", cursor: "pointer", boxShadow: "0 4px 16px rgba(0,0,0,0.3)", fontFamily: "inherit", whiteSpace: "nowrap", transition: "all 0.15s" }}
-						onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.borderColor = color; (e.currentTarget as HTMLElement).style.color = "var(--color-foreground, #fafafa)"; }}
-						onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "var(--color-ui, #262626)"; (e.currentTarget as HTMLElement).style.color = "var(--color-foreground-2, #a3a3a3)"; }}
+						style={{
+							display: "flex",
+							alignItems: "center",
+							gap: 5,
+							background: "var(--color-background-2, #1a1a1a)",
+							border: "1px solid var(--color-ui, #262626)",
+							borderRadius: 8,
+							padding: "5px 10px",
+							fontSize: 12,
+							color: "var(--color-foreground-2, #a3a3a3)",
+							cursor: "pointer",
+							boxShadow: "0 4px 16px rgba(0,0,0,0.3)",
+							fontFamily: "inherit",
+							whiteSpace: "nowrap",
+							transition: "all 0.15s",
+						}}
+						onMouseEnter={(e) => {
+							(e.currentTarget as HTMLElement).style.borderColor = color;
+							(e.currentTarget as HTMLElement).style.color =
+								"var(--color-foreground, #fafafa)";
+						}}
+						onMouseLeave={(e) => {
+							(e.currentTarget as HTMLElement).style.borderColor =
+								"var(--color-ui, #262626)";
+							(e.currentTarget as HTMLElement).style.color =
+								"var(--color-foreground-2, #a3a3a3)";
+						}}
 					>
-						<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+						<svg
+							width="12"
+							height="12"
+							viewBox="0 0 16 16"
+							fill="none"
+							stroke="currentColor"
+							strokeWidth="1.5"
+							strokeLinecap="round"
+							strokeLinejoin="round"
+						>
 							<path d="M2 4h12M2 8h8M2 12h10" />
 						</svg>
 						Comment on selection
 					</button>
-					<div style={{ width: 8, height: 8, background: "var(--color-background-2, #1a1a1a)", border: "1px solid var(--color-ui, #262626)", borderTop: "none", borderLeft: "none", transform: "rotate(45deg)", position: "absolute", bottom: -5, left: "50%", marginLeft: -4 }} />
+					<div
+						style={{
+							width: 8,
+							height: 8,
+							background: "var(--color-background-2, #1a1a1a)",
+							border: "1px solid var(--color-ui, #262626)",
+							borderTop: "none",
+							borderLeft: "none",
+							transform: "rotate(45deg)",
+							position: "absolute",
+							bottom: -5,
+							left: "50%",
+							marginLeft: -4,
+						}}
+					/>
 				</div>
 			)}
 
@@ -548,7 +846,16 @@ export default function DraftComments({ draftId }: { draftId: string }) {
 				<button
 					type="button"
 					onClick={handleOverlayClick}
-					style={{ position: "fixed", inset: 0, zIndex: 9990, cursor: makeCursor(color), background: "transparent", border: "none", padding: 0, margin: 0 }}
+					style={{
+						position: "fixed",
+						inset: 0,
+						zIndex: 9990,
+						cursor: makeCursor(color),
+						background: "transparent",
+						border: "none",
+						padding: 0,
+						margin: 0,
+					}}
 				/>
 			)}
 
@@ -564,46 +871,170 @@ export default function DraftComments({ draftId }: { draftId: string }) {
 								e.stopPropagation();
 								const newActive = isActive ? null : c.id;
 								setActiveComment(newActive);
-								setFocusedIdx(newActive ? navComments.findIndex((nc) => nc.id === c.id) : -1);
+								setFocusedIdx(
+									newActive
+										? navComments.findIndex((nc) => nc.id === c.id)
+										: -1,
+								);
 								setReplyingTo(null);
 								setReplyText("");
 							}}
-							style={{ ...avatarStyle(c, 24), border: "2px solid var(--color-background, #111)" }}
-							onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.transform = "scale(1.2)"; }}
-							onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.transform = "scale(1)"; }}
+							style={{
+								...avatarStyle(c, 24),
+								border: "2px solid var(--color-background, #111)",
+							}}
+							onMouseEnter={(e) => {
+								(e.currentTarget as HTMLElement).style.transform = "scale(1.2)";
+							}}
+							onMouseLeave={(e) => {
+								(e.currentTarget as HTMLElement).style.transform = "scale(1)";
+							}}
 						>
 							{c.resolved ? "\u2713" : c.name[0].toUpperCase()}
 						</button>
 
 						{isActive && (
-							<div style={{ position: "absolute", top: 30, left: 0, background: "var(--color-background-2, #1a1a1a)", border: "1px solid var(--color-ui, #262626)", borderRadius: 10, padding: 0, minWidth: 260, maxWidth: 320, boxShadow: "0 8px 24px rgba(0,0,0,0.3)", animation: "dc-fadeIn 0.15s ease-out", overflow: "hidden" }}>
+							<div
+								style={{
+									position: "absolute",
+									top: 30,
+									left: 0,
+									background: "var(--color-background-2, #1a1a1a)",
+									border: "1px solid var(--color-ui, #262626)",
+									borderRadius: 10,
+									padding: 0,
+									minWidth: 260,
+									maxWidth: 320,
+									boxShadow: "0 8px 24px rgba(0,0,0,0.3)",
+									animation: "dc-fadeIn 0.15s ease-out",
+									overflow: "hidden",
+								}}
+							>
 								{/* Header */}
-								<div style={{ display: "flex", alignItems: "center", gap: 6, padding: "10px 12px 8px" }}>
-									<div style={{ width: 18, height: 18, borderRadius: "50%", background: cColor, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 9, fontWeight: 600, color: "#fff" }}>
+								<div
+									style={{
+										display: "flex",
+										alignItems: "center",
+										gap: 6,
+										padding: "10px 12px 8px",
+									}}
+								>
+									<div
+										style={{
+											width: 18,
+											height: 18,
+											borderRadius: "50%",
+											background: cColor,
+											display: "flex",
+											alignItems: "center",
+											justifyContent: "center",
+											fontSize: 9,
+											fontWeight: 600,
+											color: "#fff",
+										}}
+									>
 										{c.name[0].toUpperCase()}
 									</div>
-									<span style={{ fontSize: 12, fontWeight: 500, color: "var(--color-foreground, #fafafa)" }}>{c.name}</span>
-									<span style={{ fontSize: 11, color: "var(--color-foreground-3, #525252)", marginLeft: "auto" }}>{timeAgo(c.timestamp)}</span>
+									<span
+										style={{
+											fontSize: 12,
+											fontWeight: 500,
+											color: "var(--color-foreground, #fafafa)",
+										}}
+									>
+										{c.name}
+									</span>
+									<span
+										style={{
+											fontSize: 11,
+											color: "var(--color-foreground-3, #525252)",
+											marginLeft: "auto",
+										}}
+									>
+										{timeAgo(c.timestamp)}
+									</span>
 								</div>
 
 								{/* Body */}
-								<p style={{ fontSize: 13, lineHeight: 1.5, color: "var(--color-foreground-2, #a3a3a3)", margin: 0, padding: "0 12px 8px" }}>
+								<p
+									style={{
+										fontSize: 13,
+										lineHeight: 1.5,
+										color: "var(--color-foreground-2, #a3a3a3)",
+										margin: 0,
+										padding: "0 12px 8px",
+									}}
+								>
 									{c.text}
 								</p>
 
 								{/* Replies */}
 								{c.replies && c.replies.length > 0 && (
-									<div style={{ borderTop: "1px solid var(--color-ui, #262626)" }}>
+									<div
+										style={{ borderTop: "1px solid var(--color-ui, #262626)" }}
+									>
 										{c.replies.map((r) => (
-											<div key={r.id} style={{ padding: "8px 12px", borderBottom: "1px solid var(--color-ui, #262626)" }}>
-												<div style={{ display: "flex", alignItems: "center", gap: 4, marginBottom: 3 }}>
-													<div style={{ width: 14, height: 14, borderRadius: "50%", background: getColor(r.name), display: "flex", alignItems: "center", justifyContent: "center", fontSize: 7, fontWeight: 600, color: "#fff" }}>
+											<div
+												key={r.id}
+												style={{
+													padding: "8px 12px",
+													borderBottom: "1px solid var(--color-ui, #262626)",
+												}}
+											>
+												<div
+													style={{
+														display: "flex",
+														alignItems: "center",
+														gap: 4,
+														marginBottom: 3,
+													}}
+												>
+													<div
+														style={{
+															width: 14,
+															height: 14,
+															borderRadius: "50%",
+															background: getColor(r.name),
+															display: "flex",
+															alignItems: "center",
+															justifyContent: "center",
+															fontSize: 7,
+															fontWeight: 600,
+															color: "#fff",
+														}}
+													>
 														{r.name[0].toUpperCase()}
 													</div>
-													<span style={{ fontSize: 11, fontWeight: 500, color: "var(--color-foreground, #fafafa)" }}>{r.name}</span>
-													<span style={{ fontSize: 10, color: "var(--color-foreground-3, #525252)", marginLeft: "auto" }}>{timeAgo(r.timestamp)}</span>
+													<span
+														style={{
+															fontSize: 11,
+															fontWeight: 500,
+															color: "var(--color-foreground, #fafafa)",
+														}}
+													>
+														{r.name}
+													</span>
+													<span
+														style={{
+															fontSize: 10,
+															color: "var(--color-foreground-3, #525252)",
+															marginLeft: "auto",
+														}}
+													>
+														{timeAgo(r.timestamp)}
+													</span>
 												</div>
-												<p style={{ fontSize: 12, lineHeight: 1.4, color: "var(--color-foreground-2, #a3a3a3)", margin: 0, paddingLeft: 18 }}>{r.text}</p>
+												<p
+													style={{
+														fontSize: 12,
+														lineHeight: 1.4,
+														color: "var(--color-foreground-2, #a3a3a3)",
+														margin: 0,
+														paddingLeft: 18,
+													}}
+												>
+													{r.text}
+												</p>
 											</div>
 										))}
 									</div>
@@ -611,7 +1042,12 @@ export default function DraftComments({ draftId }: { draftId: string }) {
 
 								{/* Reply input */}
 								{replyingTo === c.id && (
-									<div style={{ padding: "8px 12px", borderTop: "1px solid var(--color-ui, #262626)" }}>
+									<div
+										style={{
+											padding: "8px 12px",
+											borderTop: "1px solid var(--color-ui, #262626)",
+										}}
+									>
 										<input
 											ref={replyInputRef}
 											type="text"
@@ -620,35 +1056,124 @@ export default function DraftComments({ draftId }: { draftId: string }) {
 											onChange={(e) => setReplyText(e.target.value)}
 											onKeyDown={(e) => {
 												if (e.key === "Enter") submitReply(c.id);
-												if (e.key === "Escape") { setReplyingTo(null); setReplyText(""); }
+												if (e.key === "Escape") {
+													setReplyingTo(null);
+													setReplyText("");
+												}
 											}}
-											style={{ width: "100%", background: "transparent", border: "none", outline: "none", color: "var(--color-foreground, #fafafa)", fontSize: 12, fontFamily: "inherit", padding: 0 }}
+											style={{
+												width: "100%",
+												background: "transparent",
+												border: "none",
+												outline: "none",
+												color: "var(--color-foreground, #fafafa)",
+												fontSize: 12,
+												fontFamily: "inherit",
+												padding: 0,
+											}}
 										/>
 									</div>
 								)}
 
 								{/* Actions */}
-								<div style={{ display: "flex", borderTop: "1px solid var(--color-ui, #262626)" }}>
+								<div
+									style={{
+										display: "flex",
+										borderTop: "1px solid var(--color-ui, #262626)",
+									}}
+								>
 									<button
 										type="button"
-										onClick={(e) => { e.stopPropagation(); toggleResolve(c.id); }}
-										style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", gap: 4, padding: "7px 0", background: "transparent", border: "none", borderRight: "1px solid var(--color-ui, #262626)", color: c.resolved ? "#30A46C" : "var(--color-foreground-3, #525252)", fontSize: 11, cursor: "pointer", fontFamily: "inherit", transition: "color 0.15s" }}
-										onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "#30A46C"; }}
-										onMouseLeave={(e) => { if (!c.resolved) (e.currentTarget as HTMLElement).style.color = "var(--color-foreground-3, #525252)"; }}
+										onClick={(e) => {
+											e.stopPropagation();
+											toggleResolve(c.id);
+										}}
+										style={{
+											flex: 1,
+											display: "flex",
+											alignItems: "center",
+											justifyContent: "center",
+											gap: 4,
+											padding: "7px 0",
+											background: "transparent",
+											border: "none",
+											borderRight: "1px solid var(--color-ui, #262626)",
+											color: c.resolved
+												? "#30A46C"
+												: "var(--color-foreground-3, #525252)",
+											fontSize: 11,
+											cursor: "pointer",
+											fontFamily: "inherit",
+											transition: "color 0.15s",
+										}}
+										onMouseEnter={(e) => {
+											(e.currentTarget as HTMLElement).style.color = "#30A46C";
+										}}
+										onMouseLeave={(e) => {
+											if (!c.resolved)
+												(e.currentTarget as HTMLElement).style.color =
+													"var(--color-foreground-3, #525252)";
+										}}
 									>
-										<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+										<svg
+											width="12"
+											height="12"
+											viewBox="0 0 16 16"
+											fill="none"
+											stroke="currentColor"
+											strokeWidth="2"
+											strokeLinecap="round"
+											strokeLinejoin="round"
+										>
 											<path d="M3 8.5l3.5 3.5 6.5-8" />
 										</svg>
 										{c.resolved ? "Reopen" : "Resolve"}
 									</button>
 									<button
 										type="button"
-										onClick={(e) => { e.stopPropagation(); setReplyingTo(replyingTo === c.id ? null : c.id); setReplyText(""); }}
-										style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", gap: 4, padding: "7px 0", background: "transparent", border: "none", borderRight: c.name === name.trim() ? "1px solid var(--color-ui, #262626)" : "none", color: "var(--color-foreground-3, #525252)", fontSize: 11, cursor: "pointer", fontFamily: "inherit", transition: "color 0.15s" }}
-										onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "var(--color-foreground, #fafafa)"; }}
-										onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "var(--color-foreground-3, #525252)"; }}
+										onClick={(e) => {
+											e.stopPropagation();
+											setReplyingTo(replyingTo === c.id ? null : c.id);
+											setReplyText("");
+										}}
+										style={{
+											flex: 1,
+											display: "flex",
+											alignItems: "center",
+											justifyContent: "center",
+											gap: 4,
+											padding: "7px 0",
+											background: "transparent",
+											border: "none",
+											borderRight:
+												c.name === name.trim()
+													? "1px solid var(--color-ui, #262626)"
+													: "none",
+											color: "var(--color-foreground-3, #525252)",
+											fontSize: 11,
+											cursor: "pointer",
+											fontFamily: "inherit",
+											transition: "color 0.15s",
+										}}
+										onMouseEnter={(e) => {
+											(e.currentTarget as HTMLElement).style.color =
+												"var(--color-foreground, #fafafa)";
+										}}
+										onMouseLeave={(e) => {
+											(e.currentTarget as HTMLElement).style.color =
+												"var(--color-foreground-3, #525252)";
+										}}
 									>
-										<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+										<svg
+											width="12"
+											height="12"
+											viewBox="0 0 16 16"
+											fill="none"
+											stroke="currentColor"
+											strokeWidth="1.5"
+											strokeLinecap="round"
+											strokeLinejoin="round"
+										>
 											<path d="M14 10c0 .55-.2 1.05-.59 1.41-.38.37-.88.59-1.41.59H5l-3 3V4c0-.55.2-1.05.59-1.41C2.97 2.2 3.45 2 4 2h8c.55 0 1.05.2 1.41.59.37.38.59.88.59 1.41v6z" />
 										</svg>
 										Reply
@@ -656,12 +1181,44 @@ export default function DraftComments({ draftId }: { draftId: string }) {
 									{c.name === name.trim() && (
 										<button
 											type="button"
-											onClick={(e) => { e.stopPropagation(); deleteComment(c.id); }}
-											style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", gap: 4, padding: "7px 0", background: "transparent", border: "none", color: "var(--color-foreground-3, #525252)", fontSize: 11, cursor: "pointer", fontFamily: "inherit", transition: "color 0.15s" }}
-											onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "#E5484D"; }}
-											onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "var(--color-foreground-3, #525252)"; }}
+											onClick={(e) => {
+												e.stopPropagation();
+												deleteComment(c.id);
+											}}
+											style={{
+												flex: 1,
+												display: "flex",
+												alignItems: "center",
+												justifyContent: "center",
+												gap: 4,
+												padding: "7px 0",
+												background: "transparent",
+												border: "none",
+												color: "var(--color-foreground-3, #525252)",
+												fontSize: 11,
+												cursor: "pointer",
+												fontFamily: "inherit",
+												transition: "color 0.15s",
+											}}
+											onMouseEnter={(e) => {
+												(e.currentTarget as HTMLElement).style.color =
+													"#E5484D";
+											}}
+											onMouseLeave={(e) => {
+												(e.currentTarget as HTMLElement).style.color =
+													"var(--color-foreground-3, #525252)";
+											}}
 										>
-											<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+											<svg
+												width="12"
+												height="12"
+												viewBox="0 0 16 16"
+												fill="none"
+												stroke="currentColor"
+												strokeWidth="1.5"
+												strokeLinecap="round"
+												strokeLinejoin="round"
+											>
 												<path d="M2 4h12M5.33 4V2.67a1.33 1.33 0 011.34-1.34h2.66a1.33 1.33 0 011.34 1.34V4M12.67 4v9.33a1.33 1.33 0 01-1.34 1.34H4.67a1.33 1.33 0 01-1.34-1.34V4" />
 											</svg>
 											Delete
@@ -676,11 +1233,48 @@ export default function DraftComments({ draftId }: { draftId: string }) {
 
 			{/* Pending comment input */}
 			{pendingPos && (
-				<div data-comment-input style={{ position: "absolute", left: `${pendingPos.x}%`, top: pendingPos.y, zIndex: 9996, transform: "translate(-12px, -12px)" }}>
-					<div style={{ width: 24, height: 24, borderRadius: "50%", background: color, border: "2px solid var(--color-background, #111)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 10, fontWeight: 600, color: "#fff", boxShadow: "0 2px 8px rgba(0,0,0,0.3)" }}>
+				<div
+					data-comment-input
+					style={{
+						position: "absolute",
+						left: `${pendingPos.x}%`,
+						top: pendingPos.y,
+						zIndex: 9996,
+						transform: "translate(-12px, -12px)",
+					}}
+				>
+					<div
+						style={{
+							width: 24,
+							height: 24,
+							borderRadius: "50%",
+							background: color,
+							border: "2px solid var(--color-background, #111)",
+							display: "flex",
+							alignItems: "center",
+							justifyContent: "center",
+							fontSize: 10,
+							fontWeight: 600,
+							color: "#fff",
+							boxShadow: "0 2px 8px rgba(0,0,0,0.3)",
+						}}
+					>
 						{name[0].toUpperCase()}
 					</div>
-					<div style={{ position: "absolute", top: 28, left: 0, background: "var(--color-background-2, #1a1a1a)", border: `1px solid ${color}`, borderRadius: 8, padding: 8, minWidth: 240, boxShadow: "0 8px 24px rgba(0,0,0,0.3)", animation: "dc-fadeIn 0.15s ease-out" }}>
+					<div
+						style={{
+							position: "absolute",
+							top: 28,
+							left: 0,
+							background: "var(--color-background-2, #1a1a1a)",
+							border: `1px solid ${color}`,
+							borderRadius: 8,
+							padding: 8,
+							minWidth: 240,
+							boxShadow: "0 8px 24px rgba(0,0,0,0.3)",
+							animation: "dc-fadeIn 0.15s ease-out",
+						}}
+					>
 						<input
 							ref={inputRef}
 							type="text"
@@ -689,15 +1283,48 @@ export default function DraftComments({ draftId }: { draftId: string }) {
 							onChange={(e) => setPendingText(e.target.value)}
 							onKeyDown={(e) => {
 								if (e.key === "Enter") submitComment();
-								if (e.key === "Escape") { setPendingPos(null); setPendingText(""); setPendingQuote(""); }
+								if (e.key === "Escape") {
+									setPendingPos(null);
+									setPendingText("");
+									setPendingQuote("");
+								}
 							}}
-							style={{ width: "100%", background: "transparent", border: "none", outline: "none", color: "var(--color-foreground, #fafafa)", fontSize: 13, fontFamily: "inherit", padding: 0 }}
+							style={{
+								width: "100%",
+								background: "transparent",
+								border: "none",
+								outline: "none",
+								color: "var(--color-foreground, #fafafa)",
+								fontSize: 13,
+								fontFamily: "inherit",
+								padding: 0,
+							}}
 						/>
-						<div style={{ display: "flex", justifyContent: "flex-end", gap: 4, marginTop: 8 }}>
+						<div
+							style={{
+								display: "flex",
+								justifyContent: "flex-end",
+								gap: 4,
+								marginTop: 8,
+							}}
+						>
 							<button
 								type="button"
-								onClick={() => { setPendingPos(null); setPendingText(""); setPendingQuote(""); }}
-								style={{ background: "transparent", border: "none", color: "var(--color-foreground-3, #525252)", fontSize: 12, cursor: "pointer", padding: "2px 8px", borderRadius: 4, fontFamily: "inherit" }}
+								onClick={() => {
+									setPendingPos(null);
+									setPendingText("");
+									setPendingQuote("");
+								}}
+								style={{
+									background: "transparent",
+									border: "none",
+									color: "var(--color-foreground-3, #525252)",
+									fontSize: 12,
+									cursor: "pointer",
+									padding: "2px 8px",
+									borderRadius: 4,
+									fontFamily: "inherit",
+								}}
 							>
 								Cancel
 							</button>
@@ -705,7 +1332,19 @@ export default function DraftComments({ draftId }: { draftId: string }) {
 								type="button"
 								onClick={submitComment}
 								disabled={!pendingText.trim()}
-								style={{ background: pendingText.trim() ? color : "var(--color-ui, #262626)", border: "none", borderRadius: 4, padding: "2px 10px", fontSize: 12, color: "#fff", cursor: pendingText.trim() ? "pointer" : "default", opacity: pendingText.trim() ? 1 : 0.4, fontFamily: "inherit" }}
+								style={{
+									background: pendingText.trim()
+										? color
+										: "var(--color-ui, #262626)",
+									border: "none",
+									borderRadius: 4,
+									padding: "2px 10px",
+									fontSize: 12,
+									color: "#fff",
+									cursor: pendingText.trim() ? "pointer" : "default",
+									opacity: pendingText.trim() ? 1 : 0.4,
+									fontFamily: "inherit",
+								}}
 							>
 								Post
 							</button>
