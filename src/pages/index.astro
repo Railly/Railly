@@ -1,40 +1,22 @@
 ---
 import { getCollection } from "astro:content";
-import Hack0Logo from "../assets/svgs/h0-logo.svg";
-import Text0Logo from "../assets/svgs/t0-logo.svg";
-import PremiereCountdown from "../components/blog/PremiereCountdown";
-import ViewCounter from "../components/blog/ViewCounter";
-import AgentfilesLogo from "../components/brand/AgentfilesLogo.astro";
-import BrazilFlag from "../components/brand/BrazilFlag.astro";
-import ChileFlag from "../components/brand/ChileFlag.astro";
-import ColombiaFlag from "../components/brand/ColombiaFlag.astro";
-import ElementsLogo from "../components/brand/ElementsLogo.astro";
-import GlobeIcon from "../components/brand/GlobeIcon.astro";
-import OneHunterLogo from "../components/brand/OneHunterLogo.astro";
-import PeruFlag from "../components/brand/PeruFlag.astro";
-import ScrapiLogo from "../components/brand/ScrapiLogo.astro";
-import TinteLogo from "../components/brand/TinteLogo.astro";
-import TrxLogo from "../components/brand/TrxLogo.astro";
+import HomeAchievementsList from "../components/home/HomeAchievementsList.astro";
+import HomeProjectsList from "../components/home/HomeProjectsList.astro";
+import HomeWritingList from "../components/home/HomeWritingList.astro";
 import Footer from "../components/layout/Footer.astro";
 import HeroSection from "../components/layout/HeroSection.astro";
 import PageLayout from "../components/layout/PageLayout.astro";
 import SectionHeader from "../components/layout/SectionHeader.astro";
 import NewsletterSection from "../components/newsletter/NewsletterSection.astro";
-import ListRow from "../components/ui/ListRow.astro";
 import SectionLink from "../components/ui/SectionLink.astro";
 import { isPostListable } from "../config/blog";
+import { ogUrl, siteConfig } from "../config/site";
 import Layout from "../layouts/Layout.astro";
-import {
-	achievementsData,
-	heroData,
-	type ProjectIconKey,
-	projectsData,
-} from "../lib/home";
 
 const ogTitle = "Railly Hugo";
 const ogDescription =
 	"AI Software Engineer at Clerk, Founder of Crafter Station. Lima, Peru.";
-const ogImage = `/api/og?title=${encodeURIComponent(ogTitle)}&description=${encodeURIComponent(ogDescription)}`;
+const ogImage = ogUrl({ title: ogTitle, description: ogDescription });
 const allPosts = await getCollection("blog", ({ data }) =>
 	import.meta.env.PROD ? data.status !== "draft" : true,
 );
@@ -58,131 +40,41 @@ const newestPost = activePosts[0];
 const isNewest = (slug: string) => slug === newestPost?.slug;
 const formatDate = (date: Date) =>
 	`${date.getDate().toString().padStart(2, "0")}/${(date.getMonth() + 1).toString().padStart(2, "0")}`;
-const iconMap = {
-	elements: ElementsLogo,
-	text0: Text0Logo,
-	tinte: TinteLogo,
-	oneHunter: OneHunterLogo,
-	scrapi: ScrapiLogo,
-	hack0: Hack0Logo,
-	agentfiles: AgentfilesLogo,
-	trx: TrxLogo,
-} as const satisfies Record<ProjectIconKey, unknown>;
-const scopeMap = {
-	global: GlobeIcon,
-	pe: PeruFlag,
-	cl: ChileFlag,
-	co: ColombiaFlag,
-	br: BrazilFlag,
-} as const;
 ---
 
 <Layout
 	title="Railly Hugo - AI Software Engineer | Crafter Station Founder"
-	description="AI Software Engineer at Clerk and Founder of Crafter Station. Building open-source developer tools, winning hackathons, and growing Peru's tech ecosystem from Lima."
+	description={siteConfig.description}
 	image={ogImage}
 >
 	<PageLayout class="flex flex-col gap-10">
-		<HeroSection name={heroData.name} title={heroData.title} />
+		<HeroSection name={siteConfig.name} title={siteConfig.hero.title} />
 
 		<section class="w-full">
 			<SectionLink title="Projects" href="/projects" />
-			<div class="space-y-0">
-				{projectsData.map((project) => {
-					const IconComponent = iconMap[project.icon];
-					return (
-						<ListRow href={project.href} external showArrow>
-							<span slot="leading" class="w-6 h-6 flex items-center justify-center shrink-0">
-								<IconComponent width={20} height={20} class="text-foreground" />
-							</span>
-							<span class="text-foreground font-medium">{project.title}</span>
-							<span slot="trailing" class="hidden text-foreground-3 sm:block">{project.description}</span>
-						</ListRow>
-					);
-				})}
-			</div>
+			<HomeProjectsList />
 		</section>
 
 		<section class="w-full">
 			<SectionLink title="Writing" href="/writing" />
-			<div class="space-y-0">
-				{years.map((year) => (
-					<>
-						{postsByYear[year].map((post, index) => {
-							const isPremiere = post.data.status === "premiere" && new Date() < post.data.pubDate;
-							return (
-								<ListRow href={!isPremiere ? `/blog/${post.slug}` : undefined} interactive={!isPremiere}>
-									<span slot="leading" class="block text-foreground-3 tabular-nums">{index === 0 ? year : ""}</span>
-									<span class:list={["font-medium", isPremiere ? "text-foreground-3" : "text-foreground group-hover:text-foreground"]}>
-										{post.data.title}
-										{isPremiere ? (
-											<span class="ml-2 rounded border border-ui px-1.5 py-0.5 text-xs font-normal text-foreground-3">Premiere</span>
-										) : isNewest(post.slug) ? (
-											<span class="ml-2 rounded bg-ui px-1.5 py-0.5 text-xs font-normal text-foreground-2">Newest</span>
-										) : null}
-									</span>
-									<span slot="trailing" class="flex items-center gap-4">
-										{isPremiere ? (
-											<PremiereCountdown pubDate={post.data.pubDate.toISOString()} client:only="react" />
-										) : (
-											<>
-												<ViewCounter slug={post.slug} client:only="react" className="shrink-0 text-xs text-foreground-3 tabular-nums" />
-												<span class="shrink-0 text-foreground-3 tabular-nums">{formatDate(post.data.pubDate)}</span>
-											</>
-										)}
-									</span>
-								</ListRow>
-							);
-						})}
-					</>
-				))}
-				{recentPosts.length === 0 && (
-					<div class="py-12 text-center">
-						<p class="text-foreground-2">More stories coming soon</p>
-					</div>
-				)}
-			</div>
+			<HomeWritingList
+				years={years}
+				postsByYear={postsByYear}
+				isNewest={isNewest}
+				formatDate={formatDate}
+			/>
+			{recentPosts.length === 0 && (
+				<div class="py-12 text-center">
+					<p class="text-foreground-2">More stories coming soon</p>
+				</div>
+			)}
 		</section>
 
 		<section class="w-full">
 			<div class="mb-4">
 				<SectionHeader title="Achievements" className="mb-0" />
 			</div>
-			<div class="space-y-0">
-				{achievementsData.map((item, index) => {
-					const ScopeIcon = scopeMap[item.scope];
-					const showYear = item.year !== achievementsData[index - 1]?.year;
-					return (
-						<ListRow>
-							<span slot="leading" class="block text-foreground-3 tabular-nums">{showYear ? item.year : ""}</span>
-							<div class="flex items-baseline gap-4">
-								<span class="w-36 shrink-0 text-foreground font-medium">{item.achievement}</span>
-								<span class="flex-1">
-									{item.eventUrl ? (
-										<a href={item.eventUrl} target="_blank" rel="noopener noreferrer" class="text-foreground-2 underline decoration-ui/50 transition-colors hover:text-foreground hover:decoration-ui">
-											{item.event}
-										</a>
-									) : (
-										<span class="text-foreground-2">{item.event}</span>
-									)}
-								</span>
-							</div>
-							<span slot="trailing" class="flex items-center gap-4">
-								{item.project && (
-									item.projectUrl ? (
-										<a href={item.projectUrl} target="_blank" rel="noopener noreferrer" class="hidden text-foreground-3 underline decoration-ui/50 transition-colors hover:text-foreground hover:decoration-ui sm:block">
-											{item.project}
-										</a>
-									) : (
-										<span class="hidden text-foreground-3 sm:block">{item.project}</span>
-									)
-								)}
-								<ScopeIcon width={16} height={16} class={item.scope === "global" ? "text-foreground-2" : undefined} />
-							</span>
-						</ListRow>
-					);
-				})}
-			</div>
+			<HomeAchievementsList />
 		</section>
 
 		<NewsletterSection />

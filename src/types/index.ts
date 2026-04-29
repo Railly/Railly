@@ -3,6 +3,11 @@ export interface SiteConfig {
 	description: string;
 	url: string;
 	ogImage: string;
+	hero: {
+		title: string;
+		role: string;
+		location: string;
+	};
 	author: string;
 	email: string;
 	links: {

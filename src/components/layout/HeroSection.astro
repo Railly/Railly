@@ -1,15 +1,6 @@
 ---
-import ClerkLogo from "../brand/ClerkLogo.astro";
-import CodexLogo from "../brand/CodexLogo.astro";
-import CrafterStationLogo from "../brand/CrafterStationLogo.astro";
-import GitHubLogo from "../brand/GitHubLogo.astro";
-import MidudevLogo from "../brand/MidudevLogo.astro";
-import NextjsLogo from "../brand/NextjsLogo.astro";
-import PeruFlag from "../brand/PeruFlag.astro";
-import UNMSMLogo from "../brand/UNMSMLogo.astro";
-import V0Logo from "../brand/V0Logo.astro";
-import VercelLogo from "../brand/VercelLogo.astro";
-import XLogo from "../brand/XLogo.astro";
+import BrandIcon from "../brand/BrandIcon.astro";
+import Flag from "../brand/Flag.astro";
 
 interface Props {
 	name: string;
@@ -35,12 +26,12 @@ const linkClass =
     <span class="text-base font-serif text-foreground-2 font-light">
         {title}
     </span>
-    <PeruFlag />
+    <Flag country="pe" />
 </header>
 
 <section class="flex flex-col gap-2">
     <p class="text-base text-foreground-2 !m-0">
-        I'm an <i>AI software engineer</i> at <ClerkLogo
+        I'm an <i>AI software engineer</i> at <BrandIcon name="clerk" 
             width={16}
             height={16}
             class="inline-block mb-0.5 align-text-bottom"
@@ -48,7 +39,7 @@ const linkClass =
             href="https://clerk.com"
             target="_blank"
             class={linkClass}>Clerk</a
-        > and <i>founder</i> of <CrafterStationLogo
+        > and <i>founder</i> of <BrandIcon name="crafterStation" 
             width={16}
             height={16}
             class="inline-block mb-0.5 mr-0.5 align-text-bottom"
@@ -60,7 +51,7 @@ const linkClass =
     </p>
 
     <p class="text-base text-foreground-2 !m-0">
-        I teach Parallel Computing at <UNMSMLogo
+        I teach Parallel Computing at <BrandIcon name="unmsm" 
             width={16}
             height={16}
             class="inline-block !my-0 !ml-0 mr-0.5 align-text-bottom rounded-sm"
@@ -68,7 +59,7 @@ const linkClass =
             href="https://unmsm.edu.pe"
             target="_blank"
             class={linkClass}>UNMSM</a
-        > and build platforms with <MidudevLogo
+        > and build platforms with <BrandIcon name="midudev" 
             width={18}
             height={16}
             class="inline-block mb-0.5 mr-0.5 align-text-bottom"
@@ -80,7 +71,7 @@ const linkClass =
     </p>
 
     <p class="text-base text-foreground-2 !m-0">
-        Winner of the <NextjsLogo
+        Winner of the <BrandIcon name="nextjs" 
             width={16}
             height={16}
             class="inline-block mb-0.5 mr-0.5 align-text-bottom"
@@ -88,7 +79,7 @@ const linkClass =
             href="https://luma.com/vsi4m4l8"
             target="_blank"
             class={linkClass}>Next.js Global Hackathon 2025</a
-        >. Find my work on <GitHubLogo
+        >. Find my work on <BrandIcon name="github" 
             width={14}
             height={14}
             class="inline-block mb-0.5 mr-0.5 align-text-bottom"
@@ -101,7 +92,7 @@ const linkClass =
             target="_blank"
             aria-label="X (Twitter)"
             class="inline-block underline decoration-ui hover:bg-foreground hover:text-background transition-colors"
-        ><XLogo
+        ><BrandIcon name="x" 
             width={14}
             height={14}
             class="align-middle"
@@ -117,7 +108,7 @@ const linkClass =
             target="_blank"
             class="group inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md border border-ui/50 hover:border-ui transition-all duration-200"
         >
-            <CodexLogo width={16} height={16} />
+            <BrandIcon name="codex"  width={16} height={16} />
             <span
                 class="text-xs text-foreground-2 group-hover:text-foreground transition-colors"
                 >Codex Ambassador</span
@@ -128,7 +119,7 @@ const linkClass =
             target="_blank"
             class="group inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md border border-ui/50 hover:border-ui transition-all duration-200"
         >
-            <V0Logo width={16} height={16} class="text-foreground" />
+            <BrandIcon name="v0"  width={16} height={16} class="text-foreground" />
             <span
                 class="text-xs text-foreground-2 group-hover:text-foreground transition-colors"
                 >Ambassador</span
@@ -139,7 +130,7 @@ const linkClass =
             target="_blank"
             class="group inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md border border-ui/50 hover:border-ui transition-all duration-200"
         >
-            <VercelLogo width={10} height={10} class="text-foreground" />
+            <BrandIcon name="vercel"  width={10} height={10} class="text-foreground" />
             <span
                 class="text-xs text-foreground-2 group-hover:text-foreground transition-colors"
                 >Vercel OSS Fall 2025</span

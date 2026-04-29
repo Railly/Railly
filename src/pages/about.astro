@@ -1,19 +1,5 @@
 ---
-import AIHackathonPeruLogo from "../components/brand/AIHackathonPeruLogo.astro";
-import ClerkLogo from "../components/brand/ClerkLogo.astro";
-import CodexLogo from "../components/brand/CodexLogo.astro";
-import CrafterStationLogo from "../components/brand/CrafterStationLogo.astro";
-import ElementsLogo from "../components/brand/ElementsLogo.astro";
-import MidudevLogo from "../components/brand/MidudevLogo.astro";
-import NextjsLogo from "../components/brand/NextjsLogo.astro";
-import OneHunterLogo from "../components/brand/OneHunterLogo.astro";
-import PlatanusHackLogo from "../components/brand/PlatanusHackLogo.astro";
-import ScrapiLogo from "../components/brand/ScrapiLogo.astro";
-import TinteLogo from "../components/brand/TinteLogo.astro";
-import UNMSMLogo from "../components/brand/UNMSMLogo.astro";
-import V0Logo from "../components/brand/V0Logo.astro";
-import VercelLogo from "../components/brand/VercelLogo.astro";
-import XLogo from "../components/brand/XLogo.astro";
+import BrandIcon from "../components/brand/BrandIcon.astro";
 import Footer from "../components/layout/Footer.astro";
 import PageLayout from "../components/layout/PageLayout.astro";
 import SectionHeader from "../components/layout/SectionHeader.astro";
@@ -34,7 +20,7 @@ const ogImage = `/api/og?title=${encodeURIComponent(ogTitle)}&description=${enco
         <SectionHeader title="About" />
         <div class="prose prose-theme max-w-none">
             <p class="text-foreground-2 leading-relaxed">
-                I'm a software engineer at <ClerkLogo
+                I'm a software engineer at <BrandIcon name="clerk" 
                     width={16}
                     height={16}
                     class="inline-block mb-0.5 align-text-bottom"
@@ -43,7 +29,7 @@ const ogImage = `/api/og?title=${encodeURIComponent(ogTitle)}&description=${enco
                     target="_blank"
                     class="text-foreground underline decoration-ui hover:bg-foreground hover:text-background transition-colors"
                     >Clerk</a
-                > and founder of <CrafterStationLogo
+                > and founder of <BrandIcon name="crafterStation" 
                     width={16}
                     height={16}
                     class="inline-block mb-0.5 mr-0.5 align-text-bottom"
@@ -58,7 +44,7 @@ const ogImage = `/api/og?title=${encodeURIComponent(ogTitle)}&description=${enco
                 I was born and raised in Lima, Peru, where I still live today.
             </p>
             <p class="text-foreground-2 leading-relaxed">
-                I studied Software Engineering at <UNMSMLogo
+                I studied Software Engineering at <BrandIcon name="unmsm" 
                     width={16}
                     height={16}
                     class="inline-block !my-0 !ml-0 mr-0.5 align-text-bottom rounded-sm"
@@ -76,7 +62,7 @@ const ogImage = `/api/og?title=${encodeURIComponent(ogTitle)}&description=${enco
                 > in 2025.
             </p>
             <p class="text-foreground-2 leading-relaxed">
-                In 2023, I founded <CrafterStationLogo
+                In 2023, I founded <BrandIcon name="crafterStation" 
                     width={16}
                     height={16}
                     class="inline-block mb-0.5 mr-0.5 align-text-bottom"
@@ -85,7 +71,7 @@ const ogImage = `/api/og?title=${encodeURIComponent(ogTitle)}&description=${enco
                     target="_blank"
                     class="text-foreground underline decoration-ui hover:bg-foreground hover:text-background transition-colors"
                     >Crafter Station</a
-                >, a non-profit building Peru's tech ecosystem. We've hosted the <AIHackathonPeruLogo
+                >, a non-profit building Peru's tech ecosystem. We've hosted the <BrandIcon name="aiHackPeru" 
                     width={16}
                     height={16}
                     class="inline-block !my-0 !ml-0 mr-1 align-middle rounded-sm"
@@ -99,7 +85,7 @@ const ogImage = `/api/og?title=${encodeURIComponent(ogTitle)}&description=${enco
             </p>
             <p class="text-foreground-2 leading-relaxed">
                 I've won multiple international hackathons, including the
-                first-ever <NextjsLogo
+                first-ever <BrandIcon name="nextjs" 
                     width={16}
                     height={16}
                     class="inline-block mb-0.5 mr-0.5 align-text-bottom"
@@ -108,7 +94,7 @@ const ogImage = `/api/og?title=${encodeURIComponent(ogTitle)}&description=${enco
                     target="_blank"
                     class="text-foreground underline decoration-ui hover:bg-foreground hover:text-background transition-colors"
                     >Next.js Global Hackathon</a
-                > (2025) with Anthony Cueva, and the <VercelLogo
+                > (2025) with Anthony Cueva, and the <BrandIcon name="vercel" 
                     width={16}
                     height={16}
                     class="inline-block mb-0.5 mr-0.5 align-text-bottom"
@@ -117,7 +103,7 @@ const ogImage = `/api/og?title=${encodeURIComponent(ogTitle)}&description=${enco
                     target="_blank"
                     class="text-foreground underline decoration-ui hover:bg-foreground hover:text-background transition-colors"
                     >Vercel AI Gateway Hackathon</a
-                > (2025) with Crafter Station. We also won the online edition of <PlatanusHackLogo
+                > (2025) with Crafter Station. We also won the online edition of <BrandIcon name="platanusHack" 
                     width={16}
                     height={16}
                     class="inline-block !my-0 !ml-0 mr-0.5 align-middle rounded-sm"
@@ -126,7 +112,7 @@ const ogImage = `/api/og?title=${encodeURIComponent(ogTitle)}&description=${enco
                     target="_blank"
                     class="text-foreground underline decoration-ui hover:bg-foreground hover:text-background transition-colors"
                     >Platanus Hack 25</a
-                > in Chile (2025) with <ScrapiLogo
+                > in Chile (2025) with <BrandIcon name="scrapi" 
                     width={16}
                     height={16}
                     class="inline-block !my-0 !ml-0 mr-0.5 align-middle rounded-sm"
@@ -138,7 +124,7 @@ const ogImage = `/api/og?title=${encodeURIComponent(ogTitle)}&description=${enco
                 >.
             </p>
             <p class="text-foreground-2 leading-relaxed">
-                In October 2025, I joined <ClerkLogo
+                In October 2025, I joined <BrandIcon name="clerk" 
                     width={16}
                     height={16}
                     class="inline-block mb-0.5 align-text-bottom"
@@ -151,7 +137,7 @@ const ogImage = `/api/og?title=${encodeURIComponent(ogTitle)}&description=${enco
                 and developer experience for the AI era.
             </p>
             <p class="text-foreground-2 leading-relaxed">
-                I teach Parallel Computing at <UNMSMLogo
+                I teach Parallel Computing at <BrandIcon name="unmsm" 
                     width={16}
                     height={16}
                     class="inline-block !my-0 !ml-0 mr-0.5 align-text-bottom rounded-sm"
@@ -163,7 +149,7 @@ const ogImage = `/api/og?title=${encodeURIComponent(ogTitle)}&description=${enco
                 >, Peru's oldest university, where I also graduated.
             </p>
             <p class="text-foreground-2 leading-relaxed">
-                I build platforms with <MidudevLogo
+                I build platforms with <BrandIcon name="midudev" 
                     width={18}
                     height={16}
                     class="inline-block mb-0.5 mr-0.5 align-text-bottom"
@@ -177,7 +163,7 @@ const ogImage = `/api/og?title=${encodeURIComponent(ogTitle)}&description=${enco
                 and AI integrations for millions of Spanish-speaking developers.
             </p>
             <p class="text-foreground-2 leading-relaxed">
-                I also create open-source tools like <TinteLogo
+                I also create open-source tools like <BrandIcon name="tinte" 
                     width={16}
                     height={16}
                     class="inline-block mb-0.5 mr-0.5 align-text-bottom rounded-full"
@@ -186,7 +172,7 @@ const ogImage = `/api/og?title=${encodeURIComponent(ogTitle)}&description=${enco
                     target="_blank"
                     class="text-foreground underline decoration-ui hover:bg-foreground hover:text-background transition-colors"
                     >Tinte</a
-                > (part of the <VercelLogo
+                > (part of the <BrandIcon name="vercel" 
                     width={16}
                     height={16}
                     class="inline-block mb-0.5 mr-0.5 align-text-bottom"
@@ -195,7 +181,7 @@ const ogImage = `/api/og?title=${encodeURIComponent(ogTitle)}&description=${enco
                     target="_blank"
                     class="text-foreground underline decoration-ui hover:bg-foreground hover:text-background transition-colors"
                     >Vercel OSS Program</a
-                >), <ElementsLogo
+                >), <BrandIcon name="elements" 
                     width={14}
                     height={16}
                     class="inline-block mb-0.5 mr-0.5 align-text-bottom"
@@ -204,7 +190,7 @@ const ogImage = `/api/og?title=${encodeURIComponent(ogTitle)}&description=${enco
                     target="_blank"
                     class="text-foreground underline decoration-ui hover:bg-foreground hover:text-background transition-colors"
                     >Elements</a
-                > (full-stack shadcn components), and <OneHunterLogo
+                > (full-stack shadcn components), and <BrandIcon name="oneHunter" 
                     width={16}
                     height={16}
                     class="inline-block !my-0 !ml-0 mr-1 align-middle rounded-sm"
@@ -216,7 +202,7 @@ const ogImage = `/api/og?title=${encodeURIComponent(ogTitle)}&description=${enco
                 > (35k+ downloads).
             </p>
             <p class="text-foreground-2 leading-relaxed">
-                I'm a <CodexLogo
+                I'm a <BrandIcon name="codex" 
                     width={16}
                     height={16}
                     class="inline-block mr-0.5 mb-0.5 align-text-bottom"
@@ -230,7 +216,7 @@ const ogImage = `/api/og?title=${encodeURIComponent(ogTitle)}&description=${enco
                     target="_blank"
                     class="text-foreground underline decoration-ui hover:bg-foreground hover:text-background transition-colors"
                     aria-label="v0 Ambassador"
-                    ><V0Logo
+                    ><BrandIcon name="v0" 
                         width={16}
                         height={16}
                         class="inline-block mr-0.5 mb-0.5 align-text-bottom"
@@ -239,7 +225,7 @@ const ogImage = `/api/og?title=${encodeURIComponent(ogTitle)}&description=${enco
                 public, and believe everything compounds.
             </p>
             <p class="text-foreground-2 leading-relaxed">
-                You can reach me at <XLogo
+                You can reach me at <BrandIcon name="x" 
                     width={14}
                     height={14}
                     class="inline-block mb-0.5 mr-0.5 align-text-bottom"

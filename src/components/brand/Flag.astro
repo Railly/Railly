@@ -1,0 +1,37 @@
+---
+import { type FlagName, flagRegistry } from "./registry";
+
+interface Props {
+	country: FlagName;
+	width?: number;
+	height?: number;
+	class?: string;
+	title?: string;
+}
+
+const {
+	country,
+	width = 16,
+	height = 16,
+	class: className,
+	title,
+} = Astro.props;
+const entry = flagRegistry[country];
+const resolvedTitle = title ?? entry.title;
+---
+
+<svg
+	width={width}
+	height={height}
+	viewBox={entry.viewBox}
+	fill={entry.fill}
+	preserveAspectRatio={entry.preserveAspectRatio}
+	stroke-linejoin={entry.strokeLinejoin}
+	role={entry.role ?? 'img'}
+	aria-label={resolvedTitle ?? entry.ariaLabel}
+	xmlns="http://www.w3.org/2000/svg"
+	class={className}
+>
+	{resolvedTitle && <title>{resolvedTitle}</title>}
+	<Fragment set:html={entry.content} />
+</svg>
