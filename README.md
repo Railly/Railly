@@ -10,11 +10,11 @@ Founder of [Crafter Station](https://crafterstation.com), building Peru's tech e
 | Project | Description |
 |---------|-------------|
 | [Tinte](https://tinte.dev) | Theme builder for VS Code, shadcn, and more `585★` |
-| [Agentfiles](https://github.com/Railly/agentfiles) | Browse, create, and edit AI agent files from Obsidian `529★` |
-| [Elements](https://tryelements.dev) | Full-stack shadcn components for auth, ai, and more `487★` |
+| [Agentfiles](https://github.com/Railly/agentfiles) | Browse, create, and edit AI agent files from Obsidian `538★` |
+| [Elements](https://tryelements.dev) | Full-stack shadcn components for auth, ai, and more `492★` |
 | [text0](https://text0.dev) | AI-powered text editor with real-time collaboration `446★` |
-| [One Hunter](https://marketplace.visualstudio.com/items?itemName=RaillyHugo.one-hunter) | VS Code theme inspired by Vercel and One Dark Pro `379★` |
-| [trx](https://github.com/crafter-station/trx) | Agent-first CLI for audio/video transcription `78★` |
+| [One Hunter](https://marketplace.visualstudio.com/items?itemName=RaillyHugo.one-hunter) | VS Code theme inspired by Vercel and One Dark Pro `380★` |
+| [trx](https://github.com/crafter-station/trx) | Agent-first CLI for audio/video transcription `80★` |
 <!-- END:PROJECTS -->
 
 See [all projects →](https://railly.dev/projects)
@@ -22,11 +22,11 @@ See [all projects →](https://railly.dev/projects)
 ### Latest writing
 
 <!-- START:WRITING -->
+- [webctl: reverse-engineer any website into an agent CLI](https://www.railly.dev/blog/webctl/) — 2026-04-28
 - [Obsidian as a Personal OS for AI Coding Agents](https://www.railly.dev/blog/agentic-second-brain/) — 2026-03-31
 - [2,000 Stars Later: What I Learned Building Open Source Dev Tools](https://www.railly.dev/blog/2000-stars-later/) — 2026-03-14
 - [Skill Kit: Local Analytics for AI Agent Skills](https://www.railly.dev/blog/skill-kit/) — 2026-02-22
 - [Design Engineering: The Career Nobody Told You About](https://www.railly.dev/blog/design-engineering/) — 2026-02-21
-- [The Figma + Claude Code Bidirectional Loop, Explained](https://www.railly.dev/blog/figma-claude-code-bidirectional/) — 2026-02-21
 <!-- END:WRITING -->
 
 ### Links
