@@ -1,0 +1,262 @@
+---
+import Footer from "../components/layout/Footer.astro";
+import PageLayout from "../components/layout/PageLayout.astro";
+import SectionHeader from "../components/layout/SectionHeader.astro";
+import Layout from "../layouts/Layout.astro";
+
+const ogTitle = "Agent-first developer tools";
+const ogDescription = "Tools I'm building for AI agents, not humans.";
+const ogImage = `/api/og?title=${encodeURIComponent(ogTitle)}&description=${encodeURIComponent(ogDescription)}&tag=agents`;
+
+type Tag = {
+	label: string;
+};
+
+type HeroCliEntry = {
+	name: string;
+	tagline: string;
+	description: string;
+	tags: Tag[];
+	github?: string;
+	npm?: string;
+	site?: string;
+	blogPost?: string;
+	private?: boolean;
+};
+
+type GridCliEntry = {
+	name: string;
+	stars: number;
+	description: string;
+	github: string;
+	npm?: string;
+};
+
+const heroClis: HeroCliEntry[] = [
+	{
+		name: "webctl",
+		tagline: "Turn any website into an installable CLI.",
+		description: "Reverse-engineers sites into declarative IRs. Built on agent-browser, emits just-bash ExecutorConfigs. Recon once, zero LLM tokens at runtime.",
+		tags: [{ label: "Rust" }, { label: "agent-browser" }, { label: "just-bash" }],
+		github: "https://github.com/crafter-station/webctl",
+		site: "https://v0-webctl.vercel.app",
+		blogPost: "/blog/webctl",
+	},
+	{
+		name: "v0-cli",
+		tagline: "Agents shipping UI on Vercel.",
+		description: "Wrapper for the v0 Platform API. JSON dual-mode, intent tokens for deploys, audit trail.",
+		tags: [{ label: "npm" }, { label: "MCP" }, { label: "Vercel" }],
+		npm: "https://www.npmjs.com/package/@crafter/v0-cli",
+		github: "https://github.com/Railly/v0-cli",
+		site: "https://v0-cli.crafter.run",
+	},
+	{
+		name: "broker-cli",
+		tagline: "Agents touching real money, safely.",
+		description: "Trust ladder, killswitch, MCP, audit log. Production CLI on a brokerage account.",
+		tags: [{ label: "private" }, { label: "MCP server" }, { label: "trust ladder" }],
+		private: true,
+	},
+	{
+		name: "cligentic",
+		tagline: "Copy-paste blocks for agent-first CLIs.",
+		description: "shadcn for agent CLIs. Trust ladder, killswitch, audit log, JSON dual-mode, all as installable blocks.",
+		tags: [{ label: "blocks" }, { label: "agent-first" }, { label: "registry" }],
+		site: "https://cligentic.railly.dev",
+		github: "https://github.com/Railly/cligentic",
+	},
+];
+
+const gridClis: GridCliEntry[] = [
+	{
+		name: "agentfiles",
+		stars: 529,
+		description: "Manage agent files across 13+ tools. From Obsidian.",
+		github: "https://github.com/Railly/agentfiles",
+	},
+	{
+		name: "skill-kit",
+		stars: 56,
+		description: "Local-first analytics for agent skills.",
+		github: "https://github.com/crafter-station/skill-kit",
+	},
+	{
+		name: "trx",
+		stars: 78,
+		description: "Agent-native transcription via Whisper.",
+		github: "https://github.com/crafter-station/trx",
+		npm: "https://www.npmjs.com/package/@crafter/trx",
+	},
+	{
+		name: "spoti-cli",
+		stars: 0,
+		description: "Spotify Web API for agents.",
+		github: "https://github.com/crafter-station/spoti-cli",
+		npm: "https://www.npmjs.com/package/@crafter/spoti-cli",
+	},
+	{
+		name: "sunat-cli",
+		stars: 0,
+		description: "Peruvian tax automation for agents (SUNAT).",
+		github: "https://github.com/crafter-station/sunat-cli",
+		npm: "https://www.npmjs.com/package/@crafter/sunat-cli",
+	},
+];
+---
+
+<Layout
+	title="Agent-first developer tools - Railly Hugo"
+	description={ogDescription}
+	image={ogImage}
+>
+	<PageLayout class="flex flex-col gap-10">
+		<div class="flex flex-col gap-2">
+			<h1 class="text-lg font-medium text-foreground">Agent-first developer tools</h1>
+			<p class="text-sm text-foreground-2">
+				Tools I'm building for AI agents, not humans.
+			</p>
+		</div>
+
+		<section class="w-full">
+			<div class="mb-4">
+				<SectionHeader title="The Stack" className="mb-0" />
+			</div>
+			<div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+				{heroClis.map((cli) => (
+					<div class="group relative rounded-lg border border-ui hover:border-ui-2 transition-all bg-background hover:bg-background-2 p-4 flex flex-col gap-3">
+						<div class="flex items-start justify-between gap-2">
+							<div class="flex flex-col gap-1">
+								<span class="font-medium text-foreground text-sm font-mono">{cli.name}</span>
+								<span class="text-xs text-foreground-2">{cli.tagline}</span>
+							</div>
+							<div class="flex items-center gap-2 shrink-0">
+								{cli.github && (
+									<a
+										href={cli.github}
+										target="_blank"
+										rel="noopener noreferrer"
+										class="inline-flex items-center justify-center size-9 -m-1.5 rounded-md border border-transparent text-foreground-3 hover:text-foreground hover:bg-background-2 hover:border-ui transition-colors"
+										title="GitHub"
+									>
+										<svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+											<path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+										</svg>
+									</a>
+								)}
+								{cli.site && (
+									<a
+										href={cli.site}
+										target="_blank"
+										rel="noopener noreferrer"
+										class="inline-flex items-center justify-center size-9 -m-1.5 rounded-md border border-transparent text-foreground-3 hover:text-foreground hover:bg-background-2 hover:border-ui transition-colors"
+										title="Visit site"
+									>
+										<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+											<path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+											<polyline points="15 3 21 3 21 9" />
+											<line x1="10" y1="14" x2="21" y2="3" />
+										</svg>
+									</a>
+								)}
+								{cli.npm && (
+									<a
+										href={cli.npm}
+										target="_blank"
+										rel="noopener noreferrer"
+										class="inline-flex items-center justify-center size-9 -m-1.5 rounded-md border border-transparent text-foreground-3 hover:text-foreground hover:bg-background-2 hover:border-ui transition-colors"
+										title="npm"
+									>
+										<svg width="15" height="15" viewBox="0 0 256 256" fill="currentColor">
+											<title>npm</title>
+											<polygon points="0 256 0 0 256 0 256 256" />
+											<polygon points="48 48 208 48 208 208 176 208 176 80 128 80 128 208 48 208" fill="var(--color-background)" />
+										</svg>
+									</a>
+								)}
+								{cli.blogPost && (
+									<a
+										href={cli.blogPost}
+										class="inline-flex items-center justify-center size-9 -m-1.5 rounded-md border border-transparent text-foreground-3 hover:text-foreground hover:bg-background-2 hover:border-ui transition-colors"
+										title="Read the post"
+									>
+										<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+											<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+											<polyline points="14 2 14 8 20 8" />
+											<line x1="16" y1="13" x2="8" y2="13" />
+											<line x1="16" y1="17" x2="8" y2="17" />
+											<polyline points="10 9 9 9 8 9" />
+										</svg>
+									</a>
+								)}
+							</div>
+						</div>
+						<p class="text-xs text-foreground-3 leading-relaxed">{cli.description}</p>
+						<div class="flex flex-wrap gap-1.5 mt-auto pt-1">
+							{cli.tags.map((tag) => (
+								<span class="text-xs px-2 py-0.5 rounded border border-ui bg-background-2 text-foreground-3 font-mono">
+									{tag.label}
+								</span>
+							))}
+						</div>
+					</div>
+				))}
+			</div>
+		</section>
+
+		<section class="w-full">
+			<div class="mb-4">
+				<SectionHeader title="More Shipped" className="mb-0" />
+			</div>
+			<div class="space-y-0">
+				{gridClis.map((cli) => (
+					<div class="group flex items-center gap-4 py-4 border-b border-ui hover:bg-background-2 transition-colors -mx-3 px-3">
+						<span class="font-mono text-foreground font-medium text-sm w-28 shrink-0">{cli.name}</span>
+						{cli.stars > 0 && (
+							<span class="flex items-center gap-1 text-foreground-3 text-xs w-12 shrink-0 tabular-nums">
+								<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+									<path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+								</svg>
+								{cli.stars}
+							</span>
+						)}
+						{cli.stars === 0 && (
+							<span class="w-12 shrink-0" />
+						)}
+						<span class="flex-1 text-sm text-foreground-2 hidden sm:block">{cli.description}</span>
+						<div class="flex items-center gap-3 shrink-0">
+							<a
+								href={cli.github}
+								target="_blank"
+								rel="noopener noreferrer"
+								class="inline-flex items-center justify-center size-9 -m-1.5 rounded-md border border-transparent text-foreground-3 hover:text-foreground hover:bg-background-2 hover:border-ui transition-colors"
+								title="GitHub"
+							>
+								<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+									<path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+								</svg>
+							</a>
+							{cli.npm && (
+								<a
+									href={cli.npm}
+									target="_blank"
+									rel="noopener noreferrer"
+									class="inline-flex items-center justify-center size-9 -m-1.5 rounded-md border border-transparent text-foreground-3 hover:text-foreground hover:bg-background-2 hover:border-ui transition-colors"
+									title="npm"
+								>
+									<svg width="14" height="14" viewBox="0 0 256 256" fill="currentColor">
+										<title>npm</title>
+										<polygon points="0 256 0 0 256 0 256 256" />
+										<polygon points="48 48 208 48 208 208 176 208 176 80 128 80 128 208 48 208" fill="var(--color-background)" />
+									</svg>
+								</a>
+							)}
+						</div>
+					</div>
+				))}
+			</div>
+		</section>
+
+		<Footer />
+	</PageLayout>
+</Layout>

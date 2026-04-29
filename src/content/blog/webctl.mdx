@@ -1,0 +1,149 @@
+---
+title: "webctl: reverse-engineer any website into an agent CLI"
+description: "Recon a site once, run it forever with zero LLM tokens at runtime."
+slug: "webctl"
+pubDate: "2026-04-28"
+tags: ["ai", "engineering", "agents", "rust", "cli", "open-source"]
+status: "premiere"
+---
+
+Browser Use, Stagehand, Operator. Every page load, another LLM call to figure out where the search button is.
+
+`webctl` does the opposite. Recon the site once. Emit a deterministic interface. Use it forever, zero tokens at runtime.
+
+Built in Rust. Uses [agent-browser](https://github.com/vercel-labs/agent-browser) during recon. Emits [just-bash](https://github.com/vercel-labs/just-bash) `ExecutorConfig` for sandboxed execution. The output is a JSON IR that compiles to an installable CLI.
+
+{/* SCREENSHOT 1: webctl recon command running in terminal */}
+
+## Why LLM-at-runtime is the wrong default
+
+Each LLM call to navigate a page costs \$0.01 to \$0.10 and takes 2 to 15 seconds. An agent hitting a site 100 times a day burns \$1 to \$10 per site per day, before any actual work.
+
+The bigger problem is variance. Same prompt, same model, same page, succeeds today and fails tomorrow. The reasoning step that decides "this `<a>` is the search link" runs every visit.
+
+That bet is correct for sites that change daily. It is wrong for the sites I actually need agents to use: [SUNAT](https://www.sunat.gob.pe/), [ONPE](https://www.onpe.gob.pe/), [JNE](https://www.jne.gob.pe/), [BCRP](https://www.bcrp.gob.pe/), regional banks, government portals, legacy enterprise. None have official CLIs. None have decent APIs. All change roughly never.
+
+Pre-computing the interface beats inferring it on every call.
+
+## Recon once
+
+The full pipeline:
+
+```bash
+webctl recon https://news.ycombinator.com --auto --yes
+webctl install ./webctl-recon-news-ycombinator-com/news-ycombinator-com.webctl.json
+news-ycombinator-com news --json
+```
+
+`webctl recon` opens Chromium with `--remote-debugging-port=9222`, hands control to `agent-browser`, captures HTTP traffic, classifies the backend archetype, detects repeating content patterns. Output is one JSON file: the IR.
+
+`webctl install` reads the IR and generates a Rust CLI shim (~300KB) into your `PATH`. The shim does not embed an LLM. It does not call inference at runtime. It is a deterministic program: fetch URLs, follow the navigation graph, extract content with the recorded CSS selectors.
+
+If you want to skip the recon step and try the rest, the repo ships pre-generated IRs in [`examples/`](https://github.com/crafter-station/webctl/tree/main/examples):
+
+```bash
+git clone https://github.com/crafter-station/webctl
+cd webctl && cargo build --release
+export PATH="$PWD/target/release:$PATH"
+webctl install ./examples/news-ycombinator-com.webctl.json --dest ~/.local/bin
+news-ycombinator-com news --json | jq '.items[0:3]'
+```
+
+The output:
+
+```json
+[
+  {
+    "index": 1,
+    "fields": {
+      "rank":   { "type": "text", "value": "1." },
+      "title":  { "type": "text", "value": "Ghostty is leaving GitHub" },
+      "url":    { "type": "url",  "value": "https://mitchellh.com/writing/ghostty-leaving-github" },
+      "domain": { "type": "text", "value": "mitchellh.com" }
+    }
+  }
+]
+```
+
+One LLM call during recon. Zero LLM calls during use.
+
+## The IR
+
+The IR is the artifact that matters. JSON. Declarative. Inspectable. Diffable.
+
+```json
+{
+  "meta": {
+    "siteName": "news-ycombinator-com",
+    "displayName": "Hacker News",
+    "irVersion": "0.1.0"
+  },
+  "provenance": {
+    "technique": "http",
+    "classifierBucket": "HttpOnly"
+  },
+  "operations": [
+    {
+      "commandPath": ["news"],
+      "operationKind": "read",
+      "transport": { "kind": "http", "endpointIndex": 2 },
+      "extractor": {
+        "type": "list",
+        "itemPattern": {
+          "strategy": "css",
+          "cssSelector": "tr:has(> td > span > a[href^=\"https://\"])"
+        },
+        "fields": [
+          { "name": "rank",  "selector": ".rank" },
+          { "name": "title", "selector": ".titleline > a" },
+          { "name": "url",   "selector": ".titleline > a", "attr": "href" }
+        ]
+      }
+    }
+  ]
+}
+```
+
+Same IR, multiple surfaces:
+
+- `webctl emit cli <ir>` produces a standalone CLI binary
+- `webctl emit just-bash <ir>` produces a `just-bash` `ExecutorConfig`
+- Future: MCP server, OpenAPI spec, language SDKs
+
+When a site changes, you patch a selector. Not a prompt.
+
+## just-bash as a backend
+
+`just-bash` is Vercel Labs' agent execution layer: bash commands in a sandbox with policy controls. `webctl emit just-bash` produces an `ExecutorConfig` it consumes directly.
+
+`webctl` answers "what does this site expose." `just-bash` answers "how does the agent invoke it safely." Composed: declarative site interface + policy-checked execution. The agent never reasons about the raw web.
+
+Same shape Vercel Labs uses everywhere. Small primitives, composed. `webctl` slots in as the layer that turns "this random website" into a primitive the rest of the stack can consume.
+
+## The classifier
+
+`webctl-classifier` is an 11-feature heuristic. Script tag density, hydration markers, response content types, JS bundle sizes, GraphQL endpoints in traffic.
+
+Output: SPA, server-rendered, REST-backed, GraphQL-backed, hybrid.
+
+Different archetypes need different extraction strategies. SPAs require browser execution. Server-rendered sites take plain HTTP plus selectors. REST-backed apps hit the API directly. The classifier picks the strategy at recon time, writes the right IR, and the downstream emitters stay uniform.
+
+{/* SCREENSHOT 3: IR JSON file shown in editor */}
+
+## What it does not do
+
+`webctl` does not compete with vendor CLIs. `gh`, `stripe`, `vercel`, `aws`, `kubectl`. First-party CLIs win when they exist.
+
+`webctl` targets the long tail. Government tax portals. Civil registries. Regional banks. Legacy enterprise apps. Educational portals. Utilities. The non-glamorous tail where agents actually do real work for real users, especially in LATAM where most systems people use day to day are not on anyone's developer relations roadmap.
+
+Maybe 50 sites in the world have first-party CLIs anyone uses. Millions hold real data, real workflows, real money, and ship nothing but a web UI. Agents that want to operate in production for normal users have to deal with the long tail.
+
+That is what `webctl` is for.
+
+## Status
+
+Early development. Pipeline works end-to-end for public HTML. Auth is minimal: cookie-based login works, complex OAuth does not yet. Field naming uses heuristics. LLM-assisted naming during recon is next, and it stays in recon, not at runtime.
+
+If you are shipping primitives like `agent-browser` and `just-bash`, `webctl` is the kind of thing that gets built on top of you. The IR is the contract. Anything that reads the IR can target any site `webctl` has reconned.
+
+Repo: [github.com/crafter-station/webctl](https://github.com/crafter-station/webctl). Built with Rust, `agent-browser`, `just-bash`. Open to collaborators.
