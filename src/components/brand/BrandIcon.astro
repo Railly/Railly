@@ -1,0 +1,46 @@
+---
+import { type BrandName, brandRegistry } from "./registry";
+
+interface Props {
+	name: BrandName;
+	width?: number;
+	height?: number;
+	class?: string;
+	title?: string;
+}
+
+const { name, width, height, class: className, title } = Astro.props;
+const entry = brandRegistry[name];
+const resolvedWidth = width ?? entry.defaultWidth ?? 16;
+const resolvedHeight = height ?? entry.defaultHeight ?? 16;
+const resolvedTitle = title ?? entry.label;
+---
+
+{
+	entry.kind === "image" ? (
+		<img
+			src={entry.src}
+			alt={resolvedTitle ?? entry.alt}
+			width={resolvedWidth}
+			height={resolvedHeight}
+			class={className}
+		/>
+	) : (
+		<svg
+			width={resolvedWidth}
+			height={resolvedHeight}
+			viewBox={entry.viewBox}
+			fill={entry.fill}
+			xmlns="http://www.w3.org/2000/svg"
+			preserveAspectRatio={entry.preserveAspectRatio}
+			stroke-linejoin={entry.strokeLinejoin}
+			role={resolvedTitle ? "img" : entry.role}
+			aria-label={!resolvedTitle ? entry.ariaLabel : undefined}
+			aria-hidden={resolvedTitle ? undefined : "true"}
+			class={className}
+		>
+			{resolvedTitle && <title>{resolvedTitle}</title>}
+			<Fragment set:html={entry.paths} />
+		</svg>
+	)
+}

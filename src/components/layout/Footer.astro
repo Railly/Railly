@@ -1,6 +1,5 @@
 ---
-import CrafterStationLogo from "@/components/brand/CrafterStationLogo.astro";
-import V0Logo from "@/components/brand/V0Logo.astro";
+import BrandIcon from "../brand/BrandIcon.astro";
 ---
 
 <footer class="pt-8 border-t border-ui/20">
@@ -35,7 +34,7 @@ import V0Logo from "@/components/brand/V0Logo.astro";
 				<span>@railly.dev</span>
 			</a>
 			<a href="https://v0.app/@railly" target="_blank" rel="noopener noreferrer" class="hover:text-foreground transition-colors flex items-center gap-1.5">
-				<V0Logo width={14} height={14} class="text-current" />
+				<BrandIcon name="v0" width={14} height={14} class="text-current" />
 				<span>@railly</span>
 			</a>
 		</div>
@@ -43,7 +42,7 @@ import V0Logo from "@/components/brand/V0Logo.astro";
 		<div class="flex flex-col gap-2">
 			<span class="text-foreground-3/50 uppercase tracking-widest text-[10px]">Projects</span>
 			<a href="https://crafterstation.com" target="_blank" rel="noopener noreferrer" class="hover:text-foreground transition-colors flex items-center gap-1.5">
-				<CrafterStationLogo width={14} height={14} class="text-current" />
+				<BrandIcon name="crafterStation" width={14} height={14} class="text-current" />
 				<span>crafter station</span>
 			</a>
 			<a href="https://research.crafter.ing" target="_blank" rel="noopener noreferrer" class="hover:text-foreground transition-colors flex items-center gap-1.5">

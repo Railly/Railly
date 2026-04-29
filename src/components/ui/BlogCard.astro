@@ -1,7 +1,7 @@
 ---
 import CrafterIcon from "@/assets/svgs/crafter.svg";
 import ViewCounter from "@/components/blog/ViewCounter";
-import ClerkLogo from "@/components/brand/ClerkLogo.astro";
+import BrandIcon from "../brand/BrandIcon.astro";
 import Card from "./Card.astro";
 
 type ColorName =
@@ -129,7 +129,7 @@ const {
                                             />
                                         )}
                                         {tag === "clerk" && (
-                                            <ClerkLogo width={16} height={16} />
+                                            <BrandIcon name="clerk" width={16} height={16} />
                                         )}
                                         {tag === "crafter-station" && (
                                             <CrafterIcon class="size-4" />

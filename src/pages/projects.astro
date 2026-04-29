@@ -1,37 +1,11 @@
 ---
-import Hack0Logo from "@/assets/svgs/h0-logo.svg";
-import Text0Logo from "@/assets/svgs/t0-logo.svg";
-import AgentBrainLogo from "@/components/brand/AgentBrainLogo.astro";
-import AgentfilesLogo from "@/components/brand/AgentfilesLogo.astro";
-import ChessBattleLogo from "@/components/brand/ChessBattleLogo.astro";
-import CligenticLogo from "@/components/brand/CligenticLogo.astro";
-import CodexGlobeLogo from "@/components/brand/CodexGlobeLogo.astro";
-import ElementsLogo from "@/components/brand/ElementsLogo.astro";
-import FlowLogo from "@/components/brand/FlowLogo.astro";
-import GithunterLogo from "@/components/brand/GithunterLogo.astro";
-import HapiCliLogo from "@/components/brand/HapiCliLogo.astro";
-import HypemanLogo from "@/components/brand/HypemanLogo.astro";
-import IAHackLogo from "@/components/brand/IAHackLogo.astro";
-import Latex0Logo from "@/components/brand/Latex0Logo.astro";
-import OneHunterLogo from "@/components/brand/OneHunterLogo.astro";
-import PawboardLogo from "@/components/brand/PawboardLogo.astro";
-import PintelLogo from "@/components/brand/PintelLogo.astro";
-import RoastRouletteLogo from "@/components/brand/RoastRouletteLogo.astro";
-import ScrapiLogo from "@/components/brand/ScrapiLogo.astro";
-import SkillKitLogo from "@/components/brand/SkillKitLogo.astro";
-import SkillsLogo from "@/components/brand/SkillsLogo.astro";
-import SpotiCliLogo from "@/components/brand/SpotiCliLogo.astro";
-import SunatCliLogo from "@/components/brand/SunatCliLogo.astro";
-import TinteLogo from "@/components/brand/TinteLogo.astro";
-import TrxLogo from "@/components/brand/TrxLogo.astro";
-import VoxtypeLogo from "@/components/brand/VoxtypeLogo.astro";
-import ZonesLogo from "@/components/brand/ZonesLogo.astro";
 import Footer from "@/components/layout/Footer.astro";
 import PageLayout from "@/components/layout/PageLayout.astro";
 import SectionHeader from "@/components/layout/SectionHeader.astro";
 import { ogUrl } from "@/config/site";
 import { projects as projectsData } from "@/data/projects";
 import Layout from "@/layouts/Layout.astro";
+import BrandIcon from "../components/brand/BrandIcon.astro";
 
 const ogDescription =
 	"Open source developer tools by Railly Hugo: Tinte, Elements, Agentfiles, trx, and more.";
@@ -62,37 +36,6 @@ const projects = await Promise.all(
 	})),
 );
 projects.sort((a, b) => b.stars - a.stars);
-
-const iconMap = {
-	elements: ElementsLogo,
-	text0: Text0Logo,
-	tinte: TinteLogo,
-	oneHunter: OneHunterLogo,
-	scrapi: ScrapiLogo,
-	hack0: Hack0Logo,
-	agentfiles: AgentfilesLogo,
-	trx: TrxLogo,
-	skillKit: SkillKitLogo,
-	skills: SkillsLogo,
-	iaHack: IAHackLogo,
-	voxtype: VoxtypeLogo,
-	agentBrain: AgentBrainLogo,
-	roastRoulette: RoastRouletteLogo,
-	codexGlobe: CodexGlobeLogo,
-	spotiCli: SpotiCliLogo,
-	zones: ZonesLogo,
-	hypeman: HypemanLogo,
-	sunatCli: SunatCliLogo,
-	hapiCli: HapiCliLogo,
-	cligentic: CligenticLogo,
-	pintel: PintelLogo,
-	chessBattle: ChessBattleLogo,
-	pawboard: PawboardLogo,
-	githunter: GithunterLogo,
-	latex0: Latex0Logo,
-	flow: FlowLogo,
-} as const;
-type IconKey = keyof typeof iconMap;
 ---
 
 <Layout title="Projects - Railly Hugo" description={ogDescription} image={ogImage}>
@@ -111,12 +54,11 @@ type IconKey = keyof typeof iconMap;
 				</thead>
 				<tbody>
 					{projects.map((project) => {
-						const IconComponent = iconMap[project.icon as IconKey];
 						return (
 							<tr class="border-b border-ui transition-colors hover:bg-background-2">
 								<td class="px-3 py-3">
 									<div class="flex items-center gap-2">
-										<span class="flex h-5 w-5 shrink-0 items-center justify-center">{IconComponent && <IconComponent width={16} height={16} class="text-foreground-2" />}</span>
+										<span class="flex h-5 w-5 shrink-0 items-center justify-center"><BrandIcon name={project.icon} width={16} height={16} class="text-foreground-2" /></span>
 										<span class="font-medium text-foreground">{project.name}</span>
 									</div>
 								</td>

@@ -131,12 +131,12 @@ const formatDate = (date: Date) => {
                                         ) : null}
                                     </span>
                                     {isPremiere ? (
-                                        <PremiereCountdown pubDate={post.data.pubDate.toISOString()} client:only="react" />
+                                        <PremiereCountdown pubDate={post.data.pubDate.toISOString()} client:load />
                                     ) : (
                                         <>
                                             <ViewCounter
                                                 slug={post.slug}
-                                                client:only="react"
+                                                client:load
                                                 className="text-xs text-foreground-3 tabular-nums shrink-0"
                                             />
                                             <span class="text-foreground-3 tabular-nums text-sm shrink-0">
