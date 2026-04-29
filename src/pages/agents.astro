@@ -55,7 +55,7 @@ const heroClis: HeroCliEntry[] = [
 		name: "broker-cli",
 		tagline: "Agents touching real money, safely.",
 		description: "Trust ladder, killswitch, MCP, audit log. Production CLI on a brokerage account.",
-		tags: [{ label: "private" }, { label: "MCP server" }, { label: "trust ladder" }],
+		tags: [{ label: "production" }, { label: "MCP server" }, { label: "trust ladder" }],
 		private: true,
 	},
 	{
@@ -117,6 +117,57 @@ const gridClis: GridCliEntry[] = [
 				Tools I'm building for AI agents, not humans.
 			</p>
 		</div>
+
+		<section class="w-full">
+			<div class="mb-4">
+				<SectionHeader title="Contributing to Vercel Labs" className="mb-0" />
+			</div>
+			<div class="space-y-0">
+				{[
+					{
+						repo: "vercel-labs/emulate",
+						pr: 38,
+						state: "merged",
+						title: "Clerk emulator package (OIDC, JWKS, OAuth, Backend API, 55 tests)",
+						note: "co-authored with Chris Tate",
+						url: "https://github.com/vercel-labs/emulate/pull/38",
+					},
+					{
+						repo: "vercel-labs/agent-browser",
+						pr: 1141,
+						state: "open",
+						title: "Policy check now matches CLI parent commands",
+						note: null,
+						url: "https://github.com/vercel-labs/agent-browser/pull/1141",
+					},
+					{
+						repo: "vercel-labs/workflow-builder-template",
+						pr: 76,
+						state: "merged",
+						title: "Clerk integration plugin",
+						note: null,
+						url: "https://github.com/vercel-labs/workflow-builder-template/pull/76",
+					},
+				].map((pr) => (
+					<a
+						href={pr.url}
+						target="_blank"
+						rel="noopener noreferrer"
+						class="group flex items-center gap-3 py-3 border-b border-ui hover:bg-background-2 transition-colors -mx-3 px-3"
+					>
+						<span class="font-mono text-foreground text-sm shrink-0">
+							{pr.repo}<span class="text-foreground-3">#{pr.pr}</span>
+						</span>
+						<span class={`text-xs px-2 py-0.5 rounded border font-mono shrink-0 ${pr.state === "merged" ? "border-ui bg-background-2 text-foreground-2" : "border-ui bg-background text-foreground-3"}`}>
+							{pr.state}
+						</span>
+						<span class="flex-1 text-sm text-foreground-2 hidden sm:block truncate">
+							{pr.title}{pr.note && <span class="text-foreground-3"> ({pr.note})</span>}
+						</span>
+					</a>
+				))}
+			</div>
+		</section>
 
 		<section class="w-full">
 			<div class="mb-4">
