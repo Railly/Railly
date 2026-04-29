@@ -5,6 +5,7 @@ import ViewCounter from "@/components/blog/ViewCounter";
 import Link from "@/components/content/Link.astro";
 import Quote from "@/components/content/Quote.astro";
 import TableOfContents from "@/components/content/TableOfContents.astro";
+import ArrowIcon from "@/components/ui/ArrowIcon.astro";
 import { isPostVisible } from "@/config/blog";
 import { getReadingTime } from "@/config/reading-time";
 import Layout from "@/layouts/Layout.astro";
@@ -221,9 +222,7 @@ const {
                     class="group block p-4 border border-ui rounded-lg hover:border-foreground-3 hover:bg-background-2 transition-all"
                 >
                     <span class="text-xs text-foreground-3 uppercase tracking-wider flex items-center gap-1">
-                        <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" class="rotate-180">
-                            <path d="M4.5 12h15m0 0-5.625-6m5.625 6-5.625 6" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
+                        <ArrowIcon size={12} class="rotate-180" />
                         Previous
                     </span>
                     <h4 class="mt-2 text-sm text-foreground-2 group-hover:text-foreground transition-colors leading-snug line-clamp-2">
@@ -238,9 +237,7 @@ const {
                 >
                     <span class="text-xs text-foreground-3 uppercase tracking-wider flex items-center gap-1 md:justify-end">
                         Next
-                        <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-                            <path d="M4.5 12h15m0 0-5.625-6m5.625 6-5.625 6" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
+                        <ArrowIcon size={12} />
                     </span>
                     <h4 class="mt-2 text-sm text-foreground-2 group-hover:text-foreground transition-colors leading-snug line-clamp-2">
                         {nextPost.data.title}

@@ -9,6 +9,8 @@ import HeroSection from "@/components/layout/HeroSection.astro";
 import PageLayout from "@/components/layout/PageLayout.astro";
 import SectionHeader from "@/components/layout/SectionHeader.astro";
 import NewsletterSection from "@/components/newsletter/NewsletterSection.astro";
+import ListRow from "@/components/ui/ListRow.astro";
+import SectionLink from "@/components/ui/SectionLink.astro";
 import { isPostListable } from "@/config/blog";
 import { ogUrl, siteConfig } from "@/config/site";
 import { achievements } from "@/data/achievements";
@@ -57,54 +59,38 @@ const formatDate = (date: Date) =>
 		<HeroSection name={siteConfig.name} title={siteConfig.hero.title} />
 
 		<section class="w-full">
-			<div class="mb-4 flex items-center justify-between">
-				<SectionHeader title="Projects" className="mb-0" />
-				<a href="/projects" class="group text-xs text-foreground-3 transition-colors duration-200 hover:text-foreground-2">
-					<span class="flex items-center gap-1">
-						<span>view all</span>
-						<svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M4.5 12h15m0 0-5.625-6m5.625 6-5.625 6"></path></svg>
-					</span>
-				</a>
-			</div>
+			<SectionLink title="Projects" href="/projects" />
 			<div class="space-y-0">
 				{featuredProjects.map((project) => <FeaturedProjectRow project={project} />)}
 			</div>
 		</section>
 
 		<section class="w-full">
-			<div class="mb-4 flex items-center justify-between">
-				<SectionHeader title="Writing" className="mb-0" />
-				<a href="/writing" class="group text-xs text-foreground-3 transition-colors duration-200 hover:text-foreground-2">
-					<span class="flex items-center gap-1">
-						<span>view all</span>
-						<svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M4.5 12h15m0 0-5.625-6m5.625 6-5.625 6"></path></svg>
-					</span>
-				</a>
-			</div>
+			<SectionLink title="Writing" href="/writing" />
 			<div class="space-y-0">
 				{years.map((year) => postsByYear[year].map((post, index) => {
 					const isPremiere = post.data.status === "premiere" && new Date() < post.data.pubDate;
 					return isPremiere ? (
-						<div class="group -mx-3 flex items-baseline gap-4 border-b border-ui px-3 py-3 transition-colors cursor-default">
-							<span class="w-12 shrink-0 text-sm tabular-nums text-foreground-3">{index === 0 ? year : ""}</span>
-							<span class="flex-1 text-sm font-medium text-foreground-3">
+						<ListRow hover={false}>
+							<span slot="leading" class="w-12 text-sm tabular-nums text-foreground-3">{index === 0 ? year : ""}</span>
+							<span class="text-sm font-medium text-foreground-3">
 								{post.data.title}
 								<span class="ml-2 rounded border border-ui px-1.5 py-0.5 text-xs font-normal text-foreground-3">Premiere</span>
 							</span>
-							<PremiereCountdown pubDate={post.data.pubDate.toISOString()} client:load />
-						</div>
+							<PremiereCountdown slot="trailing" pubDate={post.data.pubDate.toISOString()} client:load />
+						</ListRow>
 					) : (
-						<a href={`/blog/${post.slug}`} class="group -mx-3 flex items-baseline gap-4 border-b border-ui px-3 py-3 transition-colors hover:bg-background-2">
-							<span class="w-12 shrink-0 text-sm tabular-nums text-foreground-3">{index === 0 ? year : ""}</span>
-							<span class="flex-1 text-sm font-medium text-foreground group-hover:text-foreground">
+						<ListRow href={`/blog/${post.slug}`}>
+							<span slot="leading" class="w-12 text-sm tabular-nums text-foreground-3">{index === 0 ? year : ""}</span>
+							<span class="text-sm font-medium text-foreground group-hover:text-foreground">
 								{post.data.title}
 								{isNewest(post.slug) ? (
 									<span class="ml-2 rounded bg-ui px-1.5 py-0.5 text-xs font-normal text-foreground-2">Newest</span>
 								) : null}
 							</span>
-							<ViewCounter slug={post.slug} client:load className="shrink-0 text-xs tabular-nums text-foreground-3" />
-							<span class="shrink-0 text-sm tabular-nums text-foreground-3">{formatDate(post.data.pubDate)}</span>
-						</a>
+							<ViewCounter slot="trailing" slug={post.slug} client:load className="text-xs tabular-nums text-foreground-3" />
+							<span slot="trailing" class="text-sm tabular-nums text-foreground-3">{formatDate(post.data.pubDate)}</span>
+						</ListRow>
 					);
 				}))}
 				{recentPosts.length === 0 && <div class="py-12 text-center"><p class="text-foreground-2">More stories coming soon</p></div>}

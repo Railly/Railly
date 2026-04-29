@@ -1,6 +1,7 @@
 ---
 import BrandIcon from "../brand/BrandIcon.astro";
 import type { BrandName } from "../brand/registry";
+import ListRow from "../ui/ListRow.astro";
 
 interface Props {
 	project: {
@@ -14,29 +15,10 @@ interface Props {
 const { project } = Astro.props;
 ---
 
-<a
-	href={project.url}
-	target="_blank"
-	rel="noopener noreferrer"
-	class="group -mx-3 flex items-center gap-4 border-b border-ui px-3 py-3 transition-colors hover:bg-background-2"
->
-	<span class="flex h-6 w-6 shrink-0 items-center justify-center">
+<ListRow href={project.url} external={true} showArrow={true}>
+	<span slot="leading" class="flex h-6 w-6 self-center items-center justify-center">
 		<BrandIcon name={project.icon} width={20} height={20} class="text-foreground" />
 	</span>
-	<span class="flex-1 text-sm font-medium text-foreground">{project.name}</span>
-	<span class="hidden text-sm text-foreground-3 sm:block">{project.description}</span>
-	<svg
-		width="14"
-		height="14"
-		fill="none"
-		stroke="currentColor"
-		stroke-width="1.5"
-		viewBox="0 0 24 24"
-		stroke-linecap="round"
-		stroke-linejoin="round"
-		xmlns="http://www.w3.org/2000/svg"
-		class="shrink-0 text-foreground-3 transition-transform group-hover:translate-x-0.5"
-	>
-		<path d="M4.5 12h15m0 0-5.625-6m5.625 6-5.625 6" />
-	</svg>
-</a>
+	<span class="self-center text-sm font-medium text-foreground">{project.name}</span>
+	<span slot="trailing" class="hidden self-center text-sm text-foreground-3 sm:block">{project.description}</span>
+</ListRow>
