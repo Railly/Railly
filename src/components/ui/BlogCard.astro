@@ -1,17 +1,9 @@
 ---
 import CrafterIcon from "@/assets/svgs/crafter.svg";
 import ViewCounter from "@/components/blog/ViewCounter";
+import type { ColorName } from "@/lib/colors";
 import BrandIcon from "../brand/BrandIcon.astro";
 import Card from "./Card.astro";
-
-type ColorName =
-	| "blue"
-	| "teal"
-	| "yellow"
-	| "cyan"
-	| "purple"
-	| "magenta"
-	| "orange";
 
 interface Props {
 	title: string;
