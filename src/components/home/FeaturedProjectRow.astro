@@ -1,14 +1,17 @@
 ---
+import BrandIcon from "../brand/BrandIcon.astro";
+import type { BrandName } from "../brand/registry";
+
 interface Props {
 	project: {
 		name: string;
 		description: string;
 		url: string;
+		icon: BrandName;
 	};
-	IconComponent?: unknown;
 }
 
-const { project, IconComponent } = Astro.props;
+const { project } = Astro.props;
 ---
 
 <a
@@ -18,7 +21,7 @@ const { project, IconComponent } = Astro.props;
 	class="group -mx-3 flex items-center gap-4 border-b border-ui px-3 py-3 transition-colors hover:bg-background-2"
 >
 	<span class="flex h-6 w-6 shrink-0 items-center justify-center">
-		{IconComponent && <IconComponent width={20} height={20} class="text-foreground" />}
+		<BrandIcon name={project.icon} width={20} height={20} class="text-foreground" />
 	</span>
 	<span class="flex-1 text-sm font-medium text-foreground">{project.name}</span>
 	<span class="hidden text-sm text-foreground-3 sm:block">{project.description}</span>

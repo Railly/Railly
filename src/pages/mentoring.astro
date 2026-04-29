@@ -1,10 +1,9 @@
 ---
-import ClerkLogo from "@/components/brand/ClerkLogo.astro";
-import CrafterStationLogo from "@/components/brand/CrafterStationLogo.astro";
 import Footer from "@/components/layout/Footer.astro";
 import PageLayout from "@/components/layout/PageLayout.astro";
 import SectionHeader from "@/components/layout/SectionHeader.astro";
 import Layout from "@/layouts/Layout.astro";
+import BrandIcon from "../components/brand/BrandIcon.astro";
 
 const topics = [
 	{
@@ -184,7 +183,8 @@ const ogImage = `/api/og?title=${encodeURIComponent(ogTitle)}&description=${enco
 					class="text-foreground underline decoration-ui hover:bg-foreground hover:text-background transition-colors"
 					>same three things</a
 				>. I went from Lima with no connections to
-				working remotely at <ClerkLogo
+				working remotely at <BrandIcon
+					name="clerk"
 					width={16}
 					height={16}
 					class="inline-block mb-0.5 align-text-bottom"
@@ -359,7 +359,8 @@ const ogImage = `/api/og?title=${encodeURIComponent(ogTitle)}&description=${enco
 				href="/blog/what-4-developers-asked-me"
 				class="text-foreground underline decoration-ui hover:bg-foreground hover:text-background transition-colors"
 				>full blog post</a
-			> behind these conversations, or join <CrafterStationLogo
+			> behind these conversations, or join <BrandIcon
+				name="crafterStation"
 				width={14}
 				height={14}
 				class="inline-block mb-0.5 mr-0.5 align-text-bottom"

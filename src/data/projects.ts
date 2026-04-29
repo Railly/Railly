@@ -1,31 +1,6 @@
-export type ProjectIcon =
-	| "tinte"
-	| "elements"
-	| "agentfiles"
-	| "oneHunter"
-	| "trx"
-	| "hack0"
-	| "text0"
-	| "scrapi"
-	| "iaHack"
-	| "voxtype"
-	| "agentBrain"
-	| "roastRoulette"
-	| "codexGlobe"
-	| "spotiCli"
-	| "zones"
-	| "hypeman"
-	| "sunatCli"
-	| "hapiCli"
-	| "cligentic"
-	| "skillKit"
-	| "skills"
-	| "pawboard"
-	| "flow"
-	| "githunter"
-	| "chessBattle"
-	| "pintel"
-	| "latex0";
+import type { BrandName } from "../components/brand/registry";
+
+export type ProjectIcon = BrandName;
 
 export interface Project {
 	slug: string;

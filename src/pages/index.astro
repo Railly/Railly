@@ -1,15 +1,7 @@
 ---
 import { getCollection } from "astro:content";
-import Hack0Logo from "@/assets/svgs/h0-logo.svg";
-import Text0Logo from "@/assets/svgs/t0-logo.svg";
 import PremiereCountdown from "@/components/blog/PremiereCountdown";
 import ViewCounter from "@/components/blog/ViewCounter";
-import AgentfilesLogo from "@/components/brand/AgentfilesLogo.astro";
-import ElementsLogo from "@/components/brand/ElementsLogo.astro";
-import OneHunterLogo from "@/components/brand/OneHunterLogo.astro";
-import ScrapiLogo from "@/components/brand/ScrapiLogo.astro";
-import TinteLogo from "@/components/brand/TinteLogo.astro";
-import TrxLogo from "@/components/brand/TrxLogo.astro";
 import AchievementRow from "@/components/home/AchievementRow.astro";
 import FeaturedProjectRow from "@/components/home/FeaturedProjectRow.astro";
 import Footer from "@/components/layout/Footer.astro";
@@ -54,17 +46,6 @@ const newestPost = activePosts[0];
 const isNewest = (slug: string) => slug === newestPost?.slug;
 const formatDate = (date: Date) =>
 	`${date.getDate().toString().padStart(2, "0")}/${(date.getMonth() + 1).toString().padStart(2, "0")}`;
-const iconMap = {
-	elements: ElementsLogo,
-	text0: Text0Logo,
-	tinte: TinteLogo,
-	oneHunter: OneHunterLogo,
-	scrapi: ScrapiLogo,
-	hack0: Hack0Logo,
-	agentfiles: AgentfilesLogo,
-	trx: TrxLogo,
-} as const;
-type IconKey = keyof typeof iconMap;
 ---
 
 <Layout
@@ -86,7 +67,7 @@ type IconKey = keyof typeof iconMap;
 				</a>
 			</div>
 			<div class="space-y-0">
-				{featuredProjects.map((project) => <FeaturedProjectRow project={project} IconComponent={iconMap[project.icon as IconKey]} />)}
+				{featuredProjects.map((project) => <FeaturedProjectRow project={project} />)}
 			</div>
 		</section>
 
@@ -103,27 +84,27 @@ type IconKey = keyof typeof iconMap;
 			<div class="space-y-0">
 				{years.map((year) => postsByYear[year].map((post, index) => {
 					const isPremiere = post.data.status === "premiere" && new Date() < post.data.pubDate;
-					const Element = isPremiere ? "div" : "a";
-					return (
-						<Element {...(!isPremiere ? { href: `/blog/${post.slug}` } : {})} class:list={["group -mx-3 flex items-baseline gap-4 border-b border-ui px-3 py-3 transition-colors", isPremiere ? "cursor-default" : "hover:bg-background-2"]}>
+					return isPremiere ? (
+						<div class="group -mx-3 flex items-baseline gap-4 border-b border-ui px-3 py-3 transition-colors cursor-default">
 							<span class="w-12 shrink-0 text-sm tabular-nums text-foreground-3">{index === 0 ? year : ""}</span>
-							<span class:list={["flex-1 text-sm font-medium", isPremiere ? "text-foreground-3" : "text-foreground group-hover:text-foreground"]}>
+							<span class="flex-1 text-sm font-medium text-foreground-3">
 								{post.data.title}
-								{isPremiere ? (
-									<span class="ml-2 rounded border border-ui px-1.5 py-0.5 text-xs font-normal text-foreground-3">Premiere</span>
-								) : isNewest(post.slug) ? (
+								<span class="ml-2 rounded border border-ui px-1.5 py-0.5 text-xs font-normal text-foreground-3">Premiere</span>
+							</span>
+							<PremiereCountdown pubDate={post.data.pubDate.toISOString()} client:load />
+						</div>
+					) : (
+						<a href={`/blog/${post.slug}`} class="group -mx-3 flex items-baseline gap-4 border-b border-ui px-3 py-3 transition-colors hover:bg-background-2">
+							<span class="w-12 shrink-0 text-sm tabular-nums text-foreground-3">{index === 0 ? year : ""}</span>
+							<span class="flex-1 text-sm font-medium text-foreground group-hover:text-foreground">
+								{post.data.title}
+								{isNewest(post.slug) ? (
 									<span class="ml-2 rounded bg-ui px-1.5 py-0.5 text-xs font-normal text-foreground-2">Newest</span>
 								) : null}
 							</span>
-							{isPremiere ? (
-								<PremiereCountdown pubDate={post.data.pubDate.toISOString()} client:only="react" />
-							) : (
-								<>
-									<ViewCounter slug={post.slug} client:only="react" className="shrink-0 text-xs tabular-nums text-foreground-3" />
-									<span class="shrink-0 text-sm tabular-nums text-foreground-3">{formatDate(post.data.pubDate)}</span>
-								</>
-							)}
-						</Element>
+							<ViewCounter slug={post.slug} client:load className="shrink-0 text-xs tabular-nums text-foreground-3" />
+							<span class="shrink-0 text-sm tabular-nums text-foreground-3">{formatDate(post.data.pubDate)}</span>
+						</a>
 					);
 				}))}
 				{recentPosts.length === 0 && <div class="py-12 text-center"><p class="text-foreground-2">More stories coming soon</p></div>}

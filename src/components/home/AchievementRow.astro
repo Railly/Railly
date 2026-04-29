@@ -1,9 +1,5 @@
 ---
-import BrazilFlag from "../brand/BrazilFlag.astro";
-import ChileFlag from "../brand/ChileFlag.astro";
-import ColombiaFlag from "../brand/ColombiaFlag.astro";
-import GlobeIcon from "../brand/GlobeIcon.astro";
-import PeruFlag from "../brand/PeruFlag.astro";
+import Flag from "../brand/Flag.astro";
 
 interface Props {
 	item: {
@@ -55,10 +51,10 @@ const { item, showYear } = Astro.props;
 		) : null}
 	</span>
 	<span class="shrink-0">
-		{item.scope === "global" && <GlobeIcon width={16} height={16} class="text-foreground-2" />}
-		{item.scope === "pe" && <PeruFlag width={16} height={16} />}
-		{item.scope === "cl" && <ChileFlag width={16} height={16} />}
-		{item.scope === "co" && <ColombiaFlag width={16} height={16} />}
-		{item.scope === "br" && <BrazilFlag width={16} height={16} />}
+		{item.scope === "global" && <Flag country="globe" width={16} height={16} class="text-foreground-2" />}
+		{item.scope === "pe" && <Flag country="pe" width={16} height={16} />}
+		{item.scope === "cl" && <Flag country="cl" width={16} height={16} />}
+		{item.scope === "co" && <Flag country="co" width={16} height={16} />}
+		{item.scope === "br" && <Flag country="br" width={16} height={16} />}
 	</span>
 </div>
