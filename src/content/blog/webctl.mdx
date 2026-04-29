@@ -39,13 +39,12 @@ news-ycombinator-com news --json
 
 `webctl install` reads the IR and generates a Rust CLI shim (~300KB) into your `PATH`. The shim does not embed an LLM. It does not call inference at runtime. It is a deterministic program: fetch URLs, follow the navigation graph, extract content with the recorded CSS selectors.
 
-If you want to skip the recon step and try the rest, the repo ships pre-generated IRs in [`examples/`](https://github.com/crafter-station/webctl/tree/main/examples):
+If you want to skip the recon step and try the rest, the repo ships pre-generated IRs in [`examples/`](https://github.com/crafter-station/webctl/tree/main/examples). Four lines, no Chromium needed:
 
 ```bash
-git clone https://github.com/crafter-station/webctl
-cd webctl && cargo build --release
-export PATH="$PWD/target/release:$PATH"
-webctl install ./examples/news-ycombinator-com.webctl.json --dest ~/.local/bin
+cargo install --git https://github.com/crafter-station/webctl webctl
+curl -O https://raw.githubusercontent.com/crafter-station/webctl/main/examples/news-ycombinator-com.webctl.json
+webctl install ./news-ycombinator-com.webctl.json --dest ~/.cargo/bin
 news-ycombinator-com news --json | jq '.items[0:3]'
 ```
 
