@@ -1,7 +1,6 @@
 ---
 import { getCollection } from "astro:content";
 import PremiereCountdown from "@/components/blog/PremiereCountdown";
-import ViewCounter from "@/components/blog/ViewCounter";
 import Footer from "@/components/layout/Footer.astro";
 import PageLayout from "@/components/layout/PageLayout.astro";
 import SectionHeader from "@/components/layout/SectionHeader.astro";
@@ -134,11 +133,10 @@ const formatDate = (date: Date) => {
                                         <PremiereCountdown pubDate={post.data.pubDate.toISOString()} client:load />
                                     ) : (
                                         <>
-                                            <ViewCounter
-                                                slug={post.slug}
-                                                client:load
-                                                className="text-xs text-foreground-3 tabular-nums shrink-0"
-                                            />
+                                            <span
+                                                data-views-slug={post.slug}
+                                                class="text-xs text-foreground-3 tabular-nums shrink-0"
+                                            ></span>
                                             <span class="text-foreground-3 tabular-nums text-sm shrink-0">
                                                 {formatDate(post.data.pubDate)}
                                             </span>
@@ -218,4 +216,24 @@ const formatDate = (date: Date) => {
     }
 
     customElements.define('archive-toggle', ArchiveToggle);
+</script>
+
+<script>
+    const spans = document.querySelectorAll<HTMLElement>("[data-views-slug]");
+    const slugs = [...spans].map((s) => s.dataset.viewsSlug).filter(Boolean) as string[];
+    const isLocal = ["localhost", "127.0.0.1"].includes(location.hostname);
+    if (slugs.length > 0 && !isLocal) {
+        fetch(`/api/views-batch?ids=${slugs.slice(0, 100).join(",")}`)
+            .then((r) => (r.ok ? r.json() : null))
+            .then((data) => {
+                if (!data?.views) return;
+                for (const span of spans) {
+                    const slug = span.dataset.viewsSlug;
+                    if (!slug) continue;
+                    const n = data.views[slug] ?? 0;
+                    span.textContent = `${n.toLocaleString()} ${n === 1 ? "view" : "views"}`;
+                }
+            })
+            .catch(() => {});
+    }
 </script>

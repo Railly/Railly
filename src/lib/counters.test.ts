@@ -39,6 +39,21 @@ describe("isValidSlug", () => {
 	});
 });
 
+describe("isValidSlug — batch list validation", () => {
+	it("every() returns true for a list of valid slugs", () => {
+		expect("a,b,c".split(",").every(isValidSlug)).toBe(true);
+	});
+
+	it("every() returns false when list contains an invalid slug", () => {
+		expect(["valid-slug", "BAD SLUG"].every(isValidSlug)).toBe(false);
+	});
+
+	it("empty string split with filter(Boolean) produces empty array", () => {
+		const ids = "".split(",").filter(Boolean);
+		expect(ids.length).toBe(0);
+	});
+});
+
 describe("parseIncrement", () => {
 	it('("1", 50) → 1', () => {
 		expect(parseIncrement("1", 50)).toBe(1);
