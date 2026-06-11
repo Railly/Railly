@@ -426,11 +426,19 @@ export default function DraftComments({ draftId }: { draftId: string }) {
 		});
 		const data = await res.json();
 		if (data.ok) {
-			setComments((prev) => [...prev, data.comment]);
+			if (data.comment.ownerToken) {
+				const tokens = JSON.parse(
+					localStorage.getItem("draft-comment-tokens") || "{}",
+				);
+				tokens[data.comment.id] = data.comment.ownerToken;
+				localStorage.setItem("draft-comment-tokens", JSON.stringify(tokens));
+			}
+			const { ownerToken: _ownerToken, ...comment } = data.comment;
+			setComments((prev) => [...prev, comment]);
 			setPendingPos(null);
 			setPendingText("");
 			setPendingQuote("");
-			if (data.comment.quote) setActiveComment(data.comment.id);
+			if (comment.quote) setActiveComment(comment.id);
 		}
 	};
 
@@ -471,10 +479,15 @@ export default function DraftComments({ draftId }: { draftId: string }) {
 	};
 
 	const deleteComment = async (commentId: string) => {
+		const tokens = JSON.parse(
+			localStorage.getItem("draft-comment-tokens") || "{}",
+		);
+		const ownerToken = tokens[commentId];
+		if (!ownerToken) return;
 		await fetch("/api/comments", {
 			method: "DELETE",
 			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify({ draftId, commentId, name: name.trim() }),
+			body: JSON.stringify({ draftId, commentId, ownerToken }),
 		});
 		setComments((prev) => prev.filter((c) => c.id !== commentId));
 		setActiveComment(null);

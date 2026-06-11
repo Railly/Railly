@@ -1,5 +1,10 @@
 import { createClient } from "@vercel/kv";
 import type { APIRoute } from "astro";
+import {
+	cleanCoordinates,
+	cleanString,
+	LIMITS,
+} from "@/lib/comment-validation";
 import { httpError, json } from "@/lib/http";
 
 export const prerender = false;
@@ -21,6 +26,7 @@ interface Comment {
 	timestamp: number;
 	resolved: boolean;
 	replies?: Reply[];
+	ownerToken?: string;
 }
 
 function getKv() {
@@ -40,15 +46,29 @@ export const GET: APIRoute = async ({ url }) => {
 
 	const kv = getKv();
 	const comments = (await kv.get<Comment[]>(`draft-comments:${draftId}`)) ?? [];
-	return json({ draftId, comments });
+	const safe = comments.map(({ ownerToken: _ownerToken, ...rest }) => rest);
+	return json({ draftId, comments: safe });
 };
 
 export const POST: APIRoute = async ({ request }) => {
-	const body = await request.json();
-	const { draftId, name, text, quote, x, y } = body;
+	const body = await request.json().catch(() => null);
+	if (!body) return httpError("Invalid JSON", "INVALID_JSON", 400);
 
-	if (!draftId || !name || !text || x == null || y == null) {
-		return httpError("Missing fields", "MISSING_FIELDS", 400);
+	const { draftId } = body;
+	if (!draftId) return httpError("Missing fields", "MISSING_FIELDS", 400);
+
+	const name = cleanString(body.name, LIMITS.name);
+	const text = cleanString(body.text, LIMITS.text);
+	const coords = cleanCoordinates(body.x, body.y);
+
+	if (!name || !text || !coords) {
+		return httpError("Invalid fields", "INVALID_FIELDS", 400);
+	}
+
+	const quote =
+		body.quote != null ? cleanString(body.quote, LIMITS.quote) : undefined;
+	if (body.quote != null && quote === null) {
+		return httpError("Invalid fields", "INVALID_FIELDS", 400);
 	}
 
 	if (import.meta.env.DEV) {
@@ -58,10 +78,11 @@ export const POST: APIRoute = async ({ request }) => {
 				id: "dev",
 				name,
 				text,
-				x,
-				y,
+				x: coords.x,
+				y: coords.y,
 				timestamp: Date.now(),
 				resolved: false,
+				ownerToken: crypto.randomUUID(),
 			},
 		});
 	}
@@ -70,15 +91,20 @@ export const POST: APIRoute = async ({ request }) => {
 	const key = `draft-comments:${draftId}`;
 	const comments = (await kv.get<Comment[]>(key)) ?? [];
 
+	if (comments.length >= LIMITS.maxCommentsPerDraft) {
+		return httpError("Comment limit reached", "LIMIT_REACHED", 429);
+	}
+
 	const comment: Comment = {
 		id: crypto.randomUUID().slice(0, 8),
 		name,
 		text,
 		...(quote ? { quote } : {}),
-		x,
-		y,
+		x: coords.x,
+		y: coords.y,
 		timestamp: Date.now(),
 		resolved: false,
+		ownerToken: crypto.randomUUID(),
 	};
 
 	comments.push(comment);
@@ -88,8 +114,10 @@ export const POST: APIRoute = async ({ request }) => {
 };
 
 export const PATCH: APIRoute = async ({ request }) => {
-	const body = await request.json();
-	const { draftId, commentId, action, name, text } = body;
+	const body = await request.json().catch(() => null);
+	if (!body) return httpError("Invalid JSON", "INVALID_JSON", 400);
+
+	const { draftId, commentId, action } = body;
 
 	if (!draftId || !commentId || !action) {
 		return httpError("Missing fields", "MISSING_FIELDS", 400);
@@ -107,25 +135,33 @@ export const PATCH: APIRoute = async ({ request }) => {
 
 	if (action === "resolve") {
 		comments[idx].resolved = !comments[idx].resolved;
-	} else if (action === "reply" && name && text) {
-		if (!comments[idx].replies) comments[idx].replies = [];
-		comments[idx].replies!.push({
-			id: crypto.randomUUID().slice(0, 8),
-			name,
-			text,
-			timestamp: Date.now(),
-		});
+	} else if (action === "reply") {
+		const replyName = cleanString(body.name, LIMITS.name);
+		const replyText = cleanString(body.text, LIMITS.text);
+		if (replyName && replyText) {
+			if (!comments[idx].replies) comments[idx].replies = [];
+			comments[idx].replies!.push({
+				id: crypto.randomUUID().slice(0, 8),
+				name: replyName,
+				text: replyText,
+				timestamp: Date.now(),
+			});
+		}
 	}
 
 	await kv.set(key, comments);
-	return json({ ok: true, comment: comments[idx] });
+	const { ownerToken: _ownerToken, ...safeComment } = comments[idx];
+	return json({ ok: true, comment: safeComment });
 };
 
 export const DELETE: APIRoute = async ({ request }) => {
-	const body = await request.json();
-	const { draftId, commentId, name } = body;
+	const body = await request.json().catch(() => null);
+	if (!body) return httpError("Invalid JSON", "INVALID_JSON", 400);
 
-	if (!draftId || !commentId || !name) {
+	const { draftId, commentId } = body;
+	const ownerToken = cleanString(body.ownerToken, 64);
+
+	if (!draftId || !commentId || !ownerToken) {
 		return httpError("Missing fields", "MISSING_FIELDS", 400);
 	}
 
@@ -136,7 +172,9 @@ export const DELETE: APIRoute = async ({ request }) => {
 	const kv = getKv();
 	const key = `draft-comments:${draftId}`;
 	const comments = (await kv.get<Comment[]>(key)) ?? [];
-	const idx = comments.findIndex((c) => c.id === commentId && c.name === name);
+	const idx = comments.findIndex(
+		(c) => c.id === commentId && c.ownerToken && c.ownerToken === ownerToken,
+	);
 	if (idx === -1) {
 		return httpError("Not found or not yours", "NOT_FOUND_OR_NOT_YOURS", 404);
 	}
