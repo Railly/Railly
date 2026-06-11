@@ -36,11 +36,8 @@ export type BrandName =
 	| "chessBattle"
 	| "pintel"
 	| "latex0"
-	| "asciiSphere"
 	| "aiHackPeru"
-	| "platanusHack"
-	| "gradual"
-	| "peruFinancia";
+	| "platanusHack";
 
 export type FlagName = "pe" | "cl" | "co" | "br" | "globe";
 
@@ -345,14 +342,6 @@ export const brandRegistry: Record<BrandName, BrandEntry> = {
 		paths:
 			'<rect width="32" height="32" rx="6" fill="#0a0a0a"/>\n    <text x="16" y="22" text-anchor="middle" font-family="\'Times New Roman\', serif" font-size="16" fill="#fafafa">L<tspan font-size="11" dy="-2">A</tspan><tspan font-size="16" dy="2">0</tspan></text>',
 	},
-	asciiSphere: {
-		kind: "svg",
-		viewBox: "0 0 24 24",
-		fill: "none",
-		label: "ASCII Sphere",
-		paths:
-			'<circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5" />\n<path d="M7 9.5h10M6 12h12M7 14.5h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />\n<path d="M12 3c2.5 2.5 4 5.6 4 9s-1.5 6.5-4 9c-2.5-2.5-4-5.6-4-9s1.5-6.5 4-9Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" />',
-	},
 	aiHackPeru: {
 		kind: "image",
 		src: "/images/ai-hackathon-peru-logo.png",
@@ -364,23 +353,6 @@ export const brandRegistry: Record<BrandName, BrandEntry> = {
 		src: "/images/platanus-hack-logo.ico",
 		alt: "Platanus Hack",
 		label: "Platanus Hack",
-	},
-	gradual: {
-		kind: "svg",
-		viewBox: "0 0 690 690",
-		fill: "none",
-		paths:
-			'<circle\n        cx="345"\n        cy="345"\n        r="344.5"\n        fill="url(#paint0_radial_1_39)"\n        stroke="black"></circle>\n    <path\n        d="M383.607 34.5302L383.639 34.0313L383.607 34.5302C421.921 36.9981 457.362 48.7688 490.97 66.9889C516.613 80.8907 539.813 98.0013 560.329 118.657C580.856 139.323 606.975 170.423 625.443 211.35L625.446 211.358L625.45 211.365C640.485 241.953 649.402 274.419 653.361 308.154C656.093 331.446 655.976 354.834 653.868 378.282C651.074 409.366 643.338 439.135 630.995 467.632C624.07 483.619 615.387 498.807 605.756 513.441C591.512 535.084 574.984 554.761 556.177 572.538C536.105 591.511 513.477 606.873 488.989 619.58C488.101 620.041 487.212 620.501 486.313 620.967C484.372 621.973 482.381 623.005 480.239 624.121C452.057 637.868 422.744 646.848 392.136 651.293C373.895 653.942 355.503 655.467 337.033 655.645C335.373 655.661 334.125 655.469 333.29 654.896C332.5 654.353 331.979 653.392 331.968 651.581C331.949 648.591 331.904 645.603 331.859 642.619C331.592 624.829 331.326 607.155 336.637 589.8C341.735 573.141 350.89 558.882 361.425 545.288C370.938 533.013 382.028 522.204 393.147 511.367C394.085 510.453 395.024 509.538 395.961 508.622C411.314 493.629 425.376 477.553 433.982 457.465C448.297 424.05 446.154 392.042 423.906 362.685C410.828 345.429 393.297 334.031 372.487 327.578C367.401 326.001 362.28 324.568 357.166 323.138C344.67 319.642 332.217 316.159 320.411 310.6C300.513 301.231 283.125 289.018 274.362 268.167C264.367 244.383 267.649 221.184 280.445 199.201C289.129 184.283 301.325 172.217 314.048 160.674C329.655 146.514 344.649 131.697 355.653 113.516C369.451 90.7202 379.694 66.5342 379.019 39.0477C378.971 37.0731 379.261 35.9446 379.894 35.3107C380.521 34.6827 381.626 34.4026 383.607 34.5302Z"\n        fill="url(#paint1_radial_1_39)"\n        stroke="#3AA99F"></path>\n    <defs>\n        <radialGradient\n            id="paint0_radial_1_39"\n            cx="0"\n            cy="0"\n            r="1"\n            gradientUnits="userSpaceOnUse"\n            gradientTransform="translate(125.741 130.687) rotate(65.4052) scale(621.877)"\n        >\n            <stop stop-color="#5ABDAC"></stop>\n            <stop offset="1" stop-color="#24837B"></stop>\n        </radialGradient>\n        <radialGradient\n            id="paint1_radial_1_39"\n            cx="0"\n            cy="0"\n            r="1"\n            gradientUnits="userSpaceOnUse"\n            gradientTransform="translate(302.398 428.645) rotate(-99.7651) scale(170.482 191.795)"\n        >\n            <stop stop-color="#ADADAD"></stop>\n            <stop offset="1" stop-color="#FFFBEF"></stop>\n        </radialGradient>\n    </defs>',
-		defaultWidth: 20,
-		defaultHeight: 20,
-	},
-	peruFinancia: {
-		kind: "svg",
-		viewBox: "0 0 32 32",
-		fill: "none",
-		label: "peru-financia",
-		paths:
-			'<rect width="32" height="32" rx="4.8" fill="#0a0a0a"/>\n\t<rect x="0" y="0" width="32" height="1.92" rx="0.96" fill="#c084fc" opacity="0.8"/>\n\t<text x="16" y="23" text-anchor="middle" font-family="system-ui, sans-serif" font-size="17.6" font-weight="800" fill="#c084fc">F</text>',
 	},
 };
 
