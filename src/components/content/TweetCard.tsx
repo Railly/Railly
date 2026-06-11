@@ -255,7 +255,12 @@ const TweetNotFound = () => (
 );
 
 const MagicTweet = ({ tweet }: { tweet: Tweet }) => {
-	const enrichedTweet = enrichTweet(tweet);
+	let enrichedTweet: EnrichedTweet;
+	try {
+		enrichedTweet = enrichTweet(tweet);
+	} catch {
+		return <TweetNotFound />;
+	}
 
 	return (
 		<div className="not-prose my-6 w-full overflow-hidden rounded-xl border border-[var(--color-ui)]/20 bg-[var(--color-background-2)] transition-colors hover:border-[var(--color-ui)]/40">
@@ -272,7 +277,6 @@ export const TweetCard = async ({
 	components,
 	fallback = <TweetSkeleton />,
 	onError,
-	...props
 }: TweetProps & { className?: string }) => {
 	const tweet = id
 		? await getTweet(id).catch((err) => {
@@ -283,7 +287,7 @@ export const TweetCard = async ({
 
 	if (!tweet) {
 		const NotFound = components?.TweetNotFound || TweetNotFound;
-		return <NotFound {...props} />;
+		return <NotFound />;
 	}
 
 	return (
