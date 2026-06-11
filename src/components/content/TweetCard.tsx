@@ -1,10 +1,5 @@
 import { Suspense } from "react";
-import {
-	type EnrichedTweet,
-	enrichTweet,
-	type TweetProps,
-	type TwitterComponents,
-} from "react-tweet";
+import { type EnrichedTweet, enrichTweet, type TweetProps } from "react-tweet";
 import { getTweet, type Tweet } from "react-tweet/api";
 
 interface ExtendedTweetUser {

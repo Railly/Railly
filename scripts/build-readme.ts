@@ -45,11 +45,13 @@ async function fetchPosts(): Promise<Post[]> {
 
 	const items: Post[] = [];
 	const itemRegex = /<item>([\s\S]*?)<\/item>/g;
-	const titleRegex = /<title><!\[CDATA\[(.*?)\]\]><\/title>|<title>(.*?)<\/title>/;
+	const titleRegex =
+		/<title><!\[CDATA\[(.*?)\]\]><\/title>|<title>(.*?)<\/title>/;
 	const linkRegex = /<link>(.*?)<\/link>/;
 	const dateRegex = /<pubDate>(.*?)<\/pubDate>/;
 
 	let match: RegExpExecArray | null;
+	// biome-ignore lint/suspicious/noAssignInExpressions: standard regex exec loop pattern
 	while ((match = itemRegex.exec(xml)) !== null) {
 		const block = match[1];
 		const t = block.match(titleRegex);
@@ -89,7 +91,9 @@ function formatDate(d: Date): string {
 
 function renderPosts(posts: Post[]): string {
 	if (posts.length === 0) return "_No posts yet._";
-	return posts.map((p) => `- [${p.title}](${p.link}) — ${formatDate(p.pubDate)}`).join("\n");
+	return posts
+		.map((p) => `- [${p.title}](${p.link}) — ${formatDate(p.pubDate)}`)
+		.join("\n");
 }
 
 function replaceBlock(

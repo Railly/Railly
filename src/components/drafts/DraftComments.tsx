@@ -36,11 +36,6 @@ const COLORS = [
 	"#7C66DC",
 ];
 
-const BADGE_BG = "var(--color-ui, #262626)";
-const BADGE_BG_40 =
-	"color-mix(in oklch, var(--color-ui, #262626) 40%, transparent)";
-const BADGE_BORDER = "var(--color-ui, #262626)";
-const BADGE_TEXT = "var(--color-foreground-3, #525252)";
 const HIGHLIGHT_COLOR =
 	"color-mix(in oklch, var(--color-ui, #262626) 50%, transparent)";
 

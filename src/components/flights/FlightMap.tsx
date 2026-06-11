@@ -225,7 +225,6 @@ export default function FlightMap({ flights }: FlightMapProps) {
 
 						const isActive =
 							hoveredCity === cityKey || selectedCity === cityKey;
-						const flight = flights.find((f) => f.to === cityKey);
 
 						return (
 							<motion.g

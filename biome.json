@@ -33,8 +33,8 @@
 				"useButtonType": "off"
 			},
 			"correctness": {
-				"noUnusedVariables": "off",
-				"noUnusedImports": "off",
+				"noUnusedVariables": "error",
+				"noUnusedImports": "error",
 				"noUnusedFunctionParameters": "off"
 			}
 		}

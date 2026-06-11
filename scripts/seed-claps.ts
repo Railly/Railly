@@ -32,7 +32,9 @@ for (const [slug, viewCount] of Object.entries(views)) {
 	const seedClaps = Math.max(1, Math.floor(Number(viewCount) * rate));
 
 	await kv.hset("claps", { [slug]: seedClaps });
-	console.log(`  seed ${slug}: ${viewCount} views -> ${seedClaps} claps (${(rate * 100).toFixed(1)}%)`);
+	console.log(
+		`  seed ${slug}: ${viewCount} views -> ${seedClaps} claps (${(rate * 100).toFixed(1)}%)`,
+	);
 	seeded++;
 }
 
