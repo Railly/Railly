@@ -1,14 +1,14 @@
 import type { APIRoute } from "astro";
 import { Resend } from "resend";
+import { isAuthorized } from "@/lib/auth";
 import { httpError, json } from "@/lib/http";
 
 export const prerender = false;
 
 export const POST: APIRoute = async ({ request }) => {
 	const auth = request.headers.get("Authorization");
-	const secret = import.meta.env.NEWSLETTER_API_SECRET;
 
-	if (!auth || auth !== `Bearer ${secret}`) {
+	if (!isAuthorized(auth, import.meta.env.NEWSLETTER_API_SECRET)) {
 		return httpError("Unauthorized", "UNAUTHORIZED", 401);
 	}
 
