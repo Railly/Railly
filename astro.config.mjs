@@ -18,7 +18,6 @@ export default defineConfig({
 	vite: {
 		plugins: [tailwindcss()],
 		ssr: {
-			external: ["@takumi-rs/image-response"],
 			noExternal: ["react-tweet"],
 		},
 	},
@@ -57,5 +56,4 @@ export default defineConfig({
 			enabled: true,
 		},
 	}),
-	serverExternalPackages: ["@takumi-rs/core", "@takumi-rs/image-response"],
 });
