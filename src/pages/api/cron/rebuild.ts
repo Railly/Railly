@@ -1,11 +1,12 @@
 import type { APIRoute } from "astro";
+import { isAuthorized } from "@/lib/auth";
 import { httpError, json } from "@/lib/http";
 
 export const prerender = false;
 
 export const GET: APIRoute = async ({ request }) => {
 	const authHeader = request.headers.get("authorization");
-	if (authHeader !== `Bearer ${import.meta.env.CRON_SECRET}`) {
+	if (!isAuthorized(authHeader, import.meta.env.CRON_SECRET)) {
 		return new Response("Unauthorized", { status: 401 });
 	}
 
