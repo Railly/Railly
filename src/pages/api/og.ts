@@ -2,6 +2,7 @@ import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { ImageResponse } from "@vercel/og";
 import type { APIRoute } from "astro";
+import type { ReactElement } from "react";
 
 export const prerender = false;
 
@@ -217,7 +218,7 @@ export const GET: APIRoute = async ({ url }) => {
 					},
 				],
 			},
-		},
+		} as unknown as ReactElement<unknown>,
 		{
 			width: 1200,
 			height: 630,

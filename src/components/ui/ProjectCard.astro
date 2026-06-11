@@ -12,7 +12,7 @@ interface Props {
 	isImage?: boolean;
 	imageSrc?: string;
 	imageAlt?: string;
-	iconPadding?: string;
+	iconPadding?: "p-2.5" | "p-3";
 }
 
 const {
@@ -23,7 +23,7 @@ const {
 	isImage = false,
 	imageSrc,
 	imageAlt,
-	iconPadding = "p-4",
+	iconPadding = "p-3",
 } = Astro.props;
 ---
 

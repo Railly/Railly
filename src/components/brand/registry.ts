@@ -53,8 +53,8 @@ interface SvgEntry extends BaseEntry {
 	paths: string;
 	fill?: string;
 	preserveAspectRatio?: string;
-	strokeLinejoin?: string;
-	role?: string;
+	strokeLinejoin?: "inherit" | "round" | "miter" | "bevel";
+	role?: "img" | "presentation" | "none";
 	ariaLabel?: string;
 }
 

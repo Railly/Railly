@@ -1,5 +1,5 @@
 ---
-import EmbedContainer from "@/content/EmbedContainer.astro";
+import EmbedContainer from "@/components/content/EmbedContainer.astro";
 import type { ColorName } from "@/lib/colors";
 import Card from "./Card.astro";
 
@@ -36,7 +36,10 @@ const {
 } = Astro.props;
 
 // Host mapping for logos and SVGs
-const hostMap = {
+const hostMap: Record<
+	string,
+	{ name: string; svgPath?: string; logo?: string }
+> = {
 	vercel: {
 		name: "Vercel",
 		svgPath: "M37.5274 0L75.0548 65H0L37.5274 0Z",

@@ -153,7 +153,7 @@ const {
 
   // Handle iframe creation when embed is expanded
   // This will be called by the custom element in AchievementCard.astro
-  window.addEventListener('achievement-expanded', (event: CustomEvent) => {
+  window.addEventListener('achievement-expanded', ((event: CustomEvent) => {
     const embedId = event.detail.embedId;
     const container = document.getElementById(embedId) as EmbedContainer;
 
@@ -165,5 +165,5 @@ const {
         createIframe(container);
       }
     }
-  });
+  }) as EventListener);
 </script>
