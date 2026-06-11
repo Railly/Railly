@@ -1,5 +1,6 @@
 import { createClient } from "@vercel/kv";
 import type { APIRoute } from "astro";
+import { isValidSlug, parseIncrement } from "@/lib/counters";
 import { httpError, json } from "@/lib/http";
 
 export const prerender = false;
@@ -10,6 +11,18 @@ export const GET: APIRoute = async ({ url }) => {
 
 	if (!id) {
 		return httpError('Missing "id" query', "MISSING_ID", 400);
+	}
+
+	if (!isValidSlug(id)) {
+		return httpError('Invalid "id"', "INVALID_ID", 400);
+	}
+
+	let increment: number | null = null;
+	if (incr != null) {
+		increment = parseIncrement(incr, 1);
+		if (increment == null) {
+			return httpError('Invalid "incr"', "INVALID_INCR", 400);
+		}
 	}
 
 	if (import.meta.env.DEV) {
@@ -28,8 +41,8 @@ export const GET: APIRoute = async ({ url }) => {
 
 		let views: number;
 
-		if (incr) {
-			views = await kv.hincrby("views", id, Number(incr));
+		if (increment != null) {
+			views = await kv.hincrby("views", id, increment);
 		} else {
 			const result = await kv.hget("views", id);
 			views = result ? Number(result) : 0;
