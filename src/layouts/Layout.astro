@@ -1,6 +1,7 @@
 ---
 import { ClientRouter } from "astro:transitions";
 import AnnouncementBanner from "@/components/layout/AnnouncementBanner.astro";
+import BackgroundDither from "@/components/layout/BackgroundDither.astro";
 import Favicons from "@/components/seo/Favicons.astro";
 import MetaTags from "@/components/seo/MetaTags.astro";
 import StructuredData from "@/components/seo/StructuredData.astro";
@@ -68,6 +69,7 @@ const socialImageURL = new URL(image, siteConfig.url);
 		<script defer src="https://counterscale.raillyhugo.workers.dev/tracker.js" data-site-id="railly-dev"></script>
 	</head>
 	<body class="min-h-screen bg-background text-foreground selection:text-primary selection:bg-background-2">
+		<BackgroundDither />
 		<slot />
 	</body>
 </html>

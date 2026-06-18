@@ -10,12 +10,12 @@ interface OgUrlOptions {
 export const siteConfig: SiteConfig = {
 	name: "Railly Hugo",
 	description:
-		"AI Software Engineer at Clerk and Founder of Crafter Station. Building open-source developer tools, winning hackathons, and growing Peru's tech ecosystem from Lima.",
+		"Software Engineer at Clerk and Founder of Crafter Station. Starting a path into AI research, building civic-tech tools, and growing LATAM's tech ecosystem.",
 	url: "https://www.railly.dev",
 	ogImage: "https://www.railly.dev/images/og.webp",
 	hero: {
 		title: "Hunter",
-		role: "AI Software Engineer",
+		role: "Software Engineer",
 		location: "Lima, Peru",
 	},
 	author: "Railly Hugo",
@@ -27,12 +27,13 @@ export const siteConfig: SiteConfig = {
 	},
 	keywords: [
 		"Railly Hugo",
-		"AI Software Engineer",
-		"Crafter Station",
+		"Software Engineer",
 		"Clerk",
+		"Crafter Station",
+		"AI research",
+		"civic tech",
 		"open source",
 		"developer tools",
-		"hackathon winner",
 		"TypeScript",
 		"Next.js",
 		"React",

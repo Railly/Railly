@@ -8,9 +8,9 @@
 @plugin "@tailwindcss/typography";
 
 @theme {
-    --font-sans: "IBM Plex Sans", "sans-serif";
-    --font-serif: "IBM Plex Serif", "serif";
-    --font-mono: "IBM Plex Mono", "monospace";
+    --font-sans: "Geist Sans", "IBM Plex Sans", "sans-serif";
+    --font-serif: "Redaction", "IBM Plex Serif", "serif";
+    --font-mono: "Commit Mono", "IBM Plex Mono", "monospace";
 
     --breakpoint-mobile: 40rem;
 

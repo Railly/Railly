@@ -1,0 +1,202 @@
+---
+// Ambient pattern-dither texture.
+// A one-bit cross-stitch halftone driven by slow flow noise, rendered into a
+// fixed full-viewport canvas behind all content. Ultra subtle: low density,
+// ~5% opacity, tinted-neutral ink that respects light/dark and reduced motion.
+---
+
+<canvas id="bg-dither" aria-hidden="true"></canvas>
+
+<style>
+	#bg-dither {
+		position: fixed;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		z-index: -1;
+		pointer-events: none;
+		/* light mode: mid-grey ink on near-white needs more presence */
+		opacity: 0.09;
+	}
+	@media (prefers-color-scheme: dark) {
+		#bg-dither {
+			/* dark mode: light ink on black reads stronger, dial it back a bit */
+			opacity: 0.07;
+		}
+	}
+	@media (prefers-reduced-motion: reduce) {
+		/* still rendered, just not animated (handled in script) */
+	}
+</style>
+
+<script>
+	type Ctx = CanvasRenderingContext2D;
+
+	// --- Self-contained 2D value noise (zero deps) -------------------------
+	// Hash-based gradient-ish noise; cheap and smooth enough for a flow field.
+	function makeNoise(seed: number) {
+		const perm = new Uint8Array(512);
+		const p = new Uint8Array(256);
+		for (let i = 0; i < 256; i++) p[i] = i;
+		// deterministic shuffle from seed
+		let s = seed >>> 0;
+		const rnd = () => {
+			s = (s * 1664525 + 1013904223) >>> 0;
+			return s / 4294967296;
+		};
+		for (let i = 255; i > 0; i--) {
+			const j = (rnd() * (i + 1)) | 0;
+			const t = p[i];
+			p[i] = p[j];
+			p[j] = t;
+		}
+		for (let i = 0; i < 512; i++) perm[i] = p[i & 255];
+
+		const fade = (t: number) => t * t * t * (t * (t * 6 - 15) + 10);
+		const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
+		const grad = (h: number, x: number, y: number) => {
+			const u = h & 1 ? -x : x;
+			const v = h & 2 ? -y : y;
+			return u + v;
+		};
+
+		return (x: number, y: number) => {
+			const X = Math.floor(x) & 255;
+			const Y = Math.floor(y) & 255;
+			const xf = x - Math.floor(x);
+			const yf = y - Math.floor(y);
+			const u = fade(xf);
+			const v = fade(yf);
+			const aa = perm[perm[X] + Y];
+			const ab = perm[perm[X] + Y + 1];
+			const ba = perm[perm[X + 1] + Y];
+			const bb = perm[perm[X + 1] + Y + 1];
+			const x1 = lerp(grad(aa, xf, yf), grad(ba, xf - 1, yf), u);
+			const x2 = lerp(grad(ab, xf, yf - 1), grad(bb, xf - 1, yf - 1), u);
+			// map roughly to 0..1
+			return (lerp(x1, x2, v) + 1) * 0.5;
+		};
+	}
+
+	// --- Glyph ramp: low luminance -> denser glyph -------------------------
+	// Sparse on purpose; many cells render nothing (the negative space).
+	const GLYPHS = ["", "", "", "·", "·", "+", "◇", "✕"];
+
+	function inkColor(): string {
+		// Read the tinted-neutral token so the ink feels chosen, not washed.
+		const root = getComputedStyle(document.documentElement);
+		const v = root.getPropertyValue("--color-foreground-2").trim();
+		return v || "#525252";
+	}
+
+	function init() {
+		const canvas = document.getElementById("bg-dither") as HTMLCanvasElement | null;
+		if (!canvas) return;
+		const ctx = canvas.getContext("2d", { alpha: true }) as Ctx | null;
+		if (!ctx) return;
+
+		const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+		const noise = makeNoise(1337);
+
+		const CELL = 20; // px per glyph cell — bigger = sparser, cheaper
+		let cols = 0;
+		let rows = 0;
+		let dpr = 1;
+		let ink = inkColor();
+
+		function resize() {
+			dpr = Math.min(window.devicePixelRatio || 1, 2);
+			const w = window.innerWidth;
+			const h = window.innerHeight;
+			canvas.width = Math.floor(w * dpr);
+			canvas.height = Math.floor(h * dpr);
+			canvas.style.width = `${w}px`;
+			canvas.style.height = `${h}px`;
+			ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+			cols = Math.ceil(w / CELL);
+			rows = Math.ceil(h / CELL);
+			ctx.font = `${CELL}px "IBM Plex Mono", ui-monospace, monospace`;
+			ctx.textBaseline = "middle";
+			ctx.textAlign = "center";
+			ink = inkColor();
+		}
+
+		function draw(t: number) {
+			const w = canvas.width / dpr;
+			const h = canvas.height / dpr;
+			ctx.clearRect(0, 0, w, h);
+			ctx.fillStyle = ink;
+
+			// flow: scale controls feature size, time offsets the field slowly
+			const scale = 0.045;
+			const fx = t * 0.000045; // horizontal drift
+			const fy = t * 0.000028; // vertical drift, slightly different = breathing
+
+			for (let r = 0; r < rows; r++) {
+				for (let c = 0; c < cols; c++) {
+					const n = noise(c * scale + fx, r * scale + fy);
+					// mild sparsity bias — keeps negative space without thinning too far
+					const lum = n * n;
+					const idx = Math.min(GLYPHS.length - 1, (lum * GLYPHS.length) | 0);
+					const g = GLYPHS[idx];
+					if (!g) continue;
+					ctx.fillText(g, c * CELL + CELL / 2, r * CELL + CELL / 2);
+				}
+			}
+		}
+
+		resize();
+
+		if (reduce) {
+			draw(0);
+			window.addEventListener("resize", () => {
+				resize();
+				draw(0);
+			});
+			return;
+		}
+
+		let raf = 0;
+		let last = 0;
+		const FRAME_MS = 1000 / 24; // throttle: 24fps is plenty for a slow drift
+		function loop(now: number) {
+			raf = requestAnimationFrame(loop);
+			if (now - last < FRAME_MS) return;
+			last = now;
+			draw(now);
+		}
+
+		// pause when tab hidden — no point burning battery in the background
+		document.addEventListener("visibilitychange", () => {
+			if (document.hidden) {
+				cancelAnimationFrame(raf);
+			} else {
+				last = 0;
+				raf = requestAnimationFrame(loop);
+			}
+		});
+
+		// re-read ink token when the system theme flips (prefers-color-scheme)
+		window
+			.matchMedia("(prefers-color-scheme: dark)")
+			.addEventListener("change", () => {
+				ink = inkColor();
+			});
+
+		let resizeT = 0;
+		window.addEventListener("resize", () => {
+			window.clearTimeout(resizeT);
+			resizeT = window.setTimeout(resize, 150);
+		});
+
+		raf = requestAnimationFrame(loop);
+	}
+
+	// Run now + on Astro client-side navigations (ClientRouter swaps body).
+	if (document.readyState === "loading") {
+		document.addEventListener("DOMContentLoaded", init);
+	} else {
+		init();
+	}
+	document.addEventListener("astro:after-swap", init);
+</script>

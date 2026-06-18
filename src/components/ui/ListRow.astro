@@ -6,10 +6,18 @@ interface Props {
 	external?: boolean;
 	hover?: boolean;
 	showArrow?: boolean;
+	divided?: boolean;
 }
 
-const { href, external = false, hover = true, showArrow = false } = Astro.props;
+const {
+	href,
+	external = false,
+	hover = true,
+	showArrow = false,
+	divided = true,
+} = Astro.props;
 const Component = href ? "a" : "div";
+const hasLeading = Astro.slots.has("leading");
 ---
 
 <Component
@@ -17,13 +25,16 @@ const Component = href ? "a" : "div";
 	target={external ? "_blank" : undefined}
 	rel={external ? "noopener noreferrer" : undefined}
 	class:list={[
-		"group -mx-3 flex items-baseline gap-4 border-b border-ui px-3 py-3 transition-colors",
+		"group -mx-3 flex items-baseline gap-4 px-3 py-3 transition-colors",
+		divided && "border-b border-ui",
 		hover && "hover:bg-background-2",
 	]}
 >
-	<div class="shrink-0">
-		<slot name="leading" />
-	</div>
+	{hasLeading && (
+		<div class="shrink-0">
+			<slot name="leading" />
+		</div>
+	)}
 	<div class="min-w-0 flex-1">
 		<slot />
 	</div>

@@ -12,18 +12,14 @@ interface Props {
 		projectUrl?: string;
 		scope: "global" | "pe" | "cl" | "co" | "br";
 	};
-	showYear: boolean;
 }
 
-const { item, showYear } = Astro.props;
+const { item } = Astro.props;
 ---
 
-<ListRow>
-	<span slot="leading" class="w-12 text-sm tabular-nums text-foreground-3">
-		{showYear ? item.year : ""}
-	</span>
+<ListRow divided={false}>
 	<div class="flex items-baseline gap-4 text-sm">
-		<span class="w-36 shrink-0 font-medium text-foreground">{item.achievement}</span>
+		<span class="w-44 shrink-0 font-medium text-foreground">{item.achievement}</span>
 		<span class="min-w-0 flex-1">
 			{item.eventUrl ? (
 				<a

@@ -16,11 +16,12 @@ import { ogUrl, siteConfig } from "@/config/site";
 import { achievements } from "@/data/achievements";
 import { featuredProjects } from "@/data/projects";
 import Layout from "@/layouts/Layout.astro";
+import { withRepoStars } from "@/lib/github-stars";
 
 const ogImage = ogUrl({
 	title: "Railly Hugo",
 	description:
-		"AI Software Engineer at Clerk, Founder of Crafter Station. Lima, Peru.",
+		"Software Engineer at Clerk, Founder of Crafter Station. Lima, Peru.",
 });
 
 const allPosts = await getCollection("blog", ({ data }) =>
@@ -48,11 +49,30 @@ const newestPost = activePosts[0];
 const isNewest = (slug: string) => slug === newestPost?.slug;
 const formatDate = (date: Date) =>
 	`${date.getDate().toString().padStart(2, "0")}/${(date.getMonth() + 1).toString().padStart(2, "0")}`;
+
+const achievementsByYear = achievements.reduce(
+	(acc, item) => {
+		if (!acc[item.year]) {
+			acc[item.year] = [];
+		}
+		acc[item.year].push(item);
+		return acc;
+	},
+	{} as Record<string, typeof achievements>,
+);
+const achievementYears = Object.keys(achievementsByYear).sort(
+	(a, b) => Number(b) - Number(a),
+);
+
+const rankedProjects = (await withRepoStars(featuredProjects)).sort(
+	(a, b) => b.stars - a.stars,
+);
+const maxStars = Math.max(...rankedProjects.map((p) => p.stars), 1);
 ---
 
 <Layout
-	title="Railly Hugo - AI Software Engineer | Crafter Station Founder"
-	description="AI Software Engineer at Clerk and Founder of Crafter Station. Building open-source developer tools, winning hackathons, and growing Peru's tech ecosystem from Lima."
+	title="Railly Hugo - Software Engineer at Clerk | Crafter Station Founder"
+	description="Software Engineer at Clerk and Founder of Crafter Station. Starting a path into AI research, building civic-tech tools, and growing LATAM's tech ecosystem."
 	image={ogImage}
 >
 	<PageLayout class="flex flex-col gap-10">
@@ -61,38 +81,44 @@ const formatDate = (date: Date) =>
 		<section class="w-full">
 			<SectionLink title="Projects" href="/projects" />
 			<div class="space-y-0">
-				{featuredProjects.map((project) => <FeaturedProjectRow project={project} />)}
+				{rankedProjects.map((project) => <FeaturedProjectRow project={project} maxStars={maxStars} />)}
 			</div>
 		</section>
 
 		<section class="w-full">
 			<SectionLink title="Writing" href="/writing" />
 			<div class="space-y-0">
-				{years.map((year) => postsByYear[year].map((post, index) => {
-					const isPremiere = post.data.status === "premiere" && new Date() < post.data.pubDate;
-					return isPremiere ? (
-						<ListRow hover={false}>
-							<span slot="leading" class="w-12 text-sm tabular-nums text-foreground-3">{index === 0 ? year : ""}</span>
-							<span class="text-sm font-medium text-foreground-3">
-								{post.data.title}
-								<span class="ml-2 rounded border border-ui px-1.5 py-0.5 text-xs font-normal text-foreground-3">Premiere</span>
-							</span>
-							<PremiereCountdown slot="trailing" pubDate={post.data.pubDate.toISOString()} client:load />
-						</ListRow>
-					) : (
-						<ListRow href={`/blog/${post.slug}`}>
-							<span slot="leading" class="w-12 text-sm tabular-nums text-foreground-3">{index === 0 ? year : ""}</span>
-							<span class="text-sm font-medium text-foreground group-hover:text-foreground">
-								{post.data.title}
-								{isNewest(post.slug) ? (
-									<span class="ml-2 rounded bg-ui px-1.5 py-0.5 text-xs font-normal text-foreground-2">Newest</span>
-								) : null}
-							</span>
-							<ViewCounter slot="trailing" slug={post.slug} client:load className="text-xs tabular-nums text-foreground-3" />
-							<span slot="trailing" class="text-sm tabular-nums text-foreground-3">{formatDate(post.data.pubDate)}</span>
-						</ListRow>
-					);
-				}))}
+				{years.map((year) => (
+					<div class="mt-6 first:mt-2">
+						<div class="mb-1 flex items-center gap-3">
+							<span class="font-mono text-xs tabular-nums tracking-wider text-foreground-3">{year}</span>
+							<span class="h-px flex-1 bg-ui"></span>
+						</div>
+						{postsByYear[year].map((post) => {
+							const isPremiere = post.data.status === "premiere" && new Date() < post.data.pubDate;
+							return isPremiere ? (
+								<ListRow hover={false} divided={false}>
+									<span class="text-sm font-medium text-foreground-3">
+										{post.data.title}
+										<span class="ml-2 rounded border border-ui px-1.5 py-0.5 text-xs font-normal text-foreground-3">Premiere</span>
+									</span>
+									<PremiereCountdown slot="trailing" pubDate={post.data.pubDate.toISOString()} client:load />
+								</ListRow>
+							) : (
+								<ListRow href={`/blog/${post.slug}`} divided={false}>
+									<span class="text-sm font-medium text-foreground group-hover:text-foreground">
+										{post.data.title}
+										{isNewest(post.slug) ? (
+											<span class="ml-2 rounded bg-ui px-1.5 py-0.5 text-xs font-normal text-foreground-2">Newest</span>
+										) : null}
+									</span>
+									<ViewCounter slot="trailing" slug={post.slug} client:load className="text-xs tabular-nums text-foreground-3" />
+									<span slot="trailing" class="text-sm tabular-nums text-foreground-3">{formatDate(post.data.pubDate)}</span>
+								</ListRow>
+							);
+						})}
+					</div>
+				))}
 				{recentPosts.length === 0 && <div class="py-12 text-center"><p class="text-foreground-2">More stories coming soon</p></div>}
 			</div>
 		</section>
@@ -102,7 +128,15 @@ const formatDate = (date: Date) =>
 				<SectionHeader title="Achievements" className="mb-0" />
 			</div>
 			<div class="space-y-0">
-				{achievements.map((item, index) => <AchievementRow item={item} showYear={item.year !== achievements[index - 1]?.year} />)}
+				{achievementYears.map((year) => (
+					<div class="mt-6 first:mt-2">
+						<div class="mb-1 flex items-center gap-3">
+							<span class="font-mono text-xs tabular-nums tracking-wider text-foreground-3">{year}</span>
+							<span class="h-px flex-1 bg-ui"></span>
+						</div>
+						{achievementsByYear[year].map((item) => <AchievementRow item={item} />)}
+					</div>
+				))}
 			</div>
 		</section>
 

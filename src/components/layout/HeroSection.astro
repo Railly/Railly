@@ -11,27 +11,41 @@ const { name, title } = Astro.props;
 
 const linkClass =
 	"text-foreground font-medium underline decoration-ui hover:bg-foreground hover:text-background transition-colors";
+
+// Roles cycled by the rotating subtitle. First entry is the static fallback
+// (also what renders if JS is off or reduced-motion is on).
+const roles = ["Hunter", "Software Engineer", "AI Researcher", "Founder"];
 ---
 
-<header class="flex gap-2 items-center justify-start w-full">
-    <img
-        src="/favicon/favicon-32x32.png"
-        alt="Railly Hugo favicon"
-        class="size-5"
-    />
+<header class="hero-reveal flex gap-2 items-center justify-start w-full" style="--reveal-delay: 0ms">
+    <span class="relative flex size-5 shrink-0">
+        <img
+            src="/favicon/favicon-32x32.png"
+            alt="Railly Hugo"
+            class="size-5 rounded-full"
+        />
+        <span class="absolute -bottom-0.5 -right-0.5 flex size-2">
+            <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-500 opacity-75 motion-reduce:hidden"></span>
+            <span class="relative inline-flex size-2 rounded-full bg-green-500 ring-2 ring-background"></span>
+        </span>
+    </span>
     <h1 class="text-lg tracking-tight font-medium text-foreground">
         {name}
     </h1>
     <span class="text-sm text-foreground-2"> ~ </span>
-    <span class="text-base font-serif text-foreground-2 font-light">
+    <span
+        id="hero-role"
+        class="text-base font-serif text-foreground-2 font-light whitespace-nowrap"
+        data-roles={JSON.stringify(roles)}
+    >
         {title}
     </span>
     <Flag country="pe" />
 </header>
 
 <section class="flex flex-col gap-2">
-    <p class="text-base text-foreground-2 !m-0">
-        I'm an <i>AI software engineer</i> at <BrandIcon
+    <p class="hero-reveal text-base text-foreground-2 !m-0" style="--reveal-delay: 90ms">
+        I'm a <i>software engineer</i> at <BrandIcon
             name="clerk"
             width={16}
             height={16}
@@ -52,8 +66,12 @@ const linkClass =
         >.
     </p>
 
-    <p class="text-base text-foreground-2 !m-0">
-        I teach Parallel Computing at <BrandIcon
+    <p class="hero-reveal text-base text-foreground-2 !m-0" style="--reveal-delay: 180ms">
+        Starting my path into <i>AI research</i> at <a
+            href="https://github.com/crafter-research"
+            target="_blank"
+            class={linkClass}>Crafter Research</a
+        >, building civic-tech tools for LATAM. I also teach at <BrandIcon
             name="unmsm"
             width={16}
             height={16}
@@ -62,29 +80,11 @@ const linkClass =
             href="https://unmsm.edu.pe"
             target="_blank"
             class={linkClass}>UNMSM</a
-        > and build platforms with <BrandIcon
-            name="midudev"
-            width={18}
-            height={16}
-            class="inline-block mb-0.5 mr-0.5 align-text-bottom"
-        /><a
-            href="https://midu.dev"
-            target="_blank"
-            class={linkClass}>Midudev</a
-        >, the leading Hispanic tech streamer.
+        >.
     </p>
 
-    <p class="text-base text-foreground-2 !m-0">
-        Winner of the <BrandIcon
-            name="nextjs"
-            width={16}
-            height={16}
-            class="inline-block mb-0.5 mr-0.5 align-text-bottom"
-        /><a
-            href="https://luma.com/vsi4m4l8"
-            target="_blank"
-            class={linkClass}>Next.js Global Hackathon 2025</a
-        >. Find my work on <BrandIcon
+    <p class="hero-reveal text-base text-foreground-2 !m-0" style="--reveal-delay: 270ms">
+        Find my work on <BrandIcon
             name="github"
             width={14}
             height={14}
@@ -109,7 +109,7 @@ const linkClass =
         >.
     </p>
 
-    <div class="flex flex-wrap gap-2 mt-3">
+    <div class="hero-reveal flex flex-wrap gap-2 mt-3" style="--reveal-delay: 360ms">
         <a
             href="https://openai.com/codex/"
             target="_blank"
@@ -145,3 +145,86 @@ const linkClass =
         </a>
     </div>
 </section>
+
+<style>
+    /* Staggered entrance — reuses the site's blur-scale language */
+    @keyframes hero-reveal-in {
+        from {
+            opacity: 0;
+            filter: blur(6px);
+            transform: translateY(6px);
+        }
+        to {
+            opacity: 1;
+            filter: blur(0);
+            transform: translateY(0);
+        }
+    }
+
+    .hero-reveal {
+        opacity: 0;
+        animation: hero-reveal-in 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        animation-delay: var(--reveal-delay, 0ms);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .hero-reveal {
+            opacity: 1;
+            animation: none;
+        }
+    }
+
+    /* Rotating role: blur-swap each word */
+    @keyframes role-swap-in {
+        from {
+            opacity: 0;
+            filter: blur(4px);
+        }
+        to {
+            opacity: 1;
+            filter: blur(0);
+        }
+    }
+
+    #hero-role.is-swapping {
+        animation: role-swap-in 0.4s ease-out;
+    }
+</style>
+
+<script>
+    function startRoleRotation() {
+        const el = document.getElementById("hero-role");
+        if (!el) return;
+
+        const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        if (reduce) return;
+
+        let roles: string[] = [];
+        try {
+            roles = JSON.parse(el.dataset.roles ?? "[]");
+        } catch {
+            return;
+        }
+        if (roles.length < 2) return;
+
+        let i = 0;
+        const tick = () => {
+            i = (i + 1) % roles.length;
+            el.classList.remove("is-swapping");
+            // reflow so the animation restarts
+            void el.offsetWidth;
+            el.textContent = roles[i];
+            el.classList.add("is-swapping");
+        };
+
+        // Start after the entrance settles
+        window.setInterval(tick, 2600);
+    }
+
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", startRoleRotation);
+    } else {
+        startRoleRotation();
+    }
+    document.addEventListener("astro:after-swap", startRoleRotation);
+</script>

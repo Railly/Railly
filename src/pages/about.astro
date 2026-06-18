@@ -1,265 +1,204 @@
 ---
+import BrandIcon from "@/components/brand/BrandIcon.astro";
+import type { BrandName } from "@/components/brand/registry";
 import Footer from "@/components/layout/Footer.astro";
 import PageLayout from "@/components/layout/PageLayout.astro";
 import SectionHeader from "@/components/layout/SectionHeader.astro";
 import Layout from "@/layouts/Layout.astro";
-import BrandIcon from "../components/brand/BrandIcon.astro";
 
 const ogTitle = "About";
 const ogDescription =
-	"AI Software Engineer at Clerk, founder of Crafter Station, and hackathon winner. Based in Lima, Peru.";
+	"Software Engineer at Clerk, founder of Crafter Station, starting a path into AI research. Based in Lima, Peru.";
 const ogImage = `/api/og?title=${encodeURIComponent(ogTitle)}&description=${encodeURIComponent(ogDescription)}&tag=about`;
+
+const linkClass =
+	"text-foreground underline decoration-ui hover:bg-foreground hover:text-background transition-colors";
+
+interface Milestone {
+	year: string;
+	title: string;
+	detail: string;
+	icon?: BrandName;
+	url?: string;
+}
+
+// Newest first — the timeline reads top-down from now into the past.
+const milestones: Milestone[] = [
+	{
+		year: "2026",
+		title: "Started a path into AI research",
+		detail:
+			"Civic-tech tools and LATAM-focused research at Crafter Research, alongside Shara Arauzo.",
+		url: "https://github.com/crafter-research",
+	},
+	{
+		year: "2025",
+		title: "Joined Clerk",
+		detail:
+			"AI software engineer — CLI tooling, LLM evaluations, and developer experience for the AI era.",
+		icon: "clerk",
+		url: "https://clerk.com",
+	},
+	{
+		year: "2025",
+		title: "Won three international hackathons",
+		detail:
+			"The first-ever Next.js Global Hackathon, the Vercel AI Gateway Hackathon, and Platanus Hack 25 in Chile.",
+		icon: "nextjs",
+		url: "https://luma.com/vsi4m4l8",
+	},
+	{
+		year: "2025",
+		title: "Master's in Artificial Intelligence",
+		detail: "Completed at UNIR Mexico.",
+		url: "https://mexico.unir.net",
+	},
+	{
+		year: "2024-26",
+		title: "Built platforms with Midudev",
+		detail:
+			"Video pipelines, high-traffic event sites, and AI integrations for the leading Hispanic tech streamer.",
+		icon: "midudev",
+		url: "https://midu.dev",
+	},
+	{
+		year: "2023",
+		title: "Founded Crafter Station",
+		detail:
+			"A non-profit building Peru's tech ecosystem — now 600+ members, the AI Hackathon Perú, Code Brews, and Ship or Sink weekends.",
+		icon: "crafterStation",
+		url: "https://github.com/crafter-station",
+	},
+	{
+		year: "2023",
+		title: "Graduated in Software Engineering",
+		detail: "From UNMSM, Peru's oldest university — where I now teach.",
+		icon: "unmsm",
+		url: "https://unmsm.edu.pe",
+	},
+];
+
+// Group consecutive milestones under one year header so the year
+// isn't repeated row to row.
+const milestonesByYear = milestones.reduce(
+	(acc, m) => {
+		const last = acc[acc.length - 1];
+		if (last && last.year === m.year) {
+			last.items.push(m);
+		} else {
+			acc.push({ year: m.year, items: [m] });
+		}
+		return acc;
+	},
+	[] as { year: string; items: Milestone[] }[],
+);
 ---
 
 <Layout
-    title="About Railly Hugo - AI Software Engineer from Lima, Peru"
-    description={ogDescription}
-    image={ogImage}
+	title="About Railly Hugo - Software Engineer at Clerk"
+	description={ogDescription}
+	image={ogImage}
 >
-    <PageLayout class="flex flex-col gap-8">
-        <SectionHeader title="About" />
-        <div class="prose prose-theme max-w-none">
-            <p class="text-foreground-2 leading-relaxed">
-                I'm a software engineer at <BrandIcon
-                    name="clerk"
-                    width={16}
-                    height={16}
-                    class="inline-block mb-0.5 align-text-bottom"
-                /><a
-                    href="https://clerk.com"
-                    target="_blank"
-                    class="text-foreground underline decoration-ui hover:bg-foreground hover:text-background transition-colors"
-                    >Clerk</a
-                > and founder of <BrandIcon
-                    name="crafterStation"
-                    width={16}
-                    height={16}
-                    class="inline-block mb-0.5 mr-0.5 align-text-bottom"
-                /><a
-                    href="https://github.com/crafter-station"
-                    target="_blank"
-                    class="text-foreground underline decoration-ui hover:bg-foreground hover:text-background transition-colors"
-                    >Crafter Station</a
-                >.
-            </p>
-            <p class="text-foreground-2 leading-relaxed">
-                I was born and raised in Lima, Peru, where I still live today.
-            </p>
-            <p class="text-foreground-2 leading-relaxed">
-                I studied Software Engineering at <BrandIcon
-                    name="unmsm"
-                    width={16}
-                    height={16}
-                    class="inline-block !my-0 !ml-0 mr-0.5 align-text-bottom rounded-sm"
-                /><a
-                    href="https://unmsm.edu.pe"
-                    target="_blank"
-                    class="text-foreground underline decoration-ui hover:bg-foreground hover:text-background transition-colors"
-                    >UNMSM</a
-                >, graduating in 2023, and completed a Master's in Artificial
-                Intelligence at <a
-                    href="https://mexico.unir.net"
-                    target="_blank"
-                    class="text-foreground underline decoration-ui hover:bg-foreground hover:text-background transition-colors"
-                    >UNIR Mexico</a
-                > in 2025.
-            </p>
-            <p class="text-foreground-2 leading-relaxed">
-                In 2023, I founded <BrandIcon
-                    name="crafterStation"
-                    width={16}
-                    height={16}
-                    class="inline-block mb-0.5 mr-0.5 align-text-bottom"
-                /><a
-                    href="https://github.com/crafter-station"
-                    target="_blank"
-                    class="text-foreground underline decoration-ui hover:bg-foreground hover:text-background transition-colors"
-                    >Crafter Station</a
-                >, a non-profit building Peru's tech ecosystem. We've hosted the <BrandIcon
-                    name="aiHackPeru"
-                    width={16}
-                    height={16}
-                    class="inline-block !my-0 !ml-0 mr-1 align-middle rounded-sm"
-                /><a
-                    href="https://peru.ai-hackathon.co"
-                    target="_blank"
-                    class="text-foreground underline decoration-ui hover:bg-foreground hover:text-background transition-colors"
-                    >AI Hackathon Perú</a
-                > (the biggest AI hackathon in Peru), Code Brews, and Ship or Sink
-                weekends. The community now has 250+ members.
-            </p>
-            <p class="text-foreground-2 leading-relaxed">
-                I've won multiple international hackathons, including the
-                first-ever <BrandIcon
-                    name="nextjs"
-                    width={16}
-                    height={16}
-                    class="inline-block mb-0.5 mr-0.5 align-text-bottom"
-                /><a
-                    href="https://luma.com/vsi4m4l8"
-                    target="_blank"
-                    class="text-foreground underline decoration-ui hover:bg-foreground hover:text-background transition-colors"
-                    >Next.js Global Hackathon</a
-                > (2025) with Anthony Cueva, and the <BrandIcon
-                    name="vercel"
-                    width={16}
-                    height={16}
-                    class="inline-block mb-0.5 mr-0.5 align-text-bottom"
-                /><a
-                    href="https://vercel.com/i/ai-gateway-hackathon"
-                    target="_blank"
-                    class="text-foreground underline decoration-ui hover:bg-foreground hover:text-background transition-colors"
-                    >Vercel AI Gateway Hackathon</a
-                > (2025) with Crafter Station. We also won the online edition of <BrandIcon
-                    name="platanusHack"
-                    width={16}
-                    height={16}
-                    class="inline-block !my-0 !ml-0 mr-0.5 align-middle rounded-sm"
-                /><a
-                    href="https://25.hack.platan.us"
-                    target="_blank"
-                    class="text-foreground underline decoration-ui hover:bg-foreground hover:text-background transition-colors"
-                    >Platanus Hack 25</a
-                > in Chile (2025) with <BrandIcon
-                    name="scrapi"
-                    width={16}
-                    height={16}
-                    class="inline-block !my-0 !ml-0 mr-0.5 align-middle rounded-sm"
-                /><a
-                    href="https://www.scrapi.fast"
-                    target="_blank"
-                    class="text-foreground underline decoration-ui hover:bg-foreground hover:text-background transition-colors"
-                    >Scrapi</a
-                >.
-            </p>
-            <p class="text-foreground-2 leading-relaxed">
-                In October 2025, I joined <BrandIcon
-                    name="clerk"
-                    width={16}
-                    height={16}
-                    class="inline-block mb-0.5 align-text-bottom"
-                /><a
-                    href="https://clerk.com"
-                    target="_blank"
-                    class="text-foreground underline decoration-ui hover:bg-foreground hover:text-background transition-colors"
-                    >Clerk</a
-                > as an AI Software Engineer, working on CLI tooling, LLM evaluations,
-                and developer experience for the AI era.
-            </p>
-            <p class="text-foreground-2 leading-relaxed">
-                I teach Parallel Computing at <BrandIcon
-                    name="unmsm"
-                    width={16}
-                    height={16}
-                    class="inline-block !my-0 !ml-0 mr-0.5 align-text-bottom rounded-sm"
-                /><a
-                    href="https://unmsm.edu.pe"
-                    target="_blank"
-                    class="text-foreground underline decoration-ui hover:bg-foreground hover:text-background transition-colors"
-                    >UNMSM</a
-                >, Peru's oldest university, where I also graduated.
-            </p>
-            <p class="text-foreground-2 leading-relaxed">
-                I build platforms with <BrandIcon
-                    name="midudev"
-                    width={18}
-                    height={16}
-                    class="inline-block mb-0.5 mr-0.5 align-text-bottom"
-                /><a
-                    href="https://midu.dev"
-                    target="_blank"
-                    class="text-foreground underline decoration-ui hover:bg-foreground hover:text-background transition-colors"
-                    >Midudev</a
-                >, the leading Hispanic tech streamer. I work on video
-                processing pipelines, high-traffic event sites, search systems,
-                and AI integrations for millions of Spanish-speaking developers.
-            </p>
-            <p class="text-foreground-2 leading-relaxed">
-                I also create open-source tools like <BrandIcon
-                    name="tinte"
-                    width={16}
-                    height={16}
-                    class="inline-block mb-0.5 mr-0.5 align-text-bottom rounded-full"
-                /><a
-                    href="https://tinte.railly.dev"
-                    target="_blank"
-                    class="text-foreground underline decoration-ui hover:bg-foreground hover:text-background transition-colors"
-                    >Tinte</a
-                > (part of the <BrandIcon
-                    name="vercel"
-                    width={16}
-                    height={16}
-                    class="inline-block mb-0.5 mr-0.5 align-text-bottom"
-                /><a
-                    href="https://vercel.com/open-source-program"
-                    target="_blank"
-                    class="text-foreground underline decoration-ui hover:bg-foreground hover:text-background transition-colors"
-                    >Vercel OSS Program</a
-                >), <BrandIcon
-                    name="elements"
-                    width={14}
-                    height={16}
-                    class="inline-block mb-0.5 mr-0.5 align-text-bottom"
-                /><a
-                    href="https://tryelements.dev"
-                    target="_blank"
-                    class="text-foreground underline decoration-ui hover:bg-foreground hover:text-background transition-colors"
-                    >Elements</a
-                > (full-stack shadcn components), and <BrandIcon
-                    name="oneHunter"
-                    width={16}
-                    height={16}
-                    class="inline-block !my-0 !ml-0 mr-1 align-middle rounded-sm"
-                /><a
-                    href="https://marketplace.visualstudio.com/items?itemName=RaillyHugo.one-hunter"
-                    target="_blank"
-                    class="text-foreground underline decoration-ui hover:bg-foreground hover:text-background transition-colors"
-                    >One Hunter Theme</a
-                > (35k+ downloads).
-            </p>
-            <p class="text-foreground-2 leading-relaxed">
-                I'm a <BrandIcon
-                    name="codex"
-                    width={16}
-                    height={16}
-                    class="inline-block mr-0.5 mb-0.5 align-text-bottom"
-                /><a
-                    href="https://openai.com/codex/"
-                    target="_blank"
-                    class="text-foreground underline decoration-ui hover:bg-foreground hover:text-background transition-colors"
-                    >Codex Ambassador</a
-                > and <a
-                    href="https://v0.dev/chat/community"
-                    target="_blank"
-                    class="text-foreground underline decoration-ui hover:bg-foreground hover:text-background transition-colors"
-                    aria-label="v0 Ambassador"
-                    ><BrandIcon
-                        name="v0"
-                        width={16}
-                        height={16}
-                        class="inline-block mr-0.5 mb-0.5 align-text-bottom"
-                    /><span class="sr-only">v0 </span><span>Ambassador</span></a
-                >. I consider myself a builder at heart. I ship fast, iterate in
-                public, and believe everything compounds.
-            </p>
-            <p class="text-foreground-2 leading-relaxed">
-                You can reach me at <BrandIcon
-                    name="x"
-                    width={14}
-                    height={14}
-                    class="inline-block mb-0.5 mr-0.5 align-text-bottom"
-                /><a
-                    href="https://x.com/raillyhugo"
-                    target="_blank"
-                    class="text-foreground underline decoration-ui hover:bg-foreground hover:text-background transition-colors"
-                    >@raillyhugo</a
-                > or <a
-                    href="mailto:hi@railly.dev"
-                    class="text-foreground underline decoration-ui hover:bg-foreground hover:text-background transition-colors"
-                    >hi@railly.dev</a
-                >.
-            </p>
-        </div>
-        <Footer />
-    </PageLayout>
+	<PageLayout class="flex flex-col gap-10">
+		<SectionHeader title="About" />
+
+		<!-- Intro -->
+		<p class="max-w-2xl text-base leading-relaxed text-foreground-2">
+			I'm a software engineer, founder, and builder from Lima, Peru. I ship
+			fast, iterate in public, and believe everything compounds.
+		</p>
+
+		<!-- Now -->
+		<section class="w-full">
+			<div class="mb-4 flex items-center gap-2">
+				<span class="relative flex size-2">
+					<span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-500 opacity-75 motion-reduce:hidden"></span>
+					<span class="relative inline-flex size-2 rounded-full bg-green-500"></span>
+				</span>
+				<SectionHeader title="Now" className="mb-0" />
+			</div>
+			<ul class="flex flex-col gap-2">
+				<li class="flex items-baseline gap-3 text-base text-foreground-2">
+					<span class="select-none text-foreground-3" aria-hidden>&rarr;</span>
+					<span>
+						Software engineer at <BrandIcon name="clerk" width={16} height={16} class="inline-block mb-0.5 align-text-bottom" /><a href="https://clerk.com" target="_blank" class={linkClass}>Clerk</a>
+					</span>
+				</li>
+				<li class="flex items-baseline gap-3 text-base text-foreground-2">
+					<span class="select-none text-foreground-3" aria-hidden>&rarr;</span>
+					<span>
+						Starting a path into <i>AI research</i> at <a href="https://github.com/crafter-research" target="_blank" class={linkClass}>Crafter Research</a>, building civic-tech tools for LATAM
+					</span>
+				</li>
+				<li class="flex items-baseline gap-3 text-base text-foreground-2">
+					<span class="select-none text-foreground-3" aria-hidden>&rarr;</span>
+					<span>
+						Founder of <BrandIcon name="crafterStation" width={16} height={16} class="inline-block mb-0.5 mr-0.5 align-text-bottom" /><a href="https://github.com/crafter-station" target="_blank" class={linkClass}>Crafter Station</a> and teaching at <BrandIcon name="unmsm" width={16} height={16} class="inline-block !my-0 !ml-0 mr-0.5 align-text-bottom rounded-sm" /><a href="https://unmsm.edu.pe" target="_blank" class={linkClass}>UNMSM</a>
+					</span>
+				</li>
+			</ul>
+		</section>
+
+		<!-- Timeline -->
+		<section class="w-full">
+			<SectionHeader title="Timeline" className="mb-5" />
+			<div class="flex flex-col">
+				{milestonesByYear.map((group, gi) => (
+					<div class="relative flex gap-5">
+						<!-- Year label, once per group -->
+						<div class="w-14 shrink-0 pt-0.5 text-right">
+							<span class="whitespace-nowrap font-mono text-xs tabular-nums tracking-wider text-foreground-3">{group.year}</span>
+						</div>
+						<!-- Rail -->
+						<div class="relative flex w-2 shrink-0 justify-center">
+							<span
+								class:list={[
+									"absolute w-px bg-ui",
+									gi === 0 ? "top-1.5" : "top-0",
+									gi === milestonesByYear.length - 1 ? "h-[calc(100%-1.5rem)]" : "h-full",
+								]}
+							></span>
+						</div>
+						<!-- Milestones in this year -->
+						<ol class="min-w-0 flex-1">
+							{group.items.map((m, mi) => (
+								<li class="group relative flex gap-3 pb-7" class:list={[gi === milestonesByYear.length - 1 && mi === group.items.length - 1 && "!pb-0"]}>
+									<span class="z-10 mt-1.5 -ml-[1.6rem] size-2 shrink-0 rounded-full bg-foreground-3 ring-4 ring-background transition-colors group-hover:bg-foreground"></span>
+									<div class="min-w-0 flex-1">
+										<div class="flex items-center gap-1.5">
+											{m.icon && <BrandIcon name={m.icon} width={14} height={14} class="shrink-0 align-text-bottom text-foreground" />}
+											{m.url ? (
+												<a href={m.url} target="_blank" class="text-sm font-medium text-foreground underline decoration-ui underline-offset-2 transition-colors hover:decoration-foreground">{m.title}</a>
+											) : (
+												<span class="text-sm font-medium text-foreground">{m.title}</span>
+											)}
+										</div>
+										<p class="mt-1 text-sm leading-relaxed text-foreground-3">{m.detail}</p>
+									</div>
+								</li>
+							))}
+						</ol>
+					</div>
+				))}
+			</div>
+		</section>
+
+		<!-- Open source -->
+		<section class="w-full">
+			<SectionHeader title="Open Source" className="mb-3" />
+			<p class="max-w-2xl text-sm leading-relaxed text-foreground-2">
+				I build tools in the open — <BrandIcon name="tinte" width={14} height={14} class="inline-block mb-0.5 mr-0.5 align-text-bottom rounded-full" /><a href="https://tinte.dev" target="_blank" class={linkClass}>Tinte</a> (agent-native design infrastructure, part of the Vercel OSS Program), <BrandIcon name="elements" width={12} height={14} class="inline-block mb-0.5 mr-0.5 align-text-bottom" /><a href="https://tryelements.dev" target="_blank" class={linkClass}>Elements</a> (full-stack shadcn components), and the <BrandIcon name="oneHunter" width={14} height={14} class="inline-block mr-1 align-text-bottom rounded-sm" /><a href="https://marketplace.visualstudio.com/items?itemName=RaillyHugo.one-hunter" target="_blank" class={linkClass}>One Hunter</a> VS Code theme (35k+ downloads), among others. I'm a <BrandIcon name="codex" width={14} height={14} class="inline-block mr-0.5 mb-0.5 align-text-bottom" /><a href="https://openai.com/codex/" target="_blank" class={linkClass}>Codex Ambassador</a> and <a href="https://v0.dev/chat/community" target="_blank" class={linkClass} aria-label="v0 Ambassador"><BrandIcon name="v0" width={14} height={14} class="inline-block mr-0.5 mb-0.5 align-text-bottom" /><span class="sr-only">v0 </span>Ambassador</a>.
+			</p>
+		</section>
+
+		<!-- Contact -->
+		<section class="w-full">
+			<SectionHeader title="Reach me" className="mb-3" />
+			<p class="text-sm leading-relaxed text-foreground-2">
+				<BrandIcon name="x" width={14} height={14} class="inline-block mb-0.5 mr-0.5 align-text-bottom" /><a href="https://x.com/raillyhugo" target="_blank" class={linkClass}>@raillyhugo</a> &middot; <a href="mailto:hi@railly.dev" class={linkClass}>hi@railly.dev</a>
+			</p>
+		</section>
+
+		<Footer />
+	</PageLayout>
 </Layout>

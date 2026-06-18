@@ -1,7 +1,6 @@
 ---
 import BrandIcon from "../brand/BrandIcon.astro";
 import type { BrandName } from "../brand/registry";
-import ListRow from "../ui/ListRow.astro";
 
 interface Props {
 	project: {
@@ -9,16 +8,49 @@ interface Props {
 		description: string;
 		url: string;
 		icon: BrandName;
+		stars: number;
 	};
+	maxStars: number;
 }
 
-const { project } = Astro.props;
+const { project, maxStars } = Astro.props;
+
+// Proportional bar width — linear so the bar tells the honest ranking
+// (Petdex's 5x lead actually looks 5x), with a small floor so the
+// smallest repos still register instead of vanishing.
+const ratio = project.stars / maxStars;
+const barPct = Math.max(4, Math.round(ratio * 100));
+const starLabel = project.stars.toLocaleString("en-US");
 ---
 
-<ListRow href={project.url} external={true} showArrow={true}>
-	<span slot="leading" class="flex h-6 w-6 self-center items-center justify-center">
-		<BrandIcon name={project.icon} width={20} height={20} class="text-foreground" />
+<a
+	href={project.url}
+	target="_blank"
+	rel="noopener noreferrer"
+	class="group -mx-3 flex items-center gap-3 rounded-md px-3 py-2.5 transition-colors hover:bg-background-2"
+>
+	<span class="flex size-5 shrink-0 items-center justify-center">
+		<BrandIcon name={project.icon} width={18} height={18} class="text-foreground" />
 	</span>
-	<span class="self-center text-sm font-medium text-foreground">{project.name}</span>
-	<span slot="trailing" class="hidden self-center text-sm text-foreground-3 sm:block">{project.description}</span>
-</ListRow>
+
+	<span class="w-24 shrink-0 truncate text-sm font-medium text-foreground sm:w-28">
+		{project.name}
+	</span>
+
+	<span class="hidden min-w-0 flex-1 truncate text-sm text-foreground-3 md:block">
+		{project.description}
+	</span>
+
+	<!-- Proportional star bar -->
+	<span class="hidden h-1 w-14 shrink-0 overflow-hidden rounded-full bg-ui sm:block lg:w-20">
+		<span
+			class="block h-full rounded-full bg-foreground-3 transition-all duration-500 group-hover:bg-foreground"
+			style={`width: ${barPct}%`}
+		></span>
+	</span>
+
+	<span class="flex w-14 shrink-0 items-center justify-end gap-1 font-mono text-xs tabular-nums text-foreground-3 transition-colors group-hover:text-foreground-2">
+		{starLabel}
+		<span aria-hidden class="text-[0.7rem] leading-none">★</span>
+	</span>
+</a>
