@@ -9,12 +9,12 @@ Founder of [Crafter Station](https://crafterstation.com), building Peru's tech e
 <!-- START:PROJECTS -->
 | Project | Description |
 |---------|-------------|
-| [Tinte](https://tinte.dev) | Theme builder for VS Code, shadcn, and more `585★` |
-| [Agentfiles](https://github.com/Railly/agentfiles) | Browse, create, and edit AI agent files from Obsidian `538★` |
-| [Elements](https://tryelements.dev) | Full-stack shadcn components for auth, ai, and more `492★` |
-| [text0](https://text0.dev) | AI-powered text editor with real-time collaboration `446★` |
-| [One Hunter](https://marketplace.visualstudio.com/items?itemName=RaillyHugo.one-hunter) | VS Code theme inspired by Vercel and One Dark Pro `380★` |
-| [trx](https://github.com/crafter-station/trx) | Agent-first CLI for audio/video transcription `80★` |
+| [Tinte](https://tinte.dev) | Theme builder for VS Code, shadcn, and more `603★` |
+| [Agentfiles](https://github.com/Railly/agentfiles) | Browse, create, and edit AI agent files from Obsidian `592★` |
+| [Elements](https://tryelements.dev) | Full-stack shadcn components for auth, ai, and more `503★` |
+| [text0](https://text0.dev) | AI-powered text editor with real-time collaboration `449★` |
+| [One Hunter](https://marketplace.visualstudio.com/items?itemName=RaillyHugo.one-hunter) | VS Code theme inspired by Vercel and One Dark Pro `381★` |
+| [trx](https://github.com/crafter-station/trx) | Agent-first CLI for audio/video transcription `82★` |
 <!-- END:PROJECTS -->
 
 See [all projects →](https://railly.dev/projects)
