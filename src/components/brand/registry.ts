@@ -36,6 +36,7 @@ export type BrandName =
 	| "chessBattle"
 	| "pintel"
 	| "latex0"
+	| "petdex"
 	| "aiHackPeru"
 	| "platanusHack";
 
@@ -341,6 +342,12 @@ export const brandRegistry: Record<BrandName, BrandEntry> = {
 		label: "latex0",
 		paths:
 			'<rect width="32" height="32" rx="6" fill="#0a0a0a"/>\n    <text x="16" y="22" text-anchor="middle" font-family="\'Times New Roman\', serif" font-size="16" fill="#fafafa">L<tspan font-size="11" dy="-2">A</tspan><tspan font-size="16" dy="2">0</tspan></text>',
+	},
+	petdex: {
+		kind: "image",
+		src: "/images/petdex-icon.png",
+		alt: "Petdex",
+		label: "Petdex",
 	},
 	aiHackPeru: {
 		kind: "image",

@@ -5,37 +5,24 @@ import SectionHeader from "@/components/layout/SectionHeader.astro";
 import { ogUrl } from "@/config/site";
 import { projects as projectsData } from "@/data/projects";
 import Layout from "@/layouts/Layout.astro";
+import { withRepoStars } from "@/lib/github-stars";
 import BrandIcon from "../components/brand/BrandIcon.astro";
 
 const ogDescription =
-	"Open source developer tools by Railly Hugo: Tinte, Elements, Agentfiles, trx, and more.";
+	"Open source developer tools by Railly Hugo: Petdex, Tinte, Elements, Agentfiles, trx, and more.";
 const ogImage = ogUrl({
 	title: "Projects",
 	description: ogDescription,
 	tag: "projects",
 });
 
-async function getStars(repo: string): Promise<number> {
-	try {
-		const res = await fetch(`https://api.github.com/repos/${repo}`);
-		if (!res.ok) {
-			return 0;
-		}
-		const data = await res.json();
-		return data.stargazers_count || 0;
-	} catch {
-		return 0;
-	}
-}
-
-const projects = await Promise.all(
-	projectsData.map(async (project) => ({
+const projectsWithStars = await withRepoStars(projectsData);
+const projects = projectsWithStars
+	.map((project) => ({
 		...project,
-		stars: project.repo ? await getStars(project.repo) : 0,
 		github: project.repo ? `https://github.com/${project.repo}` : undefined,
-	})),
-);
-projects.sort((a, b) => b.stars - a.stars);
+	}))
+	.sort((a, b) => b.stars - a.stars);
 ---
 
 <Layout title="Projects - Railly Hugo" description={ogDescription} image={ogImage}>
