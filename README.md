@@ -9,9 +9,12 @@ Founder of [Crafter Station](https://crafterstation.com), building Peru's tech e
 <!-- START:PROJECTS -->
 | Project | Description |
 |---------|-------------|
-| [Petdex](https://petdex.dev) | Animated pets for your coding agent `3.3k★` |
-| [Tinte](https://tinte.dev) | Agent-native design system infrastructure `+600★` |
-| [Agentfiles](https://agentfiles.crafter.run) | Edit AI agent files across 13+ tools `+600★` |
+| [Petdex](https://petdex.dev) | Animated pets for your coding agent `3028★` |
+| [Tinte](https://tinte.dev) | Agent-native design system infrastructure `603★` |
+| [Agentfiles](https://agentfiles.crafter.run) | Edit AI agent files across 13+ tools `594★` |
+| [Elements](https://tryelements.dev) | Full-stack shadcn components for auth and AI `503★` |
+| [text0](https://text0.dev) | Smart, personal AI autocomplete `449★` |
+| [One Hunter](https://marketplace.visualstudio.com/items?itemName=RaillyHugo.one-hunter) | VS Code theme: Vercel meets One Dark Pro `381★` |
 <!-- END:PROJECTS -->
 
 See [all projects →](https://railly.dev/projects)
