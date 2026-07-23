@@ -1,6 +1,6 @@
 ---
 title: "My Agentic Second Brain, Four Months Later"
-description: "The vault did not just get bigger. It became a local AI control plane with replaceable workers, evidence gates, and a much more honest definition of done."
+description: "What changed after four months: thinner context, versioned skills, bounded autonomy, and evidence that can be checked."
 pubDate: "2026-07-23"
 tags: ["ai", "obsidian", "codex", "agents", "knowledge-management", "agentic-engineering"]
 category: "thoughts"
@@ -9,195 +9,123 @@ status: "published"
 
 import Callout from "../../components/content/Callout.astro";
 import Mermaid from "../../components/content/Mermaid.astro";
-import MetricGrid from "../../components/content/MetricGrid.astro";
-import Sidenote from "../../components/content/Sidenote.astro";
 
-Four months ago I published [Obsidian as a Personal OS for AI Coding Agents](/blog/agentic-second-brain). The argument was simple: AI coding tools become dramatically more useful when they stop starting from zero.
+Four months ago I published [Obsidian as a Personal OS for AI Coding Agents](/blog/agentic-second-brain). The argument was simple: AI coding tools become more useful when they stop starting from zero.
 
 I still believe that.
 
-But the system taught me a harder lesson: **memory is not enough**.
+But the system taught me a harder lesson: memory is not enough.
 
-An agent can remember your stack, your repos, your goals, and every correction you have ever made. It can still pick the wrong task, ignore a dependency, run with too much authority, review itself with the wrong rubric, or say "done" before the evidence exists.
+An agent can remember your stack, repos, goals, and past corrections. It can still pick the wrong task, ignore a dependency, use too much authority, or say "done" before the evidence exists.
 
-The first version solved the cold start. The second version is trying to solve trust.
+The first version solved the cold start. The second version is about earning trust.
 
 <Callout type="note" title="Update #1">
-  This is a new article, not a rewrite of the March post. I want to publish one evidence-based snapshot every quarter so the series records how the system actually evolves, including the parts that break.
+  This is a new article, not a rewrite of the March post. I plan to publish one evidence-based snapshot every quarter so the series records how the system evolves.
 </Callout>
 
 <Callout type="note" title="Agent Brain v2.0.0">
   I froze the original template as [`v1.0.0`](https://github.com/Railly/agent-brain/releases/tag/v1.0.0) and released the compatible update as [`v2.0.0`](https://github.com/Railly/agent-brain/releases/tag/v2.0.0). Existing vaults can keep their notes and migrate only the workflow surfaces.
 </Callout>
 
-## The Snapshot
+## What changed
 
-I reran the audit against the whole vault on July 22, 2026.
-
-<MetricGrid items={[
-  { value: "320", label: "vault commits", detail: "since March 31" },
-  { value: "5,711", label: "tracked Markdown files", detail: "inside the vault repo" },
-  { value: "7,112", label: "QMD documents", detail: "45,880 embedded vectors" },
-  { value: "85", label: "canonical skills", detail: "one project-local source" },
-]} />
-
-Those are not success metrics. A large vault can be a large pile of stale text. More skills can mean more context debt. More commits can mean churn.
-
-They do show that this stopped being a clever Obsidian setup. It became infrastructure I use to operate my work.
-
-The useful delta is architectural:
+The biggest change is not the amount of information in the vault. It is the role that information plays.
 
 | March 2026 | July 2026 |
 |---|---|
 | The vault remembers | The vault stores intent and evidence |
-| Claude Code and Codex execute commands | Agent runtimes are replaceable workers |
-| A prompt starts the workflow | A typed task contract admits the work |
-| The agent reports completion | Checks, review, and provenance decide completion |
-| More context feels better | Context is loaded only when needed |
-| Autonomy means more parallel agents | Autonomy means bounded authority and truthful state |
+| A prompt starts the workflow | A task contract defines the work |
+| The agent reports completion | Checks and review decide completion |
+| More context feels better | Context loads only when needed |
+| Autonomy means more agents | Autonomy means bounded authority |
 
-## From a Second Brain to a Control Plane
-
-The March architecture had three layers: Obsidian for persistence, Claude Code or Codex for execution, and `CLAUDE.md` or `AGENTS.md` for personality.
-
-That model was useful, but incomplete. It described how an agent knew me. It did not describe who owned task state, retries, dependencies, risk, or the definition of done.
-
-Today, Kai is becoming the <Sidenote>control plane<Fragment slot="note">**The system that owns policy and state.** Workers can change, crash, or retry without becoming the source of truth.</Fragment></Sidenote>. The model is a worker, not the operating system.
+The model is now a replaceable worker inside a larger process.
 
 <Mermaid options={{ layerSpacing: 20, nodeSpacing: 20, padding: 12 }} chart={String.raw`
 flowchart TB
-  A["Vault: intent, memory, evidence"] --> B["Kai: admission, state, policy"]
-  B --> C["Workcell: isolated agent execution"]
-  C --> D["Promotion: checks, two reviews, risk gate"]
-  D --> E["Artifact: commit and provenance"]
+  A["Intent and memory"] --> B["Task contract"]
+  B --> C["Isolated execution"]
+  C --> D["Checks and independent review"]
+  D --> E["Artifact and evidence"]
   E -. learning .-> A
 `} />
 
 The loop matters more than the model inside it.
 
-```text title="The new execution contract"
+```text title="The execution contract"
 intent
-  -> admission
+  -> bounded task
   -> isolated execution
   -> deterministic checks
-  -> spec review
-  -> standards review
-  -> risk decision
-  -> artifact + provenance
+  -> independent review
+  -> artifact + evidence
   -> learning
 ```
 
-Claude, Codex, Pi, or whatever comes next can run a task. Kai should still own what the task is, what it may touch, what evidence it must return, and whether it is allowed to advance.
+Any capable runtime can execute a task. The surrounding system should still define what the task is, what it may touch, what evidence it must return, and when it can advance.
 
-## I Made Context Too Big
+## I made context too big
 
-The first article celebrated loading project context at session start. Then I pushed that idea until it broke.
+The first article celebrated loading project context at session start. Then I pushed that idea until the startup instructions grew beyond what the runtime could reliably read.
 
-By June, my generated `AGENTS.md` had reached **132,709 bytes**. Codex's project-instruction budget was much smaller. I had built persistent memory that could not be reliably read.
+This is the trap with second-brain systems: once every detail feels useful, deletion starts to feel dangerous. The result is a startup document that treats every old fact as equally important.
 
-This is the trap with second-brain systems: once every detail feels useful, deletion starts to feel dangerous. The result is a giant startup document that treats every old fact as equally important.
-
-The current `AGENTS.md` is **2,399 bytes**.
-
-It contains critical rules, stack defaults, and pointers to the real sources of truth. Everything else is loaded through a relevant skill, repo map, vault search, or explicit file read.
+The current entrypoint contains only critical rules, stack defaults, and pointers to the real sources of truth. Everything else loads through a relevant skill, repository documentation, vault search, or an explicit file read.
 
 ```text title="Context after the cleanup"
-AGENTS.md                         2.4 KB entrypoint
-07_System/context-files/         repo and workflow maps
-.agents/skills/                  task-specific contracts
-03_Garden/ + 04_Projects/        durable knowledge and intent
-QMD                              retrieval across notes and sessions
+startup rules
+  -> task-specific skills
+  -> repository documentation
+  -> relevant notes and evidence
 ```
 
 <Callout type="important" title="The deletion was the feature">
-  Persistent memory does not mean permanent attention. The system should remember everything it can, then load only what the current decision needs.
+  Persistent memory does not mean permanent attention. The system should remember what matters, then load only what the current decision needs.
 </Callout>
 
-## Commands Became Skills, Then Products
+## Commands became versioned skills
 
 In March I had slash commands scattered across tools. They worked, but each runtime wanted a different adapter and every global install created another source of drift.
 
-Now the canonical source is project-local:
+The v2 template keeps one project-local source for each skill and generates portable runtime adapters from it. A deterministic check rejects stale adapters, missing workflows, and invalid structure. The migration keeps existing notes intact.
 
-```text title="One source, multiple runtimes"
-.agents/skills/                         canonical skill contracts
-.claude/skills/                         Claude adapters
-07_System/codex-plugins/plugins/        materialized Codex bundles
-```
+A skill is no longer just a prompt shortcut. It is a workflow contract with inputs, boundaries, tools, an artifact shape, and verification.
 
-The vault currently has 85 canonical skills. The number is less interesting than the direction: a skill is no longer just a prompt shortcut. It is a workflow contract with inputs, boundaries, tools, artifact shape, and verification.
+Two skills show the difference:
 
-Some of those contracts became real products:
+- `/review-gate` separates generation from independent judgment and records findings that escape each review round.
+- `/ship` inspects the current changes, commits and pushes them, syncs the vault, and logs the commit to the daily journal.
 
-- `/health` reads Apple Health data and checks it against explicit goals.
-- `/meeting` turns recordings into decisions and action items.
-- `/research` writes a sourced artifact, then verifies URLs and claim anchoring.
-- `/review-gate` separates generation from independent judgment.
-- `/ship` inspects the current changes, commits and pushes them, syncs the vault to iCloud, and logs the commit to the daily journal.
+The contract can survive a change in model or runtime because it lives above both.
 
-The same skill can serve a human session, a background task, or a future runtime because the contract lives above the model.
+## Autonomy needs boundaries
 
-## The Autopilot Failed Its Own Test
+I audited the old autonomous path and found enough disagreement between task state, review, and completion evidence to stop it.
 
-The most important update is not a feature. It is a shutdown.
+The lesson was simple: more agents would have made the same problems happen faster.
 
-The old autopilot looked impressive. It had a persistent queue, parallel Codex workers, nightly batches, WhatsApp notifications, research verification, and automatic PR review.
+The replacement starts with less authority. Each task declares its allowed scope, exact checks, protected paths, risk, and expected artifact. Execution stays isolated. Completion requires evidence.
 
-Then I audited the live path.
-
-I found that:
-
-1. Night intake imported a file that did not exist.
-2. Backlog items recorded dependencies, but intake dropped them.
-3. PR review reused a research-review prompt, so code could be labeled clean without a code-review rubric.
-4. Task state could become `done` even when the surrounding workflow had not earned that word.
-
-More agents would have made those failures faster.
-
-I stopped the old autopilot on June 28. The replacement is a local-first software factory pilot with a smaller, stricter contract.
-
-```json title=".kai/factory.json"
+```json title="A bounded task contract"
 {
-  "version": 1,
-  "name": "my-repo",
-  "allowedWorkers": ["deterministic", "pi"],
-  "setup": [],
-  "acceptance": ["bun test"],
-  "protectedPaths": [".git", ".kai"],
-  "risk": "R1",
-  "artifacts": ["commit"]
+  "allowedPaths": ["src"],
+  "checks": ["bun test"],
+  "protectedPaths": [".git"],
+  "risk": "low",
+  "artifact": "commit"
 }
 ```
 
-Every opted-in repository declares its own setup, exact checks, protected paths, risk tier, artifacts, and allowed worker profiles. A worker runs in an isolated worktree with network denied by default. Kai validates changed paths, runs the repository checks, and writes provenance before completion.
-
-The pilot passes its current format, type, desktop, and native checks. That proves the implementation is internally consistent. It does **not** prove that it ships better software yet.
-
-<Callout type="warning" title="Still a pilot">
-  Automatic merge, deploy, release, and durable-data mutation remain disabled. The new factory has to earn more authority through measured tasks and recovery drills.
+<Callout type="warning" title="Authority must be earned">
+  Automatic merge, deploy, release, and durable-data mutation stay disabled until repeated tasks and recovery drills justify more authority.
 </Callout>
 
-## WhatsApp Became an Interface, Not the Brain
+## The vault became an evidence layer
 
-Kai still has a WhatsApp gateway. It can receive a request, keep conversation memory, dispatch work, and notify me when a decision needs attention.
+The original system mainly stored notes and work history. The current vault also keeps experiments, verification reports, decision trails, rejected alternatives, and failure artifacts.
 
-The difference is ownership. WhatsApp is an interface. The desktop app is an interface. The CLI is an interface. None of them should own task truth.
-
-```text title="Same controller, different surfaces"
-WhatsApp ─┐
-Desktop  ─┼─> Kai controller -> task ledger -> workers -> evidence
-CLI      ─┘
-```
-
-This sounds like an implementation detail, but it changes the failure model. I can close the desktop app, lose a chat session, or replace a model without losing the task's state or the reason it reached that state.
-
-## The Vault Is Now a Research Instrument
-
-The original system mainly stored notes and work history. The current vault also stores experiments, evaluation corpora, verification reports, decision trails, rejected alternatives, and failure artifacts.
-
-QMD currently indexes 7,112 documents, including 3,248 exported agent sessions. It has 45,880 embedded vectors on-device. Semantic search can connect a current decision to an old meeting, a failed implementation, or the exact session where a rule was learned.
-
-That changes the question I ask the vault.
+That changed the questions I ask.
 
 Before:
 
@@ -216,45 +144,33 @@ What artifact would let someone else check my answer?
 
 The second set of questions produces slower answers. It also produces answers I trust more.
 
-## The Gaps the Audit Found
+## What remains unproven
 
-The system is better, but the vault does not support a victory lap yet.
+### Review escapes are not software quality
 
-### 1. I measure review escapes, not software quality
+`/review-gate` measures findings that escape each review round and turns recurring misses into deterministic checks. It is one useful quality signal, not a complete quality model.
 
-`/review-gate` tracks external findings per review round and turns recurring misses into deterministic checks. That is a real metric for the review process.
+The next step is connecting that signal with production outcomes and maintainability. Until then, passing checks means the process met its current contract. It does not prove that the software is better.
 
-It is not a complete quality metric. I still have no reliable baseline for production defects, rework loops, merge conflicts, recovery time, human review time, maintainability, or user outcomes across agent tasks.
+### Retrieval still needs maintenance
 
-Until I have that, "the factory is better" is a hypothesis. Passing checks is necessary. It is not the same as producing better software.
+File-backed memory avoids platform lock-in, but an index can still become stale. Retrieval needs a freshness check before the system can treat missing results as missing knowledge.
 
-### 2. Retrieval freshness is not automatic
+### The evidence needs to leave my environment
 
-QMD had **401 documents pending embedding** during this audit. The files existed, but semantic retrieval had not caught up.
+Most of the current evidence comes from my own work. The next update needs external use and before-and-after task data. Otherwise the system risks becoming a better way to agree with itself.
 
-File-backed memory avoids vendor lock-in. It does not remove maintenance. An index can be stale while the vault looks healthy.
+## The public template has a deliberate boundary
 
-### 3. My project taxonomy hides work in progress
+The public [`agent-brain`](https://github.com/Railly/agent-brain) repository now has reproducible releases. [`v1.0.0`](https://github.com/Railly/agent-brain/releases/tag/v1.0.0) preserves the March system. [`v2.0.0`](https://github.com/Railly/agent-brain/releases/tag/v2.0.0) adds canonical skills, portable adapters, a non-destructive migration, and deterministic integrity checks.
 
-The vault currently contains 38 directories marked active and 56 in shaping. That count might represent optionality. It might also represent a system that is better at starting than finishing.
+It does not include every private experiment or raw vault artifact. A useful template needs a stable boundary, not a copy of someone else's life.
 
-The raw number cannot decide. The next version needs explicit commitment, paused, and expiry semantics instead of letting folder placement imply priority.
+My rule for this series is now:
 
-### 4. The public template is deliberately narrower
+> Publish the lesson, not every private artifact that produced it.
 
-The audit caught a real gap: the public [`agent-brain`](https://github.com/Railly/agent-brain) repo had no release history and still represented only the March architecture.
-
-I fixed the reproducibility part by freezing March as [`v1.0.0`](https://github.com/Railly/agent-brain/releases/tag/v1.0.0) and shipping [`v2.0.0`](https://github.com/Railly/agent-brain/releases/tag/v2.0.0) with canonical skills, portable runtime adapters, a non-destructive migration, and deterministic integrity checks.
-
-The private queue, daemon, messaging gateways, background workers, and policy engine are still excluded. They are not stable enough to present as a starter template. Open source should preserve a usable boundary, not dump every experiment.
-
-### 5. The system evaluates itself
-
-Most of this evidence comes from my own vault, my own checks, and agents operating inside the same environment. That creates an echo chamber.
-
-The quarterly update needs external use, adversarial review, and before-and-after task data. Otherwise I am just building a more sophisticated way to agree with myself.
-
-## What Did Not Change
+## What did not change
 
 Obsidian is still the persistence layer. Markdown is still the escape hatch. Git still gives the system history. The seven-folder structure still works. `/morning`, `/today`, `/pulse`, and `/ship` still turn work into durable context.
 
@@ -266,35 +182,26 @@ I would add one line now:
 
 > And it should not be allowed to hide its own.
 
-## The Quarterly Protocol
+## The quarterly protocol
 
-I do not want the next update to be based on memory or vibes. This is the audit contract I will rerun every quarter:
+The next update should be based on evidence, not memory or vibes.
 
-```yaml title="quarterly-second-brain-audit.yml"
-baseline: previous published update
-
-scan:
-  - vault git delta
-  - QMD index status
-  - skills and runtime surfaces
-  - active and shaping project counts
-  - failure and recovery artifacts
-  - public/private architecture drift
-
-separate:
-  verified: reproducible from files, git, or live state
-  inference: plausible interpretation of the evidence
-  unknown: missing measurement or external validation
+```yaml title="quarterly-second-brain-update.yml"
+compare: previous_release
 
 publish:
-  - what changed
-  - what was deleted
-  - what broke
-  - what remains unproven
+  - one verified improvement
+  - one failure that changed the system
+  - one claim that remains unproven
   - the next measurement
+
+keep_private:
+  - personal data
+  - operational internals
+  - raw vault evidence
 ```
 
-The goal is not to keep announcing a bigger second brain. It is to build a smaller, clearer system that can explain what it did, show the evidence, recover when it fails, and improve without pretending every new layer is progress.
+The goal is not to announce a bigger second brain. It is to build a smaller, clearer system that can explain what it did, show the evidence, recover when it fails, and improve without treating every new layer as progress.
 
 Four months ago, I wanted my AI to remember me.
 
