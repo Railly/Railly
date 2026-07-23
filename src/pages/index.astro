@@ -21,7 +21,7 @@ import { withRepoStars } from "@/lib/github-stars";
 const ogImage = ogUrl({
 	title: "Railly Hugo",
 	description:
-		"Software Engineer at Clerk, Founder of Crafter Station. Lima, Peru.",
+		"Software Engineer at Vercel Labs and Founder of Crafter Station, building AI developer tools from Lima, Peru.",
 });
 
 const allPosts = await getCollection("blog", ({ data }) =>
@@ -71,8 +71,8 @@ const maxStars = Math.max(...rankedProjects.map((p) => p.stars), 1);
 ---
 
 <Layout
-	title="Railly Hugo - Software Engineer at Clerk | Crafter Station Founder"
-	description="Software Engineer at Clerk and Founder of Crafter Station. Starting a path into AI research, building civic-tech tools, and growing LATAM's tech ecosystem."
+	title="Railly Hugo - Software Engineer at Vercel Labs | Crafter Station Founder"
+	description={siteConfig.description}
 	image={ogImage}
 >
 	<PageLayout class="flex flex-col gap-16">

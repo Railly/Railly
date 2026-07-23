@@ -178,9 +178,9 @@ export const projects: Project[] = [
 	{
 		slug: "sunat-cli",
 		name: "sunat-cli",
-		repo: "Railly/sunat-cli",
+		repo: "crafter-research/sunat-cli",
 		description: "Agent-first CLI for SUNAT tax automation in Peru",
-		url: "https://github.com/Railly/sunat-cli",
+		url: "https://github.com/crafter-research/sunat-cli",
 		icon: "sunatCli",
 	},
 	{

@@ -3,7 +3,7 @@
  * Regenerate README.md with live data from railly.dev.
  *
  * Fetches:
- *   - Projects (with stars) from https://railly.dev/api/projects.json
+ *   - Projects from https://railly.dev/api/projects.json
  *   - Latest posts from https://railly.dev/rss.xml
  *
  * Replaces content between markers:
@@ -18,15 +18,14 @@ import { join } from "node:path";
 
 const SITE = "https://railly.dev";
 const README_PATH = join(import.meta.dir, "..", "README.md");
-const TOP_PROJECTS = 6;
-const TOP_POSTS = 5;
+const PROFILE_PROJECTS = ["Petdex", "Agentfiles", "Tinte"];
+const TOP_POSTS = 3;
 
 type Project = {
 	name: string;
 	description: string;
 	url: string;
 	github: string;
-	stars: number;
 };
 
 async function fetchProjects(): Promise<Project[]> {
@@ -72,17 +71,15 @@ async function fetchPosts(): Promise<Post[]> {
 }
 
 function renderProjects(projects: Project[]): string {
-	const top = projects.slice(0, TOP_PROJECTS);
-	const rows = top
+	return PROFILE_PROJECTS.flatMap((name) => {
+		const project = projects.find((candidate) => candidate.name === name);
+		return project ? [project] : [];
+	})
 		.map((p) => {
 			const link = p.url.startsWith("https://github.com") ? p.github : p.url;
-			return `| [${p.name}](${link}) | ${p.description} \`${p.stars}★\` |`;
+			return `- [${p.name}](${link}) · ${p.description}`;
 		})
 		.join("\n");
-
-	return ["| Project | Description |", "|---------|-------------|", rows].join(
-		"\n",
-	);
 }
 
 function formatDate(d: Date): string {

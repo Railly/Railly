@@ -93,11 +93,11 @@ export const brandRegistry: Record<BrandName, BrandEntry> = {
 	},
 	agentfiles: {
 		kind: "svg",
-		viewBox: "0 0 24 24",
+		viewBox: "0 0 48 48",
 		fill: "none",
 		label: "Agentfiles",
 		paths:
-			'<path\n        d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6Z"\n        stroke="currentColor"\n        stroke-width="1.5"\n        stroke-linecap="round"\n        stroke-linejoin="round"\n    />\n    <path\n        d="M14 2v6h6"\n        stroke="currentColor"\n        stroke-width="1.5"\n        stroke-linecap="round"\n        stroke-linejoin="round"\n    />\n    <circle cx="10" cy="15" r="1.5" fill="currentColor" />\n    <circle cx="14" cy="13" r="1.5" fill="currentColor" />\n    <path\n        d="M10 15l4-2"\n        stroke="currentColor"\n        stroke-width="1"\n        stroke-linecap="round"\n    />',
+			'<rect width="48" height="48" rx="10" fill="#09090b" />\n    <g transform="translate(8, 8)" stroke="#8b5cf6" stroke-width="2.5" fill="none" stroke-linecap="round">\n        <path d="M0 6V2a2 2 0 0 1 2-2h4" />\n        <path d="M26 0h4a2 2 0 0 1 2 2v4" />\n        <path d="M32 26v4a2 2 0 0 1-2 2h-4" />\n        <path d="M6 32H2a2 2 0 0 1-2-2v-4" />\n        <line x1="6" y1="16" x2="26" y2="16" />\n    </g>',
 	},
 	oneHunter: {
 		kind: "image",
@@ -186,10 +186,11 @@ export const brandRegistry: Record<BrandName, BrandEntry> = {
 	},
 	hack0: {
 		kind: "svg",
-		viewBox: "0 0 1024 1024",
+		viewBox: "20.3 23.1 34.1 51.2",
 		fill: "none",
+		label: "hack0",
 		paths:
-			'<g id="h0-logo">\n    <rect class="h0-background" width="1024" height="1024" rx="128" />\n    <path class="h0-foreground" d="M220 260V764H320V560H460V764H560V260H460V460H320V260H220Z" />\n    <rect class="h0-background" x="590" y="380" width="240" height="340" rx="50" />\n    <path class="h0-foreground" d="M710 340C787.32 340 850 402.68 850 480V620C850 697.32 787.32 760 710 760C632.68 760 570 697.32 570 620V480C570 402.68 632.68 340 710 340ZM710 440C682.39 440 660 462.39 660 490V610C660 637.61 682.39 660 710 660C737.61 660 760 637.61 760 610V490C760 462.39 737.61 440 710 440Z" />\n  </g>\n  <style>\n    .h0-background {\n      fill: var(--color-foreground);\n    }\n    .h0-foreground {\n      fill: var(--color-background);\n    }\n  </style>',
+			'<polygon fill="#35c982" points="28.1 23.1 20.4 31.1 20.4 32.4 45.5 32.3 45.5 48.2 54.4 48.2 54.4 23.1" />\n    <polygon fill="var(--color-foreground)" points="28.9 32.3 20.4 32.4 20.3 74.3 47.2 74.3 54.4 67.6 54.4 52.8 45.4 52.8 45.4 65.4 28.9 65.4" />',
 	},
 	text0: {
 		kind: "svg",
