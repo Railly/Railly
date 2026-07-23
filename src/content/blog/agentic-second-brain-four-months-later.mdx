@@ -144,13 +144,13 @@ What artifact would let someone else check my answer?
 
 The second set of questions produces slower answers. It also produces answers I trust more.
 
-## What remains unproven
+## What is working and what remains unproven
 
-### Review escapes are not software quality
+### Review-gate is already useful
 
-`/review-gate` measures findings that escape each review round and turns recurring misses into deterministic checks. It is one useful quality signal, not a complete quality model.
+`/review-gate` is one of the parts I already trust. It runs deterministic checks first, then focused review passes selected by what changed. Each finding needs evidence, and every miss from an external review becomes a new gate.
 
-The next step is connecting that signal with production outcomes and maintainability. Until then, passing checks means the process met its current contract. It does not prove that the software is better.
+Its success metric is external findings per review round, trending to zero. That gives me a concrete quality loop that gets stricter with use.
 
 ### Retrieval still needs maintenance
 
