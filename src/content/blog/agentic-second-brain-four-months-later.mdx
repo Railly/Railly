@@ -128,9 +128,8 @@ Some of those contracts became real products:
 - `/health` reads Apple Health data and checks it against explicit goals.
 - `/meeting` turns recordings into decisions and action items.
 - `/research` writes a sourced artifact, then verifies URLs and claim anchoring.
-- `/prove-the-test` requires evidence that a test can actually fail.
 - `/review-gate` separates generation from independent judgment.
-- `/ship` still commits and logs the result, but it is no longer allowed to be the only proof that work is finished.
+- `/ship` inspects the current changes, commits and pushes them, syncs the vault to iCloud, and logs the commit to the daily journal.
 
 The same skill can serve a human session, a background task, or a future runtime because the contract lives above the model.
 
