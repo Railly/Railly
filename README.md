@@ -17,9 +17,9 @@ See [all projects →](https://railly.dev/projects)
 ### Latest writing
 
 <!-- START:WRITING -->
+- [My Agentic Second Brain, Four Months Later](https://www.railly.dev/blog/agentic-second-brain-four-months-later/) — 2026-07-23
 - [webctl: reverse-engineer any website into an agent CLI](https://www.railly.dev/blog/webctl/) — 2026-04-28
 - [Obsidian as a Personal OS for AI Coding Agents](https://www.railly.dev/blog/agentic-second-brain/) — 2026-03-31
-- [2,000 Stars Later: What I Learned Building Open Source Dev Tools](https://www.railly.dev/blog/2000-stars-later/) — 2026-03-14
 <!-- END:WRITING -->
 
 ### Links
