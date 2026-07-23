@@ -8,7 +8,7 @@ import Layout from "@/layouts/Layout.astro";
 
 const ogTitle = "About";
 const ogDescription =
-	"Software Engineer at Clerk, founder of Crafter Station, starting a path into AI research. Based in Lima, Peru.";
+	"Software Engineer at Vercel Labs and founder of Crafter Station, building AI developer tools, open source software, and LATAM's tech ecosystem from Lima, Peru.";
 const ogImage = `/api/og?title=${encodeURIComponent(ogTitle)}&description=${encodeURIComponent(ogDescription)}&tag=about`;
 
 const linkClass =
@@ -26,18 +26,18 @@ interface Milestone {
 const milestones: Milestone[] = [
 	{
 		year: "2026",
+		title: "Joined Vercel Labs",
+		detail:
+			"Software engineer building at the intersection of AI and developer tools.",
+		icon: "vercel",
+		url: "https://vercel.com",
+	},
+	{
+		year: "2026",
 		title: "Started a path into AI research",
 		detail:
 			"Civic-tech tools and LATAM-focused research at Crafter Research, alongside Shara Arauzo.",
 		url: "https://github.com/crafter-research",
-	},
-	{
-		year: "2025",
-		title: "Joined Clerk",
-		detail:
-			"AI software engineer — CLI tooling, LLM evaluations, and developer experience for the AI era.",
-		icon: "clerk",
-		url: "https://clerk.com",
 	},
 	{
 		year: "2025",
@@ -95,7 +95,7 @@ const milestonesByYear = milestones.reduce(
 ---
 
 <Layout
-	title="About Railly Hugo - Software Engineer at Clerk"
+	title="About Railly Hugo - Software Engineer at Vercel Labs"
 	description={ogDescription}
 	image={ogImage}
 >
@@ -121,7 +121,7 @@ const milestonesByYear = milestones.reduce(
 				<li class="flex items-baseline gap-3 text-base text-foreground-2">
 					<span class="select-none text-foreground-3" aria-hidden>&rarr;</span>
 					<span>
-						Software engineer at <BrandIcon name="clerk" width={16} height={16} class="inline-block mb-0.5 align-text-bottom" /><a href="https://clerk.com" target="_blank" class={linkClass}>Clerk</a>
+						Software engineer at <BrandIcon name="vercel" width={16} height={16} class="inline-block mb-0.5 mr-0.5 align-text-bottom" /><a href="https://vercel.com" target="_blank" class={linkClass}>Vercel Labs</a>
 					</span>
 				</li>
 				<li class="flex items-baseline gap-3 text-base text-foreground-2">
@@ -187,7 +187,7 @@ const milestonesByYear = milestones.reduce(
 		<section class="w-full">
 			<SectionHeader title="Open Source" className="mb-3" />
 			<p class="max-w-2xl text-sm leading-relaxed text-foreground-2">
-				I build tools in the open — <BrandIcon name="tinte" width={14} height={14} class="inline-block mb-0.5 mr-0.5 align-text-bottom rounded-full" /><a href="https://tinte.dev" target="_blank" class={linkClass}>Tinte</a> (agent-native design infrastructure, part of the Vercel OSS Program), <BrandIcon name="elements" width={12} height={14} class="inline-block mb-0.5 mr-0.5 align-text-bottom" /><a href="https://tryelements.dev" target="_blank" class={linkClass}>Elements</a> (full-stack shadcn components), and the <BrandIcon name="oneHunter" width={14} height={14} class="inline-block mr-1 align-text-bottom rounded-sm" /><a href="https://marketplace.visualstudio.com/items?itemName=RaillyHugo.one-hunter" target="_blank" class={linkClass}>One Hunter</a> VS Code theme (35k+ downloads), among others. I'm a <BrandIcon name="codex" width={14} height={14} class="inline-block mr-0.5 mb-0.5 align-text-bottom" /><a href="https://openai.com/codex/" target="_blank" class={linkClass}>Codex Ambassador</a> and <a href="https://v0.dev/chat/community" target="_blank" class={linkClass} aria-label="v0 Ambassador"><BrandIcon name="v0" width={14} height={14} class="inline-block mr-0.5 mb-0.5 align-text-bottom" /><span class="sr-only">v0 </span>Ambassador</a>.
+				I build tools in the open: <BrandIcon name="tinte" width={14} height={14} class="inline-block mb-0.5 mr-0.5 align-text-bottom rounded-full" /><a href="https://tinte.dev" target="_blank" class={linkClass}>Tinte</a> (agent-native design infrastructure, part of the Vercel OSS Program), <BrandIcon name="elements" width={12} height={14} class="inline-block mb-0.5 mr-0.5 align-text-bottom" /><a href="https://tryelements.dev" target="_blank" class={linkClass}>Elements</a> (full-stack shadcn components), and the <BrandIcon name="oneHunter" width={14} height={14} class="inline-block mr-1 align-text-bottom rounded-sm" /><a href="https://marketplace.visualstudio.com/items?itemName=RaillyHugo.one-hunter" target="_blank" class={linkClass}>One Hunter</a> VS Code theme (35k+ downloads), among others. I'm a <BrandIcon name="codex" width={14} height={14} class="inline-block mr-0.5 mb-0.5 align-text-bottom" /><a href="https://openai.com/codex/" target="_blank" class={linkClass}>Codex Ambassador</a>.
 			</p>
 		</section>
 

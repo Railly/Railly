@@ -33,11 +33,11 @@ export function buildSchemaGraph(props: SchemaProps): object {
 				siteConfig.links.github,
 				siteConfig.links.linkedin,
 			],
-			jobTitle: "AI Software Engineer",
+			jobTitle: "Software Engineer",
 			worksFor: {
 				"@type": "Organization",
-				name: "Clerk",
-				url: "https://clerk.com",
+				name: "Vercel",
+				url: "https://vercel.com",
 			},
 			founder: {
 				"@type": "Organization",
@@ -89,7 +89,7 @@ export function buildSchemaGraph(props: SchemaProps): object {
 	} else if (
 		props.title !== siteConfig.name &&
 		props.title !==
-			"Railly Hugo - AI Software Engineer | Crafter Station Founder"
+			"Railly Hugo - Software Engineer at Vercel Labs | Crafter Station Founder"
 	) {
 		breadcrumbItems.push({
 			"@type": "ListItem",

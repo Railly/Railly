@@ -22,7 +22,11 @@ They all described the same frustration: AI tools that forget everything between
 
 Not a note-taking app. Not an AI config file. A **personal OS** where the AI already knows your stack, your repos, your goals, your recurring failures, and your entire work history before you type a single prompt. The result: I ship production code across 10+ projects in parallel, each terminal session starting from the same vault, each one able to cross-reference any other project, and the AI gets better at helping me every day because it remembers everything.
 
-I open-sourced it: [github.com/Railly/agent-brain](https://github.com/Railly/agent-brain).
+I open-sourced it: [`agent-brain` v1.0.0](https://github.com/Railly/agent-brain/releases/tag/v1.0.0).
+
+<Callout type="note" title="Versioned snapshot">
+  This article documents the March 2026 architecture preserved in [`v1.0.0`](https://github.com/Railly/agent-brain/tree/v1.0.0). The current template is [`v2.0.0`](https://github.com/Railly/agent-brain/releases/tag/v2.0.0), covered in [the four-month update](/blog/agentic-second-brain-four-months-later).
+</Callout>
 
 ## The Problem
 
@@ -246,7 +250,7 @@ Each post will include the commands, the config patterns, and real examples.
 Three commands:
 
 ```bash
-git clone https://github.com/Railly/agent-brain.git
+git clone --branch v1.0.0 https://github.com/Railly/agent-brain.git
 cd agent-brain && claude
 /init
 ```
@@ -266,7 +270,7 @@ The repo also includes:
   Three developers independently asked how this works: [Daniel Santos](https://www.linkedin.com/in/danielsantosp/) (data engineer), [Jhomar Astuyauri](https://personal-portfolio-nu-one-62.vercel.app) (technical PM), and [Rodrigo Weilg](https://drigo.ro/) (building a SaaS from Italy). If three people ask the same question unprompted, the answer deserves to be public.
 </Callout>
 
-The repo is at [github.com/Railly/agent-brain](https://github.com/Railly/agent-brain). Star it if it's useful. Open an issue if something's broken. And if you set it up and it changes how you work, I want to hear about it.
+The exact template described here is preserved in [`v1.0.0`](https://github.com/Railly/agent-brain/releases/tag/v1.0.0). For the current template, use [`v2.0.0`](https://github.com/Railly/agent-brain/releases/tag/v2.0.0). Open an issue if something is broken. And if you set it up and it changes how you work, I want to hear about it.
 
 This is not a dotfiles repo. It's a system. The commands reference each other. `/today` feeds `/pulse`. `/inbox` feeds the garden. `/relink` connects the dots. `/draft` turns insights into content. The flow is the product.
 
