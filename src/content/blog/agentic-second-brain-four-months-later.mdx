@@ -1,10 +1,10 @@
 ---
 title: "My Agentic Second Brain, Four Months Later"
 description: "The vault did not just get bigger. It became a local AI control plane with replaceable workers, evidence gates, and a much more honest definition of done."
-pubDate: "2026-07-22"
+pubDate: "2026-07-23"
 tags: ["ai", "obsidian", "codex", "agents", "knowledge-management", "agentic-engineering"]
 category: "thoughts"
-status: "draft"
+status: "published"
 ---
 
 import Callout from "../../components/content/Callout.astro";
@@ -24,6 +24,10 @@ The first version solved the cold start. The second version is trying to solve t
 
 <Callout type="note" title="Update #1">
   This is a new article, not a rewrite of the March post. I want to publish one evidence-based snapshot every quarter so the series records how the system actually evolves, including the parts that break.
+</Callout>
+
+<Callout type="note" title="Agent Brain v2.0.0">
+  I froze the original template as [`v1.0.0`](https://github.com/Railly/agent-brain/releases/tag/v1.0.0) and released the compatible update as [`v2.0.0`](https://github.com/Railly/agent-brain/releases/tag/v2.0.0). Existing vaults can keep their notes and migrate only the workflow surfaces.
 </Callout>
 
 ## The Snapshot
@@ -216,9 +220,11 @@ The second set of questions produces slower answers. It also produces answers I 
 
 The system is better, but the vault does not support a victory lap yet.
 
-### 1. I still do not measure software quality
+### 1. I measure review escapes, not software quality
 
-I have no reliable baseline for escaped defects, rework loops, merge conflicts, recovery time, or human review time across agent tasks.
+`/review-gate` tracks external findings per review round and turns recurring misses into deterministic checks. That is a real metric for the review process.
+
+It is not a complete quality metric. I still have no reliable baseline for production defects, rework loops, merge conflicts, recovery time, human review time, maintainability, or user outcomes across agent tasks.
 
 Until I have that, "the factory is better" is a hypothesis. Passing checks is necessary. It is not the same as producing better software.
 
@@ -234,11 +240,13 @@ The vault currently contains 38 directories marked active and 56 in shaping. Tha
 
 The raw number cannot decide. The next version needs explicit commitment, paused, and expiry semantics instead of letting folder placement imply priority.
 
-### 4. The public version drifted behind
+### 4. The public template is deliberately narrower
 
-The open-source [`agent-brain`](https://github.com/Railly/agent-brain) template still represents the March architecture. My private system moved to project-local skills, a lean context entrypoint, provider-agnostic workers, and a factory pilot, but the public repo did not move with it.
+The audit caught a real gap: the public [`agent-brain`](https://github.com/Railly/agent-brain) repo had no release history and still represented only the March architecture.
 
-That is a real product gap. A system is not open source just because an old snapshot is public.
+I fixed the reproducibility part by freezing March as [`v1.0.0`](https://github.com/Railly/agent-brain/releases/tag/v1.0.0) and shipping [`v2.0.0`](https://github.com/Railly/agent-brain/releases/tag/v2.0.0) with canonical skills, portable runtime adapters, a non-destructive migration, and deterministic integrity checks.
+
+The private queue, daemon, messaging gateways, background workers, and policy engine are still excluded. They are not stable enough to present as a starter template. Open source should preserve a usable boundary, not dump every experiment.
 
 ### 5. The system evaluates itself
 
