@@ -160,15 +160,9 @@ File-backed memory avoids platform lock-in, but an index can still become stale.
 
 Most of the current evidence comes from my own work. The next update needs external use and before-and-after task data. Otherwise the system risks becoming a better way to agree with itself.
 
-## The public template has a deliberate boundary
+## Agent Brain is now versioned
 
-The public [`agent-brain`](https://github.com/Railly/agent-brain) repository now has reproducible releases. [`v1.0.0`](https://github.com/Railly/agent-brain/releases/tag/v1.0.0) preserves the March system. [`v2.0.0`](https://github.com/Railly/agent-brain/releases/tag/v2.0.0) adds canonical skills, portable adapters, a non-destructive migration, and deterministic integrity checks.
-
-It does not include every private experiment or raw vault artifact. A useful template needs a stable boundary, not a copy of someone else's life.
-
-My rule for this series is now:
-
-> Publish the lesson, not every private artifact that produced it.
+[`v1.0.0`](https://github.com/Railly/agent-brain/releases/tag/v1.0.0) preserves the March template. [`v2.0.0`](https://github.com/Railly/agent-brain/releases/tag/v2.0.0) adds canonical skills, portable adapters, a migration guide, and integrity checks. Existing vaults can update the workflow files without replacing their notes.
 
 ## What did not change
 
@@ -194,11 +188,6 @@ publish:
   - one failure that changed the system
   - one claim that remains unproven
   - the next measurement
-
-keep_private:
-  - personal data
-  - operational internals
-  - raw vault evidence
 ```
 
 The goal is not to announce a bigger second brain. It is to build a smaller, clearer system that can explain what it did, show the evidence, recover when it fails, and improve without treating every new layer as progress.
