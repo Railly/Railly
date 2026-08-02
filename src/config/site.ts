@@ -19,7 +19,7 @@ export const siteConfig: SiteConfig = {
 		location: "Buenos Aires, Argentina",
 	},
 	author: "Railly Hugo",
-	email: "contact@railly.dev",
+	email: "hi@railly.dev",
 	links: {
 		twitter: "https://twitter.com/raillyhugo",
 		github: "https://github.com/Railly",
