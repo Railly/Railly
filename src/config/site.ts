@@ -10,13 +10,13 @@ interface OgUrlOptions {
 export const siteConfig: SiteConfig = {
 	name: "Railly Hugo",
 	description:
-		"Software Engineer at Vercel Labs and Founder of Crafter Station, building AI developer tools, open source software, and LATAM's tech ecosystem from Lima, Peru.",
+		"Peruvian Software Engineer at Vercel Labs and Founder of Crafter Station, building AI developer tools, open source software, and LATAM's tech ecosystem from Buenos Aires.",
 	url: "https://www.railly.dev",
 	ogImage: "https://www.railly.dev/images/og.webp",
 	hero: {
 		title: "Hunter",
 		role: "Software Engineer",
-		location: "Lima, Peru",
+		location: "Buenos Aires, Argentina",
 	},
 	author: "Railly Hugo",
 	email: "contact@railly.dev",
@@ -40,6 +40,8 @@ export const siteConfig: SiteConfig = {
 		"React",
 		"Lima",
 		"Peru",
+		"Buenos Aires",
+		"Argentina",
 		"LATAM tech",
 	],
 	locale: "en_US",

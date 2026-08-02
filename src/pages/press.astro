@@ -1,0 +1,223 @@
+---
+import Footer from "@/components/layout/Footer.astro";
+import PageLayout from "@/components/layout/PageLayout.astro";
+import SectionHeader from "@/components/layout/SectionHeader.astro";
+import Layout from "@/layouts/Layout.astro";
+
+const updatedAt = "August 1, 2026";
+const ogTitle = "Press kit";
+const ogDescription =
+	"Press resources, verified facts, biographies, and media assets for Railly Hugo, creator of Petdex and founder of Crafter Station.";
+const ogImage = `/api/og?title=${encodeURIComponent(ogTitle)}&description=${encodeURIComponent(ogDescription)}&tag=press`;
+
+const metrics = [
+	{
+		value: "3,667",
+		label: "Petdex GitHub stars",
+		href: "https://github.com/crafter-station/petdex",
+		note: "Public snapshot",
+	},
+	{
+		value: "164",
+		label: "Petdex forks",
+		href: "https://github.com/crafter-station/petdex",
+		note: "Public snapshot",
+	},
+	{
+		value: "612",
+		label: "Petdex contributions by Railly",
+		href: "https://api.github.com/repos/crafter-station/petdex/contributors",
+		note: "Principal contributor",
+	},
+	{
+		value: "900+",
+		label: "Crafter Station members",
+		href: "https://github.com/crafter-station",
+		note: "Community record",
+	},
+];
+
+const validation = [
+	{
+		title: "Hermes Agent consumes Petdex directly",
+		detail:
+			"Hermes Agent fetches Petdex's public manifest and uses its spritesheet, JSON, and ZIP asset URLs. Hermes had more than 223,000 GitHub stars at this snapshot.",
+		href: "https://github.com/NousResearch/hermes-agent/blob/main/agent/pet/manifest.py",
+		linkLabel: "View the integration",
+	},
+	{
+		title: "Petdex cited by Decrypt",
+		detail:
+			"Decrypt cited Petdex as the source of more than 3,200 sprites in its coverage of the Hermes pets feature.",
+		href: "https://decrypt.co/es/372082/tu-agente-hermes-ahora-tiene-una-mascota-que-no-hace-absolutamente-nada-y-ese-es-el-punto",
+		linkLabel: "Read the coverage",
+	},
+	{
+		title: "Next.js Global Hackathon winner",
+		detail:
+			"Text0, created with Anthony Cueva, was selected as an official winner of the first Next.js Global Hackathon in 2025.",
+		href: "https://community.vercel.com/t/news-cache-2025-04-28/9427",
+		linkLabel: "See the official announcement",
+	},
+];
+
+const topics = [
+	"Open source infrastructure for AI agents",
+	"Developer tools and agent-first interfaces",
+	"Building global technology from Latin America",
+	"Turning technology communities into shipped projects",
+	"Building in public as a career and distribution system",
+];
+---
+
+<Layout
+	title="Press kit - Railly Hugo"
+	description={ogDescription}
+	image={ogImage}
+>
+	<PageLayout class="flex flex-col gap-16">
+		<section class="grid gap-8 sm:grid-cols-[1fr_13rem] sm:items-start">
+			<div class="flex flex-col gap-5">
+				<div>
+					<p class="mb-2 font-mono text-xs uppercase tracking-wider text-foreground-3">
+						Press kit
+					</p>
+					<h1 class="max-w-2xl text-2xl font-medium leading-tight text-foreground sm:text-3xl">
+						Railly Hugo builds open source infrastructure and communities for the next generation of software builders.
+					</h1>
+				</div>
+				<p class="max-w-2xl text-base leading-relaxed text-foreground-2">
+					Peruvian software engineer based in Buenos Aires, creator and principal contributor of Petdex, founder of Crafter Station, and Software Engineer at Vercel Labs.
+				</p>
+				<div class="flex flex-wrap gap-2 text-xs">
+					<a href="mailto:contact@railly.dev" class="rounded border border-ui px-3 py-1.5 text-foreground transition-colors hover:border-ui-2 hover:bg-background-2">
+						contact@railly.dev
+					</a>
+					<a href="https://github.com/Railly" target="_blank" rel="noopener noreferrer" class="rounded border border-ui px-3 py-1.5 text-foreground transition-colors hover:border-ui-2 hover:bg-background-2">
+						GitHub
+					</a>
+					<a href="https://linkedin.com/in/railly-hugo" target="_blank" rel="noopener noreferrer" class="rounded border border-ui px-3 py-1.5 text-foreground transition-colors hover:border-ui-2 hover:bg-background-2">
+						LinkedIn
+					</a>
+				</div>
+			</div>
+			<div class="overflow-hidden rounded-lg border border-ui bg-background-2">
+				<img
+					src="/images/profile-2023.webp"
+					alt="Railly Hugo"
+					class="aspect-square w-full object-cover"
+					width="2701"
+					height="2701"
+					loading="eager"
+				/>
+			</div>
+		</section>
+
+		<section>
+			<div class="mb-5 flex items-end justify-between gap-4">
+				<SectionHeader title="Verified snapshot" className="mb-0" />
+				<span class="font-mono text-xs text-foreground-3">{updatedAt}</span>
+			</div>
+			<div class="grid gap-px overflow-hidden rounded-lg border border-ui bg-ui sm:grid-cols-2">
+				{metrics.map((metric) => (
+					<a href={metric.href} target="_blank" rel="noopener noreferrer" class="group bg-background p-5 transition-colors hover:bg-background-2">
+						<div class="font-mono text-2xl font-medium tabular-nums text-foreground">{metric.value}</div>
+						<div class="mt-1 text-sm text-foreground-2">{metric.label}</div>
+						<div class="mt-2 text-xs text-foreground-3 group-hover:text-foreground-2">{metric.note}</div>
+					</a>
+				))}
+			</div>
+		</section>
+
+		<section>
+			<SectionHeader title="Primary story" className="mb-5" />
+			<div class="rounded-lg border border-ui p-6">
+				<p class="text-lg font-medium leading-relaxed text-foreground">
+					A project created by a Peruvian builder became infrastructure for one of GitHub's largest open source AI agent repositories.
+				</p>
+				<p class="mt-4 text-sm leading-relaxed text-foreground-2">
+					Petdex is an open source gallery of animated companions for coding agents. Hermes Agent consumes Petdex's public manifest directly, turning the catalog into an integration surface rather than a standalone gallery. The larger story connects open source product adoption with Crafter Station's work helping Latin American builders create and ship technology.
+				</p>
+				<div class="mt-5 flex flex-wrap gap-3 text-sm">
+					<a href="https://petdex.dev" target="_blank" rel="noopener noreferrer" class="text-foreground underline decoration-ui underline-offset-4 hover:decoration-foreground">Open Petdex</a>
+					<a href="https://github.com/crafter-station/petdex" target="_blank" rel="noopener noreferrer" class="text-foreground underline decoration-ui underline-offset-4 hover:decoration-foreground">View source</a>
+				</div>
+			</div>
+		</section>
+
+		<section>
+			<SectionHeader title="Independent validation" className="mb-5" />
+			<div class="flex flex-col divide-y divide-ui border-y border-ui">
+				{validation.map((item) => (
+					<div class="py-5 first:pt-0 last:pb-0">
+						<h3 class="text-sm font-medium text-foreground">{item.title}</h3>
+						<p class="mt-2 max-w-2xl text-sm leading-relaxed text-foreground-2">{item.detail}</p>
+						<a href={item.href} target="_blank" rel="noopener noreferrer" class="mt-3 inline-block text-xs text-foreground underline decoration-ui underline-offset-4 hover:decoration-foreground">
+							{item.linkLabel}
+						</a>
+					</div>
+				))}
+			</div>
+		</section>
+
+		<section>
+			<SectionHeader title="Biographies" className="mb-5" />
+			<div class="grid gap-8 lg:grid-cols-2">
+				<div>
+					<h3 class="font-mono text-xs uppercase tracking-wider text-foreground-3">Español</h3>
+					<p class="mt-3 text-sm leading-relaxed text-foreground-2">
+						Railly Hugo es un ingeniero de software peruano, creador principal de Petdex y fundador de Crafter Station. Actualmente trabaja en Vercel Labs y construye herramientas open source para agentes de IA, además de programas que ayudan a builders latinoamericanos a publicar productos.
+					</p>
+					<p class="mt-4 text-sm leading-relaxed text-foreground-2">
+						Nacido en Lima y radicado en Buenos Aires, Railly lidera Petdex, una galería open source de mascotas animadas para agentes de programación con más de 3.600 estrellas en GitHub. Su catálogo es consumido directamente por Hermes Agent mediante una API pública. También fundó Crafter Station, una organización comunitaria sin fines de lucro enfocada en crear, publicar y fortalecer el ecosistema tecnológico del Perú. En 2025, Text0, proyecto creado junto a Anthony Cueva, fue reconocido como ganador oficial del primer Next.js Global Hackathon. Antes de incorporarse a Vercel Labs, trabajó en evaluaciones de IA y developer tooling en Clerk.
+					</p>
+				</div>
+				<div>
+					<h3 class="font-mono text-xs uppercase tracking-wider text-foreground-3">English</h3>
+					<p class="mt-3 text-sm leading-relaxed text-foreground-2">
+						Railly Hugo is a Peruvian software engineer, principal creator of Petdex, and founder of Crafter Station. He currently works at Vercel Labs and builds open source tools for AI agents alongside programs that help Latin American builders ship products.
+					</p>
+					<p class="mt-4 text-sm leading-relaxed text-foreground-2">
+						Born in Lima and based in Buenos Aires, Railly leads Petdex, an open source gallery of animated companions for coding agents with more than 3,600 GitHub stars. Hermes Agent consumes its catalog directly through a public API. He also founded Crafter Station, a nonprofit community organization focused on creating, shipping, and strengthening Peru's technology ecosystem. In 2025, Text0, built with Anthony Cueva, was recognized as an official winner of the first Next.js Global Hackathon. Before joining Vercel Labs, he worked on AI evaluations and developer tooling at Clerk.
+					</p>
+				</div>
+			</div>
+		</section>
+
+		<section class="grid gap-10 lg:grid-cols-2">
+			<div>
+				<SectionHeader title="Interview topics" className="mb-5" />
+				<ul class="flex flex-col gap-3">
+					{topics.map((topic) => (
+						<li class="flex gap-3 text-sm text-foreground-2">
+							<span class="select-none text-foreground-3" aria-hidden>&rarr;</span>
+							<span>{topic}</span>
+						</li>
+					))}
+				</ul>
+			</div>
+			<div>
+				<SectionHeader title="Media assets" className="mb-5" />
+				<div class="flex flex-col gap-3 text-sm">
+					<a href="/images/profile-2023.webp" download="railly-hugo-headshot.webp" class="flex items-center justify-between rounded border border-ui px-4 py-3 text-foreground transition-colors hover:border-ui-2 hover:bg-background-2">
+						<span>High-resolution headshot</span>
+						<span class="font-mono text-xs text-foreground-3">2701 x 2701</span>
+					</a>
+					<a href="mailto:contact@railly.dev?subject=Railly%20Hugo%20media%20assets" class="flex items-center justify-between rounded border border-ui px-4 py-3 text-foreground transition-colors hover:border-ui-2 hover:bg-background-2">
+						<span>Request product or event images</span>
+						<span class="font-mono text-xs text-foreground-3">email</span>
+					</a>
+				</div>
+			</div>
+		</section>
+
+		<section class="rounded-lg border border-ui bg-background-2 p-6">
+			<SectionHeader title="Press contact" className="mb-3" />
+			<p class="max-w-2xl text-sm leading-relaxed text-foreground-2">
+				For interviews, fact checks, or additional assets, email <a href="mailto:contact@railly.dev" class="text-foreground underline decoration-ui underline-offset-4 hover:decoration-foreground">contact@railly.dev</a>. Railly speaks independently about his open source and community work, not on behalf of Vercel.
+			</p>
+		</section>
+
+		<Footer />
+	</PageLayout>
+</Layout>
