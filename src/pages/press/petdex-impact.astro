@@ -1,0 +1,182 @@
+---
+import Footer from "@/components/layout/Footer.astro";
+import PageLayout from "@/components/layout/PageLayout.astro";
+import Layout from "@/layouts/Layout.astro";
+
+const weekly = [
+	["Apr 26–May 2", 380, 380],
+	["May 3–9", 6641, 6261],
+	["May 10–16", 11919, 5278],
+	["May 17–23", 15001, 3082],
+	["May 24–30", 18730, 3729],
+	["May 31–Jun 6", 20733, 2003],
+	["Jun 7–13", 23022, 2289],
+	["Jun 14–20", 25043, 2021],
+	["Jun 21–27", 27091, 2048],
+	["Jun 28–Jul 4", 28875, 1784],
+] as const;
+
+const maxDownloads = 30000;
+const points = weekly.map(([, total], index) => {
+	const x = 24 + (index / (weekly.length - 1)) * 652;
+	const y = 196 - (total / maxDownloads) * 156;
+	return { x, y };
+});
+const line = points.map((point) => `${point.x},${point.y}`).join(" ");
+
+const sources = [
+	["OSSCAR Crafter Station profile", "https://osscar.dev/org/crafter-station"],
+	["OSSCAR methodology", "https://osscar.dev/methodology"],
+	[
+		"npm public API, Petdex Q2 range",
+		"https://api.npmjs.org/downloads/range/2026-04-26:2026-07-04/petdex",
+	],
+	[
+		"Petdex contributors API",
+		"https://api.github.com/repos/crafter-station/petdex/contributors?per_page=100",
+	],
+	[
+		"Hermes manifest consumer",
+		"https://github.com/NousResearch/hermes-agent/blob/main/agent/pet/manifest.py",
+	],
+	[
+		"Decrypt coverage",
+		"https://decrypt.co/es/372082/tu-agente-hermes-ahora-tiene-una-mascota-que-no-hace-absolutamente-nada-y-ese-es-el-punto",
+	],
+];
+---
+
+<Layout
+	title="Petdex Impact Report · Q2 2026 | Railly Hugo"
+	description="A source-linked report on Petdex's 28,875 npm downloads, 3,218 net new GitHub stars, and contribution to Crafter Station's Q2 2026 growth."
+>
+	<PageLayout class="flex flex-col gap-16">
+		<header class="border-b border-ui pb-12">
+			<p class="font-mono text-xs uppercase tracking-[0.18em] text-foreground-3">Petdex Impact Report · Q2 2026</p>
+			<h1 class="impact-title mt-5 max-w-3xl font-semibold leading-[1.08] tracking-tight">One package drove Crafter Station's Q2 open-source growth.</h1>
+			<p class="mt-6 max-w-2xl text-lg leading-relaxed text-foreground-2">Petdex generated 28,875 npm downloads and 3,218 net new GitHub stars during OSSCAR's published Q2 measurement window.</p>
+			<div class="report-metrics mt-10 grid divide-y divide-ui border-y border-ui">
+				<div class="py-5 lg:pr-5"><p class="font-mono text-3xl tabular-nums">28,875</p><p class="mt-1 font-mono text-[11px] uppercase tracking-wider text-foreground-3">npm downloads</p></div>
+				<div class="py-5 lg:px-5"><p class="font-mono text-3xl tabular-nums">3,218</p><p class="mt-1 font-mono text-[11px] uppercase tracking-wider text-foreground-3">net new stars</p></div>
+				<div class="py-5 lg:pl-5"><p class="font-mono text-3xl tabular-nums">96.72%</p><p class="mt-1 font-mono text-[11px] uppercase tracking-wider text-foreground-3">of org star growth</p></div>
+			</div>
+			<div class="mt-8 border border-ui bg-background-2 p-5 font-mono text-sm leading-relaxed">OSSCAR's npm series matches the public npm API for <strong>petdex</strong> point for point.</div>
+			<div class="mt-5 flex flex-wrap justify-between gap-3 font-mono text-[11px] uppercase tracking-wider text-foreground-3"><span>Historical window: Apr 26–Jul 4, 2026</span><span>Report updated: Aug 2, 2026</span></div>
+		</header>
+
+		<section>
+			<p class="font-mono text-xs uppercase tracking-[0.18em] text-foreground-3">Proof 01 · GitHub attribution</p>
+			<h2 class="mt-3 text-2xl font-semibold tracking-tight lg:text-3xl">Petdex supplied 96.72% of Crafter Station's net new stars.</h2>
+			<p class="mt-3 max-w-2xl text-sm leading-relaxed text-foreground-2">Crafter Station grew from 870 to 4,197 stars, a gain of 3,327. Petdex grew from 70 to 3,288 stars in the same snapshot, a gain of 3,218.</p>
+			<div class="mt-7 grid gap-3 sm:hidden">
+				<div class="border-y border-ui py-4">
+					<p class="font-mono text-xs">crafter-station/petdex</p>
+					<div class="mt-3 grid grid-cols-4 gap-2 font-mono text-[10px]"><div><p class="text-foreground-3">Start</p><p class="mt-1">70</p></div><div><p class="text-foreground-3">End</p><p class="mt-1">3,288</p></div><div><p class="text-foreground-3">Net new</p><p class="mt-1">3,218</p></div><div><p class="text-foreground-3">Share</p><p class="mt-1">96.72%</p></div></div>
+				</div>
+				<div class="border-b border-ui pb-4">
+					<p class="font-mono text-xs text-foreground-2">Crafter Station total</p>
+					<div class="mt-3 grid grid-cols-4 gap-2 font-mono text-[10px]"><div><p class="text-foreground-3">Start</p><p class="mt-1">870</p></div><div><p class="text-foreground-3">End</p><p class="mt-1">4,197</p></div><div><p class="text-foreground-3">Net new</p><p class="mt-1">3,327</p></div><div><p class="text-foreground-3">Share</p><p class="mt-1">100%</p></div></div>
+				</div>
+			</div>
+			<div class="mt-7 hidden overflow-x-auto sm:block">
+				<table class="w-full min-w-[34rem] border-y border-ui text-left font-mono text-xs">
+					<thead class="text-foreground-3"><tr><th class="py-3 font-normal">Repository</th><th class="py-3 text-right font-normal">Start</th><th class="py-3 text-right font-normal">End</th><th class="py-3 text-right font-normal">Net new</th><th class="py-3 text-right font-normal">Share</th></tr></thead>
+					<tbody class="divide-y divide-ui"><tr><td class="py-3">crafter-station/petdex</td><td class="py-3 text-right">70</td><td class="py-3 text-right">3,288</td><td class="py-3 text-right">3,218</td><td class="py-3 text-right">96.72%</td></tr><tr class="text-foreground-2"><td class="py-3">Crafter Station total</td><td class="py-3 text-right">870</td><td class="py-3 text-right">4,197</td><td class="py-3 text-right">3,327</td><td class="py-3 text-right">100%</td></tr></tbody>
+				</table>
+			</div>
+		</section>
+
+		<section>
+			<p class="font-mono text-xs uppercase tracking-[0.18em] text-foreground-3">Proof 02 · The npm curve</p>
+			<h2 class="mt-3 text-2xl font-semibold tracking-tight lg:text-3xl">From 380 to 28,875 downloads in ten weekly buckets.</h2>
+			<p class="mt-3 max-w-2xl text-sm leading-relaxed text-foreground-2">The values below are cumulative totals reconstructed from the npm public API across the same range shown by OSSCAR.</p>
+			<div class="mt-8 border-y border-ui py-6">
+				<svg viewBox="0 0 700 220" class="h-auto w-full" role="img" aria-labelledby="npm-chart-title npm-chart-desc">
+					<title id="npm-chart-title">Petdex weekly cumulative npm downloads</title>
+					<desc id="npm-chart-desc">Downloads increased from 380 in the first bucket to 28,875 by July 4, 2026.</desc>
+					{[0, 10000, 20000, 30000].map((tick) => {
+						const y = 196 - (tick / maxDownloads) * 156;
+						return <g><line x1="24" x2="676" y1={y} y2={y} stroke="var(--color-ui)" stroke-width="1" /><text x="24" y={y - 7} fill="var(--color-foreground-3)" class="font-mono text-[10px]">{tick.toLocaleString()}</text></g>;
+					})}
+					<polyline points={line} fill="none" stroke="var(--color-foreground)" stroke-width="2" />
+					{points.map((point, index) => <g><circle cx={point.x} cy={point.y} r="3" fill="var(--color-background)" stroke="var(--color-foreground)" stroke-width="2" /><text x={point.x} y="216" text-anchor={index === 0 ? "start" : index === points.length - 1 ? "end" : "middle"} fill="var(--color-foreground-3)" class="font-mono text-[9px]">{index === 0 ? "May 2" : index === points.length - 1 ? "Jul 4" : ""}</text></g>)}
+				</svg>
+			</div>
+			<div class="report-ratios grid divide-y divide-ui border-b border-ui">
+				<div class="py-5 lg:pr-5"><p class="font-mono text-3xl">76×</p><p class="mt-1 text-xs leading-relaxed text-foreground-3">Actual growth from the first 380-download bucket.</p></div>
+				<div class="py-5 lg:px-5"><p class="font-mono text-3xl">28.9×</p><p class="mt-1 text-xs leading-relaxed text-foreground-3">OSSCAR ranking multiplier using a padded 1,000-download baseline.</p></div>
+				<div class="py-5 lg:pl-5"><p class="font-mono text-3xl">100%</p><p class="mt-1 text-xs leading-relaxed text-foreground-3">Of Crafter Station's published OSSCAR npm signal came from Petdex.</p></div>
+			</div>
+			<details class="mt-7 border border-ui p-5">
+				<summary class="cursor-pointer font-mono text-xs uppercase tracking-wider">Weekly breakdown</summary>
+				<div class="mt-4 overflow-x-auto"><table class="w-full min-w-[32rem] font-mono text-xs"><thead class="text-foreground-3"><tr><th class="py-2 text-left font-normal">Bucket</th><th class="py-2 text-right font-normal">Weekly</th><th class="py-2 text-right font-normal">Cumulative</th></tr></thead><tbody class="divide-y divide-ui">{weekly.map(([period, total, delta]) => <tr><td class="py-2">{period}</td><td class="py-2 text-right">{delta.toLocaleString()}</td><td class="py-2 text-right">{total.toLocaleString()}</td></tr>)}</tbody></table></div>
+			</details>
+		</section>
+
+		<section class="report-attribution grid gap-8 border-y border-ui py-10">
+			<div><p class="font-mono text-xs uppercase tracking-[0.18em] text-foreground-3">Proof 03 · Personal attribution</p><p class="mt-4 font-mono text-5xl tabular-nums">612</p><p class="mt-2 text-sm text-foreground-2">Petdex contributions by Railly Hugo in the captured GitHub contributor snapshot.</p></div>
+			<div class="flex flex-col justify-end"><p class="text-xl leading-relaxed">The second contributor recorded 67 contributions. Railly's count was 9.13 times higher, supporting the description <strong>principal creator</strong> without claiming he built the project alone.</p></div>
+		</section>
+
+		<section>
+			<p class="font-mono text-xs uppercase tracking-[0.18em] text-foreground-3">Proof 04 · Independent use</p>
+			<h2 class="mt-3 text-2xl font-semibold tracking-tight lg:text-3xl">Hermes consumes Petdex in an actual code path.</h2>
+			<p class="mt-4 max-w-3xl text-sm leading-relaxed text-foreground-2">Hermes Agent's official code fetches Petdex's public manifest and asset URLs. Its documentation directs users to the Petdex gallery, and Decrypt independently identified Petdex as the sprite source in its coverage. This is adoption evidence, not a formal partnership claim.</p>
+		</section>
+
+		<section class="border-t border-ui pt-10">
+			<h2 class="text-sm font-medium uppercase tracking-wider text-foreground-2">Methodology and sources</h2>
+			<p class="mt-4 max-w-3xl text-sm leading-relaxed text-foreground-2">This report preserves OSSCAR's historical Q2 snapshot. GitHub stars measure attention, not users or revenue. npm downloads count registry downloads, not unique people. The 96.72% figure applies only to net new stars. The 100% npm figure applies only to Crafter Station's published OSSCAR npm series for this measurement window.</p>
+			<ul class="report-sources mt-6 grid gap-3 text-sm">{sources.map(([label, href]) => <li><a href={href} target="_blank" rel="noreferrer" class="underline">{label} ↗</a></li>)}</ul>
+		</section>
+
+		<section class="report-contact border border-ui bg-background-2 p-6">
+			<div><p class="font-medium">Press, legal, or research questions</p><p class="mt-1 text-sm text-foreground-2">Request the dated evidence package or a source walkthrough.</p></div>
+			<a href="mailto:hi@railly.dev?subject=Petdex%20Impact%20Report" class="mt-5 inline-flex border border-foreground px-4 py-2 font-mono text-xs uppercase tracking-wider transition-colors hover:bg-foreground hover:text-background lg:mt-0">hi@railly.dev</a>
+		</section>
+
+		<Footer />
+	</PageLayout>
+</Layout>
+
+<style is:global>
+	.impact-title {
+		font-size: clamp(2.4rem, 5vw, 3.75rem);
+		line-height: 1.08;
+	}
+
+	@media (min-width: 64rem) {
+		.report-metrics,
+		.report-ratios {
+			grid-template-columns: repeat(3, minmax(0, 1fr));
+		}
+
+		.report-metrics > :not(:first-child),
+		.report-ratios > :not(:first-child) {
+			border-top: 0;
+			border-left: 1px solid var(--color-ui);
+			padding-left: 1.25rem;
+		}
+
+		.report-metrics > :not(:last-child),
+		.report-ratios > :not(:last-child) {
+			padding-right: 1.25rem;
+		}
+
+		.report-attribution {
+			grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+		}
+
+		.report-sources {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+
+		.report-contact {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			gap: 2rem;
+			padding: 2rem;
+		}
+	}
+</style>

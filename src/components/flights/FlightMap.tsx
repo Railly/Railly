@@ -371,7 +371,7 @@ export default function FlightMap({ flights }: FlightMapProps) {
 					style={{ gap: "0.5rem" }}
 				>
 					<div className="w-3 h-3 rounded-full bg-yellow border-2 border-background" />
-					<span>Home Base</span>
+					<span>Flight origin</span>
 				</div>
 				<div
 					className="flex items-center text-xs text-foreground-3"
