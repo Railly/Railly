@@ -5,6 +5,12 @@ import Layout from "@/layouts/Layout.astro";
 
 const resources = [
 	{
+		title: "OpenAPI specification",
+		href: "/openapi.json",
+		detail:
+			"OpenAPI 3.1 contract for railly.dev's read-only public metadata API.",
+	},
+	{
 		title: "Project catalog",
 		href: "/api/projects.json",
 		detail: "Public JSON metadata for Railly's projects.",
@@ -68,8 +74,8 @@ const resources = [
 			<h2 id="availability" class="text-sm font-medium uppercase tracking-wider text-foreground-2">Availability</h2>
 			<p class="max-w-2xl text-sm leading-relaxed text-foreground-2">
 				railly.dev is a portfolio and discovery layer, not a hosted API product.
-				It does not expose site-wide authentication, webhooks, an OpenAPI contract,
-				or an MCP server. Follow each linked project's repository and documentation
+				Its read-only project catalog is documented by OpenAPI. It does not expose
+				site-wide authentication, webhooks, or an MCP server. Follow each linked project's repository and documentation
 				for its supported installation, interfaces, and usage.
 			</p>
 		</section>

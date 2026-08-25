@@ -17,6 +17,37 @@ const markdownHeaders = () => {
 };
 
 export const onRequest = defineMiddleware(async ({ request, url }, next) => {
+	if (url.pathname.startsWith("/api/")) {
+		const response = await next();
+		if (
+			response.status !== 404 ||
+			response.headers.get("Content-Type")?.includes("application/json")
+		) {
+			return response;
+		}
+		return new Response(
+			request.method === "HEAD"
+				? null
+				: JSON.stringify({
+						error: {
+							code: "API_ROUTE_NOT_FOUND",
+							message: `No public API route exists at ${url.pathname}.`,
+							resolution:
+								"Inspect the OpenAPI document and retry with a documented path and method.",
+							documentation: new URL("/openapi.json", url).toString(),
+						},
+					}),
+			{
+				status: 404,
+				headers: {
+					"Cache-Control": "public, max-age=60, s-maxage=60",
+					"Content-Type": "application/json; charset=utf-8",
+					Link: '</openapi.json>; rel="service-desc"; type="application/vnd.oai.openapi+json"',
+				},
+			},
+		);
+	}
+
 	if (!isDocumentRequest(request, url.pathname)) return next();
 
 	const representation = preferredRepresentation(request.headers.get("Accept"));

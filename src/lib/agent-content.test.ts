@@ -8,13 +8,14 @@ describe("agent content", () => {
 		expect(markdown).toContain("## When to use this site");
 		expect(markdown).toContain("/developers");
 		expect(markdown).toContain("/api/projects.json");
+		expect(markdown).toContain("/openapi.json");
 		expect(markdown?.length).toBeGreaterThan(500);
 	});
 
 	it("publishes honest developer-resource boundaries", () => {
 		const markdown = getAgentMarkdown("/developers");
 		expect(markdown).toContain("not a hosted API product");
-		expect(markdown).toContain("There is no site-wide API key");
+		expect(markdown).toContain("read-only public project catalog");
 	});
 
 	it("returns null for unknown canonical content", () => {

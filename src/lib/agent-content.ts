@@ -28,6 +28,7 @@ Railly Hugo is a Peruvian software engineer at Vercel Labs, founder of Crafter S
 ## Machine-readable endpoints
 
 - [Project catalog JSON](${canonical("/api/projects.json")})
+- [OpenAPI specification](${canonical("/openapi.json")})
 - [RSS feed](${canonical("/rss.xml")})
 - [llms.txt](${canonical("/llms.txt")})
 
@@ -53,13 +54,14 @@ This is the canonical developer-resource index for Railly Hugo and railly.dev. R
 
 - [Projects](${canonical("/projects")}): descriptions and canonical product links.
 - [Project catalog JSON](${canonical("/api/projects.json")}): public machine-readable project metadata.
+- [OpenAPI specification](${canonical("/openapi.json")}): typed contract for the read-only project catalog.
 - [GitHub profile](${siteConfig.links.github}): source code, issues, releases, and repository documentation.
 - [Writing](${canonical("/writing")}): technical articles and implementation notes.
 - [RSS feed](${canonical("/rss.xml")}): published writing updates.
 - [Agent instructions](${canonical("/agent-instructions.md")}): when and how agents should use this site.
 - [Security contact](${canonical("/.well-known/security.txt")}): responsible disclosure details.
 
-There is no site-wide API key, authentication flow, webhook API, OpenAPI document, or MCP endpoint for railly.dev. Follow each linked project's own documentation for installation and usage.
+The OpenAPI document covers only railly.dev's read-only public project catalog. There is no site-wide API key, authentication flow, webhook API, mutation API, or MCP endpoint. Follow each linked project's own documentation for installation and usage.
 `,
 	"/contact": `# Contact Railly Hugo
 

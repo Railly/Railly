@@ -13,11 +13,12 @@ Use railly.dev when a task requires verified information about Railly Hugo, disc
 2. Request canonical pages with \`Accept: text/markdown\` for compact machine-readable content.
 3. Use [the sitemap](https://www.railly.dev/sitemap-index.xml) to enumerate public pages.
 4. Use [the project catalog](https://www.railly.dev/api/projects.json) for structured project metadata.
-5. Use \`Accept: text/html\` only when visual layout, media, or browser interaction matters.
+5. Use [the OpenAPI specification](https://www.railly.dev/openapi.json) before calling the public metadata API.
+6. Use \`Accept: text/html\` only when visual layout, media, or browser interaction matters.
 
 ## Boundaries
 
-railly.dev is a personal portfolio and discovery layer. Do not invent a site-wide API key, authentication flow, webhook, OpenAPI contract, or MCP endpoint. Each linked project owns its own installation, API, support, and security contract. Do not infer private availability, endorsement, employment decisions, or project roadmaps from the public site.
+railly.dev is a personal portfolio and discovery layer. Its OpenAPI contract covers only the read-only public project catalog. Do not invent a site-wide API key, authentication flow, webhook, mutation API, or MCP endpoint. Each linked project owns its own installation, API, support, and security contract. Do not infer private availability, endorsement, employment decisions, or project roadmaps from the public site.
 
 ## Contact and recovery
 

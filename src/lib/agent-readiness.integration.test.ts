@@ -144,4 +144,28 @@ describe("agent readiness HTTP contract", () => {
 			expect(visibleText.length, pathname).toBeGreaterThan(500);
 		}
 	});
+
+	it("publishes a typed OpenAPI contract for the project catalog", async () => {
+		const response = await fetch(`${baseUrl}/openapi.json`);
+		const document = await response.json();
+		expect(response.status).toBe(200);
+		expect(response.headers.get("content-type")).toContain(
+			"application/vnd.oai.openapi+json",
+		);
+		expect(document.openapi).toBe("3.1.0");
+		expect(document.paths["/api/projects.json"].get.operationId).toBe(
+			"listRaillyProjects",
+		);
+	});
+
+	it("returns actionable JSON for unknown API routes", async () => {
+		const response = await fetch(`${baseUrl}/api/does-not-exist`);
+		const body = await response.json();
+		expect(response.status).toBe(404);
+		expect(response.headers.get("content-type")).toContain("application/json");
+		expect(response.headers.get("link")).toContain("/openapi.json");
+		expect(body.error.code).toBe("API_ROUTE_NOT_FOUND");
+		expect(body.error.resolution).toContain("OpenAPI");
+		expect(body.error.documentation).toContain("/openapi.json");
+	});
 });

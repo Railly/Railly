@@ -26,6 +26,7 @@ const body = `# Railly Hugo
 - [Developer resources](https://www.railly.dev/developers): canonical technical-resource index.
 - [Projects](https://www.railly.dev/projects): open-source and product portfolio.
 - [Project catalog JSON](https://www.railly.dev/api/projects.json): machine-readable project metadata.
+- [OpenAPI specification](https://www.railly.dev/openapi.json): typed contract for the read-only public metadata API.
 - [Writing](https://www.railly.dev/writing): technical articles and essays.
 - [RSS](https://www.railly.dev/rss.xml): publication feed.
 - [Contact](https://www.railly.dev/contact): official contact paths.
