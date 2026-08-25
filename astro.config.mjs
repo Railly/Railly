@@ -14,6 +14,7 @@ import vesperLight from "./public/themes/vesper-light.json";
 // https://astro.build/config
 export default defineConfig({
 	site: "https://www.railly.dev",
+	output: "server",
 
 	vite: {
 		plugins: [tailwindcss()],

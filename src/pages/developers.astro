@@ -1,0 +1,79 @@
+---
+import Footer from "@/components/layout/Footer.astro";
+import PageLayout from "@/components/layout/PageLayout.astro";
+import Layout from "@/layouts/Layout.astro";
+
+const resources = [
+	{
+		title: "Project catalog",
+		href: "/api/projects.json",
+		detail: "Public JSON metadata for Railly's projects.",
+	},
+	{
+		title: "GitHub",
+		href: "https://github.com/Railly",
+		detail: "Source code, issues, releases, and repository documentation.",
+	},
+	{
+		title: "Technical writing",
+		href: "/writing",
+		detail:
+			"Articles about developer tools, agents, AI, and software engineering.",
+	},
+	{
+		title: "RSS feed",
+		href: "/rss.xml",
+		detail: "Machine-readable updates for published writing.",
+	},
+	{
+		title: "Agent instructions",
+		href: "/agent-instructions.md",
+		detail: "When and how agents should use railly.dev.",
+	},
+	{
+		title: "Security contact",
+		href: "/.well-known/security.txt",
+		detail: "Responsible disclosure information.",
+	},
+];
+---
+
+<Layout
+	title="Railly Developer Resources | Railly Hugo"
+	description="Canonical developer resources for Railly Hugo's open-source tools, projects, writing, and agent-readable endpoints."
+>
+	<PageLayout class="flex flex-col gap-12">
+		<header class="space-y-4">
+			<h1 class="text-2xl font-semibold tracking-tight">Railly Developer Resources</h1>
+			<p class="max-w-2xl text-sm leading-relaxed text-foreground-2">
+				This is the canonical developer-resource index for Railly Hugo and railly.dev.
+				Use it to discover open-source developer tools, agent infrastructure, public
+				project metadata, implementation notes, and each project's source documentation.
+			</p>
+		</header>
+
+		<section aria-labelledby="available-resources" class="space-y-5">
+			<h2 id="available-resources" class="text-sm font-medium uppercase tracking-wider text-foreground-2">Available resources</h2>
+			<ul class="divide-y divide-ui/50">
+				{resources.map((resource) => (
+					<li class="py-4 first:pt-0">
+						<a href={resource.href} class="font-medium text-foreground underline decoration-ui underline-offset-4">{resource.title}</a>
+						<p class="mt-1 text-sm leading-relaxed text-foreground-2">{resource.detail}</p>
+					</li>
+				))}
+			</ul>
+		</section>
+
+		<section aria-labelledby="availability" class="space-y-3">
+			<h2 id="availability" class="text-sm font-medium uppercase tracking-wider text-foreground-2">Availability</h2>
+			<p class="max-w-2xl text-sm leading-relaxed text-foreground-2">
+				railly.dev is a portfolio and discovery layer, not a hosted API product.
+				It does not expose site-wide authentication, webhooks, an OpenAPI contract,
+				or an MCP server. Follow each linked project's repository and documentation
+				for its supported installation, interfaces, and usage.
+			</p>
+		</section>
+
+		<Footer />
+	</PageLayout>
+</Layout>

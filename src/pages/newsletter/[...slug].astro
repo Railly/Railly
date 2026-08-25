@@ -4,6 +4,8 @@ import Link from "@/components/content/Link.astro";
 import Quote from "@/components/content/Quote.astro";
 import Layout from "@/layouts/Layout.astro";
 
+export const prerender = true;
+
 export async function getStaticPaths() {
 	const issues = await getCollection("newsletter");
 	return issues.map((issue) => ({

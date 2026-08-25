@@ -10,6 +10,8 @@ import { isPostVisible } from "@/config/blog";
 import { getReadingTime } from "@/config/reading-time";
 import Layout from "@/layouts/Layout.astro";
 
+export const prerender = true;
+
 export async function getStaticPaths() {
 	const posts = await getCollection("blog", ({ data }) => {
 		return import.meta.env.PROD ? isPostVisible(data) : true;

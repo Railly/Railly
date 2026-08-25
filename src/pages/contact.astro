@@ -1,0 +1,39 @@
+---
+import Footer from "@/components/layout/Footer.astro";
+import PageLayout from "@/components/layout/PageLayout.astro";
+import Layout from "@/layouts/Layout.astro";
+---
+
+<Layout
+	title="Contact Railly Hugo | railly.dev"
+	description="Official contact information for Railly Hugo, software engineer, open-source maintainer, speaker, and founder of Crafter Station."
+>
+	<PageLayout class="flex flex-col gap-10">
+		<header class="space-y-4">
+			<h1 class="text-2xl font-semibold tracking-tight">Contact Railly Hugo</h1>
+			<p class="max-w-2xl text-sm leading-relaxed text-foreground-2">
+				The canonical contact address for Railly Hugo and railly.dev is
+				<a href="mailto:hi@railly.dev" class="ml-1 underline decoration-ui underline-offset-4">hi@railly.dev</a>.
+				Use it for collaboration, speaking, open-source work, developer tools,
+				AI research, mentoring, press, or corrections to this website. Include a
+				clear subject, the relevant project or page, and the action you are requesting.
+			</p>
+		</header>
+		<section class="space-y-4 text-sm leading-relaxed text-foreground-2">
+			<h2 class="text-sm font-medium uppercase tracking-wider">Where to write</h2>
+			<p class="max-w-2xl">
+				For public technical work, prefer the matching GitHub repository so the
+				discussion remains searchable and useful to contributors. For security reports,
+				follow <a href="/.well-known/security.txt" class="underline">security.txt</a>
+				and avoid publishing exploit details before remediation. This personal site
+				does not provide emergency support, a public phone number, or guaranteed response times.
+			</p>
+			<ul class="space-y-2">
+				<li><a class="underline" href="https://github.com/Railly">GitHub: @Railly</a></li>
+				<li><a class="underline" href="https://linkedin.com/in/railly-hugo">LinkedIn: Railly Hugo</a></li>
+				<li><a class="underline" href="https://x.com/raillyhugo">X: @raillyhugo</a></li>
+			</ul>
+		</section>
+		<Footer />
+	</PageLayout>
+</Layout>

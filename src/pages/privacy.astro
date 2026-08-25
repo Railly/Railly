@@ -1,0 +1,37 @@
+---
+import Footer from "@/components/layout/Footer.astro";
+import PageLayout from "@/components/layout/PageLayout.astro";
+import Layout from "@/layouts/Layout.astro";
+---
+
+<Layout
+	title="Privacy | railly.dev"
+	description="Privacy information for visitors and contributors using Railly Hugo's personal portfolio and writing site."
+>
+	<PageLayout class="flex flex-col gap-10">
+		<header class="space-y-4">
+			<h1 class="text-2xl font-semibold tracking-tight">Privacy at railly.dev</h1>
+			<p class="max-w-2xl text-sm leading-relaxed text-foreground-2">
+				railly.dev is Railly Hugo's personal portfolio and writing site. Most pages
+				can be read without creating an account. This notice explains the limited
+				information processed to deliver the site, measure aggregate use, secure
+				interactive features, and respond when you contact Railly.
+			</p>
+		</header>
+		<div class="max-w-2xl space-y-8 text-sm leading-relaxed text-foreground-2">
+			<section class="space-y-3">
+				<h2 class="font-medium text-foreground">Information processed</h2>
+				<p>The site uses traffic analytics to understand aggregate visits and Vercel infrastructure to deliver pages. Standard server and edge logs may include request metadata such as IP address, user agent, URL, timestamp, and error information for security and reliability.</p>
+			</section>
+			<section class="space-y-3">
+				<h2 class="font-medium text-foreground">Information you submit</h2>
+				<p>Interactive features may process information you deliberately submit, such as an email address for the newsletter or a comment on a draft. That information is used only to provide the requested feature, operate the site, prevent abuse, and meet legal obligations. It is not sold.</p>
+			</section>
+			<section class="space-y-3">
+				<h2 class="font-medium text-foreground">External services and your choices</h2>
+				<p>External links are governed by their destination's privacy policy. To ask about access, correction, or deletion of information associated with you, email <a href="mailto:hi@railly.dev" class="underline">hi@railly.dev</a>. Do not send secrets or sensitive personal data through public forms.</p>
+			</section>
+		</div>
+		<Footer />
+	</PageLayout>
+</Layout>

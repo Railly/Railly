@@ -78,6 +78,15 @@ const maxStars = Math.max(...rankedProjects.map((p) => p.stars), 1);
 	<PageLayout class="flex flex-col gap-16">
 		<HeroSection name={siteConfig.name} title={siteConfig.hero.title} />
 
+		<section class="w-full" aria-labelledby="what-i-build">
+			<SectionHeader title="What I build" className="mb-3" />
+			<p id="what-i-build" class="max-w-2xl text-sm leading-relaxed text-foreground-2">
+				I build open-source developer tools, agent infrastructure, design systems,
+				and civic technology. This portfolio is the canonical index for my projects,
+				technical writing, public research, and <a href="/developers" class="underline">developer resources</a>.
+			</p>
+		</section>
+
 		<section class="w-full">
 			<SectionLink title="Projects" href="/projects" />
 			<div class="space-y-0">

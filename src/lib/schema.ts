@@ -23,6 +23,25 @@ export function buildSchemaGraph(props: SchemaProps): object {
 			inLanguage: "en-US",
 		},
 		{
+			"@type": "Organization",
+			"@id": `${siteConfig.url}/#organization`,
+			name: "Crafter Station",
+			url: "https://crafterstation.com",
+			founder: { "@id": `${siteConfig.url}/#person` },
+			contactPoint: {
+				"@type": "ContactPoint",
+				contactType: "general inquiries",
+				email: siteConfig.email,
+				availableLanguage: ["English", "Spanish"],
+			},
+			address: {
+				"@type": "PostalAddress",
+				addressLocality: "Buenos Aires",
+				addressCountry: "AR",
+			},
+			sameAs: ["https://github.com/crafter-station"],
+		},
+		{
 			"@type": "Person",
 			"@id": `${siteConfig.url}/#person`,
 			name: siteConfig.author,
@@ -34,16 +53,13 @@ export function buildSchemaGraph(props: SchemaProps): object {
 				siteConfig.links.linkedin,
 			],
 			jobTitle: "Software Engineer",
+			description: siteConfig.description,
 			worksFor: {
 				"@type": "Organization",
 				name: "Vercel",
 				url: "https://vercel.com",
 			},
-			founder: {
-				"@type": "Organization",
-				name: "Crafter Station",
-				url: "https://crafterstation.com",
-			},
+			founder: { "@id": `${siteConfig.url}/#organization` },
 			alumniOf: {
 				"@type": "CollegeOrUniversity",
 				name: "Universidad Nacional Mayor de San Marcos",
