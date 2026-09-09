@@ -47,7 +47,8 @@
 		"rehype-katex": "^7.0.1",
 		"remark-math": "^6.0.0",
 		"resend": "^6.9.4",
-		"tailwindcss": "^4.1.17"
+		"tailwindcss": "^4.1.17",
+		"vgpu": "^0.4.1"
 	},
 	"devDependencies": {
 		"@astrojs/check": "^0.9.9",

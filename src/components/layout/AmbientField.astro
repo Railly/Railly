@@ -1,0 +1,51 @@
+<div id="ambient-field" aria-hidden="true" data-renderer="static">
+    <div class="ambient-fallback"></div>
+    <canvas></canvas>
+</div>
+
+<style>
+    #ambient-field {
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        pointer-events: none;
+        overflow: hidden;
+        contain: strict;
+    }
+    canvas, .ambient-fallback {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: min(100vh, 960px);
+    }
+    canvas { opacity: 0; transition: opacity 700ms ease; }
+    #ambient-field[data-renderer="vgpu"] canvas { opacity: 1; }
+    .ambient-fallback {
+        background: repeating-radial-gradient(ellipse at 98% -12%, transparent 0 10px, var(--color-ui) 11px, transparent 12px 18px);
+        mask-image: radial-gradient(ellipse at 100% 0, #000, transparent 68%);
+        opacity: 0.22;
+    }
+    @media (max-width: 767px) {
+        .ambient-fallback { opacity: 0.12; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+        canvas { transition: none; }
+    }
+</style>
+
+<script>
+    import { mountAmbientField } from "@/lib/ambient-field";
+
+    let cleanup: (() => void) | undefined;
+    function mount() {
+        cleanup?.();
+        const root = document.getElementById("ambient-field");
+        if (root instanceof HTMLElement) cleanup = mountAmbientField(root);
+    }
+    document.addEventListener("astro:page-load", mount);
+    document.addEventListener("astro:before-swap", () => cleanup?.());
+    window.addEventListener("pagehide", () => cleanup?.());
+    window.addEventListener("pageshow", (event) => {
+        if (event.persisted) mount();
+    });
+</script>
