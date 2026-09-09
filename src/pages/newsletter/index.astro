@@ -3,12 +3,12 @@ import { getCollection } from "astro:content";
 import Footer from "@/components/layout/Footer.astro";
 import PageLayout from "@/components/layout/PageLayout.astro";
 import SectionHeader from "@/components/layout/SectionHeader.astro";
-import NewsletterSignup from "@/components/newsletter/NewsletterSignup";
+import NewsletterSection from "@/components/newsletter/NewsletterSection.astro";
 import Layout from "@/layouts/Layout.astro";
 
 const ogTitle = "Newsletter";
 const ogDescription =
-	"Weekly notes on what I shipped, learned, and found useful.";
+	"Notes on what I’m building, learning, and figuring out. Read and subscribe on Substack.";
 const ogImage = `/api/og?title=${encodeURIComponent(ogTitle)}&description=${encodeURIComponent(ogDescription)}&tag=newsletter`;
 
 const issues = await getCollection("newsletter");
@@ -29,16 +29,12 @@ const formatDate = (date: Date) => {
     image={ogImage}
 >
     <PageLayout class="flex flex-col gap-8">
-        <div>
-            <SectionHeader title="Newsletter" className="mb-4" />
-            <p class="text-foreground-3 text-sm mb-4">
-                Weekly notes on what I shipped, learned, and found useful.
-            </p>
-            <NewsletterSignup client:only="react" />
-        </div>
+        <h1 class="sr-only">Newsletter</h1>
+        <NewsletterSection />
 
         {sortedIssues.length > 0 ? (
             <div class="space-y-0">
+                <SectionHeader title="Earlier editions" className="mb-4" />
                 {sortedIssues.map((issue) => (
                     <a
                         href={`/newsletter/${issue.slug}`}
@@ -56,13 +52,7 @@ const formatDate = (date: Date) => {
                     </a>
                 ))}
             </div>
-        ) : (
-            <div class="py-12 text-center">
-                <p class="text-foreground-3 text-sm">
-                    First issue coming soon.
-                </p>
-            </div>
-        )}
+        ) : null}
 
         <Footer />
     </PageLayout>
