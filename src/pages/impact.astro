@@ -1,0 +1,196 @@
+---
+import Footer from "@/components/layout/Footer.astro";
+import PageLayout from "@/components/layout/PageLayout.astro";
+import SectionHeader from "@/components/layout/SectionHeader.astro";
+import Layout from "@/layouts/Layout.astro";
+
+const updatedAt = "October 2, 2026";
+const ogTitle = "Impact";
+const ogDescription =
+	"Open source, community, and teaching work by Railly Hugo, founder of Crafter Station and creator of Petdex.";
+const ogImage = `/api/og?title=${encodeURIComponent(ogTitle)}&description=${encodeURIComponent(ogDescription)}&tag=impact`;
+
+const metrics = [
+	{
+		value: "7,900+",
+		label: "GitHub stars on my top repos",
+		note: "Personal and Crafter Station",
+	},
+	{
+		value: "1,000+",
+		label: "Crafter Station builders",
+		note: "Community members",
+	},
+	{ value: "3", label: "Hackathon series organized", note: "2025 to 2026" },
+	{ value: "6", label: "Code Brew meetups", note: "Lima, Bogotá, Madrid" },
+];
+
+const repos = [
+	{
+		name: "crafter-station/petdex",
+		stars: "4,183",
+		detail:
+			"Public gallery of animated pets for Codex, Claude Code, Gemini CLI, OpenCode, and more. Hermes Agent consumes its manifest directly.",
+	},
+	{
+		name: "Railly/agentfiles",
+		stars: "850",
+		detail:
+			"Browse and edit AI agent files across Claude Code, Cursor, Codex, and 12 more tools, from Obsidian.",
+	},
+	{
+		name: "Railly/tinte",
+		stars: "622",
+		detail:
+			"Compiles a design system into an agent plugin: tokens, SKILL.md, and a linter for anything that bypasses them.",
+	},
+	{
+		name: "crafter-station/elements",
+		stars: "524",
+		detail: "Full-stack shadcn/ui blocks for auth, payments, AI, and logos.",
+	},
+	{
+		name: "crafter-station/text0",
+		stars: "453",
+		detail:
+			"Personal autocomplete. Official winner of the first Next.js Global Hackathon.",
+	},
+	{
+		name: "Railly/shadcn-ui-customizer",
+		stars: "396",
+		detail: "shadcn/ui themes with color pickers.",
+	},
+	{
+		name: "Railly/one-hunter-vscode",
+		stars: "388",
+		detail: "VS Code theme inspired by Vercel and One Dark Pro.",
+	},
+];
+
+const community = [
+	{
+		title: "Peru AI Hackathon",
+		when: "2025 to 2026",
+		href: "https://peru.ai-hackathon.co",
+		detail:
+			"The largest AI hackathon in Peru in 2025, with two more editions in 2026.",
+	},
+	{
+		title: "She Ships",
+		when: "March 2026",
+		href: "https://sheships.org",
+		detail:
+			"48-hour global hackathon for International Women's Day. 200+ participants in Lima, Bogotá, and online, with $20K in tools and credits.",
+	},
+	{
+		title: "v0 × Crafter Station Hackathon",
+		when: "2025",
+		href: "https://v0.crafter.run/deck",
+		detail:
+			"220+ registered across Lima, Medellín, Bogotá, and Arequipa. 118 attended and built 66 projects.",
+	},
+	{
+		title: "Code Brew",
+		when: "Since 2024",
+		href: "https://codebrew.tech",
+		detail:
+			"Monthly meetup with six editions and 100+ attendees across Lima, Bogotá, and Madrid.",
+	},
+];
+
+const teaching = [
+	{
+		title: "Universidad Nacional Mayor de San Marcos",
+		when: "2026",
+		href: undefined,
+		detail: "Teaching at the Faculty of Systems Engineering.",
+	},
+	{
+		title: "Railly/skills",
+		when: "Open",
+		href: "https://github.com/Railly/skills",
+		detail:
+			"Evidence-driven methods for agentic engineering, written up from real maintenance work.",
+	},
+];
+
+const link =
+	"text-foreground underline decoration-ui underline-offset-4 hover:decoration-foreground";
+---
+
+<Layout title="Impact - Railly Hugo" description={ogDescription} image={ogImage}>
+	<PageLayout class="flex flex-col gap-16">
+		<section class="flex flex-col gap-5">
+			<div>
+				<p class="mb-2 font-mono text-xs uppercase tracking-wider text-foreground-3">Impact</p>
+				<h1 class="max-w-2xl text-2xl font-medium leading-tight text-foreground sm:text-3xl">
+					Building Latin America's open source community, one repo and one hackathon at a time.
+				</h1>
+			</div>
+			<p class="max-w-2xl text-base leading-relaxed text-foreground-2">
+				Founder of Crafter Station, a nonprofit that gets Latin American developers shipping in public. Software Engineer at Vercel Labs. I teach, organize events, and maintain open source tools used by thousands of developers.
+			</p>
+		</section>
+
+		<section>
+			<div class="mb-5 flex items-end justify-between gap-4">
+				<SectionHeader title="Snapshot" className="mb-0" />
+				<span class="font-mono text-xs text-foreground-3">{updatedAt}</span>
+			</div>
+			<div class="grid gap-px overflow-hidden rounded-lg border border-ui bg-ui sm:grid-cols-2">
+				{metrics.map((m) => (
+					<div class="bg-background p-5">
+						<div class="font-mono text-2xl font-medium tabular-nums text-foreground">{m.value}</div>
+						<div class="mt-1 text-sm text-foreground-2">{m.label}</div>
+						<div class="mt-2 text-xs text-foreground-3">{m.note}</div>
+					</div>
+				))}
+			</div>
+		</section>
+
+		<section>
+			<SectionHeader title="Open source" className="mb-5" />
+			<div class="flex flex-col divide-y divide-ui border-y border-ui">
+				{repos.map((r) => (
+					<div class="py-5">
+						<div class="flex items-baseline justify-between gap-4">
+							<a href={`https://github.com/${r.name}`} target="_blank" rel="noopener noreferrer" class={`min-w-0 break-all font-mono text-sm ${link}`}>{r.name}</a>
+							<span class="shrink-0 font-mono text-xs tabular-nums text-foreground-3">{r.stars} stars</span>
+						</div>
+						<p class="mt-2 max-w-2xl text-sm leading-relaxed text-foreground-2">{r.detail}</p>
+					</div>
+				))}
+			</div>
+		</section>
+
+		{[{ title: "Community", items: community }, { title: "Teaching", items: teaching }].map((group) => (
+			<section>
+				<SectionHeader title={group.title} className="mb-5" />
+				<div class="flex flex-col divide-y divide-ui border-y border-ui">
+					{group.items.map((item) => (
+						<div class="py-5">
+							<div class="flex items-baseline justify-between gap-4">
+								{item.href ? (
+									<a href={item.href} target="_blank" rel="noopener noreferrer" class={`text-sm font-medium ${link}`}>{item.title}</a>
+								) : (
+									<h3 class="text-sm font-medium text-foreground">{item.title}</h3>
+								)}
+								<span class="shrink-0 font-mono text-xs text-foreground-3">{item.when}</span>
+							</div>
+							<p class="mt-2 max-w-2xl text-sm leading-relaxed text-foreground-2">{item.detail}</p>
+						</div>
+					))}
+				</div>
+			</section>
+		))}
+
+		<section class="rounded-lg border border-ui bg-background-2 p-6">
+			<SectionHeader title="Contact" className="mb-3" />
+			<p class="max-w-2xl text-sm leading-relaxed text-foreground-2">
+				Email <a href="mailto:hi@railly.dev" class={link}>hi@railly.dev</a> or find me on <a href="https://github.com/Railly" target="_blank" rel="noopener noreferrer" class={link}>GitHub</a>. Star counts come from the GitHub API on {updatedAt}.
+			</p>
+		</section>
+
+		<Footer />
+	</PageLayout>
+</Layout>
