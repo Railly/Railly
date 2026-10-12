@@ -181,10 +181,10 @@ const {
                             "prose-headings:text-foreground prose-headings:font-semibold prose-headings:scroll-mt-10 prose-headings:tracking-[-0.02em]",
                             "prose-h2:text-lg prose-h2:mt-12 prose-h2:mb-4",
                             "prose-h3:text-base prose-h3:mt-8 prose-h3:mb-3 prose-h3:font-medium",
-                            "prose-p:text-foreground-2 prose-p:text-[15px] prose-p:leading-[1.75] prose-p:tracking-[-0.01em] prose-p:[text-wrap:pretty]",
+                            "prose-p:text-foreground-2 prose-p:text-[15px] prose-p:tracking-normal prose-p:mt-0 prose-p:mb-3 prose-p:[text-wrap:pretty]",
                             "prose-a:text-foreground-2 prose-a:underline prose-a:decoration-foreground-3/50 prose-a:underline-offset-2 prose-a:decoration-1 prose-a:hover:text-foreground prose-a:hover:decoration-foreground prose-a:transition-colors",
                             "prose-strong:text-foreground/90 prose-strong:font-medium",
-                            "prose-li:text-foreground-2 prose-li:text-[15px] prose-li:leading-[1.75] prose-li:tracking-[-0.01em]",
+                            "prose-li:text-foreground-2 prose-li:text-[15px] prose-li:tracking-normal",
                             "prose-li:marker:text-foreground-3",
                             "prose-ul:my-5 prose-ul:space-y-1",
                             "prose-ol:my-5 prose-ol:space-y-1",
@@ -283,6 +283,13 @@ const {
     <style>
         :target {
             scroll-margin-top: 2.5rem;
+        }
+
+        .blog-content :global(p),
+        .blog-content :global(li) {
+            font-family: "Inter Variable", var(--font-sans);
+            font-weight: 450;
+            line-height: 24px;
         }
 
         .blog-content {
