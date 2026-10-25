@@ -10,6 +10,8 @@ export interface Project {
 	repo?: string;
 	icon: ProjectIcon;
 	featured?: boolean;
+	/** What I did on it, shown on the home page. */
+	role?: string;
 }
 
 export const projects: Project[] = [
@@ -21,6 +23,66 @@ export const projects: Project[] = [
 		url: "https://petdex.dev",
 		icon: "petdex",
 		featured: true,
+		role: "Created it. Hermes Agent reads its manifest directly.",
+	},
+	{
+		slug: "agent-browser",
+		name: "agent-browser",
+		repo: "vercel-labs/agent-browser",
+		description: "Browser automation CLI for AI agents",
+		url: "https://agent-browser.dev",
+		icon: "vercel",
+		featured: true,
+		role: "Maintainer at Vercel Labs.",
+	},
+	{
+		slug: "json-render",
+		name: "json-render",
+		repo: "vercel-labs/json-render",
+		description: "The generative UI framework",
+		url: "https://json-render.dev",
+		icon: "vercel",
+		featured: true,
+		role: "Maintainer at Vercel Labs.",
+	},
+	{
+		slug: "issue-graph",
+		name: "issue-graph",
+		repo: "vercel-labs/issue-graph",
+		description: "Related issues and competing changes before you start work",
+		url: "https://issue-graph.dev",
+		icon: "vercel",
+		featured: true,
+		role: "Building it at Vercel Labs.",
+	},
+	{
+		slug: "dotframe",
+		name: "dotframe",
+		repo: "crafter-games/dotframe",
+		description: "The game engine your agent can play",
+		url: "https://dotframe.crafter.games",
+		icon: "github",
+		featured: true,
+		role: "Created it. One TypeScript codebase for web and native.",
+	},
+	{
+		slug: "makeables",
+		name: "Makeables",
+		description: "Cards, badges and stickers that feel like you",
+		url: "https://makeables.dev",
+		icon: "crafterStation",
+		featured: true,
+		role: "Product owner. Brand system in, printable objects out.",
+	},
+	{
+		slug: "peru-gov",
+		name: "peru-gov",
+		repo: "crafter-research/peru-gov",
+		description: "Routes a situation to the right gob.pe procedure",
+		url: "https://peru-gov.crafter.ing",
+		icon: "crafterStation",
+		featured: true,
+		role: "Built it. Civic tech for Peru.",
 	},
 	{
 		slug: "tinte",
@@ -29,7 +91,6 @@ export const projects: Project[] = [
 		description: "Agent-native design system infrastructure",
 		url: "https://tinte.dev",
 		icon: "tinte",
-		featured: true,
 	},
 	{
 		slug: "elements",
@@ -38,7 +99,6 @@ export const projects: Project[] = [
 		description: "Full-stack shadcn components for auth and AI",
 		url: "https://tryelements.dev",
 		icon: "elements",
-		featured: true,
 	},
 	{
 		slug: "agentfiles",
@@ -47,7 +107,6 @@ export const projects: Project[] = [
 		description: "Edit AI agent files across 13+ tools",
 		url: "https://agentfiles.crafter.run",
 		icon: "agentfiles",
-		featured: true,
 	},
 	{
 		slug: "one-hunter",
@@ -56,7 +115,6 @@ export const projects: Project[] = [
 		description: "VS Code theme: Vercel meets One Dark Pro",
 		url: "https://marketplace.visualstudio.com/items?itemName=RaillyHugo.one-hunter",
 		icon: "oneHunter",
-		featured: true,
 	},
 	{
 		slug: "text0",
@@ -65,7 +123,6 @@ export const projects: Project[] = [
 		description: "Smart, personal AI autocomplete",
 		url: "https://text0.dev",
 		icon: "text0",
-		featured: true,
 	},
 	{
 		slug: "trx",
@@ -98,7 +155,6 @@ export const projects: Project[] = [
 		description: "Mapping LATAM hackathons and tech events",
 		url: "https://hack0.dev",
 		icon: "hack0",
-		featured: true,
 	},
 	{
 		slug: "ia-hackathon-peru",
@@ -141,6 +197,8 @@ export const projects: Project[] = [
 		description: "Interactive 3D globe mapping Codex Ambassadors worldwide",
 		url: "https://github.com/crafter-station/codex-globe",
 		icon: "codexGlobe",
+		featured: true,
+		role: "Built it. OpenAI added it to the official Codex Ambassadors directory.",
 	},
 	{
 		slug: "spoti-cli",
