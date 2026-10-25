@@ -154,3 +154,66 @@
 	border: 2px solid var(--color-df-ink);
 	border-radius: 0;
 }
+
+/* Makeables sticker sheet piece */
+.mk-sheet {
+	background-image: radial-gradient(rgb(0 0 0 / 0.07) 1px, transparent 1px);
+	background-size: 16px 16px;
+}
+.mk-sticker {
+	--px: 0.5;
+	--py: 0.5;
+	--tilt-x: 0deg;
+	--tilt-y: 0deg;
+	perspective: 600px;
+}
+.mk-tilt {
+	position: relative;
+	transform: rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
+	transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.mk-sticker[data-finish="holo"]:hover .mk-finish {
+	opacity: 0.5;
+}
+.mk-sticker:active .mk-tilt {
+	transform: rotateX(var(--tilt-x)) rotateY(var(--tilt-y)) scale(1.06);
+}
+.mk-finish {
+	position: absolute;
+	inset: 0;
+	pointer-events: none;
+	mask-image: var(--mask);
+	-webkit-mask-image: var(--mask);
+	mask-size: 100% 100%;
+	-webkit-mask-size: 100% 100%;
+	opacity: 0;
+	transition: opacity 0.3s ease;
+}
+.mk-sticker[data-finish="holo"] .mk-finish {
+	opacity: 0.22;
+	mix-blend-mode: color-dodge;
+	background: linear-gradient(
+		calc(110deg + var(--px) * 90deg),
+		#ff6ec7 0%,
+		#7afcff calc(20% + var(--py) * 30%),
+		#d7ff3c calc(45% + var(--px) * 20%),
+		#a78bfa 75%,
+		#ff6ec7 100%
+	);
+}
+.mk-sticker[data-finish="glitter"] .mk-finish {
+	opacity: 0.7;
+	mix-blend-mode: overlay;
+	background-image:
+		radial-gradient(circle at calc(var(--px) * 100%) calc(var(--py) * 100%), rgb(255 255 255 / 0.7), transparent 40%),
+		radial-gradient(rgb(255 255 255 / 0.9) 0.7px, transparent 1.2px);
+	background-size:
+		100% 100%,
+		5px 5px;
+}
+@media (prefers-reduced-motion: reduce) {
+	.mk-tilt {
+		transition: none;
+		transform: none;
+	}
+}

@@ -42,8 +42,6 @@ export const projects: Project[] = [
 		description: "The generative UI framework",
 		url: "https://json-render.dev",
 		icon: "vercel",
-		featured: true,
-		role: "Maintainer at Vercel Labs.",
 	},
 	{
 		slug: "issue-graph",
