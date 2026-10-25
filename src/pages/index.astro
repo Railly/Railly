@@ -24,7 +24,7 @@ import { withRepoStars } from "@/lib/github-stars";
 const ogImage = ogUrl({
 	title: "Railly Hugo",
 	description:
-		"Peruvian Software Engineer at Vercel Labs and Founder of Crafter Station, building AI developer tools from Buenos Aires.",
+		"I build at the frontier of what agents and interfaces can do.",
 });
 
 const allPosts = await getCollection("blog", ({ data }) =>
@@ -53,19 +53,7 @@ const isNewest = (slug: string) => slug === newestPost?.slug;
 const formatDate = (date: Date) =>
 	`${date.getDate().toString().padStart(2, "0")}/${(date.getMonth() + 1).toString().padStart(2, "0")}`;
 
-const achievementsByYear = achievements.reduce(
-	(acc, item) => {
-		if (!acc[item.year]) {
-			acc[item.year] = [];
-		}
-		acc[item.year].push(item);
-		return acc;
-	},
-	{} as Record<string, typeof achievements>,
-);
-const achievementYears = Object.keys(achievementsByYear).sort(
-	(a, b) => Number(b) - Number(a),
-);
+const highlightedAchievements = achievements.filter((item) => item.highlight);
 
 // Editorial order: the order in projects.ts, not star count.
 const selectedProjects = await withRepoStars(featuredProjects);
@@ -169,19 +157,9 @@ const selectedProjects = await withRepoStars(featuredProjects);
 		</section>
 
 		<section class="w-full">
-			<div class="mb-4">
-				<SectionHeader title="Achievements" className="mb-0" />
-			</div>
+			<SectionLink title="Achievements" href="/about#achievements" />
 			<div class="space-y-0">
-				{achievementYears.map((year) => (
-					<div class="mt-6 first:mt-2">
-						<div class="mb-1 flex items-center gap-3">
-							<span class="font-mono text-xs tabular-nums tracking-wider text-foreground-3">{year}</span>
-							<span class="h-px flex-1 bg-ui"></span>
-						</div>
-						{achievementsByYear[year].map((item) => <AchievementRow item={item} />)}
-					</div>
-				))}
+				{highlightedAchievements.map((item) => <AchievementRow item={item} />)}
 			</div>
 		</section>
 

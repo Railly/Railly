@@ -10,7 +10,7 @@ interface OgUrlOptions {
 export const siteConfig: SiteConfig = {
 	name: "Railly Hugo",
 	description:
-		"Peruvian Software Engineer at Vercel Labs and Founder of Crafter Station, building AI developer tools, open source software, and LATAM's tech ecosystem from Buenos Aires.",
+		"Railly Hugo builds at the frontier of what agents and interfaces can do. Software engineer at Vercel Labs and founder of Crafter Station, based in Buenos Aires.",
 	url: "https://www.railly.dev",
 	ogImage: "https://www.railly.dev/images/og.webp",
 	hero: {

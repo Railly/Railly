@@ -1,9 +1,11 @@
 ---
 import BrandIcon from "@/components/brand/BrandIcon.astro";
 import type { BrandName } from "@/components/brand/registry";
+import AchievementRow from "@/components/home/AchievementRow.astro";
 import Footer from "@/components/layout/Footer.astro";
 import PageLayout from "@/components/layout/PageLayout.astro";
 import SectionHeader from "@/components/layout/SectionHeader.astro";
+import { achievements } from "@/data/achievements";
 import Layout from "@/layouts/Layout.astro";
 
 const ogTitle = "About";
@@ -90,6 +92,19 @@ const milestonesByYear = milestones.reduce(
 		return acc;
 	},
 	[] as { year: string; items: Milestone[] }[],
+);
+const achievementsByYear = achievements.reduce(
+	(acc, item) => {
+		if (!acc[item.year]) {
+			acc[item.year] = [];
+		}
+		acc[item.year].push(item);
+		return acc;
+	},
+	{} as Record<string, typeof achievements>,
+);
+const achievementYears = Object.keys(achievementsByYear).sort(
+	(a, b) => Number(b) - Number(a),
 );
 ---
 
@@ -184,6 +199,24 @@ const milestonesByYear = milestones.reduce(
 								</li>
 							))}
 						</ol>
+					</div>
+				))}
+			</div>
+		</section>
+
+		<!-- Achievements -->
+		<section class="w-full" id="achievements">
+			<div class="mb-4">
+				<SectionHeader title="Achievements" className="mb-0" />
+			</div>
+			<div class="space-y-0">
+				{achievementYears.map((year) => (
+					<div class="mt-6 first:mt-2">
+						<div class="mb-1 flex items-center gap-3">
+							<span class="font-mono text-xs tabular-nums tracking-wider text-foreground-3">{year}</span>
+							<span class="h-px flex-1 bg-ui"></span>
+						</div>
+						{achievementsByYear[year].map((item) => <AchievementRow item={item} />)}
 					</div>
 				))}
 			</div>
