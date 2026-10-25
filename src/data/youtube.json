@@ -1,0 +1,47 @@
+{
+	"generatedAt": "2026-10-25T18:45:53.857Z",
+	"videos": [
+		{
+			"id": "JDKuZ-Z1j4s",
+			"title": "Claude Opus 5.5 hizo este video con un solo prompt",
+			"published": "2026-10-10T20:21:28+00:00",
+			"url": "https://www.youtube.com/watch?v=JDKuZ-Z1j4s",
+			"thumbnail": "https://i.ytimg.com/vi/JDKuZ-Z1j4s/hqdefault.jpg"
+		},
+		{
+			"id": "wYddgCBpn6k",
+			"title": "Dibujamos nuestra propia tipografía: Crafter Sans",
+			"published": "2026-10-08T21:44:26+00:00",
+			"url": "https://www.youtube.com/watch?v=wYddgCBpn6k",
+			"thumbnail": "https://i.ytimg.com/vi/wYddgCBpn6k/hqdefault.jpg"
+		},
+		{
+			"id": "bpahUVtLa_g",
+			"title": "Construí una CLI completa con Codex usando 1 prompt",
+			"published": "2026-09-09T13:46:46+00:00",
+			"url": "https://www.youtube.com/watch?v=bpahUVtLa_g",
+			"thumbnail": "https://i.ytimg.com/vi/bpahUVtLa_g/hqdefault.jpg"
+		},
+		{
+			"id": "jbkxdxJfQ60",
+			"title": "Cómo hago ingeniería inversa y construyo CLIs con agentes",
+			"published": "2026-08-22T06:20:50+00:00",
+			"url": "https://www.youtube.com/watch?v=jbkxdxJfQ60",
+			"thumbnail": "https://i.ytimg.com/vi/jbkxdxJfQ60/hqdefault.jpg"
+		},
+		{
+			"id": "6XpWZvYEmfg",
+			"title": "Volví: mis primeras 2 semanas en Vercel Labs",
+			"published": "2026-07-22T05:28:26+00:00",
+			"url": "https://www.youtube.com/watch?v=6XpWZvYEmfg",
+			"thumbnail": "https://i.ytimg.com/vi/6XpWZvYEmfg/hqdefault.jpg"
+		},
+		{
+			"id": "99oZ4XgtvQg",
+			"title": "Perú es mas que Lima. Shipea sin pedir permiso #opensource #hackathon #github #buildinpublic",
+			"published": "2026-02-17T01:11:37+00:00",
+			"url": "https://www.youtube.com/watch?v=99oZ4XgtvQg",
+			"thumbnail": "https://i.ytimg.com/vi/99oZ4XgtvQg/hqdefault.jpg"
+		}
+	]
+}

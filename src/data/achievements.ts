@@ -8,6 +8,8 @@ export interface Achievement {
 	project?: string;
 	projectUrl?: string;
 	scope: Scope;
+	/** Shown on the home page; the full list lives on /about. */
+	highlight?: boolean;
 }
 
 export const achievements: Achievement[] = [
@@ -15,6 +17,7 @@ export const achievements: Achievement[] = [
 		year: "2026",
 		achievement: "ElevenLabs Prize",
 		event: "Agents Hackathon Brazil",
+		highlight: true,
 		eventUrl:
 			"https://www.linkedin.com/posts/railly-hugo_aiagents-hackathon-buildinginpublic-activity-7423521448687919104-ybiq",
 		project: "i18n",
@@ -25,6 +28,7 @@ export const achievements: Achievement[] = [
 		year: "2026",
 		achievement: "2nd Place",
 		event: "v0 × Sanity Builder Challenge",
+		highlight: true,
 		eventUrl:
 			"https://www.sanity.io/blog/v0-sanity-builder-challenge-the-winners",
 		project: "Annual Calendar 2026",
@@ -44,6 +48,7 @@ export const achievements: Achievement[] = [
 		year: "2025",
 		achievement: "Overall Winner",
 		event: "Next.js Global Hackathon",
+		highlight: true,
 		eventUrl: "https://www.youtube.com/watch?v=KDRwgbwq0_c&t=1142s",
 		project: "text0",
 		projectUrl: "https://text0.dev",
@@ -53,6 +58,7 @@ export const achievements: Achievement[] = [
 		year: "2025",
 		achievement: "1st Place",
 		event: "Vercel AI Gateway Hackathon",
+		highlight: true,
 		eventUrl: "https://www.youtube.com/watch?v=yKzXoJgPenw&t=28889s",
 		project: "Chess Battle",
 		projectUrl: "https://github.com/crafter-station/chess-battle",

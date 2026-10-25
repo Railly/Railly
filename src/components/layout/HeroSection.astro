@@ -14,7 +14,7 @@ const linkClass =
 
 // Roles cycled by the rotating subtitle. First entry is the static fallback
 // (also what renders if JS is off or reduced-motion is on).
-const roles = ["Hunter", "Software Engineer", "AI Researcher", "Founder"];
+const roles = ["Hunter"];
 ---
 
 <header class="hero-reveal flex gap-2 items-center justify-start w-full" style="--reveal-delay: 0ms">
@@ -41,14 +41,18 @@ const roles = ["Hunter", "Software Engineer", "AI Researcher", "Founder"];
 </header>
 
 <section class="flex flex-col gap-2">
-    <p class="hero-reveal text-base text-foreground-2 !m-0" style="--reveal-delay: 90ms">
-        I'm a <i>software engineer</i> at <BrandIcon
+    <p class="hero-reveal text-lg text-foreground !m-0" style="--reveal-delay: 90ms">
+        I build at the frontier of what agents and interfaces can do.
+    </p>
+
+    <p class="hero-reveal text-base text-foreground-2 !m-0" style="--reveal-delay: 180ms">
+        <i>Software engineer</i> at <BrandIcon
             name="vercel"
             width={16}
             height={16}
             class="inline-block mb-0.5 mr-0.5 align-text-bottom"
         /><a
-            href="https://vercel.com"
+            href="https://vercel.com/labs"
             target="_blank"
             class={linkClass}>Vercel Labs</a
         > and <i>founder</i> of <BrandIcon
@@ -60,23 +64,10 @@ const roles = ["Hunter", "Software Engineer", "AI Researcher", "Founder"];
             href="https://github.com/crafter-station"
             target="_blank"
             class={linkClass}>Crafter Station</a
-        >.
-    </p>
-
-    <p class="hero-reveal text-base text-foreground-2 !m-0" style="--reveal-delay: 180ms">
-        Starting my path into <i>AI research</i> at <a
+        >. I also build open civic-tech tools for Peru at <a
             href="https://github.com/crafter-research"
             target="_blank"
             class={linkClass}>Crafter Research</a
-        >, building civic-tech tools for LATAM. I also teach at <BrandIcon
-            name="unmsm"
-            width={16}
-            height={16}
-            class="inline-block !my-0 !ml-0 mr-0.5 align-text-bottom rounded-sm"
-        /><a
-            href="https://unmsm.edu.pe"
-            target="_blank"
-            class={linkClass}>UNMSM</a
         >.
     </p>
 

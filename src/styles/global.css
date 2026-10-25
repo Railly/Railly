@@ -8,6 +8,7 @@
 @plugin "@tailwindcss/typography";
 
 @theme {
+
     --font-sans: "Geist Sans", "IBM Plex Sans", "sans-serif";
     --font-serif: "Redaction", "IBM Plex Serif", "serif";
     --font-mono: "Commit Mono", "IBM Plex Mono", "monospace";
@@ -105,4 +106,70 @@
         color: var(--color-background);
         background-color: var(--color-foreground);
     }
+}
+
+
+/* Makeables sticker board, ported from makeables.dev /make/sticker/board */
+.sticker-board {
+  position: relative;
+  height: 420px;
+  overflow: hidden;
+  touch-action: none;
+  background-color: #f1ece2;
+  background-image:
+    linear-gradient(to right, rgb(0 0 0 / 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(0 0 0 / 0.06) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+.sticker-board-hint {
+  position: absolute;
+  inset: 16px auto auto 16px;
+  margin: 0;
+  font: inherit;
+  font-size: 0.8125rem;
+  color: rgb(0 0 0 / 0.5);
+  pointer-events: none;
+}
+
+.sticker-board-item {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  pointer-events: none;
+  touch-action: none;
+  -webkit-tap-highlight-color: transparent;
+  filter: drop-shadow(0 2px 3px rgb(0 0 0 / 0.18));
+  transition: filter 160ms ease;
+}
+
+.sticker-board-item[data-lifted="true"] {
+  filter: drop-shadow(0 14px 14px rgb(0 0 0 / 0.28));
+}
+
+.sticker-board-item:focus,
+.sticker-board-item:focus-visible {
+  outline: none;
+}
+
+/* Keyboard focus follows the die-cut silhouette instead of drawing a box around it. */
+.sticker-board-item:focus-visible {
+  filter: drop-shadow(0 0 1.5px #000) drop-shadow(0 0 1.5px #000)
+    drop-shadow(0 6px 8px rgb(0 0 0 / 0.25));
+}
+
+.sticker-board-item canvas {
+  position: absolute;
+  display: block;
+  pointer-events: none;
+  user-select: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sticker-board-item {
+    transition: none;
+  }
 }

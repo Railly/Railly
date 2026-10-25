@@ -1,9 +1,11 @@
 ---
 import BrandIcon from "@/components/brand/BrandIcon.astro";
 import type { BrandName } from "@/components/brand/registry";
+import AchievementRow from "@/components/home/AchievementRow.astro";
 import Footer from "@/components/layout/Footer.astro";
 import PageLayout from "@/components/layout/PageLayout.astro";
 import SectionHeader from "@/components/layout/SectionHeader.astro";
+import { achievements } from "@/data/achievements";
 import Layout from "@/layouts/Layout.astro";
 
 const ogTitle = "About";
@@ -35,8 +37,7 @@ const milestones: Milestone[] = [
 	{
 		year: "2026",
 		title: "Started a path into AI research",
-		detail:
-			"Civic-tech tools and LATAM-focused research at Crafter Research, alongside Shara Arauzo.",
+		detail: "Civic-tech tools and LATAM-focused research at Crafter Research.",
 		url: "https://github.com/crafter-research",
 	},
 	{
@@ -72,7 +73,7 @@ const milestones: Milestone[] = [
 	{
 		year: "2023",
 		title: "Graduated in Software Engineering",
-		detail: "From UNMSM, Peru's oldest university — where I now teach.",
+		detail: "From UNMSM, Peru's oldest university.",
 		icon: "unmsm",
 		url: "https://unmsm.edu.pe",
 	},
@@ -91,6 +92,19 @@ const milestonesByYear = milestones.reduce(
 		return acc;
 	},
 	[] as { year: string; items: Milestone[] }[],
+);
+const achievementsByYear = achievements.reduce(
+	(acc, item) => {
+		if (!acc[item.year]) {
+			acc[item.year] = [];
+		}
+		acc[item.year].push(item);
+		return acc;
+	},
+	{} as Record<string, typeof achievements>,
+);
+const achievementYears = Object.keys(achievementsByYear).sort(
+	(a, b) => Number(b) - Number(a),
 );
 ---
 
@@ -128,13 +142,19 @@ const milestonesByYear = milestones.reduce(
 				<li class="flex items-baseline gap-3 text-base text-foreground-2">
 					<span class="select-none text-foreground-3" aria-hidden>&rarr;</span>
 					<span>
-						Starting a path into <i>AI research</i> at <a href="https://github.com/crafter-research" target="_blank" class={linkClass}>Crafter Research</a>, building civic-tech tools for LATAM
+						Building <a href="https://makeables.dev" target="_blank" class={linkClass}>Makeables</a>: stickers, badges and cards you design with your coding agent
 					</span>
 				</li>
 				<li class="flex items-baseline gap-3 text-base text-foreground-2">
 					<span class="select-none text-foreground-3" aria-hidden>&rarr;</span>
 					<span>
-						Founder of <BrandIcon name="crafterStation" width={16} height={16} class="inline-block mb-0.5 mr-0.5 align-text-bottom" /><a href="https://github.com/crafter-station" target="_blank" class={linkClass}>Crafter Station</a> and teaching at <BrandIcon name="unmsm" width={16} height={16} class="inline-block !my-0 !ml-0 mr-0.5 align-text-bottom rounded-sm" /><a href="https://unmsm.edu.pe" target="_blank" class={linkClass}>UNMSM</a>
+						Building open civic-tech tools for Peru at <a href="https://github.com/crafter-research" target="_blank" class={linkClass}>Crafter Research</a>
+					</span>
+				</li>
+				<li class="flex items-baseline gap-3 text-base text-foreground-2">
+					<span class="select-none text-foreground-3" aria-hidden>&rarr;</span>
+					<span>
+						Founder of <BrandIcon name="crafterStation" width={16} height={16} class="inline-block mb-0.5 mr-0.5 align-text-bottom" /><a href="https://github.com/crafter-station" target="_blank" class={linkClass}>Crafter Station</a>
 					</span>
 				</li>
 			</ul>
@@ -179,6 +199,24 @@ const milestonesByYear = milestones.reduce(
 								</li>
 							))}
 						</ol>
+					</div>
+				))}
+			</div>
+		</section>
+
+		<!-- Achievements -->
+		<section class="w-full" id="achievements">
+			<div class="mb-4">
+				<SectionHeader title="Achievements" className="mb-0" />
+			</div>
+			<div class="space-y-0">
+				{achievementYears.map((year) => (
+					<div class="mt-6 first:mt-2">
+						<div class="mb-1 flex items-center gap-3">
+							<span class="font-mono text-xs tabular-nums tracking-wider text-foreground-3">{year}</span>
+							<span class="h-px flex-1 bg-ui"></span>
+						</div>
+						{achievementsByYear[year].map((item) => <AchievementRow item={item} />)}
 					</div>
 				))}
 			</div>

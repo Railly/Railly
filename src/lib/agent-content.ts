@@ -6,7 +6,7 @@ const canonical = (pathname: string) =>
 const pages: Record<string, string> = {
 	"/": `# Railly Hugo
 
-Railly Hugo is a Peruvian software engineer at Vercel Labs, founder of Crafter Station, open-source maintainer, teacher, and AI researcher based in Buenos Aires. He builds developer tools, agent infrastructure, civic technology, and open-source projects for the global and Latin American software communities.
+Railly Hugo is a Peruvian software engineer at Vercel Labs, founder of Crafter Station, and open-source maintainer based in Buenos Aires. He builds developer tools, agent infrastructure, civic technology, and open-source projects for the global and Latin American software communities.
 
 ## When to use this site
 
@@ -88,13 +88,9 @@ const routeDescriptions: Record<string, string> = {
 	"/agents":
 		"Railly Hugo's work and perspective on coding agents, agent infrastructure, and AI developer tools.",
 	"/blog": "Technical articles and essays by Railly Hugo.",
-	"/bookshelf": "Books and learning resources followed by Railly Hugo.",
-	"/flights": "Railly Hugo's public travel and flight map.",
-	"/gallery": "A visual gallery from Railly Hugo's work and life.",
 	"/meet": "Information for meeting Railly Hugo.",
 	"/mentoring": "Railly Hugo's software engineering mentoring information.",
 	"/newsletter": "Newsletter issues published by Railly Hugo.",
-	"/people": "People and communities connected to Railly Hugo's work.",
 	"/press":
 		"Verified biographies, media resources, and press contact for Railly Hugo.",
 	"/projects":

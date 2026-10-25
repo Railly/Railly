@@ -4,6 +4,7 @@ import PremiereCountdown from "@/components/blog/PremiereCountdown";
 import ViewCounter from "@/components/blog/ViewCounter";
 import AchievementRow from "@/components/home/AchievementRow.astro";
 import FeaturedProjectRow from "@/components/home/FeaturedProjectRow.astro";
+import { MakeablesSheet } from "@/components/home/MakeablesSheet";
 import Footer from "@/components/layout/Footer.astro";
 import HeroSection from "@/components/layout/HeroSection.astro";
 import PageLayout from "@/components/layout/PageLayout.astro";
@@ -14,14 +15,16 @@ import SectionLink from "@/components/ui/SectionLink.astro";
 import { isPostListable } from "@/config/blog";
 import { ogUrl, siteConfig } from "@/config/site";
 import { achievements } from "@/data/achievements";
+import { appearances } from "@/data/appearances";
 import { featuredProjects } from "@/data/projects";
+import youtube from "@/data/youtube.json";
 import Layout from "@/layouts/Layout.astro";
 import { withRepoStars } from "@/lib/github-stars";
 
 const ogImage = ogUrl({
 	title: "Railly Hugo",
 	description:
-		"Peruvian Software Engineer at Vercel Labs and Founder of Crafter Station, building AI developer tools from Buenos Aires.",
+		"I build at the frontier of what agents and interfaces can do.",
 });
 
 const allPosts = await getCollection("blog", ({ data }) =>
@@ -50,24 +53,10 @@ const isNewest = (slug: string) => slug === newestPost?.slug;
 const formatDate = (date: Date) =>
 	`${date.getDate().toString().padStart(2, "0")}/${(date.getMonth() + 1).toString().padStart(2, "0")}`;
 
-const achievementsByYear = achievements.reduce(
-	(acc, item) => {
-		if (!acc[item.year]) {
-			acc[item.year] = [];
-		}
-		acc[item.year].push(item);
-		return acc;
-	},
-	{} as Record<string, typeof achievements>,
-);
-const achievementYears = Object.keys(achievementsByYear).sort(
-	(a, b) => Number(b) - Number(a),
-);
+const highlightedAchievements = achievements.filter((item) => item.highlight);
 
-const rankedProjects = (await withRepoStars(featuredProjects)).sort(
-	(a, b) => b.stars - a.stars,
-);
-const maxStars = Math.max(...rankedProjects.map((p) => p.stars), 1);
+// Editorial order: the order in projects.ts, not star count.
+const selectedProjects = await withRepoStars(featuredProjects);
 ---
 
 <Layout
@@ -78,19 +67,18 @@ const maxStars = Math.max(...rankedProjects.map((p) => p.stars), 1);
 	<PageLayout class="flex flex-col gap-16">
 		<HeroSection name={siteConfig.name} title={siteConfig.hero.title} />
 
-		<section class="w-full" aria-labelledby="what-i-build">
-			<SectionHeader title="What I build" className="mb-3" />
-			<p id="what-i-build" class="max-w-2xl text-sm leading-relaxed text-foreground-2">
-				I build open-source developer tools, agent infrastructure, design systems,
-				and civic technology. This portfolio is the canonical index for my projects,
-				technical writing, public research, and <a href="/developers" class="underline">developer resources</a>.
+		<section class="w-full">
+			<SectionLink title="Now building: Makeables" href="https://makeables.dev" viewAllLabel="makeables" />
+			<p class="mb-6 max-w-2xl text-sm leading-relaxed text-foreground-2">
+				You and your coding agent design stickers, badges and cards from a brand, and they come out ready for the print shop. These are real Makeables stickers. Throw them, stack them, or pull an edge to peel one off.
 			</p>
+			<MakeablesSheet client:visible />
 		</section>
 
 		<section class="w-full">
-			<SectionLink title="Projects" href="/projects" />
+			<SectionLink title="Selected work" href="/projects" />
 			<div class="space-y-0">
-				{rankedProjects.map((project) => <FeaturedProjectRow project={project} maxStars={maxStars} />)}
+				{selectedProjects.map((project) => <FeaturedProjectRow project={project} />)}
 			</div>
 		</section>
 
@@ -133,19 +121,45 @@ const maxStars = Math.max(...rankedProjects.map((p) => p.stars), 1);
 		</section>
 
 		<section class="w-full">
-			<div class="mb-4">
-				<SectionHeader title="Achievements" className="mb-0" />
-			</div>
-			<div class="space-y-0">
-				{achievementYears.map((year) => (
-					<div class="mt-6 first:mt-2">
-						<div class="mb-1 flex items-center gap-3">
-							<span class="font-mono text-xs tabular-nums tracking-wider text-foreground-3">{year}</span>
-							<span class="h-px flex-1 bg-ui"></span>
-						</div>
-						{achievementsByYear[year].map((item) => <AchievementRow item={item} />)}
-					</div>
+			<SectionLink title="Videos" href="https://www.youtube.com/@raillydev" viewAllLabel="youtube" />
+			<div class="grid grid-cols-2 gap-4 sm:grid-cols-3">
+				{youtube.videos.map((video) => (
+					<a href={video.url} target="_blank" rel="noopener noreferrer" class="group flex flex-col gap-2">
+						<span class="block aspect-video overflow-hidden rounded border border-ui bg-background-2">
+							<img src={video.thumbnail} alt="" loading="lazy" class="size-full object-cover transition-transform duration-300 group-hover:scale-[1.03]" />
+						</span>
+						<span class="line-clamp-2 text-sm text-foreground-2 group-hover:text-foreground">{video.title}</span>
+					</a>
 				))}
+			</div>
+		</section>
+
+		<section class="w-full">
+			<SectionHeader title="Talks & press" className="mb-2" />
+			<div class="space-y-0">
+				{appearances.map((item) => {
+					const Tag = item.url ? "a" : "div";
+					return (
+						<Tag
+							{...(item.url ? { href: item.url, target: "_blank", rel: "noopener noreferrer" } : {})}
+							class="group -mx-3 flex items-baseline gap-3 rounded-md px-3 py-2 text-sm transition-colors hover:bg-background-2"
+						>
+							<span class="w-20 shrink-0 font-mono text-xs text-foreground-3">{item.kind}</span>
+							<span class="min-w-0 flex-1">
+								<span class="font-medium text-foreground">{item.title}</span>
+								<span class="ml-2 text-foreground-3">{item.where}</span>
+							</span>
+							<span class="shrink-0 font-mono text-xs tabular-nums text-foreground-3">{item.date}</span>
+						</Tag>
+					);
+				})}
+			</div>
+		</section>
+
+		<section class="w-full">
+			<SectionLink title="Achievements" href="/about#achievements" />
+			<div class="space-y-0">
+				{highlightedAchievements.map((item) => <AchievementRow item={item} />)}
 			</div>
 		</section>
 

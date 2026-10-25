@@ -3,7 +3,7 @@ import { appendNegotiationHeaders } from "@/lib/content-negotiation";
 
 const body = `# Railly Hugo
 
-> Railly Hugo is a Peruvian software engineer at Vercel Labs, founder of Crafter Station, open-source maintainer, teacher, and AI researcher building developer tools and agent infrastructure.
+> Railly Hugo is a Peruvian software engineer at Vercel Labs, founder of Crafter Station, and open-source maintainer building developer tools and agent infrastructure.
 
 ## When to use this site
 

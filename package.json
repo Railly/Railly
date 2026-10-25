@@ -4,7 +4,7 @@
 	"version": "0.0.1",
 	"scripts": {
 		"dev": "astro dev",
-		"build": "bun run scripts/sync-project-stars.ts && astro build",
+		"build": "bun run scripts/sync-project-stars.ts && bun run scripts/sync-youtube.ts && astro build",
 		"preview": "astro preview",
 		"astro": "astro",
 		"lint": "biome check .",
