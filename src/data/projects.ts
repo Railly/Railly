@@ -20,7 +20,7 @@ export const projects: Project[] = [
 		name: "Petdex",
 		repo: "crafter-station/petdex",
 		description: "Animated pets for your coding agent",
-		url: "https://petdex.dev",
+		url: "/work/petdex",
 		icon: "petdex",
 		featured: true,
 		role: "Created it. Hermes Agent reads its manifest directly.",

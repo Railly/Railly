@@ -1,0 +1,118 @@
+---
+import Footer from "@/components/layout/Footer.astro";
+import PageLayout from "@/components/layout/PageLayout.astro";
+import SectionHeader from "@/components/layout/SectionHeader.astro";
+import Layout from "@/layouts/Layout.astro";
+
+const title = "Petdex: from a one-day build to a dependency of Hermes Agent";
+const description =
+	"How Petdex went from idea to live product in a day, and how it spread to 4,000+ stars, 78,000+ npm downloads and Hermes Agent.";
+const ogImage = `/api/og?title=${encodeURIComponent("Petdex")}&description=${encodeURIComponent(description)}&tag=work`;
+
+const metrics = [
+	{
+		value: "4,261",
+		label: "GitHub stars",
+		href: "https://github.com/crafter-station/petdex",
+	},
+	{
+		value: "78,180",
+		label: "npm downloads",
+		href: "https://www.npmjs.com/package/petdex",
+	},
+	{ value: "5,087", label: "pets in the catalog", href: "https://petdex.dev" },
+	{
+		value: "96.7%",
+		label: "of Crafter Station's Q2 star growth",
+		href: "/press/petdex-impact",
+	},
+];
+
+const steps = [
+	{
+		label: "Idea",
+		title: "Coding agents had no personality layer.",
+		body: "Codex, Claude Code and Gemini CLI all run in a terminal for hours. I wanted a small animated companion that sits next to the agent, and a shared place where anyone could publish one.",
+	},
+	{
+		label: "Build",
+		title: "Idea to live product in one day.",
+		body: "The first day shipped the gallery, a CLI (npx petdex install <slug>), sign in with OAuth and PKCE, R2 storage and an agent skill so agents could install pets themselves. That day brought 1,797 visitors and 46 community pets.",
+	},
+	{
+		label: "Design",
+		title: "A public manifest instead of a closed app.",
+		body: "Every pet is described in one public manifest. Agents and other tools can read it without asking for permission, which is what later made the integrations possible.",
+	},
+	{
+		label: "Distribution",
+		title: "Other projects started depending on it.",
+		body: "Hermes Agent by Nous Research reads the Petdex manifest directly in its pet code path. Decrypt covered it and cited Petdex as the source of more than 3,200 sprites. A desktop app followed for macOS, Windows and Linux.",
+	},
+];
+
+const sources = [
+	{
+		label: "Hermes Agent manifest consumer",
+		href: "https://github.com/NousResearch/hermes-agent/blob/main/agent/pet/manifest.py",
+	},
+	{
+		label: "Decrypt coverage",
+		href: "https://decrypt.co/es/372082/tu-agente-hermes-ahora-tiene-una-mascota-que-no-hace-absolutamente-nada-y-ese-es-el-punto",
+	},
+	{ label: "Q2 2026 impact report", href: "/press/petdex-impact" },
+	{
+		label: "Contributors",
+		href: "https://github.com/crafter-station/petdex/graphs/contributors",
+	},
+];
+---
+
+<Layout title={`${title} | Railly Hugo`} description={description} image={ogImage}>
+	<PageLayout class="flex flex-col gap-16">
+		<section class="flex flex-col gap-4">
+			<p class="font-mono text-xs uppercase tracking-wider text-foreground-3">Case study</p>
+			<h1 class="max-w-2xl text-2xl font-medium leading-tight text-foreground sm:text-3xl">{title}</h1>
+			<p class="max-w-2xl text-base leading-relaxed text-foreground-2">
+				Petdex is an open gallery of animated pets for coding agents. I created it and remain its main contributor.
+			</p>
+			<div class="flex flex-wrap gap-4 text-sm">
+				<a href="https://petdex.dev" target="_blank" rel="noopener noreferrer" class="text-foreground underline decoration-ui underline-offset-4 hover:decoration-foreground">Open Petdex</a>
+				<a href="https://github.com/crafter-station/petdex" target="_blank" rel="noopener noreferrer" class="text-foreground underline decoration-ui underline-offset-4 hover:decoration-foreground">View source</a>
+			</div>
+		</section>
+
+		<section class="grid grid-cols-2 gap-px overflow-hidden rounded border border-ui bg-ui sm:grid-cols-4">
+			{metrics.map((m) => (
+				<a href={m.href} class="bg-background p-4 transition-colors hover:bg-background-2" target={m.href.startsWith("http") ? "_blank" : undefined} rel="noopener noreferrer">
+					<p class="font-mono text-xl tabular-nums text-foreground">{m.value}</p>
+					<p class="mt-1 text-xs text-foreground-3">{m.label}</p>
+				</a>
+			))}
+		</section>
+		<p class="-mt-12 text-xs text-foreground-3">Figures checked on October 20, 2026.</p>
+
+		<section class="flex flex-col gap-8">
+			{steps.map((step) => (
+				<div class="grid gap-2 sm:grid-cols-[7rem_1fr]">
+					<p class="font-mono text-xs uppercase tracking-wider text-foreground-3">{step.label}</p>
+					<div>
+						<h2 class="text-base font-medium text-foreground">{step.title}</h2>
+						<p class="mt-1 max-w-2xl text-sm leading-relaxed text-foreground-2">{step.body}</p>
+					</div>
+				</div>
+			))}
+		</section>
+
+		<section>
+			<SectionHeader title="Sources" className="mb-3" />
+			<ul class="flex flex-col gap-2 text-sm">
+				{sources.map((s) => (
+					<li><a href={s.href} target={s.href.startsWith("http") ? "_blank" : undefined} rel="noopener noreferrer" class="text-foreground-2 underline decoration-ui underline-offset-4 hover:text-foreground">{s.label}</a></li>
+				))}
+			</ul>
+		</section>
+
+		<Footer />
+	</PageLayout>
+</Layout>
