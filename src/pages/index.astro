@@ -14,6 +14,7 @@ import SectionLink from "@/components/ui/SectionLink.astro";
 import { isPostListable } from "@/config/blog";
 import { ogUrl, siteConfig } from "@/config/site";
 import { achievements } from "@/data/achievements";
+import { appearances } from "@/data/appearances";
 import { featuredProjects } from "@/data/projects";
 import Layout from "@/layouts/Layout.astro";
 import { withRepoStars } from "@/lib/github-stars";
@@ -118,6 +119,28 @@ const selectedProjects = await withRepoStars(featuredProjects);
 					</div>
 				))}
 				{recentPosts.length === 0 && <div class="py-12 text-center"><p class="text-foreground-2">More stories coming soon</p></div>}
+			</div>
+		</section>
+
+		<section class="w-full">
+			<SectionHeader title="Talks & press" className="mb-2" />
+			<div class="space-y-0">
+				{appearances.map((item) => {
+					const Tag = item.url ? "a" : "div";
+					return (
+						<Tag
+							{...(item.url ? { href: item.url, target: "_blank", rel: "noopener noreferrer" } : {})}
+							class="group -mx-3 flex items-baseline gap-3 rounded-md px-3 py-2 text-sm transition-colors hover:bg-background-2"
+						>
+							<span class="w-20 shrink-0 font-mono text-xs text-foreground-3">{item.kind}</span>
+							<span class="min-w-0 flex-1">
+								<span class="font-medium text-foreground">{item.title}</span>
+								<span class="ml-2 text-foreground-3">{item.where}</span>
+							</span>
+							<span class="shrink-0 font-mono text-xs tabular-nums text-foreground-3">{item.date}</span>
+						</Tag>
+					);
+				})}
 			</div>
 		</section>
 
