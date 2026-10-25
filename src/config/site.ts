@@ -31,7 +31,7 @@ export const siteConfig: SiteConfig = {
 		"Vercel",
 		"Vercel Labs",
 		"Crafter Station",
-		"AI research",
+		"agents",
 		"civic tech",
 		"open source",
 		"developer tools",

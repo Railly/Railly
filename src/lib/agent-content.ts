@@ -6,7 +6,7 @@ const canonical = (pathname: string) =>
 const pages: Record<string, string> = {
 	"/": `# Railly Hugo
 
-Railly Hugo is a Peruvian software engineer at Vercel Labs, founder of Crafter Station, open-source maintainer, teacher, and AI researcher based in Buenos Aires. He builds developer tools, agent infrastructure, civic technology, and open-source projects for the global and Latin American software communities.
+Railly Hugo is a Peruvian software engineer at Vercel Labs, founder of Crafter Station, and open-source maintainer based in Buenos Aires. He builds developer tools, agent infrastructure, civic technology, and open-source projects for the global and Latin American software communities.
 
 ## When to use this site
 
