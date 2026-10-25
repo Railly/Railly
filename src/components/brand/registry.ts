@@ -37,6 +37,9 @@ export type BrandName =
 	| "pintel"
 	| "latex0"
 	| "petdex"
+	| "dotframe"
+	| "makeables"
+	| "peruGov"
 	| "aiHackPeru"
 	| "platanusHack";
 
@@ -343,6 +346,25 @@ export const brandRegistry: Record<BrandName, BrandEntry> = {
 		label: "latex0",
 		paths:
 			'<rect width="32" height="32" rx="6" fill="#0a0a0a"/>\n    <text x="16" y="22" text-anchor="middle" font-family="\'Times New Roman\', serif" font-size="16" fill="#fafafa">L<tspan font-size="11" dy="-2">A</tspan><tspan font-size="16" dy="2">0</tspan></text>',
+	},
+	dotframe: {
+		kind: "svg",
+		viewBox: "0 0 16 16",
+		label: "dotframe",
+		paths:
+			'<path d="M5 2.5H2.5v11H5M11 2.5h2.5v11H11" fill="none" stroke="currentColor" stroke-width="1.4"/><circle cx="8" cy="8" r="2" fill="#6b2cf5"/>',
+	},
+	makeables: {
+		kind: "image",
+		src: "/images/makeables-icon.png",
+		alt: "Makeables",
+		label: "Makeables",
+	},
+	peruGov: {
+		kind: "image",
+		src: "/images/peru-gov-icon.png",
+		alt: "peru-gov",
+		label: "peru-gov",
 	},
 	petdex: {
 		kind: "image",
