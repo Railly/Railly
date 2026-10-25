@@ -3,7 +3,6 @@ import { getCollection } from "astro:content";
 import PremiereCountdown from "@/components/blog/PremiereCountdown";
 import ViewCounter from "@/components/blog/ViewCounter";
 import AchievementRow from "@/components/home/AchievementRow.astro";
-import { DotframeScrubber } from "@/components/home/DotframeScrubber";
 import FeaturedProjectRow from "@/components/home/FeaturedProjectRow.astro";
 import { MakeablesSheet } from "@/components/home/MakeablesSheet";
 import Footer from "@/components/layout/Footer.astro";
@@ -83,19 +82,9 @@ const selectedProjects = await withRepoStars(featuredProjects);
 		<section class="w-full">
 			<SectionLink title="Now building: Makeables" href="https://makeables.dev" viewAllLabel="makeables" />
 			<p class="mb-6 max-w-2xl text-sm leading-relaxed text-foreground-2">
-				You and your coding agent design stickers, badges and cards from a brand, and they come out ready for the print shop. This is a sheet of real Makeables stickers. Move them around and change the finish.
+				You and your coding agent design stickers, badges and cards from a brand, and they come out ready for the print shop. These are real Makeables stickers. Throw them, stack them, or pull an edge to peel one off.
 			</p>
 			<MakeablesSheet client:visible />
-		</section>
-
-		<section class="w-full">
-			<SectionLink title="Also building: dotframe" href="https://dotframe.crafter.games" viewAllLabel="dotframe" />
-			<p class="mb-6 max-w-2xl text-sm leading-relaxed text-foreground-2">
-				A game engine where every frame is deterministic, so an agent can play the game headless and jump to any frame. Scrub it.
-			</p>
-			<div class="rounded bg-df-paper p-4 pb-14 text-df-ink sm:p-6 sm:pb-14">
-				<DotframeScrubber client:visible />
-			</div>
 		</section>
 
 		<section class="w-full">

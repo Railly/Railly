@@ -8,13 +8,6 @@
 @plugin "@tailwindcss/typography";
 
 @theme {
-	/* dotframe palette, used by the dotframe replay piece on the home page */
-	--color-df-paper: #f1ebdf;
-	--color-df-ink: #17140f;
-	--color-df-mute: #6f675a;
-	--color-df-pencil: #d93a26;
-	--color-df-dot: #6b2cf5;
-	--color-df-film: #1b1813;
 
     --font-sans: "Geist Sans", "IBM Plex Sans", "sans-serif";
     --font-serif: "Redaction", "IBM Plex Serif", "serif";
@@ -115,105 +108,68 @@
     }
 }
 
-/* dotframe replay piece */
-.df-film {
-	background: var(--color-df-film);
-	color: var(--color-df-paper);
-}
-.df-sprockets {
-	background-image: linear-gradient(90deg, var(--color-df-paper) 0 10px, transparent 10px 24px);
-	background-size: 24px 8px;
-	border-radius: 2px;
-}
-.df-ring {
-	position: absolute;
-	inset: -10px -12px -12px -10px;
-	border: 3px solid var(--color-df-pencil);
-	border-radius: 46% 54% 50% 48% / 52% 46% 56% 48%;
-	transform: rotate(-2deg);
-	pointer-events: none;
-}
-.df-scrub {
-	-webkit-appearance: none;
-	appearance: none;
-	height: 2px;
-	background: var(--color-df-ink);
-}
-.df-scrub::-webkit-slider-thumb {
-	-webkit-appearance: none;
-	appearance: none;
-	width: 12px;
-	height: 22px;
-	background: var(--color-df-pencil);
-	border: 2px solid var(--color-df-ink);
-}
-.df-scrub::-moz-range-thumb {
-	width: 12px;
-	height: 22px;
-	background: var(--color-df-pencil);
-	border: 2px solid var(--color-df-ink);
-	border-radius: 0;
+
+/* Makeables sticker board, ported from makeables.dev /make/sticker/board */
+.sticker-board {
+  position: relative;
+  height: 420px;
+  overflow: hidden;
+  touch-action: none;
+  background-color: #f1ece2;
+  background-image:
+    linear-gradient(to right, rgb(0 0 0 / 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(0 0 0 / 0.06) 1px, transparent 1px);
+  background-size: 48px 48px;
 }
 
-/* Makeables sticker sheet piece */
-.mk-sheet {
-	background-image: radial-gradient(rgb(0 0 0 / 0.07) 1px, transparent 1px);
-	background-size: 16px 16px;
+.sticker-board-hint {
+  position: absolute;
+  inset: 16px auto auto 16px;
+  margin: 0;
+  font: inherit;
+  font-size: 0.8125rem;
+  color: rgb(0 0 0 / 0.5);
+  pointer-events: none;
 }
-.mk-sticker {
-	--px: 0.5;
-	--py: 0.5;
-	--tilt-x: 0deg;
-	--tilt-y: 0deg;
-	perspective: 600px;
+
+.sticker-board-item {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  pointer-events: none;
+  touch-action: none;
+  -webkit-tap-highlight-color: transparent;
+  filter: drop-shadow(0 2px 3px rgb(0 0 0 / 0.18));
+  transition: filter 160ms ease;
 }
-.mk-tilt {
-	position: relative;
-	transform: rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
-	transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+
+.sticker-board-item[data-lifted="true"] {
+  filter: drop-shadow(0 14px 14px rgb(0 0 0 / 0.28));
 }
-.mk-sticker[data-finish="holo"]:hover .mk-finish {
-	opacity: 0.5;
+
+.sticker-board-item:focus,
+.sticker-board-item:focus-visible {
+  outline: none;
 }
-.mk-sticker:active .mk-tilt {
-	transform: rotateX(var(--tilt-x)) rotateY(var(--tilt-y)) scale(1.06);
+
+/* Keyboard focus follows the die-cut silhouette instead of drawing a box around it. */
+.sticker-board-item:focus-visible {
+  filter: drop-shadow(0 0 1.5px #000) drop-shadow(0 0 1.5px #000)
+    drop-shadow(0 6px 8px rgb(0 0 0 / 0.25));
 }
-.mk-finish {
-	position: absolute;
-	inset: 0;
-	pointer-events: none;
-	mask-image: var(--mask);
-	-webkit-mask-image: var(--mask);
-	mask-size: 100% 100%;
-	-webkit-mask-size: 100% 100%;
-	opacity: 0;
-	transition: opacity 0.3s ease;
+
+.sticker-board-item canvas {
+  position: absolute;
+  display: block;
+  pointer-events: none;
+  user-select: none;
 }
-.mk-sticker[data-finish="holo"] .mk-finish {
-	opacity: 0.22;
-	mix-blend-mode: color-dodge;
-	background: linear-gradient(
-		calc(110deg + var(--px) * 90deg),
-		#ff6ec7 0%,
-		#7afcff calc(20% + var(--py) * 30%),
-		#d7ff3c calc(45% + var(--px) * 20%),
-		#a78bfa 75%,
-		#ff6ec7 100%
-	);
-}
-.mk-sticker[data-finish="glitter"] .mk-finish {
-	opacity: 0.7;
-	mix-blend-mode: overlay;
-	background-image:
-		radial-gradient(circle at calc(var(--px) * 100%) calc(var(--py) * 100%), rgb(255 255 255 / 0.7), transparent 40%),
-		radial-gradient(rgb(255 255 255 / 0.9) 0.7px, transparent 1.2px);
-	background-size:
-		100% 100%,
-		5px 5px;
-}
+
 @media (prefers-reduced-motion: reduce) {
-	.mk-tilt {
-		transition: none;
-		transform: none;
-	}
+  .sticker-board-item {
+    transition: none;
+  }
 }
