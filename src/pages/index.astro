@@ -16,6 +16,7 @@ import { ogUrl, siteConfig } from "@/config/site";
 import { achievements } from "@/data/achievements";
 import { appearances } from "@/data/appearances";
 import { featuredProjects } from "@/data/projects";
+import youtube from "@/data/youtube.json";
 import Layout from "@/layouts/Layout.astro";
 import { withRepoStars } from "@/lib/github-stars";
 
@@ -119,6 +120,20 @@ const selectedProjects = await withRepoStars(featuredProjects);
 					</div>
 				))}
 				{recentPosts.length === 0 && <div class="py-12 text-center"><p class="text-foreground-2">More stories coming soon</p></div>}
+			</div>
+		</section>
+
+		<section class="w-full">
+			<SectionLink title="Videos" href="https://www.youtube.com/@raillydev" viewAllLabel="youtube" />
+			<div class="grid grid-cols-2 gap-4 sm:grid-cols-3">
+				{youtube.videos.map((video) => (
+					<a href={video.url} target="_blank" rel="noopener noreferrer" class="group flex flex-col gap-2">
+						<span class="block aspect-video overflow-hidden rounded border border-ui bg-background-2">
+							<img src={video.thumbnail} alt="" loading="lazy" class="size-full object-cover transition-transform duration-300 group-hover:scale-[1.03]" />
+						</span>
+						<span class="line-clamp-2 text-sm text-foreground-2 group-hover:text-foreground">{video.title}</span>
+					</a>
+				))}
 			</div>
 		</section>
 
