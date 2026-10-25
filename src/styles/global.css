@@ -8,6 +8,14 @@
 @plugin "@tailwindcss/typography";
 
 @theme {
+	/* dotframe palette, used by the dotframe replay piece on the home page */
+	--color-df-paper: #f1ebdf;
+	--color-df-ink: #17140f;
+	--color-df-mute: #6f675a;
+	--color-df-pencil: #d93a26;
+	--color-df-dot: #6b2cf5;
+	--color-df-film: #1b1813;
+
     --font-sans: "Geist Sans", "IBM Plex Sans", "sans-serif";
     --font-serif: "Redaction", "IBM Plex Serif", "serif";
     --font-mono: "Commit Mono", "IBM Plex Mono", "monospace";
@@ -105,4 +113,44 @@
         color: var(--color-background);
         background-color: var(--color-foreground);
     }
+}
+
+/* dotframe replay piece */
+.df-film {
+	background: var(--color-df-film);
+	color: var(--color-df-paper);
+}
+.df-sprockets {
+	background-image: linear-gradient(90deg, var(--color-df-paper) 0 10px, transparent 10px 24px);
+	background-size: 24px 8px;
+	border-radius: 2px;
+}
+.df-ring {
+	position: absolute;
+	inset: -10px -12px -12px -10px;
+	border: 3px solid var(--color-df-pencil);
+	border-radius: 46% 54% 50% 48% / 52% 46% 56% 48%;
+	transform: rotate(-2deg);
+	pointer-events: none;
+}
+.df-scrub {
+	-webkit-appearance: none;
+	appearance: none;
+	height: 2px;
+	background: var(--color-df-ink);
+}
+.df-scrub::-webkit-slider-thumb {
+	-webkit-appearance: none;
+	appearance: none;
+	width: 12px;
+	height: 22px;
+	background: var(--color-df-pencil);
+	border: 2px solid var(--color-df-ink);
+}
+.df-scrub::-moz-range-thumb {
+	width: 12px;
+	height: 22px;
+	background: var(--color-df-pencil);
+	border: 2px solid var(--color-df-ink);
+	border-radius: 0;
 }
