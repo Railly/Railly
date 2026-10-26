@@ -59,6 +59,7 @@ const lastWritten = posts[0]?.data.pubDate.toLocaleDateString("en-US", {
 		<footer class="road mt-auto flex flex-wrap items-baseline gap-x-5 gap-y-2 pt-24 pb-2 text-[12px] text-black/70 dark:text-white/70">
 			<button class="all transition-colors hover:text-current" type="button">Open everything</button>
 			<span class="hidden sm:inline">1 to 5, Esc</span>
+			<span data-town hidden></span>
 			<span class="flex-1"></span>
 			<span class="flex gap-4">
 				<a href="https://github.com/railly" class="hover:text-current">GitHub</a>
@@ -419,6 +420,39 @@ const lastWritten = posts[0]?.data.pubDate.toLocaleDateString("en-US", {
 			orb.height = H * dpr;
 		};
 
+		// Play: click the sky for a shooting star, click the land to light a house.
+		const litByYou = new Set<number>();
+		const meteors: { x: number; y: number; vx: number; vy: number; life: number }[] = [];
+		const ripples: { x: number; y: number; r: number }[] = [];
+		let lastHorizonY = 0;
+		let lastLaneTop = -1;
+		addEventListener("pointerdown", (e) => {
+			if ((e.target as HTMLElement).closest("a, button, .x")) return;
+			if (document.documentElement.classList.contains("reading")) return;
+			const cx = e.clientX;
+			const cy = e.clientY;
+			if (cy < lastHorizonY) {
+				meteors.push({ x: cx, y: cy, vx: -7 - Math.random() * 4, vy: 3 + Math.random() * 2, life: 1 });
+				return;
+			}
+			const gx = Math.floor(cx / cw);
+			const gy = Math.floor(cy / ch);
+			for (let dy = -2; dy <= 2; dy++) {
+				for (let dx = -4; dx <= 4; dx++) {
+					if (dx * dx * 0.25 + dy * dy > 4.5 || hash(gx + dx, gy + dy) < 0.55) continue;
+					const y = gy + dy;
+					if (y === lastLaneTop) continue;
+					litByYou.add(y * 10000 + gx + dx);
+				}
+			}
+			ripples.push({ x: cx, y: cy, r: 0 });
+			const note = document.querySelector<HTMLElement>("[data-town]");
+			if (note && litByYou.size > 0) {
+				note.textContent = litByYou.size >= 120 ? `${litByYou.size} lights. You just built a town.` : `${litByYou.size} lights by you`;
+				note.hidden = false;
+			}
+		});
+
 		type Pal = {
 			sky: [string, string];
 			cloudTop: string;
@@ -673,6 +707,43 @@ const lastWritten = posts[0]?.data.pubDate.toLocaleDateString("en-US", {
 				}
 			}
 
+			lastHorizonY = horizonY;
+			lastLaneTop = laneTop;
+			for (const key of litByYou) {
+				const y = Math.floor(key / 10000);
+				const x = key % 10000;
+				if (y <= horizon + 4 || y >= rows) continue;
+				const tw = 0.75 + 0.25 * Math.sin(t * 0.0015 + x * 7 + y);
+				ctx.clearRect(x * cw, y * ch, cw, ch);
+				put(x, y, "▪", isDark ? "255,226,160" : "255,150,60", tw);
+			}
+			for (let i = meteors.length - 1; i >= 0; i--) {
+				const m = meteors[i];
+				const grad = ctx.createLinearGradient(m.x, m.y, m.x - m.vx * 9, m.y - m.vy * 9);
+				grad.addColorStop(0, `rgba(${isDark ? "255,255,255" : "255,255,255"},${m.life})`);
+				grad.addColorStop(1, "rgba(255,255,255,0)");
+				ctx.strokeStyle = grad;
+				ctx.lineWidth = 1.5;
+				ctx.beginPath();
+				ctx.moveTo(m.x, m.y);
+				ctx.lineTo(m.x - m.vx * 9, m.y - m.vy * 9);
+				ctx.stroke();
+				m.x += m.vx;
+				m.y += m.vy;
+				m.life -= 0.025;
+				if (m.life <= 0 || m.y > lastHorizonY) meteors.splice(i, 1);
+			}
+			for (let i = ripples.length - 1; i >= 0; i--) {
+				const r = ripples[i];
+				ctx.strokeStyle = `rgba(${isDark ? "255,226,160" : "255,255,255"},${Math.max(0, 0.6 - r.r / 80)})`;
+				ctx.lineWidth = 1;
+				ctx.beginPath();
+				ctx.ellipse(r.x, r.y, r.r, r.r * 0.4, 0, 0, Math.PI * 2);
+				ctx.stroke();
+				r.r += 2.5;
+				if (r.r > 50) ripples.splice(i, 1);
+			}
+
 			// Grain.
 			ctx.fillStyle = `rgba(${P.grain},0.06)`;
 			for (let i = 0; i < (W * H) / 900; i++) {
@@ -682,7 +753,7 @@ const lastWritten = posts[0]?.data.pubDate.toLocaleDateString("en-US", {
 
 		let last = 0;
 		const loop = (t: number) => {
-			if (t - last > 80) {
+			if (t - last > (meteors.length || ripples.length ? 16 : 80)) {
 				draw(t);
 				last = t;
 			}
