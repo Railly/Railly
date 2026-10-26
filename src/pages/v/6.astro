@@ -15,6 +15,7 @@ const lastWritten = posts[0]?.data.pubDate.toLocaleDateString("en-US", {
 
 <Layout title="Railly Hugo (v6)" description="Variant 6">
 	<canvas class="orb" aria-hidden="true"></canvas>
+	<div class="moonlight" aria-hidden="true"></div>
 	<main class="v6 relative z-[1] mx-auto flex min-h-screen max-w-[44rem] flex-col px-6 pt-[18vh] pb-16 text-[#1b1915] dark:text-[#ebe7df]">
 		<div class="s font-serif text-[clamp(1.6rem,3.6vw,2.2rem)] leading-[1.45] tracking-[-0.01em]">
 			<span>I build at the frontier of what agents and interfaces can do. I’m </span><span class="nn"><img class="lg av" src="/images/railly-hugo-headshot.webp" alt="" />Railly Hugo</span><span>, a </span><span class="nn"><Flag country="pe" class="lg fl" width={20} height={20} />Peruvian</span><span> engineer at </span><span class="nn"><BrandIcon name="vercel" class="lg" width={20} height={20} />Vercel Labs</span><span>. I make </span>
@@ -55,7 +56,7 @@ const lastWritten = posts[0]?.data.pubDate.toLocaleDateString("en-US", {
 			</div></div><span> along the way.</span>
 		</div>
 
-		<footer class="mt-auto flex flex-wrap items-baseline gap-x-5 gap-y-2 pt-24 text-[12px] text-black/45 dark:text-white/40">
+		<footer class="mt-auto flex flex-wrap items-baseline gap-x-5 gap-y-2 rounded-xl bg-[#f4f1ea]/75 px-4 py-3 text-[12px] text-black/55 backdrop-blur-md dark:bg-[#0f0e0c]/70 dark:text-white/55" style="margin-top: max(6rem, auto)">
 			<button class="all transition-colors hover:text-current" type="button">Open everything</button>
 			<span class="hidden sm:inline">1 to 5, Esc</span>
 			<span class="flex-1"></span>
@@ -71,6 +72,32 @@ const lastWritten = posts[0]?.data.pubDate.toLocaleDateString("en-US", {
 </Layout>
 
 <style>
+	/* Reading: the landscape sets below the horizon like a sun going down,
+	   and a pool of moonlight opens behind the text. */
+	.orb {
+		transition: transform 1.6s cubic-bezier(0.65, 0, 0.35, 1), filter 1.6s ease;
+	}
+	:global(html.reading) .orb {
+		transform: translateY(52vh);
+		filter: saturate(1.25);
+	}
+	.moonlight {
+		position: fixed;
+		inset: 0;
+		pointer-events: none;
+		z-index: 0;
+		opacity: 0;
+		background: radial-gradient(60% 55% at 50% 38%, rgb(255 250 240 / 0.9), transparent 70%);
+		transition: opacity 1.4s ease 0.2s;
+	}
+	:global(html.reading) .moonlight {
+		opacity: 1;
+	}
+	@media (prefers-color-scheme: dark) {
+		.moonlight {
+			background: radial-gradient(60% 55% at 50% 38%, rgb(60 70 140 / 0.22), transparent 70%);
+		}
+	}
 	.orb {
 		position: fixed;
 		inset: 0;
@@ -284,7 +311,9 @@ const lastWritten = posts[0]?.data.pubDate.toLocaleDateString("en-US", {
 	const triggers = [...document.querySelectorAll<HTMLButtonElement>(".v6 .t")];
 	const sentence = document.querySelector<HTMLElement>(".v6 .s");
 	const syncFocus = () => {
-		sentence?.classList.toggle("focus", triggers.some((t) => t.getAttribute("aria-expanded") === "true"));
+		const reading = triggers.some((t) => t.getAttribute("aria-expanded") === "true");
+		sentence?.classList.toggle("focus", reading);
+		document.documentElement.classList.toggle("reading", reading);
 		const open = triggers.filter((t) => t.getAttribute("aria-expanded") === "true");
 		history.replaceState(null, "", open.length === 1 ? `#${open[0].dataset.hash}` : location.pathname);
 	};
@@ -411,21 +440,21 @@ const lastWritten = posts[0]?.data.pubDate.toLocaleDateString("en-US", {
 				grain: "255,255,255",
 			},
 			light: {
-				sky: ["rgba(150,170,235,0)", "rgba(170,185,240,0.55)"],
-				cloudTop: "235,120,120",
-				cloudMid: "220,120,150",
-				cloudLow: "130,120,200",
-				slab: "50,48,96",
-				slabSide: "72,70,125",
-				rim: "235,110,130",
-				win: "255,170,90",
-				sea: "90,110,220",
-				reflect: "255,170,90",
-				hill: "60,140,90",
-				house: "220,140,60",
-				houseCool: "90,110,200",
+				sky: ["rgba(110,165,235,0)", "rgba(105,160,235,0.72)"],
+				cloudTop: "255,255,255",
+				cloudMid: "255,206,196",
+				cloudLow: "140,160,215",
+				slab: "38,44,92",
+				slabSide: "70,78,135",
+				rim: "255,190,170",
+				win: "255,200,120",
+				sea: "210,230,255",
+				reflect: "255,255,255",
+				hill: "28,80,40",
+				house: "255,255,255",
+				houseCool: "200,90,60",
 				star: null,
-				moon: "80,80,140",
+				moon: "255,255,255",
 				grain: "0,0,0",
 			},
 		};
@@ -437,7 +466,7 @@ const lastWritten = posts[0]?.data.pubDate.toLocaleDateString("en-US", {
 			ctx.clearRect(0, 0, W, H);
 
 			const horizon = Math.floor(rows * 0.76);
-			const seaEnd = horizon + 4;
+			const seaEnd = horizon + 5;
 			const horizonY = horizon * ch;
 
 			// Sky: gives the clouds a complement and the slab something to stand against.
@@ -446,6 +475,15 @@ const lastWritten = posts[0]?.data.pubDate.toLocaleDateString("en-US", {
 			sky.addColorStop(1, P.sky[1]);
 			ctx.fillStyle = sky;
 			ctx.fillRect(0, 0, W, horizonY);
+			// Sea and land get a body of their own, not just characters on paper.
+			const seaY = (horizon + 5) * ch;
+			ctx.fillStyle = isDark ? "rgba(18,24,80,0.85)" : "rgba(40,95,200,0.55)";
+			ctx.fillRect(0, horizonY, W, seaY - horizonY);
+			const land = ctx.createLinearGradient(0, seaY, 0, H);
+			land.addColorStop(0, isDark ? "rgba(14,18,48,0.9)" : "rgba(95,160,95,0.55)");
+			land.addColorStop(1, isDark ? "rgba(10,26,18,0.9)" : "rgba(55,125,65,0.7)");
+			ctx.fillStyle = land;
+			ctx.fillRect(0, seaY, W, H - seaY);
 
 			ctx.font = `${ch * 0.86}px "Commit Mono", ui-monospace, monospace`;
 			ctx.textBaseline = "top";
@@ -460,13 +498,14 @@ const lastWritten = posts[0]?.data.pubDate.toLocaleDateString("en-US", {
 			const slabL = Math.floor(cols * (mobile ? 0.62 : 0.74));
 			const slabR = slabL + slabW;
 			const slabTop = Math.floor(rows * 0.08);
-			const drift = t * 0.00003;
+			const drift = t * 0.000004;
 
 			// Stars and moon.
 			for (let y = 0; y < horizon; y++) {
 				for (let x = 0; x < cols; x++) {
+					if (P.star && hash(x * 2, y * 3) > 0.9 && y > rows * 0.35) put(x, y, ".", "90,110,230", 0.25);
 					if (P.star && hash(x, y) > 0.988) {
-						put(x, y, hash(y, x) > 0.6 ? "+" : ".", P.star, 0.3 + 0.4 * Math.abs(Math.sin(t * 0.0012 + x * 3)));
+						put(x, y, hash(y, x) > 0.6 ? "+" : ".", P.star, 0.3 + 0.4 * Math.abs(Math.sin(t * 0.0006 + x * 3)));
 					}
 				}
 			}
@@ -495,7 +534,8 @@ const lastWritten = posts[0]?.data.pubDate.toLocaleDateString("en-US", {
 					const off = (j / (n - 1) - 0.5) * size * 3.2;
 					const peak = 1 - Math.abs(j / (n - 1) - 0.5) * 1.4;
 					const r = size * (0.45 + peak * 0.55) * (0.8 + hash(i, j + 9) * 0.4);
-					blobs.push([base * W + off, horizonY - r * 0.55, r]);
+					// Copies one screen to each side so clouds wrap without a seam.
+					for (const shift of [-W, 0, W]) blobs.push([base * W + off + shift, horizonY - r * 0.55, r]);
 				}
 			}
 			for (let y = 0; y < horizon; y++) {
@@ -517,7 +557,7 @@ const lastWritten = posts[0]?.data.pubDate.toLocaleDateString("en-US", {
 						}
 					}
 					if (best < 0) continue;
-					const grain = fbm(x * 0.35 + drift * 200, y * 0.5) * 0.35;
+					const grain = fbm(x * 0.35 + t * 0.00002, y * 0.5) * 0.35;
 					const lit = Math.max(0, Math.min(1, (1 - vert) * 0.85 + best * 0.3 + grain - 0.15));
 					let rgb = P.cloudMid;
 					let set = "=+*";
@@ -568,26 +608,38 @@ const lastWritten = posts[0]?.data.pubDate.toLocaleDateString("en-US", {
 						put(x, y, (y + x) % 4 === 0 ? "'" : ".", P.reflect, 0.6 - (y - horizon) * 0.1);
 					} else {
 						const wave = Math.sin(x * 0.55 + t * 0.0015 + y * 2);
-						put(x, y, wave > 0.3 ? "~" : "-", P.sea, 0.35 + 0.15 * wave);
+						put(x, y, wave > 0.5 ? "≈" : wave > -0.2 ? "~" : "-", P.sea, (isDark ? 0.5 : 0.65) + 0.2 * wave);
 					}
 				}
 			}
 
-			// Field of houses giving way to hills.
+			// Ground. Night: a field of lit houses into hills. Day: green fields dotted with houses.
 			for (let y = seaEnd; y < rows; y++) {
 				const depth = (y - seaEnd) / Math.max(1, rows - seaEnd);
 				for (let x = 0; x < cols; x++) {
 					const gx = x / cols;
 					const hill = fbm(gx * 2.2, 3.1) * 0.5 + 0.4;
-					if (depth > hill + Math.sin(gx * 4) * 0.06) {
-						const g = fbm(gx * 9, y * 0.4);
-						put(x, y, g > 0.62 ? "&" : g > 0.5 ? "^" : g > 0.4 ? "/" : ",", P.hill, 0.35 + g * 0.35);
-					} else {
-						const threshold = (isDark ? 0.6 : 0.82) - depth * 0.15 + (y > rows * 0.9 ? 0.2 : 0);
-						if (hash(x, y) > threshold) {
+					const g = fbm(gx * 9, y * 0.4);
+					const onHill = depth > hill + Math.sin(gx * 4) * 0.06;
+					if (onHill) {
+						put(x, y, g > 0.62 ? "&" : g > 0.52 ? "%" : g > 0.42 ? "^" : "/", P.hill, (isDark ? 0.5 : 0.75) + g * 0.25);
+					} else if (isDark) {
+						const h = hash(x, y);
+						if (h > 0.42 - depth * 0.12) {
 							const warm = hash(y, x * 3) > 0.35;
-							const tw = hash(x * 5, y) > 0.7 ? 0.5 + 0.5 * Math.sin(t * 0.003 + x * 13 + y * 7) : 1;
-							put(x, y, hash(x, y * 9) > 0.85 ? "*" : ".", warm ? P.house : P.houseCool, (0.35 + 0.45 * tw) * (isDark ? 1 : 0.7));
+							const tw = hash(x * 5, y) > 0.75 ? 0.55 + 0.45 * Math.sin(t * 0.0012 + x * 13 + y * 7) : 1;
+							const c = h > 0.93 ? "*" : h > 0.8 ? "+" : h > 0.62 ? ":" : ".";
+							put(x, y, c, warm ? P.house : P.houseCool, (0.4 + 0.5 * tw) * (1 - depth * 0.3));
+						} else {
+							put(x, y, ",", P.hill, 0.18 + g * 0.15);
+						}
+					} else {
+						const h = hash(x, y);
+						if (h > 0.94) {
+							put(x, y, "▪", hash(y, x) > 0.5 ? P.house : P.houseCool, 0.95);
+						} else {
+							const stripe = Math.sin(gx * 30 + y * 0.9 + fbm(gx * 4, y * 0.2) * 6);
+							put(x, y, stripe > 0.4 ? "=" : stripe > -0.3 ? "-" : ",", P.hill, 0.42 + g * 0.35 + depth * 0.15);
 						}
 					}
 				}
@@ -596,7 +648,7 @@ const lastWritten = posts[0]?.data.pubDate.toLocaleDateString("en-US", {
 			// Grain.
 			ctx.fillStyle = `rgba(${P.grain},0.06)`;
 			for (let i = 0; i < (W * H) / 900; i++) {
-				ctx.fillRect(Math.random() * W, Math.random() * H, 1, 1);
+				ctx.fillRect(hash(i, 1) * W, hash(i, 2) * H, 1, 1);
 			}
 		};
 
