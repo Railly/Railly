@@ -1,6 +1,7 @@
 ---
 import BrandIcon from "@/components/brand/BrandIcon.astro";
 import Flag from "@/components/brand/Flag.astro";
+import type { BrandName } from "@/components/brand/registry";
 import Garua from "@/components/scene/Garua.astro";
 import { siteConfig } from "@/config/site";
 import Layout from "@/layouts/Layout.astro";
@@ -13,6 +14,26 @@ const lastWritten = posts[0]?.data.pubDate.toLocaleDateString("en-US", {
 	day: "numeric",
 	year: "numeric",
 });
+// Marks for the organizations behind each talk, press item and prize.
+const marks: [RegExp, BrandName][] = [
+	[/openai|codex/i, "openai"],
+	[/youtube/i, "youtube"],
+	[/react/i, "react"],
+	[/supabase|osscar/i, "supabase"],
+	[/elevenlabs/i, "elevenlabs"],
+	[/sanity/i, "sanity"],
+	[/next\.js/i, "nextjs"],
+	[/midudev/i, "midudev"],
+	[/vercel/i, "vercel"],
+	[/platanus/i, "platanusHack"],
+	[/unmsm|san marcos/i, "unmsm"],
+	[/ia hackathon/i, "iaHack"],
+	[/crafter/i, "crafterStation"],
+];
+const markFor = (...texts: (string | undefined)[]) => {
+	const text = texts.filter(Boolean).join(" ");
+	return marks.find(([re]) => re.test(text))?.[1];
+};
 ---
 
 <Layout title="Railly Hugo - Open Source Developer at Vercel Labs | Crafter Station Founder" description={siteConfig.description}>
@@ -24,28 +45,28 @@ const lastWritten = posts[0]?.data.pubDate.toLocaleDateString("en-US", {
 			<span class="k whitespace-nowrap"><button class="t" aria-expanded="false" aria-controls="x-work" data-hash="work" data-key="1">tools agents can use<sup><span>{projects.length}</span></sup></button><span class="nb">,</span></span><div class="x" id="x-work"><div>
 				{projects.map((p) => (
 					<a href={p.url} target="_blank" rel="noopener noreferrer" class="r">
-						<span class="n">{p.name}</span><span class="d">{p.description}</span><span class="m">{p.stars >= 100 ? compact.format(p.stars) : ""}</span>
+						<span class="n"><BrandIcon name={p.icon} width={14} height={14} class="logo" />{p.name}</span><span class="d">{p.description}</span><span class="m">{p.stars >= 100 ? compact.format(p.stars) : ""}</span>
 					</a>
 				))}
 			</div></div><span> give </span>
 			<span class="k whitespace-nowrap"><button class="t" aria-expanded="false" aria-controls="x-talks" data-hash="talks" data-key="2">talks and press<sup><span>{appearances.length}</span></sup></button><span class="nb">,</span></span><div class="x" id="x-talks"><div>
 				{appearances.map((a) => (
 					<a href={a.url} target="_blank" rel="noopener noreferrer" class="r">
-						<span class="n">{a.title}</span><span class="d">{a.where}</span><span class="m">{a.date.slice(0, 4)}</span>
+						<span class="n">{markFor(a.where, a.title) ? <BrandIcon name={markFor(a.where, a.title) as BrandName} width={14} height={14} class="logo" /> : <span class="logo-gap" />}{a.title}</span><span class="d">{a.where}</span><span class="m">{a.date.slice(0, 4)}</span>
 					</a>
 				))}
 			</div></div><span> run </span><a href="https://crafter.run" target="_blank" rel="noopener" class="nn cs"><BrandIcon name="crafterStation" class="lg" width={20} height={20} />Crafter Station</a><span>, </span>
 			<span class="k whitespace-nowrap"><button class="t" aria-expanded="false" aria-controls="x-cs" data-hash="community" data-key="3">a community of 1,000+ builders<sup><span>{achievements.length}</span></sup></button><span class="nb">,</span></span><div class="x" id="x-cs"><div>
-				<a href="https://github.com/crafter-station" target="_blank" rel="noopener noreferrer" class="r"><span class="n">Crafter Station</span><span class="d">Non-profit building Peru's tech ecosystem</span><span class="m"></span></a>
+				<a href="https://github.com/crafter-station" target="_blank" rel="noopener noreferrer" class="r"><span class="n"><BrandIcon name="crafterStation" width={14} height={14} class="logo" />Crafter Station</span><span class="d">Non-profit building Peru's tech ecosystem</span><span class="m"></span></a>
 				{achievements.map((a) => (
 					<a href={a.eventUrl} target="_blank" rel="noopener noreferrer" class="r">
-						<span class="n">{a.achievement}</span><span class="d">{a.event}</span><span class="m">{a.year}</span>
+						<span class="n">{markFor(a.achievement, a.event) ? <BrandIcon name={markFor(a.achievement, a.event) as BrandName} width={14} height={14} class="logo" /> : <span class="logo-gap" />}{a.achievement}</span><span class="d">{a.event}</span><span class="m">{a.year}</span>
 					</a>
 				))}
 			</div></div><span> and keep </span>
 			<button class="t" aria-expanded="false" aria-controls="x-notes" data-hash="notes" data-key="4">notes<sup><span>{posts.length}</span></sup></button><div class="x" id="x-notes"><div>
 				{posts.map((p) => (
-					<a href={`/blog/${p.slug}`} class="r"><span class="n">{p.data.title}</span><span class="d">Essay</span><span class="m">{year(p.data.pubDate)}</span></a>
+					<a href={`/blog/${p.slug}`} class="r note"><span class="n">{p.data.title}</span><span class="m">{year(p.data.pubDate)}</span></a>
 				))}
 			</div></div><span> and </span>
 			<span class="k whitespace-nowrap"><button class="t" aria-expanded="false" aria-controls="x-videos" data-hash="videos" data-key="5">videos<sup><span>{videos.length}</span></sup></button></span><div class="x" id="x-videos"><div class="vg">
@@ -71,7 +92,6 @@ const lastWritten = posts[0]?.data.pubDate.toLocaleDateString("en-US", {
 				<a href="https://x.com/raillyhugo" class="hover:text-current">X</a>
 				<a href="mailto:hi@railly.dev" class="hover:text-current">Email</a>
 				{lastWritten && <span class="hidden sm:inline">Last written {lastWritten}</span>}
-				<span class="hidden sm:inline">Move to clear the garúa</span>
 				<span class="hidden tabular-nums sm:inline">Buenos Aires <span data-clock>--:--</span></span>
 			</span>
 		</footer>
@@ -79,6 +99,36 @@ const lastWritten = posts[0]?.data.pubDate.toLocaleDateString("en-US", {
 </Layout>
 
 <style>
+	/* Project marks stay monochrome so they sit in the type, not on it. */
+	.r .n {
+		display: inline-flex;
+		align-items: baseline;
+	}
+	.r :global(.logo),
+	.r .logo-gap {
+		align-self: center;
+	}
+	.r .logo-gap {
+		display: inline-block;
+		width: 14px;
+		margin-right: 0.5rem;
+		flex-shrink: 0;
+	}
+	.r.note {
+		grid-template-columns: minmax(0, 1fr) 3rem;
+	}
+	.r :global(.logo) {
+		display: inline-block;
+		flex-shrink: 0;
+		margin-right: 0.5rem;
+		filter: grayscale(1);
+		opacity: 0.75;
+		transition: opacity 0.2s ease;
+	}
+	.r:hover :global(.logo) {
+		opacity: 1;
+	}
+
 	/* When the landscape sets, the sky above it opens: stars, Mars, a rocket on its way. */
 
 
@@ -151,6 +201,7 @@ const lastWritten = posts[0]?.data.pubDate.toLocaleDateString("en-US", {
 		transition: opacity 0.45s ease;
 	}
 	.s.focus > span:not(.k),
+	.s.focus > a,
 	.s.focus .nb,
 	.s.focus .t[aria-expanded="false"] {
 		opacity: 0.32;
@@ -209,7 +260,7 @@ const lastWritten = posts[0]?.data.pubDate.toLocaleDateString("en-US", {
 
 	.r {
 		display: grid;
-		grid-template-columns: minmax(0, 12rem) minmax(0, 1fr) 3rem;
+		grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr) 3rem;
 		gap: 1rem;
 		align-items: baseline;
 		padding: 0.5rem 0;
