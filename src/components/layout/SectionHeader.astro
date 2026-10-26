@@ -1,14 +1,14 @@
 ---
 interface Props {
 	title: string;
+	index?: string;
 	className?: string;
 }
 
-const { title, className = "" } = Astro.props;
+const { title, index, className = "" } = Astro.props;
 ---
 
-<h2
-  class={`text-sm font-medium text-foreground-2 uppercase tracking-wider ${className}`}
->
-  {title}
+<h2 class={`eyebrow flex items-center gap-3 ${className}`}>
+	{index && <span class="text-accent">{index}</span>}
+	<span class="text-foreground-2">{title}</span>
 </h2>

@@ -395,7 +395,7 @@ export function ReachHero() {
 			tabIndex={0}
 			onKeyDown={(e) => key(e, true)}
 			onKeyUp={(e) => key(e, false)}
-			className="relative aspect-[4/5] w-full touch-none select-none overflow-hidden rounded-xl bg-[#050505] text-white outline-none focus-visible:ring-2 focus-visible:ring-white/40 sm:aspect-[16/10]"
+			className="relative aspect-[4/5] w-full touch-none select-none overflow-hidden rounded-lg border border-ui bg-[#050505] text-white outline-none focus-visible:ring-2 focus-visible:ring-white/40 sm:aspect-[16/9] lg:aspect-[21/9]"
 		>
 			<canvas ref={canvasRef} className="absolute inset-0 size-full" />
 			<div className="pointer-events-none absolute inset-x-4 top-3 flex justify-between font-mono text-[10px] uppercase tracking-[0.2em] text-white/45">

@@ -10,89 +10,71 @@
 @theme {
 
     --font-sans: "Geist Sans", "IBM Plex Sans", "sans-serif";
+    --font-display: "Geist Sans", "Arial Black", "sans-serif";
     --font-serif: "Redaction", "IBM Plex Serif", "serif";
     --font-mono: "Commit Mono", "IBM Plex Mono", "monospace";
 
     --breakpoint-mobile: 40rem;
 
-    --color-primary: #525252;
+    /* Frontier: one void, one ink, one signal. Dark is the identity, not a mode. */
+    --color-primary: #9a9a94;
+    --color-accent: #d7ff3c;
 
-    --color-background: #FDFDFC;
-    --color-background-2: #f5f5f4;
-    --color-ui: #e5e5e5;
-    --color-ui-2: #d4d4d4;
-    --color-ui-3: #c4c4c4;
-    --color-foreground: #111111;
-    --color-foreground-2: #525252;
-    --color-foreground-3: #a3a3a3;
+    --color-background: #050505;
+    --color-background-2: #0e0e0d;
+    --color-ui: #1d1d1b;
+    --color-ui-2: #2a2a27;
+    --color-ui-3: #3a3a36;
+    --color-foreground: #f2f1ec;
+    --color-foreground-2: #9a9a94;
+    --color-foreground-3: #5e5e59;
 
-    --color-red: #525252;
-    --color-orange: #525252;
-    --color-yellow: #525252;
-    --color-green: #525252;
-    --color-cyan: #525252;
-    --color-blue: #525252;
-    --color-purple: #525252;
-    --color-magenta: #525252;
-    --color-amber: #525252;
-    --color-lime: #525252;
-    --color-emerald: #525252;
-    --color-teal: #525252;
-    --color-sky: #525252;
-    --color-indigo: #525252;
-    --color-violet: #525252;
-    --color-fuchsia: #525252;
-    --color-pink: #525252;
-    --color-rose: #525252;
-    --color-slate: #525252;
-    --color-gray: #525252;
-    --color-zinc: #525252;
-    --color-neutral: #525252;
-    --color-stone: #525252;
+    --color-red: #9a9a94;
+    --color-orange: #9a9a94;
+    --color-yellow: #9a9a94;
+    --color-green: #9a9a94;
+    --color-cyan: #9a9a94;
+    --color-blue: #9a9a94;
+    --color-purple: #9a9a94;
+    --color-magenta: #9a9a94;
+    --color-amber: #9a9a94;
+    --color-lime: #9a9a94;
+    --color-emerald: #9a9a94;
+    --color-teal: #9a9a94;
+    --color-sky: #9a9a94;
+    --color-indigo: #9a9a94;
+    --color-violet: #9a9a94;
+    --color-fuchsia: #9a9a94;
+    --color-pink: #9a9a94;
+    --color-rose: #9a9a94;
+    --color-slate: #9a9a94;
+    --color-gray: #9a9a94;
+    --color-zinc: #9a9a94;
+    --color-neutral: #9a9a94;
+    --color-stone: #9a9a94;
 }
 
-@media (prefers-color-scheme: dark) {
-    :root {
-        --color-primary: #a3a3a3;
+:root {
+    color-scheme: dark;
+}
 
-        --color-background: #111111;
-        --color-background-2: #1a1a1a;
-        --color-ui: #262626;
-        --color-ui-2: #2e2e2e;
-        --color-ui-3: #3a3a3a;
-        --color-foreground: #fafafa;
-        --color-foreground-2: #a3a3a3;
-        --color-foreground-3: #525252;
+.font-display {
+    font-weight: 900;
+    letter-spacing: -0.045em;
+    line-height: 0.88;
+}
 
-        --color-red: #a3a3a3;
-        --color-orange: #a3a3a3;
-        --color-yellow: #a3a3a3;
-        --color-green: #a3a3a3;
-        --color-cyan: #a3a3a3;
-        --color-blue: #a3a3a3;
-        --color-purple: #a3a3a3;
-        --color-magenta: #a3a3a3;
-        --color-amber: #a3a3a3;
-        --color-lime: #a3a3a3;
-        --color-emerald: #a3a3a3;
-        --color-teal: #a3a3a3;
-        --color-sky: #a3a3a3;
-        --color-indigo: #a3a3a3;
-        --color-violet: #a3a3a3;
-        --color-fuchsia: #a3a3a3;
-        --color-pink: #a3a3a3;
-        --color-rose: #a3a3a3;
-        --color-slate: #a3a3a3;
-        --color-gray: #a3a3a3;
-        --color-zinc: #a3a3a3;
-        --color-neutral: #a3a3a3;
-        --color-stone: #a3a3a3;
-    }
+.eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--color-foreground-3);
 }
 
 ::selection {
-    background-color: var(--color-ui-2);
-    color: var(--color-foreground);
+    background-color: var(--color-accent);
+    color: #050505;
 }
 
 .underline {
@@ -172,4 +154,13 @@
   .sticker-board-item {
     transition: none;
   }
+}
+
+@layer base {
+    main h1 {
+        font-weight: 900;
+        letter-spacing: -0.04em;
+        line-height: 0.95;
+        font-size: clamp(2.25rem, 5vw, 3.75rem);
+    }
 }

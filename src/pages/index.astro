@@ -2,13 +2,11 @@
 import { getCollection } from "astro:content";
 import PremiereCountdown from "@/components/blog/PremiereCountdown";
 import ViewCounter from "@/components/blog/ViewCounter";
-import AchievementRow from "@/components/home/AchievementRow.astro";
-import FeaturedProjectRow from "@/components/home/FeaturedProjectRow.astro";
+import BrandIcon from "@/components/brand/BrandIcon.astro";
 import { MakeablesSheet } from "@/components/home/MakeablesSheet";
 import Footer from "@/components/layout/Footer.astro";
 import HeroSection from "@/components/layout/HeroSection.astro";
 import PageLayout from "@/components/layout/PageLayout.astro";
-import SectionHeader from "@/components/layout/SectionHeader.astro";
 import NewsletterSection from "@/components/newsletter/NewsletterSection.astro";
 import ListRow from "@/components/ui/ListRow.astro";
 import SectionLink from "@/components/ui/SectionLink.astro";
@@ -23,8 +21,7 @@ import { withRepoStars } from "@/lib/github-stars";
 
 const ogImage = ogUrl({
 	title: "Railly Hugo",
-	description:
-		"I build at the frontier of what agents and interfaces can do.",
+	description: "I build at the frontier of what agents and interfaces can do.",
 });
 
 const allPosts = await getCollection("blog", ({ data }) =>
@@ -57,6 +54,20 @@ const highlightedAchievements = achievements.filter((item) => item.highlight);
 
 // Editorial order: the order in projects.ts, not star count.
 const selectedProjects = await withRepoStars(featuredProjects);
+
+const compact = new Intl.NumberFormat("en-US", {
+	notation: "compact",
+	maximumFractionDigits: 1,
+});
+const petdexStars =
+	selectedProjects.find((p) => p.name === "Petdex")?.stars ?? 0;
+const stats = [
+	{ value: compact.format(petdexStars), label: "Petdex stars" },
+	{ value: "1,000+", label: "Builders in Crafter Station" },
+	{ value: String(appearances.length), label: "Talks and press" },
+	{ value: String(achievements.length), label: "Awards" },
+];
+const pad = (n: number) => String(n + 1).padStart(2, "0");
 ---
 
 <Layout
@@ -64,102 +75,150 @@ const selectedProjects = await withRepoStars(featuredProjects);
 	description={siteConfig.description}
 	image={ogImage}
 >
-	<PageLayout class="flex flex-col gap-16">
-		<HeroSection name={siteConfig.name} title={siteConfig.hero.title} />
+	<PageLayout wide class="flex flex-col gap-24">
+		<HeroSection name={siteConfig.name} title={siteConfig.hero.title} stats={stats} />
 
-		<section class="w-full">
-			<SectionLink title="Now building: Makeables" href="https://makeables.dev" viewAllLabel="makeables" />
-			<p class="mb-6 max-w-2xl text-sm leading-relaxed text-foreground-2">
-				You and your coding agent design stickers, badges and cards from a brand, and they come out ready for the print shop. These are real Makeables stickers. Throw them, stack them, or pull an edge to peel one off.
-			</p>
-			<MakeablesSheet client:visible />
-		</section>
-
-		<section class="w-full">
-			<SectionLink title="Selected work" href="/projects" />
-			<div class="space-y-0">
-				{selectedProjects.map((project) => <FeaturedProjectRow project={project} />)}
+		<section class="grid gap-8 lg:grid-cols-12">
+			<div class="flex flex-col gap-5 lg:col-span-4">
+				<SectionLink index="01" title="Now building" href="https://makeables.dev" viewAllLabel="makeables" />
+				<h3 class="font-display text-5xl text-foreground">Makeables</h3>
+				<p class="max-w-sm text-base leading-relaxed text-foreground-2">
+					You and your coding agent design stickers, badges and cards from a brand, and they come out ready for the print shop.
+				</p>
+				<p class="eyebrow">Throw them. Stack them. Pull an edge to peel.</p>
+			</div>
+			<div class="lg:col-span-8">
+				<MakeablesSheet client:visible />
 			</div>
 		</section>
 
-		<section class="w-full">
-			<SectionLink title="Writing" href="/writing" />
-			<div class="space-y-0">
-				{years.map((year) => (
-					<div class="mt-6 first:mt-2">
-						<div class="mb-1 flex items-center gap-3">
-							<span class="font-mono text-xs tabular-nums tracking-wider text-foreground-3">{year}</span>
-							<span class="h-px flex-1 bg-ui"></span>
-						</div>
-						{postsByYear[year].map((post) => {
-							const isPremiere = post.data.status === "premiere" && new Date() < post.data.pubDate;
-							return isPremiere ? (
-								<ListRow hover={false} divided={false}>
-									<span class="text-sm font-medium text-foreground-3">
-										{post.data.title}
-										<span class="ml-2 rounded border border-ui px-1.5 py-0.5 text-xs font-normal text-foreground-3">Premiere</span>
-									</span>
-									<PremiereCountdown slot="trailing" pubDate={post.data.pubDate.toISOString()} client:load />
-								</ListRow>
-							) : (
-								<ListRow href={`/blog/${post.slug}`} divided={false}>
-									<span class="text-sm font-medium text-foreground group-hover:text-foreground">
-										{post.data.title}
-										{isNewest(post.slug) ? (
-											<span class="ml-2 rounded bg-ui px-1.5 py-0.5 text-xs font-normal text-foreground-2">Newest</span>
-										) : null}
-									</span>
-									<ViewCounter slot="trailing" slug={post.slug} client:load className="text-xs tabular-nums text-foreground-3" />
-									<span slot="trailing" class="text-sm tabular-nums text-foreground-3">{formatDate(post.data.pubDate)}</span>
-								</ListRow>
-							);
-						})}
-					</div>
-				))}
-				{recentPosts.length === 0 && <div class="py-12 text-center"><p class="text-foreground-2">More stories coming soon</p></div>}
-			</div>
-		</section>
-
-		<section class="w-full">
-			<SectionLink title="Videos" href="https://www.youtube.com/@raillydev" viewAllLabel="youtube" />
-			<div class="grid grid-cols-2 gap-4 sm:grid-cols-3">
-				{youtube.videos.map((video) => (
-					<a href={video.url} target="_blank" rel="noopener noreferrer" class="group flex flex-col gap-2">
-						<span class="block aspect-video overflow-hidden rounded border border-ui bg-background-2">
-							<img src={video.thumbnail} alt="" loading="lazy" class="size-full object-cover transition-transform duration-300 group-hover:scale-[1.03]" />
+		<section>
+			<SectionLink index="02" title="Selected work" href="/projects" />
+			<div class="grid gap-px overflow-hidden rounded-lg border border-ui bg-ui sm:grid-cols-2 lg:grid-cols-3">
+				{selectedProjects.map((project, i) => (
+					<a
+						href={project.url}
+						target={project.url.startsWith("http") ? "_blank" : undefined}
+						rel="noopener noreferrer"
+						class="group relative flex min-h-56 flex-col gap-4 bg-background p-5 transition-colors duration-300 hover:bg-background-2"
+					>
+						<span class="flex items-center justify-between">
+							<span class="eyebrow">{pad(i)}</span>
+							{project.stars >= 100 && (
+								<span class="font-mono text-[11px] tabular-nums text-foreground-3 group-hover:text-accent">
+									{compact.format(project.stars)} ★
+								</span>
+							)}
 						</span>
-						<span class="line-clamp-2 text-sm text-foreground-2 group-hover:text-foreground">{video.title}</span>
+						<span class="mt-auto flex items-center gap-3">
+							<BrandIcon name={project.icon} width={22} height={22} class="text-foreground" />
+							<span class="font-display text-3xl text-foreground">{project.name}</span>
+						</span>
+						<span class="text-sm leading-relaxed text-foreground-2">{project.description}</span>
+						{project.role && <span class="border-t border-ui pt-3 font-mono text-[11px] leading-relaxed text-foreground-3">{project.role}</span>}
+						<span aria-hidden class="absolute right-5 bottom-5 translate-x-1 text-accent opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100">→</span>
 					</a>
 				))}
+				<a href="/projects" class="group flex min-h-56 flex-col justify-between bg-background p-5 transition-colors duration-300 hover:bg-background-2 sm:col-span-2 lg:col-span-2">
+					<span class="eyebrow">Index</span>
+					<span class="font-display text-[clamp(2.5rem,5vw,4.5rem)] text-foreground-3 transition-colors group-hover:text-foreground">
+						All work <span class="text-accent">→</span>
+					</span>
+				</a>
 			</div>
 		</section>
 
-		<section class="w-full">
-			<SectionHeader title="Talks & press" className="mb-2" />
-			<div class="space-y-0">
-				{appearances.map((item) => {
-					const Tag = item.url ? "a" : "div";
-					return (
-						<Tag
-							{...(item.url ? { href: item.url, target: "_blank", rel: "noopener noreferrer" } : {})}
-							class="group -mx-3 flex items-baseline gap-3 rounded-md px-3 py-2 text-sm transition-colors hover:bg-background-2"
-						>
-							<span class="w-20 shrink-0 font-mono text-xs text-foreground-3">{item.kind}</span>
-							<span class="min-w-0 flex-1">
-								<span class="font-medium text-foreground">{item.title}</span>
-								<span class="ml-2 text-foreground-3">{item.where}</span>
+		<section class="grid gap-16 lg:grid-cols-2 lg:gap-10">
+			<div>
+				<SectionLink index="03" title="Writing" href="/writing" />
+				<div>
+					{years.map((year) => (
+						<div class="mt-6 first:mt-0">
+							<div class="eyebrow mb-1">{year}</div>
+							{postsByYear[year].map((post) => {
+								const isPremiere = post.data.status === "premiere" && new Date() < post.data.pubDate;
+								return isPremiere ? (
+									<ListRow hover={false}>
+										<span class="text-base text-foreground-3">
+											{post.data.title}
+											<span class="eyebrow ml-2">Premiere</span>
+										</span>
+										<PremiereCountdown slot="trailing" pubDate={post.data.pubDate.toISOString()} client:load />
+									</ListRow>
+								) : (
+									<ListRow href={`/blog/${post.slug}`}>
+										<span class="text-base text-foreground transition-colors group-hover:text-accent">
+											{post.data.title}
+											{isNewest(post.slug) ? <span class="eyebrow ml-2 text-accent">New</span> : null}
+										</span>
+										<ViewCounter slot="trailing" slug={post.slug} client:load className="font-mono text-[11px] tabular-nums text-foreground-3" />
+										<span slot="trailing" class="font-mono text-[11px] tabular-nums text-foreground-3">{formatDate(post.data.pubDate)}</span>
+									</ListRow>
+								);
+							})}
+						</div>
+					))}
+					{recentPosts.length === 0 && <p class="py-12 text-foreground-2">More stories coming soon</p>}
+				</div>
+			</div>
+
+			<div>
+				<SectionLink index="04" title="Videos" href="https://www.youtube.com/@raillydev" viewAllLabel="youtube" />
+				<div class="grid grid-cols-2 gap-4">
+					{youtube.videos.map((video) => (
+						<a href={video.url} target="_blank" rel="noopener noreferrer" class="group flex flex-col gap-2">
+							<span class="block aspect-video overflow-hidden rounded border border-ui bg-background-2">
+								<img src={video.thumbnail} alt="" loading="lazy" class="size-full object-cover grayscale transition duration-500 group-hover:scale-[1.03] group-hover:grayscale-0" />
 							</span>
-							<span class="shrink-0 font-mono text-xs tabular-nums text-foreground-3">{item.date}</span>
-						</Tag>
-					);
-				})}
+							<span class="line-clamp-2 text-sm text-foreground-2 group-hover:text-foreground">{video.title}</span>
+						</a>
+					))}
+				</div>
 			</div>
 		</section>
 
-		<section class="w-full">
-			<SectionLink title="Achievements" href="/about#achievements" />
-			<div class="space-y-0">
-				{highlightedAchievements.map((item) => <AchievementRow item={item} />)}
+		<section class="grid gap-16 lg:grid-cols-2 lg:gap-10">
+			<div>
+				<SectionLink index="05" title="Talks and press" href="/press" />
+				<div>
+					{appearances.map((item) => {
+						const Tag = item.url ? "a" : "div";
+						return (
+							<Tag
+								{...(item.url ? { href: item.url, target: "_blank", rel: "noopener noreferrer" } : {})}
+								class="group grid grid-cols-[5.5rem_1fr_auto] items-baseline gap-3 border-b border-ui py-3 text-sm"
+							>
+								<span class="eyebrow">{item.kind}</span>
+								<span class="min-w-0">
+									<span class="text-foreground transition-colors group-hover:text-accent">{item.title}</span>
+									<span class="block text-foreground-3">{item.where}</span>
+								</span>
+								<span class="font-mono text-[11px] tabular-nums text-foreground-3">{item.date}</span>
+							</Tag>
+						);
+					})}
+				</div>
+			</div>
+
+			<div>
+				<SectionLink index="06" title="Recognition" href="/about#achievements" />
+				<div>
+					{highlightedAchievements.map((item) => {
+						const Tag = item.eventUrl ? "a" : "div";
+						return (
+							<Tag
+								{...(item.eventUrl ? { href: item.eventUrl, target: "_blank", rel: "noopener noreferrer" } : {})}
+								class="group grid grid-cols-[3.5rem_1fr] items-baseline gap-3 border-b border-ui py-3 text-sm"
+							>
+								<span class="font-mono text-[11px] tabular-nums text-foreground-3">{item.year}</span>
+								<span>
+									<span class="text-foreground transition-colors group-hover:text-accent">{item.achievement}</span>
+									<span class="block text-foreground-3">{item.event}{item.project && `, ${item.project}`}</span>
+								</span>
+							</Tag>
+						);
+					})}
+				</div>
 			</div>
 		</section>
 

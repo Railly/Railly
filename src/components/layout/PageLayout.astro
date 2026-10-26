@@ -3,28 +3,21 @@ import Navigation from "./Navigation.astro";
 
 interface Props {
 	class?: string;
+	wide?: boolean;
 }
 
-const { class: className } = Astro.props;
+const { class: className, wide = false } = Astro.props;
 ---
 
+<Navigation />
 <main
-    class="max-w-[83rem] mx-auto px-4 sm:px-6 pt-2 pb-8 sm:pt-24 text-foreground"
+	class:list={[
+		"mx-auto px-4 pt-10 pb-10 text-foreground sm:px-6 sm:pt-16",
+		wide ? "max-w-[80rem]" : "max-w-[46rem]",
+	]}
 >
-    <div class="lg:grid lg:grid-cols-[1fr_minmax(0,_2.5fr)_1fr] lg:gap-8">
-        <!-- Left Sidebar - Navigation -->
-        <div class="lg:col-start-1">
-            <Navigation />
-        </div>
-
-        <!-- Main Content -->
-        <div class:list={["lg:col-start-2 w-full", className]}>
-            <slot />
-        </div>
-
-        <!-- Right Sidebar -->
-        <div class="lg:col-start-3">
-            <slot name="rightSidebar" />
-        </div>
-    </div>
+	<div class:list={["w-full", className]}>
+		<slot />
+	</div>
+	<slot name="rightSidebar" />
 </main>
