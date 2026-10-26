@@ -712,10 +712,10 @@ const lastWritten = posts[0]?.data.pubDate.toLocaleDateString("en-US", {
 						const band = smooth(Math.min(1, (y - fogTop) / (rows * 0.12))) * (y > horizon - 2 ? 0.7 : 1);
 						fogD = band * (fbm(x * 0.035 + drift * 60, y * 0.09 + drift * 10) * 1.3 - 0.12);
 						fogD *= 1 - clear[i];
-						const nearTower = Math.abs(x - fx) < 26 && y > coastTop(fx) - 20;
-						if (nearTower) fogD *= 0.25;
 					}
 					const under = cells[i];
+					// Thin the fog only over the tower and rock themselves, never a box around them.
+					if (under && (under[1] === P.rock || under[1] === P.tower || under[1] === "196,58,52")) fogD *= 0.35;
 					if (under && fogD < 0.7) {
 						let [c, rgb, a] = under;
 						if (litByYou.has(i) && rgb === P.house) a = 1;
