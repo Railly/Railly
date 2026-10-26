@@ -914,7 +914,7 @@ const lastWritten = posts[0]?.data.pubDate.toLocaleDateString("en-US", {
 			sctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 			sctx.clearRect(0, 0, W, H);
 			sctx.textBaseline = "middle";
-			const ink = isDark ? "235,232,255" : "60,60,110";
+			const ink = isDark ? "214,206,240" : "90,90,140";
 
 			// Stars, kept away from the reading column so the rows stay clean.
 			const col = Math.min(720, W * 0.6);
@@ -924,33 +924,32 @@ const lastWritten = posts[0]?.data.pubDate.toLocaleDateString("en-US", {
 				const x = hash(i, 1) * W;
 				const y = hash(i, 2) * H;
 				const inColumn = x > left && x < right;
-				const a = (inColumn ? 0.12 : 0.55) * (0.5 + 0.5 * Math.sin(t * 0.0008 + i));
+				const a = (inColumn ? 0.06 : 0.32) * (0.6 + 0.4 * Math.sin(t * 0.0006 + i));
 				sctx.fillStyle = `rgba(${ink},${(a * (isDark ? 1 : 0.6)).toFixed(3)})`;
 				sctx.font = `${hash(i, 3) > 0.9 ? 12 : 9}px "Commit Mono", monospace`;
 				sctx.fillText(hash(i, 4) > 0.85 ? "+" : hash(i, 4) > 0.6 ? "·" : ".", x, y);
 			}
 
-			// Mars, small and dusty, upper right.
+			// A distant planet: small, dim, lit from one side, in the scene's dusty pink.
 			const mx = W - Math.max(70, W * 0.1);
 			const my = H * 0.16;
-			const mr = W < 700 ? 14 : 22;
-			sctx.save();
-			sctx.shadowColor = "rgba(255,120,90,0.5)";
-			sctx.shadowBlur = 24;
-			const g = sctx.createRadialGradient(mx - mr * 0.4, my - mr * 0.4, mr * 0.1, mx, my, mr);
-			g.addColorStop(0, "rgba(255,170,130,1)");
-			g.addColorStop(1, "rgba(190,80,60,1)");
+			const mr = W < 700 ? 7 : 10;
+			const g = sctx.createRadialGradient(mx - mr * 0.5, my - mr * 0.4, 0, mx, my, mr);
+			g.addColorStop(0, isDark ? "rgba(236,170,170,0.55)" : "rgba(200,130,130,0.45)");
+			g.addColorStop(0.7, isDark ? "rgba(150,90,110,0.4)" : "rgba(170,110,120,0.3)");
+			g.addColorStop(1, "rgba(60,40,70,0.15)");
 			sctx.fillStyle = g;
 			sctx.beginPath();
 			sctx.arc(mx, my, mr, 0, Math.PI * 2);
 			sctx.fill();
-			sctx.restore();
-			sctx.fillStyle = `rgba(${ink},0.45)`;
-			sctx.font = '10px "Commit Mono", monospace';
-			sctx.fillText("mars", mx - mr, my + mr + 14);
+			const halo = sctx.createRadialGradient(mx, my, mr, mx, my, mr * 3);
+			halo.addColorStop(0, isDark ? "rgba(255,150,170,0.06)" : "rgba(220,140,150,0.05)");
+			halo.addColorStop(1, "rgba(0,0,0,0)");
+			sctx.fillStyle = halo;
+			sctx.fillRect(mx - mr * 3, my - mr * 3, mr * 6, mr * 6);
 
 			// A rocket climbing from the lower left toward Mars, leaving an ASCII exhaust.
-			const p = Math.min(1, (t - launched) / 26000);
+			const p = Math.min(1, (t - launched) / 60000);
 			const sx = W * 0.06;
 			const sy = H * 0.95;
 			const cx = W * 0.2;
@@ -961,33 +960,23 @@ const lastWritten = posts[0]?.data.pubDate.toLocaleDateString("en-US", {
 			];
 			const [rx, ry] = bez(p);
 			const [ax, ay] = bez(Math.min(1, p + 0.01));
-			for (let k = 1; k < 40; k++) {
-				const u = p - k * 0.006;
+			// Exhaust: a thin fading contrail, more like a satellite pass than a firework.
+			for (let k = 1; k < 60; k++) {
+				const u = p - k * 0.004;
 				if (u < 0) break;
 				const [tx, ty] = bez(u);
-				sctx.fillStyle = `rgba(255,${180 - k * 3},${150 - k * 2},${(0.8 - k / 45).toFixed(3)})`;
-				sctx.font = '10px "Commit Mono", monospace';
-				sctx.fillText(k < 4 ? "*" : k < 12 ? ":" : ".", tx + Math.sin(k + t * 0.01) * 1.5, ty);
+				sctx.fillStyle = `rgba(${isDark ? "255,190,200" : "180,120,140"},${(0.28 * (1 - k / 60)).toFixed(3)})`;
+				sctx.fillRect(tx, ty, 1, 1);
 			}
 			if (p < 1) {
-				sctx.save();
-				sctx.translate(rx, ry);
-				sctx.rotate(Math.atan2(ay - ry, ax - rx) + Math.PI / 2);
-				sctx.fillStyle = isDark ? "rgba(240,238,250,0.95)" : "rgba(50,50,80,0.9)";
-				sctx.beginPath();
-				sctx.moveTo(0, -11);
-				sctx.quadraticCurveTo(4, -5, 3.5, 7);
-				sctx.lineTo(-3.5, 7);
-				sctx.quadraticCurveTo(-4, -5, 0, -11);
-				sctx.fill();
-				sctx.fillRect(-6, 4, 2.5, 4);
-				sctx.fillRect(3.5, 4, 2.5, 4);
-				sctx.fillStyle = "rgba(255,190,120,0.95)";
-				sctx.fillRect(-1.5, 7, 3, 3 + Math.random() * 3);
-				sctx.restore();
-			} else {
-				sctx.fillStyle = `rgba(${ink},0.55)`;
-				sctx.fillText("landed.", mx - mr, my - mr - 10);
+				// The craft itself is a speck with a faint warm engine glow.
+				const glow = sctx.createRadialGradient(rx, ry, 0, rx, ry, 6);
+				glow.addColorStop(0, isDark ? "rgba(255,210,180,0.5)" : "rgba(200,140,120,0.4)");
+				glow.addColorStop(1, "rgba(0,0,0,0)");
+				sctx.fillStyle = glow;
+				sctx.fillRect(rx - 6, ry - 6, 12, 12);
+				sctx.fillStyle = isDark ? "rgba(240,236,250,0.85)" : "rgba(60,60,90,0.7)";
+				sctx.fillRect(rx - 0.75, ry - 0.75, 1.5, 1.5);
 			}
 		};
 		const loop = (t: number) => {
