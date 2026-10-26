@@ -20,7 +20,7 @@ export async function homeData() {
 		projects: await withRepoStars(featuredProjects),
 		appearances,
 		achievements: achievements.filter((a) => a.highlight),
-		videos: youtube.videos.slice(0, 4),
+		videos: youtube.videos,
 	};
 }
 

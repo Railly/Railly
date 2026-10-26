@@ -14,21 +14,21 @@ const lastWritten = posts[0]?.data.pubDate.toLocaleDateString("en-US", {
 <Layout title="Railly Hugo (v6)" description="Variant 6">
 	<main class="v6 mx-auto flex min-h-screen max-w-[44rem] flex-col px-6 pt-[18vh] pb-16 text-[#1b1915] dark:text-[#ebe7df]">
 		<div class="s font-serif text-[clamp(1.6rem,3.6vw,2.2rem)] leading-[1.45] tracking-[-0.01em]">
-			<span>Railly Hugo is a Peruvian engineer at Vercel Labs who builds </span>
+			<span>I build at the frontier of what agents and interfaces can do. I’m Railly Hugo, a Peruvian engineer at Vercel Labs. I make </span>
 			<span class="k whitespace-nowrap"><button class="t" aria-expanded="false" aria-controls="x-work" data-hash="work" data-key="1">tools agents can use<sup><span>{projects.length}</span></sup></button><span class="nb">,</span></span><div class="x" id="x-work"><div>
 				{projects.map((p) => (
 					<a href={p.url} target="_blank" rel="noopener noreferrer" class="r">
 						<span class="n">{p.name}</span><span class="d">{p.description}</span><span class="m">{p.stars >= 100 ? compact.format(p.stars) : ""}</span>
 					</a>
 				))}
-			</div></div><span> gives </span>
+			</div></div><span> give </span>
 			<span class="k whitespace-nowrap"><button class="t" aria-expanded="false" aria-controls="x-talks" data-hash="talks" data-key="2">talks and press<sup><span>{appearances.length}</span></sup></button><span class="nb">,</span></span><div class="x" id="x-talks"><div>
 				{appearances.map((a) => (
 					<a href={a.url} target="_blank" rel="noopener noreferrer" class="r">
 						<span class="n">{a.title}</span><span class="d">{a.where}</span><span class="m">{a.date.slice(0, 4)}</span>
 					</a>
 				))}
-			</div></div><span> runs </span>
+			</div></div><span> run </span>
 			<span class="k whitespace-nowrap"><button class="t" aria-expanded="false" aria-controls="x-cs" data-hash="community" data-key="3">a community of 1,000+ builders<sup><span>{achievements.length}</span></sup></button><span class="nb">,</span></span><div class="x" id="x-cs"><div>
 				<a href="https://github.com/crafter-station" target="_blank" rel="noopener noreferrer" class="r"><span class="n">Crafter Station</span><span class="d">Non-profit building Peru's tech ecosystem</span><span class="m"></span></a>
 				{achievements.map((a) => (
@@ -36,20 +36,25 @@ const lastWritten = posts[0]?.data.pubDate.toLocaleDateString("en-US", {
 						<span class="n">{a.achievement}</span><span class="d">{a.event}</span><span class="m">{a.year}</span>
 					</a>
 				))}
-			</div></div><span> and keeps </span>
-			<button class="t" aria-expanded="false" aria-controls="x-notes" data-hash="notes" data-key="4">notes<sup><span>{posts.length + videos.length}</span></sup></button><div class="x" id="x-notes"><div>
+			</div></div><span> and keep </span>
+			<button class="t" aria-expanded="false" aria-controls="x-notes" data-hash="notes" data-key="4">notes<sup><span>{posts.length}</span></sup></button><div class="x" id="x-notes"><div>
 				{posts.map((p) => (
 					<a href={`/blog/${p.slug}`} class="r"><span class="n">{p.data.title}</span><span class="d">Essay</span><span class="m">{year(p.data.pubDate)}</span></a>
 				))}
+			</div></div><span> and </span>
+			<span class="k whitespace-nowrap"><button class="t" aria-expanded="false" aria-controls="x-videos" data-hash="videos" data-key="5">videos<sup><span>{videos.length}</span></sup></button></span><div class="x" id="x-videos"><div class="vg">
 				{videos.map((v) => (
-					<a href={v.url} target="_blank" rel="noopener noreferrer" class="r"><span class="n">{v.title}</span><span class="d">Video</span><span class="m"></span></a>
+					<a href={v.url} target="_blank" rel="noopener noreferrer" class="r v">
+						<img src={v.thumbnail} alt="" loading="lazy" />
+						<span class="n">{v.title}</span>
+					</a>
 				))}
 			</div></div><span> along the way.</span>
 		</div>
 
 		<footer class="mt-auto flex flex-wrap items-baseline gap-x-5 gap-y-2 pt-24 text-[12px] text-black/45 dark:text-white/40">
 			<button class="all transition-colors hover:text-current" type="button">Open everything</button>
-			<span class="hidden sm:inline">1 to 4, Esc</span>
+			<span class="hidden sm:inline">1 to 5, Esc</span>
 			<span class="flex-1"></span>
 			<span class="flex gap-4">
 				<a href="https://github.com/railly" class="hover:text-current">GitHub</a>
@@ -170,6 +175,43 @@ const lastWritten = posts[0]?.data.pubDate.toLocaleDateString("en-US", {
 	@keyframes r-in {
 		from { opacity: 0; transform: translateY(6px); filter: blur(3px); }
 	}
+	.vg {
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: 1.25rem 1rem;
+		padding-top: 0.25rem;
+	}
+	.r.v {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+		border-top: 0;
+		padding: 0;
+	}
+	.r.v img {
+		aspect-ratio: 16 / 9;
+		width: 100%;
+		object-fit: cover;
+		border-radius: 3px;
+		filter: grayscale(1) contrast(1.05);
+		opacity: 0.85;
+		transition: filter 0.4s ease, opacity 0.4s ease;
+	}
+	.r.v:hover img {
+		filter: none;
+		opacity: 1;
+	}
+	.r.v .n {
+		display: -webkit-box;
+		-webkit-line-clamp: 2;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+	}
+	@media (max-width: 640px) {
+		.vg {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+	}
 	.r .d,
 	.r .m {
 		opacity: 0.5;
@@ -225,8 +267,12 @@ const lastWritten = posts[0]?.data.pubDate.toLocaleDateString("en-US", {
 		for (const t of triggers) set(t, open);
 		all.textContent = open ? "Close everything" : "Open everything";
 	});
-	const fromHash = triggers.find((t) => `#${t.dataset.hash}` === location.hash);
-	if (fromHash) set(fromHash, true);
+	const openFromHash = () => {
+		const t = triggers.find((x) => `#${x.dataset.hash}` === location.hash);
+		if (t) set(t, true);
+	};
+	openFromHash();
+	window.addEventListener("hashchange", openFromHash);
 	window.addEventListener("keydown", (e) => {
 		if (e.key === "Escape") {
 			for (const t of triggers) set(t, false);
