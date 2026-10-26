@@ -3,7 +3,7 @@ import BrandIcon from "@/components/brand/BrandIcon.astro";
 import Flag from "@/components/brand/Flag.astro";
 import type { BrandName } from "@/components/brand/registry";
 import Garua from "@/components/scene/Garua.astro";
-import { siteConfig } from "@/config/site";
+import { ogUrl, siteConfig } from "@/config/site";
 import Layout from "@/layouts/Layout.astro";
 import { compact, homeData } from "@/lib/home-data";
 
@@ -36,7 +36,9 @@ const markFor = (...texts: (string | undefined)[]) => {
 };
 ---
 
-<Layout title="Railly Hugo - Open Source Developer at Vercel Labs | Crafter Station Founder" description={siteConfig.description}>
+<Layout title="Railly Hugo - Open Source Developer at Vercel Labs | Crafter Station Founder" description={siteConfig.description}
+	image={ogUrl({ title: "Railly Hugo", description: "I build at the frontier of what agents and interfaces can do." })}
+>
 	<Garua />
 	<main class="home relative z-[1] mx-auto flex min-h-screen max-w-[44rem] flex-col px-6 pt-[9vh] pb-16 sm:pt-[18vh] text-[#1b1915] dark:text-[#ebe7df]">
 		<h1 class="sr-only">Railly Hugo, open source developer and software engineer at Vercel Labs</h1>
@@ -57,10 +59,10 @@ const markFor = (...texts: (string | undefined)[]) => {
 				))}
 			</div></div><span> run </span><a href="https://crafter.run" target="_blank" rel="noopener" class="nn cs"><BrandIcon name="crafterStation" class="lg" width={20} height={20} />Crafter Station</a><span>, </span>
 			<span class="k whitespace-nowrap"><button class="t" aria-expanded="false" aria-controls="x-cs" data-hash="community" data-key="3">a community of 1,000+ builders<sup><span>{achievements.length}</span></sup></button><span class="nb">,</span></span><div class="x" id="x-cs"><div>
-				<a href="https://github.com/crafter-station" target="_blank" rel="noopener noreferrer" class="r"><span class="n"><BrandIcon name="crafterStation" width={14} height={14} class="logo" />Crafter Station</span><span class="d">Non-profit building Peru's tech ecosystem</span><span class="m"></span></a>
+				<a href="https://github.com/crafter-station" target="_blank" rel="noopener noreferrer" class="r note"><span class="n"><BrandIcon name="crafterStation" width={14} height={14} class="logo" /><span><span class="win">Crafter Station</span> <span class="ev">non-profit building Peru's tech ecosystem</span></span></span><span class="m"></span></a>
 				{achievements.map((a) => (
-					<a href={a.eventUrl} target="_blank" rel="noopener noreferrer" class="r">
-						<span class="n">{markFor(a.achievement, a.event) ? <BrandIcon name={markFor(a.achievement, a.event) as BrandName} width={14} height={14} class="logo" /> : <span class="logo-gap" />}{a.achievement}</span><span class="d">{a.event}</span><span class="m">{a.year}</span>
+					<a href={a.eventUrl} target="_blank" rel="noopener noreferrer" class="r note">
+						<span class="n">{markFor(a.achievement, a.event) ? <BrandIcon name={markFor(a.achievement, a.event) as BrandName} width={14} height={14} class="logo" /> : <span class="logo-gap" />}<span><span class="win">{a.achievement}</span> <span class="ev">at {a.event}</span></span></span><span class="m">{a.year}</span>
 					</a>
 				))}
 			</div></div><span> and keep </span>
@@ -113,6 +115,9 @@ const markFor = (...texts: (string | undefined)[]) => {
 		width: 14px;
 		margin-right: 0.5rem;
 		flex-shrink: 0;
+	}
+	.r .ev {
+		opacity: 0.55;
 	}
 	.r.note {
 		grid-template-columns: minmax(0, 1fr) 3rem;
