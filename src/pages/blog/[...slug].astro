@@ -5,6 +5,7 @@ import ViewCounter from "@/components/blog/ViewCounter";
 import Link from "@/components/content/Link.astro";
 import Quote from "@/components/content/Quote.astro";
 import TableOfContents from "@/components/content/TableOfContents.astro";
+import Navigation from "@/components/layout/Navigation.astro";
 import ArrowIcon from "@/components/ui/ArrowIcon.astro";
 import { isPostVisible } from "@/config/blog";
 import { getReadingTime } from "@/config/reading-time";
@@ -86,6 +87,7 @@ const {
     readingTimeMinutes={minutes}
     wordCount={words}
 >
+    <Navigation />
     <div class="w-full mx-auto py-12 sm:py-24">
         <!-- Main Content Grid - TOC aligned with content -->
         <div

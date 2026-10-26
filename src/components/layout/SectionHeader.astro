@@ -7,8 +7,4 @@ interface Props {
 const { title, className = "" } = Astro.props;
 ---
 
-<h2
-  class={`text-sm font-medium text-foreground-2 uppercase tracking-wider ${className}`}
->
-  {title}
-</h2>
+<h2 class={`text-sm text-foreground-3 ${className}`}>{title}</h2>

@@ -15,79 +15,60 @@
 
     --breakpoint-mobile: 40rem;
 
-    --color-primary: #525252;
+    --color-primary: #7a756c;
+    --color-accent: #111111;
 
-    --color-background: #FDFDFC;
-    --color-background-2: #f5f5f4;
-    --color-ui: #e5e5e5;
-    --color-ui-2: #d4d4d4;
-    --color-ui-3: #c4c4c4;
-    --color-foreground: #111111;
-    --color-foreground-2: #525252;
-    --color-foreground-3: #a3a3a3;
+    --color-background: #f4f1ea;
+    --color-background-2: #ece7dc;
+    --color-ui: #e2dccf;
+    --color-ui-2: #d3ccbd;
+    --color-ui-3: #bdb5a4;
+    --color-foreground: #1b1915;
+    --color-foreground-2: #6e695f;
+    --color-foreground-3: #a39d91;
 
-    --color-red: #525252;
-    --color-orange: #525252;
-    --color-yellow: #525252;
-    --color-green: #525252;
-    --color-cyan: #525252;
-    --color-blue: #525252;
-    --color-purple: #525252;
-    --color-magenta: #525252;
-    --color-amber: #525252;
-    --color-lime: #525252;
-    --color-emerald: #525252;
-    --color-teal: #525252;
-    --color-sky: #525252;
-    --color-indigo: #525252;
-    --color-violet: #525252;
-    --color-fuchsia: #525252;
-    --color-pink: #525252;
-    --color-rose: #525252;
-    --color-slate: #525252;
-    --color-gray: #525252;
-    --color-zinc: #525252;
-    --color-neutral: #525252;
-    --color-stone: #525252;
+    --color-red: #6b6b6b;
+    --color-orange: #6b6b6b;
+    --color-yellow: #6b6b6b;
+    --color-green: #6b6b6b;
+    --color-cyan: #6b6b6b;
+    --color-blue: #6b6b6b;
+    --color-purple: #6b6b6b;
+    --color-magenta: #6b6b6b;
+    --color-amber: #6b6b6b;
+    --color-lime: #6b6b6b;
+    --color-emerald: #6b6b6b;
+    --color-teal: #6b6b6b;
+    --color-sky: #6b6b6b;
+    --color-indigo: #6b6b6b;
+    --color-violet: #6b6b6b;
+    --color-fuchsia: #6b6b6b;
+    --color-pink: #6b6b6b;
+    --color-rose: #6b6b6b;
+    --color-slate: #6b6b6b;
+    --color-gray: #6b6b6b;
+    --color-zinc: #6b6b6b;
+    --color-neutral: #6b6b6b;
+    --color-stone: #6b6b6b;
 }
 
 @media (prefers-color-scheme: dark) {
     :root {
-        --color-primary: #a3a3a3;
-
-        --color-background: #111111;
-        --color-background-2: #1a1a1a;
-        --color-ui: #262626;
-        --color-ui-2: #2e2e2e;
-        --color-ui-3: #3a3a3a;
-        --color-foreground: #fafafa;
-        --color-foreground-2: #a3a3a3;
-        --color-foreground-3: #525252;
-
-        --color-red: #a3a3a3;
-        --color-orange: #a3a3a3;
-        --color-yellow: #a3a3a3;
-        --color-green: #a3a3a3;
-        --color-cyan: #a3a3a3;
-        --color-blue: #a3a3a3;
-        --color-purple: #a3a3a3;
-        --color-magenta: #a3a3a3;
-        --color-amber: #a3a3a3;
-        --color-lime: #a3a3a3;
-        --color-emerald: #a3a3a3;
-        --color-teal: #a3a3a3;
-        --color-sky: #a3a3a3;
-        --color-indigo: #a3a3a3;
-        --color-violet: #a3a3a3;
-        --color-fuchsia: #a3a3a3;
-        --color-pink: #a3a3a3;
-        --color-rose: #a3a3a3;
-        --color-slate: #a3a3a3;
-        --color-gray: #a3a3a3;
-        --color-zinc: #a3a3a3;
-        --color-neutral: #a3a3a3;
-        --color-stone: #a3a3a3;
+        --color-primary: #a1a1a1;
+        --color-accent: #ededed;
+        --color-background: #0f0e0c;
+        --color-background-2: #18160f;
+        --color-ui: #24211b;
+        --color-ui-2: #2f2b24;
+        --color-ui-3: #3f3a31;
+        --color-foreground: #ebe7df;
+        --color-foreground-2: #a49e93;
+        --color-foreground-3: #66615a;
     }
+}
+
+:root {
+    color-scheme: light dark;
 }
 
 ::selection {
@@ -172,4 +153,17 @@
   .sticker-board-item {
     transition: none;
   }
+}
+
+
+/* Garúa type: page titles in Redaction, like the home sentence. */
+@layer base {
+    main h1:not(.sr-only),
+    article h1 {
+        font-family: var(--font-serif);
+        font-weight: 400;
+        letter-spacing: -0.01em;
+        line-height: 1.15;
+        font-size: clamp(2rem, 4.4vw, 2.75rem);
+    }
 }

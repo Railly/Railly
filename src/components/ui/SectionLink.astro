@@ -11,9 +11,9 @@ interface Props {
 const { title, href, viewAllLabel = "view all" } = Astro.props;
 ---
 
-<div class="mb-4 flex items-center justify-between">
+<div class="mb-3 flex items-baseline justify-between">
 	<SectionHeader title={title} className="mb-0" />
-	<a href={href} class="group text-xs text-foreground-3 transition-colors duration-200 hover:text-foreground-2">
+	<a href={href} class="group text-sm text-foreground-3 transition-colors duration-200 hover:text-foreground-2">
 		<span class="flex items-center gap-1">
 			<span>{viewAllLabel}</span>
 			<ArrowIcon size={10} />

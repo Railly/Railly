@@ -1,72 +1,37 @@
 ---
-interface NavItem {
-	href: string;
-	label: string;
-}
-
-const navItems: NavItem[] = [
+const navItems = [
 	{ href: "/", label: "home" },
-	{ href: "/about", label: "about" },
-	{ href: "/projects", label: "projects" },
-	{ href: "/developers", label: "developers" },
-	{ href: "/agents", label: "agents" },
+	{ href: "/projects", label: "work" },
 	{ href: "/writing", label: "writing" },
 	{ href: "/press", label: "press" },
+	{ href: "/agents", label: "agents" },
+	{ href: "/developers", label: "developers" },
 	{ href: "/mentoring", label: "mentoring" },
 	{ href: "/uses", label: "uses" },
+	{ href: "/about", label: "about" },
 ];
 
 const { pathname } = Astro.url;
-
-function isActive(href: string): boolean {
-	if (href === "/") {
-		return pathname === "/";
-	}
-	return pathname.startsWith(href);
-}
+const isActive = (href: string) =>
+	href === "/" ? pathname === "/" : pathname.startsWith(href);
 ---
 
-<nav class="sticky top-24 w-64 hidden lg:block">
-    <ul class="space-y-1.5 text-sm lowercase">
-        {
-            navItems.map((item) => (
-                <li>
-                    <a
-                        class:list={[
-                            "font-serif italic block py-0.5 transition-colors duration-200",
-                            isActive(item.href)
-                                ? "text-foreground font-semibold"
-                                : "text-foreground-2 hover:text-foreground",
-                        ]}
-                        href={item.href}
-                    >
-                        {item.label}
-                    </a>
-                </li>
-            ))
-        }
-    </ul>
-</nav>
-
-<!-- Mobile Navigation -->
-<nav class="block lg:hidden mb-8 pb-2 border-b border-ui/20 overflow-x-auto scrollbar-none">
-    <ul class="flex gap-2 justify-end text-[13px] lowercase w-max ml-auto">
-        {
-            navItems.map((item) => (
-                <li>
-                    <a
-                        class:list={[
-                            "font-serif block px-2 py-1 transition-colors duration-200",
-                            isActive(item.href)
-                                ? "text-foreground font-semibold"
-                                : "text-foreground-2 hover:text-foreground",
-                        ]}
-                        href={item.href}
-                    >
-                        {item.label}
-                    </a>
-                </li>
-            ))
-        }
-    </ul>
+<nav class="mx-auto max-w-[44rem] overflow-x-auto px-6 pt-8 scrollbar-none sm:pt-12">
+	<ul class="flex w-max gap-4 text-sm">
+		{
+			navItems.map((item) => (
+				<li>
+					<a
+						href={item.href}
+						class:list={[
+							"transition-colors duration-200",
+							isActive(item.href) ? "text-foreground" : "text-foreground-3 hover:text-foreground",
+						]}
+					>
+						{item.label}
+					</a>
+				</li>
+			))
+		}
+	</ul>
 </nav>

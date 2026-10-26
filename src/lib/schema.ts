@@ -26,7 +26,9 @@ export function buildSchemaGraph(props: SchemaProps): object {
 			"@type": "Organization",
 			"@id": `${siteConfig.url}/#organization`,
 			name: "Crafter Station",
-			url: "https://crafterstation.com",
+			url: "https://crafter.run",
+			description:
+				"Non-profit community of 1,000+ builders building Peru's tech ecosystem.",
 			founder: { "@id": `${siteConfig.url}/#person` },
 			contactPoint: {
 				"@type": "ContactPoint",
@@ -39,7 +41,10 @@ export function buildSchemaGraph(props: SchemaProps): object {
 				addressLocality: "Buenos Aires",
 				addressCountry: "AR",
 			},
-			sameAs: ["https://github.com/crafter-station"],
+			sameAs: [
+				"https://github.com/crafter-station",
+				"https://crafterstation.com",
+			],
 		},
 		{
 			"@type": "Person",
@@ -51,8 +56,23 @@ export function buildSchemaGraph(props: SchemaProps): object {
 				siteConfig.links.twitter,
 				siteConfig.links.github,
 				siteConfig.links.linkedin,
+				"https://www.youtube.com/@raillydev",
+				"https://railly.substack.com",
 			],
 			jobTitle: "Software Engineer",
+			nationality: { "@type": "Country", name: "Peru" },
+			homeLocation: { "@type": "Place", name: "Buenos Aires, Argentina" },
+			knowsAbout: [
+				"AI agents",
+				"Developer tools",
+				"Agent-first CLIs",
+				"Open source software",
+				"Design engineering",
+				"Interactive and 3D interfaces",
+				"Product distribution",
+				"TypeScript",
+				"Next.js",
+			],
 			description: siteConfig.description,
 			worksFor: {
 				"@type": "Organization",

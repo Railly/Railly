@@ -1,0 +1,671 @@
+---
+// The garúa scene: a procedural ASCII coast with a lighthouse, drizzle and a sky that opens while reading.
+interface Props {
+	rest?: boolean;
+}
+const { rest = false } = Astro.props;
+---
+
+<canvas class="scene-orb" aria-hidden="true"></canvas>
+<div class="scene-moonlight" aria-hidden="true"></div>
+<canvas class="scene-space" aria-hidden="true"></canvas>
+<script is:inline define:vars={{ rest }}>document.documentElement.classList.toggle("scene-rest", rest);</script>
+
+<style is:global>
+	body {
+		background-color: #f4f1ea;
+		background-image:
+			radial-gradient(120% 70% at 50% -10%, rgb(255 255 255 / 0.75), transparent 60%),
+			url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+		background-attachment: fixed;
+	}
+	@media (prefers-color-scheme: dark) {
+		body {
+			background-color: #0f0e0c;
+			background-image:
+				radial-gradient(120% 70% at 50% -10%, rgb(255 236 200 / 0.06), transparent 60%),
+				url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+		}
+	}
+	.scene-orb,
+	.scene-space,
+	.scene-moonlight {
+		position: fixed;
+		inset: 0;
+		width: 100vw;
+		height: 100vh;
+		pointer-events: none;
+		z-index: 0;
+	}
+	/* The scene rises from the bottom; text keeps clean paper above it. */
+	.scene-orb {
+		-webkit-mask-image: linear-gradient(to bottom, transparent 30%, black 56%, black 86%, rgba(0, 0, 0, 0.3) 100%);
+		mask-image: linear-gradient(to bottom, transparent 30%, black 56%, black 86%, rgba(0, 0, 0, 0.3) 100%);
+		transition: transform 1.6s cubic-bezier(0.65, 0, 0.35, 1), filter 1.6s ease;
+	}
+	/* Inner pages: the landscape rests low, only the horizon and the lighthouse show. */
+	html.scene-rest .scene-orb {
+		transform: translateY(46vh);
+		opacity: 0.85;
+	}
+	html.reading .scene-orb {
+		transform: translateY(52vh);
+		filter: saturate(1.25);
+	}
+	.scene-moonlight {
+		opacity: 0;
+		background: radial-gradient(60% 55% at 50% 38%, rgb(255 250 240 / 0.9), transparent 70%);
+		transition: opacity 1.4s ease 0.2s;
+	}
+	@media (prefers-color-scheme: dark) {
+		.scene-moonlight {
+			background: radial-gradient(60% 55% at 50% 38%, rgb(60 70 140 / 0.22), transparent 70%);
+		}
+	}
+	html.reading .scene-moonlight {
+		opacity: 1;
+	}
+	.scene-space {
+		opacity: 0;
+		transition: opacity 1.8s ease 0.4s;
+	}
+	html.reading .scene-space {
+		opacity: 1;
+	}
+</style>
+
+<script>
+	// Garúa: Lima's winter drizzle and fog over a still sea, a lighthouse on the cliff,
+	// and a coastline of houses you only see when you push the fog away.
+	const orb = document.querySelector<HTMLCanvasElement>("canvas.scene-orb");
+	const ctx = orb?.getContext("2d");
+	if (orb && ctx) {
+		const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+		const dark = matchMedia("(prefers-color-scheme: dark)");
+		const hash = (x: number, y: number) => {
+			const h = Math.sin(x * 127.1 + y * 311.7) * 43758.5453;
+			return h - Math.floor(h);
+		};
+		const smooth = (t: number) => t * t * (3 - 2 * t);
+		const noise = (x: number, y: number) => {
+			const xi = Math.floor(x);
+			const yi = Math.floor(y);
+			const xf = smooth(x - xi);
+			const yf = smooth(y - yi);
+			const a = hash(xi, yi);
+			const b = hash(xi + 1, yi);
+			const c = hash(xi, yi + 1);
+			const d = hash(xi + 1, yi + 1);
+			return a + (b - a) * xf + (c - a) * yf + (a - b - c + d) * xf * yf;
+		};
+		const fbm = (x: number, y: number) => noise(x, y) * 0.55 + noise(x * 2.1, y * 2.1) * 0.3 + noise(x * 4.3, y * 4.3) * 0.15;
+
+		let W = 0;
+		let H = 0;
+		let dpr = 1;
+		let cw = 8;
+		let ch = 13;
+		let cols = 0;
+		let rows = 0;
+		let clear = new Float32Array(0);
+		const resize = () => {
+			dpr = Math.min(devicePixelRatio || 1, 2);
+			W = innerWidth;
+			H = innerHeight;
+			cw = W < 700 ? 7 : 8;
+			ch = Math.round(cw * 1.62);
+			cols = Math.ceil(W / cw);
+			rows = Math.ceil(H / ch);
+			clear = new Float32Array(cols * rows);
+			orb.width = W * dpr;
+			orb.height = H * dpr;
+		};
+
+		const PAL = {
+			dark: {
+				skyTop: "rgba(13,16,32,0)",
+				skyLow: "rgba(26,22,60,0.95)",
+				glow: "rgba(255,120,150,0.10)",
+				fog: "150,160,200",
+				fogLit: "220,215,235",
+				rim: "255,150,170",
+				sea: "80,100,190",
+				seaFill: "rgba(12,16,40,0.9)",
+				cliff: "92,84,122",
+				house: "255,214,140",
+				tower: "206,200,236",
+				band: "255,128,160",
+				rock: "58,52,72",
+				trim: "70,66,120",
+				lamp: "255,236,170",
+				drop: "190,200,235",
+				star: "220,228,255",
+				grain: "255,255,255",
+			},
+			light: {
+				skyTop: "rgba(241,237,228,0)",
+				skyLow: "rgba(244,196,190,0.75)",
+				glow: "rgba(255,170,150,0.22)",
+				fog: "160,150,150",
+				fogLit: "250,246,240",
+				rim: "255,190,170",
+				sea: "120,140,200",
+				seaFill: "rgba(150,165,210,0.55)",
+				cliff: "120,98,88",
+				house: "235,140,60",
+				tower: "250,244,240",
+				band: "240,128,140",
+				rock: "118,96,84",
+				trim: "70,78,140",
+				lamp: "255,190,90",
+				drop: "110,110,140",
+				star: null as string | null,
+				grain: "0,0,0",
+			},
+		};
+
+		const litByYou = new Set<number>();
+		const meteors: { x: number; y: number; vx: number; vy: number; life: number }[] = [];
+		const pointer = { x: -1e4, y: -1e4 };
+		let horizonPx = 0;
+		addEventListener("pointermove", (e) => {
+			pointer.x = e.clientX;
+			pointer.y = e.clientY;
+		});
+		addEventListener("pointerdown", (e) => {
+			if ((e.target as HTMLElement).closest("a, button, .x")) return;
+			if (document.documentElement.classList.contains("reading")) return;
+			if (e.clientY < H * 0.5) {
+				meteors.push({ x: e.clientX, y: e.clientY, vx: -7 - Math.random() * 4, vy: 3 + Math.random() * 2, life: 1 });
+				return;
+			}
+			const gx = Math.floor(e.clientX / cw);
+			const gy = Math.floor(e.clientY / ch);
+			for (let dy = -2; dy <= 2; dy++) {
+				for (let dx = -4; dx <= 4; dx++) {
+					if (dx * dx * 0.25 + dy * dy > 4.5 || hash(gx + dx, gy + dy) < 0.5) continue;
+					litByYou.add((gy + dy) * 10000 + gx + dx);
+				}
+			}
+			const note = document.querySelector<HTMLElement>("[data-town]");
+			if (note) {
+				note.textContent = litByYou.size >= 120 ? `${litByYou.size} lights. You just built a town.` : `${litByYou.size} lights by you`;
+				note.hidden = false;
+			}
+		});
+
+		const drops = Array.from({ length: 420 }, () => ({
+			x: Math.random() * 2000,
+			y: Math.random() * 1200,
+			v: 0.9 + Math.random() * 0.9,
+			c: Math.random() > 0.5 ? "'" : ",",
+		}));
+		// Easter eggs: steer the beam by clicking the lighthouse; sit still for a minute and a ship
+		// passes while the lamp blinks an address in Morse; a note for whoever opens the console.
+		let steer = 0;
+		let lampPx = { x: -1e4, y: -1e4 };
+		let idleSince = performance.now();
+		let shipStart = -1;
+		const MORSE: Record<string, string> = { h: "....", i: "..", "@": ".--.-.", r: ".-.", a: ".-", l: ".-..", y: "-.--", ".": ".-.-.-", d: "-..", e: ".", v: "...-" };
+		const message = "hi@railly.dev";
+		const pulses: [boolean, number][] = [];
+		for (const ch of message) {
+			for (const sym of MORSE[ch] ?? "") pulses.push([true, sym === "." ? 1 : 3], [false, 1]);
+			pulses.push([false, 2]);
+		}
+		const unit = 260;
+		const morseLength = pulses.reduce((n, [, d]) => n + d, 0) * unit;
+		const morseOn = (elapsed: number) => {
+			let acc = 0;
+			for (const [on, d] of pulses) {
+				acc += d * unit;
+				if (elapsed < acc) return on;
+			}
+			return false;
+		};
+		for (const ev of ["pointermove", "keydown", "scroll", "pointerdown"]) addEventListener(ev, () => (idleSince = performance.now()), { passive: true });
+		addEventListener(
+			"pointerdown",
+			(e) => {
+				if (Math.hypot(e.clientX - lampPx.x, e.clientY - lampPx.y) < 70) {
+					steer = performance.now();
+					e.stopImmediatePropagation();
+				}
+			},
+			{ capture: true },
+		);
+		console.log(
+			"%c\n      ▄\n     ▐█▌   you read consoles.\n     ▐▀▌   so do the agents I build for.\n     ▐█▌\n    ▄███▄  hi@railly.dev\n",
+			"font-family: monospace; color: #c43a34;",
+		);
+
+		const FOG = " ...··::;";
+
+		const draw = (t: number) => {
+			const isDark = dark.matches;
+			const P = isDark ? PAL.dark : PAL.light;
+			const mobile = W < 700;
+			ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+			ctx.clearRect(0, 0, W, H);
+			ctx.font = `${ch * 0.86}px "Commit Mono", ui-monospace, monospace`;
+			ctx.textBaseline = "top";
+			const put = (x: number, y: number, c: string, rgb: string, a: number) => {
+				ctx.fillStyle = `rgba(${rgb},${a.toFixed(3)})`;
+				ctx.fillText(c, x * cw, y * ch);
+			};
+
+			const horizon = Math.floor(rows * 0.8);
+			horizonPx = horizon * ch;
+
+			// Sky, with a low warm glow behind the fog.
+			const sky = ctx.createLinearGradient(0, H * 0.3, 0, horizonPx);
+			sky.addColorStop(0, P.skyTop);
+			sky.addColorStop(1, P.skyLow);
+			ctx.fillStyle = sky;
+			ctx.fillRect(0, 0, W, horizonPx);
+			const glow = ctx.createRadialGradient(W * 0.5, horizonPx, 0, W * 0.5, horizonPx, W * 0.6);
+			glow.addColorStop(0, P.glow);
+			glow.addColorStop(1, "rgba(0,0,0,0)");
+			ctx.fillStyle = glow;
+			ctx.fillRect(0, 0, W, horizonPx);
+			ctx.fillStyle = P.seaFill;
+			ctx.fillRect(0, horizonPx, W, H - horizonPx);
+
+			if (P.star) {
+				for (let y = 0; y < horizon * 0.7; y++) {
+					for (let x = 0; x < cols; x++) {
+						if (hash(x, y) > 0.99) put(x, y, hash(y, x) > 0.6 ? "+" : ".", P.star, 0.25 + 0.35 * Math.abs(Math.sin(t * 0.0006 + x * 3)));
+					}
+				}
+			}
+
+			// The coast: low cliffs on both sides, houses along their tops. Mostly under the fog.
+			const coastTop = (x: number) => {
+				const gx = x / cols;
+				const edge = Math.min(gx, 1 - gx);
+				const rise = smooth(Math.max(0, 1 - edge / 0.42));
+				return horizon - Math.floor(rise * rows * 0.16 + fbm(gx * 6, 2) * 3);
+			};
+			const cells: (null | [string, string, number])[] = new Array(cols * rows).fill(null);
+			for (let x = 0; x < cols; x++) {
+				const top = coastTop(x);
+				for (let y = top; y < horizon; y++) {
+					const onTop = y < top + 2;
+					const h = hash(x, y);
+					if (onTop && h > 0.45) cells[y * cols + x] = [h > 0.85 ? "▪" : ".", P.house, 0.5 + 0.4 * h];
+					else {
+						const shade = fbm(x * 0.3, y * 0.5);
+						cells[y * cols + x] = [shade > 0.55 ? "#" : shade > 0.4 ? "=" : ":", P.cliff, (isDark ? 0.6 : 0.45) + shade * 0.3];
+					}
+				}
+			}
+
+			// Faro de La Marina: a small lighthouse on the right cliff, its beam sweeping the garúa.
+			const fx = Math.floor(cols * (mobile ? 0.86 : 0.82));
+			const fTop = coastTop(fx);
+			// Tapered tower with red and white bands, a gallery, a glass lantern and a cap.
+			const towerH = mobile ? 6 : 15;
+			const baseW = mobile ? 2 : 4;
+			for (let i = 0; i < towerH; i++) {
+				const y = fTop - 1 - i;
+				const half = Math.max(1, Math.round(baseW - (i / towerH) * (baseW - 1.6)));
+				const red = Math.floor(i / 3) % 2 === 1;
+				for (let dx = -half; dx <= half; dx++) {
+					const edge = dx === -half ? "▐" : dx === half ? "▌" : "█";
+					const shade = dx < 0 ? 1 : 0.78;
+					cells[y * cols + fx + dx] = [edge, red ? P.band : P.tower, (isDark ? 0.85 : 0.95) * shade];
+				}
+				if (i % 5 === 2) cells[y * cols + fx] = ["▪", isDark ? "255,214,140" : "70,60,60", 0.9];
+			}
+			const galleryY = fTop - 1 - towerH;
+			for (let dx = -3; dx <= 3; dx++) cells[galleryY * cols + fx + dx] = ["▀", P.trim, 0.95];
+			cells[(galleryY - 1) * cols + fx - 1] = ["▕", P.trim, 0.9];
+			cells[(galleryY - 1) * cols + fx] = ["◆", P.lamp, isDark ? 1 : 0.5];
+			cells[(galleryY - 1) * cols + fx + 1] = ["▏", P.trim, 0.9];
+			for (let dx = -1; dx <= 1; dx++) cells[(galleryY - 2) * cols + fx + dx] = ["▄", P.band, 0.95];
+			cells[(galleryY - 3) * cols + fx] = ["^", P.trim, 0.9];
+			// Solid headland under the tower, widening down to the sea, so it stands on rock.
+			for (let y = fTop; y < horizon; y++) {
+				const k = (y - fTop) / Math.max(1, horizon - fTop);
+				const half = Math.round(baseW + 3 + k * k * (mobile ? 10 : 16) + fbm(y * 0.4, 5) * 2);
+				for (let dx = -half; dx <= half; dx++) {
+					const r = fbm((fx + dx) * 0.35, y * 0.6);
+					const lit = dx < 0 ? 1 : 0.7;
+					const c = y === fTop ? "▀" : r > 0.6 ? "█" : r > 0.45 ? "▓" : "▒";
+					cells[y * cols + fx + dx] = [c, P.rock, (isDark ? 0.85 : 0.9) * lit];
+				}
+			}
+			for (let dx = -2; dx <= 2; dx++) cells[(fTop - 1) * cols + fx + dx] = ["▄", "90,86,92", 0.95];
+			const lampX = fx * cw + cw / 2;
+			const lampY = (galleryY - 1) * ch + ch / 2;
+			lampPx = { x: fx * cw + cw / 2, y: lampY };
+			let beamA = Math.PI - 0.1 - Math.abs(Math.sin(t * 0.00025)) * 0.22;
+			const steering = steer > 0 && t - steer < 6000;
+			if (steering) beamA = Math.atan2(pointer.y - lampY, pointer.x - lampX);
+			// Idle a minute: a ship crosses and the lamp spells the address in Morse.
+			if (shipStart < 0 && t - idleSince > 60000) shipStart = t;
+			if (shipStart > 0 && t - idleSince < 1000) shipStart = -1;
+			const morseT = shipStart > 0 ? t - shipStart : -1;
+			const lampOn = morseT < 0 || morseT > morseLength || morseOn(morseT);
+			const beamW = 0.09;
+			const inBeam = (px: number, py: number) => {
+				if (!isDark) return 0;
+				const a = Math.atan2(py - lampY, px - lampX);
+				let d = Math.abs(a - beamA);
+				if (d > Math.PI) d = Math.PI * 2 - d;
+				const dist = Math.hypot(px - lampX, py - lampY);
+				return d < beamW * 2.5 && dist < W * 0.75 ? (1 - d / (beamW * 2.5)) ** 2 * 0.6 * (1 - dist / (W * 0.75)) : 0;
+			};
+			if (isDark && lampOn) {
+			// Soft beam: several widening cones stacked and blurred, so the edge dissolves into the garúa.
+			ctx.save();
+			ctx.globalCompositeOperation = isDark ? "lighter" : "source-over";
+			ctx.filter = "blur(14px)";
+			const L = W * 0.8;
+			for (const [spread, alpha] of [[1, 0.1], [1.8, 0.07], [2.8, 0.045], [4, 0.03]] as const) {
+				const beam = ctx.createRadialGradient(lampX, lampY, 0, lampX, lampY, L);
+				beam.addColorStop(0, `rgba(${P.lamp},${alpha * (isDark ? 1.4 : 2)})`);
+				beam.addColorStop(0.5, `rgba(${P.lamp},${alpha * (isDark ? 0.6 : 0.9)})`);
+				beam.addColorStop(1, `rgba(${P.lamp},0)`);
+				ctx.fillStyle = beam;
+				ctx.beginPath();
+				ctx.moveTo(lampX, lampY);
+				ctx.arc(lampX, lampY, L, beamA - beamW * spread, beamA + beamW * spread);
+				ctx.closePath();
+				ctx.fill();
+			}
+			const halo = ctx.createRadialGradient(lampX, lampY, 0, lampX, lampY, 60);
+			halo.addColorStop(0, `rgba(${P.lamp},${isDark ? 0.35 : 0.5})`);
+			halo.addColorStop(1, `rgba(${P.lamp},0)`);
+			ctx.fillStyle = halo;
+			ctx.fillRect(lampX - 60, lampY - 60, 120, 120);
+			ctx.restore();
+			} else if (!isDark) {
+				// Day: a pale sun behind the garúa, soft rays, and paragliders off the Miraflores cliffs.
+				const sx = W * (mobile ? 0.3 : 0.2);
+				const sy = horizonPx - H * 0.2;
+				ctx.save();
+				ctx.filter = "blur(18px)";
+				const sun = ctx.createRadialGradient(sx, sy, 0, sx, sy, H * 0.35);
+				sun.addColorStop(0, "rgba(255,248,230,0.95)");
+				sun.addColorStop(0.15, "rgba(255,226,190,0.6)");
+				sun.addColorStop(1, "rgba(255,210,190,0)");
+				ctx.fillStyle = sun;
+				ctx.fillRect(0, 0, W, horizonPx);
+				for (let k = 0; k < 6; k++) {
+					const ang = Math.PI * 0.15 + k * 0.13 + Math.sin(t * 0.0001 + k) * 0.02;
+					const ray = ctx.createLinearGradient(sx, sy, sx + Math.cos(ang) * W, sy + Math.sin(ang) * W);
+					ray.addColorStop(0, "rgba(255,240,215,0.22)");
+					ray.addColorStop(1, "rgba(255,240,215,0)");
+					ctx.fillStyle = ray;
+					ctx.beginPath();
+					ctx.moveTo(sx, sy);
+					ctx.lineTo(sx + Math.cos(ang - 0.03) * W, sy + Math.sin(ang - 0.03) * W);
+					ctx.lineTo(sx + Math.cos(ang + 0.03) * W, sy + Math.sin(ang + 0.03) * W);
+					ctx.closePath();
+					ctx.fill();
+				}
+				ctx.restore();
+				ctx.fillStyle = "rgba(255,252,240,0.9)";
+				ctx.beginPath();
+				ctx.arc(sx, sy, mobile ? 10 : 14, 0, Math.PI * 2);
+				ctx.fill();
+				// Paragliders: a canopy and a pilot, drifting on the cliff lift.
+				ctx.font = `${ch * 0.86}px "Commit Mono", ui-monospace, monospace`;
+				for (let k = 0; k < 4; k++) {
+					const px = ((hash(k, 7) * W + t * (0.006 + k * 0.002)) % (W + 80)) - 40;
+					const py = horizonPx - H * (0.18 + hash(k, 8) * 0.14) + Math.sin(t * 0.0006 + k * 2) * 10;
+					ctx.fillStyle = ["rgba(230,80,70,0.85)", "rgba(40,90,180,0.8)", "rgba(250,180,40,0.85)", "rgba(40,140,110,0.8)"][k];
+					ctx.fillText("⌒", px, py);
+					ctx.fillStyle = "rgba(60,50,50,0.55)";
+					ctx.fillText("·", px + cw * 0.25, py + ch * 0.9);
+				}
+				// Gulls.
+				for (let k = 0; k < 5; k++) {
+					const gx = ((hash(k, 11) * W - t * 0.012) % W + W) % W;
+					const gy = H * (0.38 + hash(k, 12) * 0.12) + Math.sin(t * 0.002 + k) * 4;
+					ctx.fillStyle = "rgba(80,70,80,0.45)";
+					ctx.fillText(Math.sin(t * 0.006 + k) > 0 ? "v" : "~", gx, gy);
+				}
+			}
+
+			// Circuito de Playas: headlights moving along the road at the foot of the cliffs.
+			for (let k = 0; k < 7; k++) {
+				const dir = k % 2 ? 1 : -1;
+				const speed = 0.0015 + hash(k, 4) * 0.001;
+				let x = (hash(k, 3) * cols + dir * t * speed * 1) % cols;
+				if (x < 0) x += cols;
+				const xi = Math.floor(x);
+				const row = horizon - 1;
+				cells[row * cols + xi] = ["•", dir > 0 ? P.lamp : "255,90,80", 0.95];
+			}
+
+			// Fog: a slow field over the band under the text. The pointer clears it, and it closes back.
+			const fogTop = rows * 0.46;
+			const drift = t * 0.000012;
+			const R = mobile ? 7 : 11;
+			const pcx = pointer.x / cw;
+			const pcy = pointer.y / ch;
+			for (let y = 0; y < rows; y++) {
+				for (let x = 0; x < cols; x++) {
+					const i = y * cols + x;
+					const dx = (x - pcx) / 1.6;
+					const dy = y - pcy;
+					const d = Math.sqrt(dx * dx + dy * dy);
+					if (d < R) clear[i] = Math.max(clear[i], 1 - d / R);
+					else clear[i] *= 0.985;
+
+					let fogD = 0;
+					if (y > fogTop && y < horizon + 1) {
+						const band = smooth(Math.min(1, (y - fogTop) / (rows * 0.12))) * (y > horizon - 2 ? 0.7 : 1);
+						fogD = band * (fbm(x * 0.035 + drift * 60, y * 0.09 + drift * 10) * 1.3 - 0.12);
+						fogD *= 1 - clear[i];
+					}
+					const under = cells[i];
+					// Thin the fog only over the tower and rock themselves, never a box around them.
+					if (under && (under[1] === P.rock || under[1] === P.tower || under[1] === P.band)) fogD *= 0.35;
+					if (under && fogD < 0.7) {
+						let [c, rgb, a] = under;
+						if (litByYou.has(i) && rgb === P.house) a = 1;
+						put(x, y, c, rgb, a * (1 - fogD));
+					}
+					if (fogD > 0.08) {
+						const ci = Math.min(FOG.length - 1, Math.floor(fogD * FOG.length));
+						const lit = 1 - (y - fogTop) / (horizon - fogTop);
+						const b = inBeam(x * cw, y * ch);
+						put(x, y, FOG[ci], b > 0.05 ? P.lamp : lit > 0.5 ? P.fogLit : P.fog, Math.min(0.9, 0.15 + fogD * 0.6 + b * 0.8));
+					}
+					if (litByYou.has(i) && !under && y > fogTop) put(x, y, "▪", P.house, 0.9 * (1 - fogD));
+				}
+			}
+
+			// Still sea, with the lighthouse reflected as broken warm marks.
+			for (let y = horizon; y < rows; y++) {
+				const depth = (y - horizon) / (rows - horizon);
+				for (let x = 0; x < cols; x++) {
+					const ref = Math.abs(x - fx) < 2 && hash(x, y) > 0.5 && depth < 0.7;
+					if (ref) {
+						put(x, y, (x + y) % 3 ? "." : "'", P.lamp, 0.5 * (1 - depth));
+					} else if (hash(x * 3, y) > 0.55 - depth * 0.2) {
+						const wave = Math.sin(x * 0.4 + t * 0.0008 + y * 1.7);
+						put(x, y, wave > 0.4 ? "~" : "-", P.sea, (0.25 + 0.2 * wave) * (1 - depth * 0.5));
+					}
+				}
+			}
+
+			if (morseT >= 0) {
+				const sx = W + 40 - (morseT / (morseLength + 8000)) * (W + 120);
+				const sy = horizonPx - ch * 0.8;
+				ctx.font = `${ch * 0.86}px "Commit Mono", ui-monospace, monospace`;
+				ctx.fillStyle = isDark ? "rgba(200,200,220,0.75)" : "rgba(60,60,80,0.7)";
+				ctx.fillText("__|‾|_▲_", sx, sy - ch * 0.6);
+				ctx.fillText("\\______/", sx, sy);
+				ctx.fillStyle = "rgba(255,214,140,0.9)";
+				ctx.fillText("·", sx + cw * 3, sy - ch * 0.6);
+				if (sx < -120) shipStart = -1, (idleSince = t);
+				const note = document.querySelector<HTMLElement>("[data-town]");
+				if (note && morseT > morseLength * 0.2) {
+					note.hidden = false;
+					note.textContent = morseT > morseLength ? "The lighthouse said: hi@railly.dev" : "The lighthouse is saying something…";
+				}
+			}
+
+			// Garúa proper: a fine slow drizzle, brighter where the beam catches it.
+			for (const d of drops) {
+				d.y += d.v;
+				d.x -= d.v * 0.35;
+				if (d.y > H || d.x < 0) {
+					d.y = -10;
+					d.x = Math.random() * W * 1.2;
+				}
+				const b = inBeam(d.x, d.y);
+				const a = (isDark ? 0.32 : 0.34) + b * 0.9;
+				ctx.fillStyle = `rgba(${b > 0.05 ? P.lamp : P.drop},${a.toFixed(3)})`;
+				ctx.fillText(d.c, d.x, d.y);
+			}
+
+			for (let i = meteors.length - 1; i >= 0; i--) {
+				const m = meteors[i];
+				const g = ctx.createLinearGradient(m.x, m.y, m.x - m.vx * 9, m.y - m.vy * 9);
+				g.addColorStop(0, `rgba(255,255,255,${m.life})`);
+				g.addColorStop(1, "rgba(255,255,255,0)");
+				ctx.strokeStyle = g;
+				ctx.lineWidth = 1.5;
+				ctx.beginPath();
+				ctx.moveTo(m.x, m.y);
+				ctx.lineTo(m.x - m.vx * 9, m.y - m.vy * 9);
+				ctx.stroke();
+				m.x += m.vx;
+				m.y += m.vy;
+				m.life -= 0.025;
+				if (m.life <= 0 || m.y > horizonPx) meteors.splice(i, 1);
+			}
+
+			ctx.fillStyle = `rgba(${P.grain},0.05)`;
+			for (let i = 0; i < (W * H) / 900; i++) ctx.fillRect(hash(i, 1) * W, hash(i, 2) * H, 1, 1);
+		};
+
+		let last = 0;
+		const loop = (t: number) => {
+			if (t - last > (meteors.length || steer ? 16 : 40)) {
+				draw(t);
+				last = t;
+			}
+			if (!reduce) requestAnimationFrame(loop);
+		};
+		resize();
+		addEventListener("resize", () => {
+			resize();
+			draw(performance.now());
+		});
+		dark.addEventListener("change", () => draw(performance.now()));
+		draw(0);
+		requestAnimationFrame(loop);
+	}
+</script>
+<script>
+	const space = document.querySelector<HTMLCanvasElement>("canvas.scene-space");
+	const sctx = space?.getContext("2d");
+	if (space && sctx) {
+		const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+		const dark = matchMedia("(prefers-color-scheme: dark)");
+		const hash = (x: number, y: number) => {
+			const h = Math.sin(x * 127.1 + y * 311.7) * 43758.5453;
+			return h - Math.floor(h);
+		};
+		let W = 0;
+		let H = 0;
+		let dpr = 1;
+		const resize = () => {
+			dpr = Math.min(devicePixelRatio || 1, 2);
+			W = innerWidth;
+			H = innerHeight;
+			space.width = W * dpr;
+			space.height = H * dpr;
+		};
+		let launched = -1;
+		const draw = (t: number) => {
+			const isDark = dark.matches;
+			const reading = document.documentElement.classList.contains("reading");
+			if (!reading) {
+				launched = -1;
+				return;
+			}
+			if (launched < 0) launched = t;
+			sctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+			sctx.clearRect(0, 0, W, H);
+			sctx.textBaseline = "middle";
+			const ink = isDark ? "214,206,240" : "90,90,140";
+
+			// Stars, kept away from the reading column so the rows stay clean.
+			const col = Math.min(720, W * 0.6);
+			const left = (W - col) / 2 - 40;
+			const right = (W + col) / 2 + 40;
+			for (let i = 0; i < 260; i++) {
+				const x = hash(i, 1) * W;
+				const y = hash(i, 2) * H;
+				const inColumn = x > left && x < right;
+				const a = (inColumn ? 0.06 : 0.32) * (0.6 + 0.4 * Math.sin(t * 0.0006 + i));
+				sctx.fillStyle = `rgba(${ink},${(a * (isDark ? 1 : 0.6)).toFixed(3)})`;
+				sctx.font = `${hash(i, 3) > 0.9 ? 12 : 9}px "Commit Mono", monospace`;
+				sctx.fillText(hash(i, 4) > 0.85 ? "+" : hash(i, 4) > 0.6 ? "·" : ".", x, y);
+			}
+
+			// A distant planet: small, dim, lit from one side, in the scene's dusty pink.
+			const mx = W - Math.max(70, W * 0.1);
+			const my = H * 0.16;
+			const mr = W < 700 ? 7 : 10;
+			const g = sctx.createRadialGradient(mx - mr * 0.5, my - mr * 0.4, 0, mx, my, mr);
+			g.addColorStop(0, isDark ? "rgba(236,170,170,0.55)" : "rgba(200,130,130,0.45)");
+			g.addColorStop(0.7, isDark ? "rgba(150,90,110,0.4)" : "rgba(170,110,120,0.3)");
+			g.addColorStop(1, "rgba(60,40,70,0.15)");
+			sctx.fillStyle = g;
+			sctx.beginPath();
+			sctx.arc(mx, my, mr, 0, Math.PI * 2);
+			sctx.fill();
+			const halo = sctx.createRadialGradient(mx, my, mr, mx, my, mr * 3);
+			halo.addColorStop(0, isDark ? "rgba(255,150,170,0.06)" : "rgba(220,140,150,0.05)");
+			halo.addColorStop(1, "rgba(0,0,0,0)");
+			sctx.fillStyle = halo;
+			sctx.fillRect(mx - mr * 3, my - mr * 3, mr * 6, mr * 6);
+
+			// A rocket climbing from the lower left toward Mars, leaving an ASCII exhaust.
+			const p = Math.min(1, (t - launched) / 60000);
+			const sx = W * 0.06;
+			const sy = H * 0.95;
+			const cx = W * 0.2;
+			const cy = H * 0.15;
+			const bez = (u: number) => [
+				(1 - u) ** 2 * sx + 2 * (1 - u) * u * cx + u * u * (mx - mr * 2),
+				(1 - u) ** 2 * sy + 2 * (1 - u) * u * cy + u * u * my,
+			];
+			const [rx, ry] = bez(p);
+			const [ax, ay] = bez(Math.min(1, p + 0.01));
+			// Exhaust: a thin fading contrail, more like a satellite pass than a firework.
+			for (let k = 1; k < 60; k++) {
+				const u = p - k * 0.004;
+				if (u < 0) break;
+				const [tx, ty] = bez(u);
+				sctx.fillStyle = `rgba(${isDark ? "255,190,200" : "180,120,140"},${(0.28 * (1 - k / 60)).toFixed(3)})`;
+				sctx.fillRect(tx, ty, 1, 1);
+			}
+			if (p < 1) {
+				// The craft itself is a speck with a faint warm engine glow.
+				const glow = sctx.createRadialGradient(rx, ry, 0, rx, ry, 6);
+				glow.addColorStop(0, isDark ? "rgba(255,210,180,0.5)" : "rgba(200,140,120,0.4)");
+				glow.addColorStop(1, "rgba(0,0,0,0)");
+				sctx.fillStyle = glow;
+				sctx.fillRect(rx - 6, ry - 6, 12, 12);
+				sctx.fillStyle = isDark ? "rgba(240,236,250,0.85)" : "rgba(60,60,90,0.7)";
+				sctx.fillRect(rx - 0.75, ry - 0.75, 1.5, 1.5);
+			}
+		};
+		const loop = (t: number) => {
+			draw(t);
+			requestAnimationFrame(loop);
+		};
+		resize();
+		addEventListener("resize", resize);
+		if (!reduce) requestAnimationFrame(loop);
+	}
+</script>

@@ -1,169 +1,346 @@
 ---
-import { getCollection } from "astro:content";
-import PremiereCountdown from "@/components/blog/PremiereCountdown";
-import ViewCounter from "@/components/blog/ViewCounter";
-import AchievementRow from "@/components/home/AchievementRow.astro";
-import FeaturedProjectRow from "@/components/home/FeaturedProjectRow.astro";
-import { MakeablesSheet } from "@/components/home/MakeablesSheet";
-import Footer from "@/components/layout/Footer.astro";
-import HeroSection from "@/components/layout/HeroSection.astro";
-import PageLayout from "@/components/layout/PageLayout.astro";
-import SectionHeader from "@/components/layout/SectionHeader.astro";
-import NewsletterSection from "@/components/newsletter/NewsletterSection.astro";
-import ListRow from "@/components/ui/ListRow.astro";
-import SectionLink from "@/components/ui/SectionLink.astro";
-import { isPostListable } from "@/config/blog";
-import { ogUrl, siteConfig } from "@/config/site";
-import { achievements } from "@/data/achievements";
-import { appearances } from "@/data/appearances";
-import { featuredProjects } from "@/data/projects";
-import youtube from "@/data/youtube.json";
+import BrandIcon from "@/components/brand/BrandIcon.astro";
+import Flag from "@/components/brand/Flag.astro";
+import Garua from "@/components/scene/Garua.astro";
+import { siteConfig } from "@/config/site";
 import Layout from "@/layouts/Layout.astro";
-import { withRepoStars } from "@/lib/github-stars";
+import { compact, homeData } from "@/lib/home-data";
 
-const ogImage = ogUrl({
-	title: "Railly Hugo",
-	description:
-		"I build at the frontier of what agents and interfaces can do.",
+const { projects, posts, appearances, achievements, videos } = await homeData();
+const year = (d: Date) => d.getFullYear();
+const lastWritten = posts[0]?.data.pubDate.toLocaleDateString("en-US", {
+	month: "short",
+	day: "numeric",
+	year: "numeric",
 });
-
-const allPosts = await getCollection("blog", ({ data }) =>
-	import.meta.env.PROD ? data.status !== "draft" : true,
-);
-const activePosts = allPosts
-	.filter(({ data }) => isPostListable(data))
-	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
-const recentPosts = activePosts.slice(0, 5);
-const postsByYear = recentPosts.reduce(
-	(acc, post) => {
-		const year = post.data.pubDate.getFullYear();
-		if (!acc[year]) {
-			acc[year] = [];
-		}
-		acc[year].push(post);
-		return acc;
-	},
-	{} as Record<number, typeof recentPosts>,
-);
-const years = Object.keys(postsByYear)
-	.map(Number)
-	.sort((a, b) => b - a);
-const newestPost = activePosts[0];
-const isNewest = (slug: string) => slug === newestPost?.slug;
-const formatDate = (date: Date) =>
-	`${date.getDate().toString().padStart(2, "0")}/${(date.getMonth() + 1).toString().padStart(2, "0")}`;
-
-const highlightedAchievements = achievements.filter((item) => item.highlight);
-
-// Editorial order: the order in projects.ts, not star count.
-const selectedProjects = await withRepoStars(featuredProjects);
 ---
 
-<Layout
-	title="Railly Hugo - Software Engineer at Vercel Labs | Crafter Station Founder"
-	description={siteConfig.description}
-	image={ogImage}
->
-	<PageLayout class="flex flex-col gap-16">
-		<HeroSection name={siteConfig.name} title={siteConfig.hero.title} />
-
-		<section class="w-full">
-			<SectionLink title="Now building: Makeables" href="https://makeables.dev" viewAllLabel="makeables" />
-			<p class="mb-6 max-w-2xl text-sm leading-relaxed text-foreground-2">
-				You and your coding agent design stickers, badges and cards from a brand, and they come out ready for the print shop. These are real Makeables stickers. Throw them, stack them, or pull an edge to peel one off.
-			</p>
-			<MakeablesSheet client:visible />
-		</section>
-
-		<section class="w-full">
-			<SectionLink title="Selected work" href="/projects" />
-			<div class="space-y-0">
-				{selectedProjects.map((project) => <FeaturedProjectRow project={project} />)}
-			</div>
-		</section>
-
-		<section class="w-full">
-			<SectionLink title="Writing" href="/writing" />
-			<div class="space-y-0">
-				{years.map((year) => (
-					<div class="mt-6 first:mt-2">
-						<div class="mb-1 flex items-center gap-3">
-							<span class="font-mono text-xs tabular-nums tracking-wider text-foreground-3">{year}</span>
-							<span class="h-px flex-1 bg-ui"></span>
-						</div>
-						{postsByYear[year].map((post) => {
-							const isPremiere = post.data.status === "premiere" && new Date() < post.data.pubDate;
-							return isPremiere ? (
-								<ListRow hover={false} divided={false}>
-									<span class="text-sm font-medium text-foreground-3">
-										{post.data.title}
-										<span class="ml-2 rounded border border-ui px-1.5 py-0.5 text-xs font-normal text-foreground-3">Premiere</span>
-									</span>
-									<PremiereCountdown slot="trailing" pubDate={post.data.pubDate.toISOString()} client:load />
-								</ListRow>
-							) : (
-								<ListRow href={`/blog/${post.slug}`} divided={false}>
-									<span class="text-sm font-medium text-foreground group-hover:text-foreground">
-										{post.data.title}
-										{isNewest(post.slug) ? (
-											<span class="ml-2 rounded bg-ui px-1.5 py-0.5 text-xs font-normal text-foreground-2">Newest</span>
-										) : null}
-									</span>
-									<ViewCounter slot="trailing" slug={post.slug} client:load className="text-xs tabular-nums text-foreground-3" />
-									<span slot="trailing" class="text-sm tabular-nums text-foreground-3">{formatDate(post.data.pubDate)}</span>
-								</ListRow>
-							);
-						})}
-					</div>
-				))}
-				{recentPosts.length === 0 && <div class="py-12 text-center"><p class="text-foreground-2">More stories coming soon</p></div>}
-			</div>
-		</section>
-
-		<section class="w-full">
-			<SectionLink title="Videos" href="https://www.youtube.com/@raillydev" viewAllLabel="youtube" />
-			<div class="grid grid-cols-2 gap-4 sm:grid-cols-3">
-				{youtube.videos.map((video) => (
-					<a href={video.url} target="_blank" rel="noopener noreferrer" class="group flex flex-col gap-2">
-						<span class="block aspect-video overflow-hidden rounded border border-ui bg-background-2">
-							<img src={video.thumbnail} alt="" loading="lazy" class="size-full object-cover transition-transform duration-300 group-hover:scale-[1.03]" />
-						</span>
-						<span class="line-clamp-2 text-sm text-foreground-2 group-hover:text-foreground">{video.title}</span>
+<Layout title="Railly Hugo - Open Source Developer at Vercel Labs | Crafter Station Founder" description={siteConfig.description}>
+	<Garua />
+	<main class="home relative z-[1] mx-auto flex min-h-screen max-w-[44rem] flex-col px-6 pt-[9vh] pb-16 sm:pt-[18vh] text-[#1b1915] dark:text-[#ebe7df]">
+		<h1 class="sr-only">Railly Hugo, open source developer and software engineer at Vercel Labs</h1>
+		<div class="s font-serif text-[clamp(1.6rem,3.6vw,2.2rem)] leading-[1.45] tracking-[-0.01em]">
+			<span>I build at the frontier of what agents and interfaces can do. I’m </span><span class="nn"><img class="lg av" src="/images/railly-hugo-headshot.webp" alt="" />Railly Hugo</span><span>, a </span><span class="nn"><Flag country="pe" class="lg fl" width={20} height={20} />Peruvian</span><span> engineer at </span><span class="nn"><BrandIcon name="vercel" class="lg" width={20} height={20} />Vercel Labs</span><span>. I make </span>
+			<span class="k whitespace-nowrap"><button class="t" aria-expanded="false" aria-controls="x-work" data-hash="work" data-key="1">tools agents can use<sup><span>{projects.length}</span></sup></button><span class="nb">,</span></span><div class="x" id="x-work"><div>
+				{projects.map((p) => (
+					<a href={p.url} target="_blank" rel="noopener noreferrer" class="r">
+						<span class="n">{p.name}</span><span class="d">{p.description}</span><span class="m">{p.stars >= 100 ? compact.format(p.stars) : ""}</span>
 					</a>
 				))}
-			</div>
-		</section>
+			</div></div><span> give </span>
+			<span class="k whitespace-nowrap"><button class="t" aria-expanded="false" aria-controls="x-talks" data-hash="talks" data-key="2">talks and press<sup><span>{appearances.length}</span></sup></button><span class="nb">,</span></span><div class="x" id="x-talks"><div>
+				{appearances.map((a) => (
+					<a href={a.url} target="_blank" rel="noopener noreferrer" class="r">
+						<span class="n">{a.title}</span><span class="d">{a.where}</span><span class="m">{a.date.slice(0, 4)}</span>
+					</a>
+				))}
+			</div></div><span> run </span><a href="https://crafter.run" target="_blank" rel="noopener" class="nn cs"><BrandIcon name="crafterStation" class="lg" width={20} height={20} />Crafter Station</a><span>, </span>
+			<span class="k whitespace-nowrap"><button class="t" aria-expanded="false" aria-controls="x-cs" data-hash="community" data-key="3">a community of 1,000+ builders<sup><span>{achievements.length}</span></sup></button><span class="nb">,</span></span><div class="x" id="x-cs"><div>
+				<a href="https://github.com/crafter-station" target="_blank" rel="noopener noreferrer" class="r"><span class="n">Crafter Station</span><span class="d">Non-profit building Peru's tech ecosystem</span><span class="m"></span></a>
+				{achievements.map((a) => (
+					<a href={a.eventUrl} target="_blank" rel="noopener noreferrer" class="r">
+						<span class="n">{a.achievement}</span><span class="d">{a.event}</span><span class="m">{a.year}</span>
+					</a>
+				))}
+			</div></div><span> and keep </span>
+			<button class="t" aria-expanded="false" aria-controls="x-notes" data-hash="notes" data-key="4">notes<sup><span>{posts.length}</span></sup></button><div class="x" id="x-notes"><div>
+				{posts.map((p) => (
+					<a href={`/blog/${p.slug}`} class="r"><span class="n">{p.data.title}</span><span class="d">Essay</span><span class="m">{year(p.data.pubDate)}</span></a>
+				))}
+			</div></div><span> and </span>
+			<span class="k whitespace-nowrap"><button class="t" aria-expanded="false" aria-controls="x-videos" data-hash="videos" data-key="5">videos<sup><span>{videos.length}</span></sup></button></span><div class="x" id="x-videos"><div class="vg">
+				{videos.map((v) => (
+					<a href={v.url} target="_blank" rel="noopener noreferrer" class="r v">
+						<img src={v.thumbnail} alt="" loading="lazy" />
+						<span class="n">{v.title}</span>
+					</a>
+				))}
+			</div></div><span> along the way.</span>
+		</div>
 
-		<section class="w-full">
-			<SectionHeader title="Talks & press" className="mb-2" />
-			<div class="space-y-0">
-				{appearances.map((item) => {
-					const Tag = item.url ? "a" : "div";
-					return (
-						<Tag
-							{...(item.url ? { href: item.url, target: "_blank", rel: "noopener noreferrer" } : {})}
-							class="group -mx-3 flex items-baseline gap-3 rounded-md px-3 py-2 text-sm transition-colors hover:bg-background-2"
-						>
-							<span class="w-20 shrink-0 font-mono text-xs text-foreground-3">{item.kind}</span>
-							<span class="min-w-0 flex-1">
-								<span class="font-medium text-foreground">{item.title}</span>
-								<span class="ml-2 text-foreground-3">{item.where}</span>
-							</span>
-							<span class="shrink-0 font-mono text-xs tabular-nums text-foreground-3">{item.date}</span>
-						</Tag>
-					);
-				})}
-			</div>
-		</section>
-
-		<section class="w-full">
-			<SectionLink title="Achievements" href="/about#achievements" />
-			<div class="space-y-0">
-				{highlightedAchievements.map((item) => <AchievementRow item={item} />)}
-			</div>
-		</section>
-
-		<NewsletterSection />
-		<Footer />
-	</PageLayout>
+		<footer class="road mt-auto flex flex-wrap items-baseline gap-x-5 gap-y-2 pt-24 pb-2 text-[12px] text-black/70 dark:text-white/70">
+			<button class="all transition-colors hover:text-current" type="button">Open everything</button>
+			<span class="hidden sm:inline">1 to 5, Esc</span>
+			<span data-town hidden></span>
+			<span class="flex-1"></span>
+			<span class="flex flex-wrap gap-x-4 gap-y-1">
+				<a href="/projects" class="hover:text-current">Work</a>
+				<a href="/writing" class="hover:text-current">Writing</a>
+				<a href="/about" class="hover:text-current">About</a>
+				<a href="https://github.com/railly" class="hover:text-current">GitHub</a>
+				<a href="https://x.com/raillyhugo" class="hover:text-current">X</a>
+				<a href="mailto:hi@railly.dev" class="hover:text-current">Email</a>
+				{lastWritten && <span class="hidden sm:inline">Last written {lastWritten}</span>}
+				<span class="hidden sm:inline">Move to clear the garúa</span>
+				<span class="hidden tabular-nums sm:inline">Buenos Aires <span data-clock>--:--</span></span>
+			</span>
+		</footer>
+	</main>
 </Layout>
+
+<style>
+	/* When the landscape sets, the sky above it opens: stars, Mars, a rocket on its way. */
+
+
+
+	/* The footer reads as a road through the fields: a lane cleared in the scene,
+	   and a soft halo in the ground colour around each word instead of a box. */
+	.road {
+		text-shadow:
+			0 0 6px #e6efdc,
+			0 0 14px #e6efdc,
+			0 0 2px #e6efdc;
+	}
+	@media (prefers-color-scheme: dark) {
+		.road {
+			text-shadow:
+				0 0 6px #0b0f14,
+				0 0 14px #0b0f14,
+				0 0 2px #0b0f14;
+		}
+	}
+
+	/* Reading: the landscape sets below the horizon like a sun going down,
+	   and a pool of moonlight opens behind the text. */
+
+
+
+
+
+
+
+	.nn {
+		white-space: nowrap;
+	}
+	.nn :global(.lg) {
+		display: inline-block;
+		width: 0.72em;
+		height: 0.72em;
+		margin-right: 0.18em;
+		vertical-align: -0.04em;
+	}
+	.nn :global(.av) {
+		border-radius: 999px;
+		object-fit: cover;
+		filter: grayscale(1) contrast(1.1);
+		width: 0.9em;
+		height: 0.9em;
+		vertical-align: -0.12em;
+	}
+	.nn :global(.fl) {
+		filter: grayscale(1) contrast(1.3);
+		border-radius: 2px;
+	}
+
+
+
+	.s {
+		animation: s-in 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+	}
+	@keyframes s-in {
+		from { opacity: 0; transform: translateY(8px); }
+	}
+	/* Triggers read as italic phrases, not links. */
+	.t {
+		font-style: italic;
+	}
+
+	/* Focus mode: once something is open, the rest of the sentence steps back. */
+	.s span,
+	.s .t {
+		transition: opacity 0.45s ease;
+	}
+	.s.focus > span:not(.k),
+	.s.focus .nb,
+	.s.focus .t[aria-expanded="false"] {
+		opacity: 0.32;
+	}
+	.s.focus .t[aria-expanded="false"]:hover {
+		opacity: 1;
+	}
+	.r .m.hot {
+		opacity: 1;
+	}
+
+	.t {
+		cursor: pointer;
+		color: inherit;
+		text-decoration: underline;
+		text-decoration-color: color-mix(in oklab, currentColor 25%, transparent);
+		text-underline-offset: 0.22em;
+		text-decoration-thickness: 1px;
+		transition: text-decoration-color 0.25s ease, opacity 0.25s ease;
+	}
+	.t:hover,
+	.t[aria-expanded="true"] {
+		text-decoration-color: currentColor;
+	}
+	.t:focus-visible {
+		outline: 2px solid currentColor;
+		outline-offset: 3px;
+		border-radius: 2px;
+	}
+	.t[aria-expanded="true"] sup::before {
+		content: "−";
+	}
+	.t[aria-expanded="true"] sup span {
+		display: none;
+	}
+	.t sup {
+		margin-left: 0.15em;
+		font-size: 0.5em;
+		font-variant-numeric: tabular-nums;
+		opacity: 0.45;
+		text-decoration: none;
+		display: inline-block;
+	}
+
+	.x {
+		display: none;
+	}
+	.x.open {
+		display: block;
+		margin: 0.9rem 0 1.1rem;
+		animation: x-in 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+	}
+	@keyframes x-in {
+		from { opacity: 0; transform: translateY(-4px); }
+	}
+
+	.r {
+		display: grid;
+		grid-template-columns: minmax(0, 12rem) minmax(0, 1fr) 3rem;
+		gap: 1rem;
+		align-items: baseline;
+		padding: 0.5rem 0;
+		font-family: var(--font-sans);
+		font-size: 14.5px;
+		line-height: 1.45;
+		letter-spacing: 0;
+		border-top: 1px solid color-mix(in oklab, currentColor 9%, transparent);
+	}
+	.x.open .r {
+		animation: r-in 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+		animation-delay: calc(var(--i, 0) * 35ms);
+	}
+	@keyframes r-in {
+		from { opacity: 0; transform: translateY(6px); filter: blur(3px); }
+	}
+	.vg {
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: 1.25rem 1rem;
+		padding-top: 0.25rem;
+	}
+	.r.v {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+		border-top: 0;
+		padding: 0;
+	}
+	.r.v img {
+		aspect-ratio: 16 / 9;
+		width: 100%;
+		object-fit: cover;
+		border-radius: 3px;
+		filter: grayscale(1) contrast(1.05);
+		opacity: 0.85;
+		transition: filter 0.4s ease, opacity 0.4s ease;
+	}
+	.r.v:hover img {
+		filter: none;
+		opacity: 1;
+	}
+	.r.v .n {
+		display: -webkit-box;
+		-webkit-line-clamp: 2;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+	}
+	@media (max-width: 640px) {
+		.vg {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+	}
+	.r .d,
+	.r .m {
+		opacity: 0.5;
+	}
+	.r .m {
+		text-align: right;
+		font-variant-numeric: tabular-nums;
+	}
+	.r:hover .n {
+		text-decoration: underline;
+		text-underline-offset: 0.2em;
+		text-decoration-thickness: 1px;
+	}
+	@media (max-width: 640px) {
+		.r {
+			grid-template-columns: minmax(0, 1fr) auto;
+		}
+		.r .d {
+			display: none;
+		}
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.x.open,
+		.x.open .r,
+		.s {
+			animation: none;
+		}
+	}
+</style>
+
+<script>
+	const triggers = [...document.querySelectorAll<HTMLButtonElement>(".home .t")];
+	const sentence = document.querySelector<HTMLElement>(".home .s");
+	const syncFocus = () => {
+		const reading = triggers.some((t) => t.getAttribute("aria-expanded") === "true");
+		sentence?.classList.toggle("focus", reading);
+		document.documentElement.classList.toggle("reading", reading);
+		const open = triggers.filter((t) => t.getAttribute("aria-expanded") === "true");
+		history.replaceState(null, "", open.length === 1 ? `#${open[0].dataset.hash}` : location.pathname);
+	};
+	const set = (t: HTMLButtonElement, open: boolean) => {
+		const panel = document.getElementById(t.getAttribute("aria-controls") ?? "");
+		t.setAttribute("aria-expanded", String(open));
+		panel?.classList.toggle("open", open);
+		syncFocus();
+	};
+	for (const t of triggers) {
+		const panel = document.getElementById(t.getAttribute("aria-controls") ?? "");
+		panel?.querySelectorAll<HTMLElement>(".r").forEach((r, i) => r.style.setProperty("--i", String(i)));
+		t.addEventListener("click", () => set(t, t.getAttribute("aria-expanded") !== "true"));
+	}
+	const all = document.querySelector<HTMLButtonElement>(".home .all");
+	all?.addEventListener("click", () => {
+		const open = triggers.some((t) => t.getAttribute("aria-expanded") !== "true");
+		for (const t of triggers) set(t, open);
+		all.textContent = open ? "Close everything" : "Open everything";
+	});
+	const openFromHash = () => {
+		const t = triggers.find((x) => `#${x.dataset.hash}` === location.hash);
+		if (t) set(t, true);
+	};
+	openFromHash();
+	window.addEventListener("hashchange", openFromHash);
+	window.addEventListener("keydown", (e) => {
+		if (e.key === "Escape") {
+			for (const t of triggers) set(t, false);
+			if (all) all.textContent = "Open everything";
+			return;
+		}
+		if (e.metaKey || e.ctrlKey || e.altKey || (e.target as HTMLElement).closest("input,textarea")) return;
+		const t = triggers.find((x) => x.dataset.key === e.key);
+		if (t) set(t, t.getAttribute("aria-expanded") !== "true");
+	});
+	const clock = document.querySelector<HTMLElement>("[data-clock]");
+	if (clock) {
+		const fmt = new Intl.DateTimeFormat("en-GB", { hour: "2-digit", minute: "2-digit", timeZone: "America/Argentina/Buenos_Aires" });
+		const tick = () => (clock.textContent = fmt.format(new Date()));
+		tick();
+		setInterval(tick, 15000);
+	}
+</script>

@@ -1,4 +1,5 @@
 ---
+import Garua from "@/components/scene/Garua.astro";
 import Navigation from "./Navigation.astro";
 
 interface Props {
@@ -8,23 +9,13 @@ interface Props {
 const { class: className } = Astro.props;
 ---
 
-<main
-    class="max-w-[83rem] mx-auto px-4 sm:px-6 pt-2 pb-8 sm:pt-24 text-foreground"
->
-    <div class="lg:grid lg:grid-cols-[1fr_minmax(0,_2.5fr)_1fr] lg:gap-8">
-        <!-- Left Sidebar - Navigation -->
-        <div class="lg:col-start-1">
-            <Navigation />
-        </div>
-
-        <!-- Main Content -->
-        <div class:list={["lg:col-start-2 w-full", className]}>
-            <slot />
-        </div>
-
-        <!-- Right Sidebar -->
-        <div class="lg:col-start-3">
-            <slot name="rightSidebar" />
-        </div>
-    </div>
-</main>
+<Garua rest />
+<div class="relative z-[1]">
+	<Navigation />
+	<main class="mx-auto max-w-[44rem] px-6 pt-16 pb-[34vh] text-foreground sm:pt-20">
+		<div class:list={["w-full", className]}>
+			<slot />
+		</div>
+		<slot name="rightSidebar" />
+	</main>
+</div>

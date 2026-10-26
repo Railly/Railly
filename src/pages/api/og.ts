@@ -6,31 +6,74 @@ import type { ReactElement } from "react";
 
 export const prerender = false;
 
+const font = (pkg: string, file: string) =>
+	readFile(join(process.cwd(), "node_modules/@fontsource", pkg, "files", file));
+
 const fontsPromise = Promise.all([
-	readFile(
-		join(
-			process.cwd(),
-			"node_modules/@fontsource/ibm-plex-sans/files/ibm-plex-sans-latin-700-normal.woff",
-		),
-	),
-	readFile(
-		join(
-			process.cwd(),
-			"node_modules/@fontsource/ibm-plex-sans/files/ibm-plex-sans-latin-400-normal.woff",
-		),
-	),
-	readFile(
-		join(
-			process.cwd(),
-			"node_modules/@fontsource/ibm-plex-mono/files/ibm-plex-mono-latin-400-normal.woff",
-		),
-	),
+	font("redaction", "redaction-latin-400-normal.woff"),
+	font("redaction", "redaction-latin-400-italic.woff"),
+	font("ibm-plex-mono", "ibm-plex-mono-latin-400-normal.woff"),
 ]);
 
-const logoPromise = readFile(
-	join(process.cwd(), "public/favicon/favicon-192x192.png"),
-	"base64",
-);
+// Deterministic hash so every card gets the same garúa for the same title.
+const hash = (x: number, y: number) => {
+	const h = Math.sin(x * 127.1 + y * 311.7) * 43758.5453;
+	return h - Math.floor(h);
+};
+
+type El = { type: string; props: Record<string, unknown> };
+const el = (type: string, props: Record<string, unknown>): El => ({
+	type,
+	props,
+});
+
+// The scene, drawn as rows of monospace characters: fog dots, a coast, a lighthouse, the sea.
+function sceneRows(isDark: boolean) {
+	const cols = 120;
+	const rows = 11;
+	const lines: El[] = [];
+	const fog = isDark ? "#8f93c4" : "#b9a9a6";
+	const sea = isDark ? "#5a6ac4" : "#8ea0d6";
+	const band = isDark ? "#ff80a0" : "#f0808c";
+	const tower = isDark ? "#cec8ec" : "#ffffff";
+	const house = isDark ? "#ffd68c" : "#eb8c3c";
+	const fx = 100;
+	for (let y = 0; y < rows; y++) {
+		const spans: El[] = [];
+		for (let x = 0; x < cols; x++) {
+			let c = " ";
+			let color = fog;
+			const towerTop = 1;
+			if (
+				y < 8 &&
+				Math.abs(x - fx) <= (y < towerTop + 1 ? 0 : 1 + (y > 5 ? 1 : 0))
+			) {
+				c = y === 0 ? "*" : "#";
+				color = y === 0 ? house : Math.floor(y / 2) % 2 ? band : tower;
+			} else if (y < 8) {
+				const edge = Math.min(x, cols - x) / cols;
+				const coast = y > 5 - Math.round((0.5 - edge) * 4);
+				if (coast && y >= 5) {
+					c = hash(x, y) > 0.8 ? "o" : hash(x, y) > 0.4 ? "=" : ":";
+					color = c === "o" ? house : fog;
+				} else if (hash(x * 3, y) > 0.55 - y * 0.05) {
+					c = hash(x, y) > 0.7 ? ":" : ".";
+				}
+			} else if (hash(x, y * 7) > 0.35) {
+				c = hash(x, y) > 0.5 ? "~" : "-";
+				color = sea;
+			}
+			spans.push(el("span", { style: { color, width: 10 }, children: c }));
+		}
+		lines.push(
+			el("div", { style: { display: "flex", height: 16 }, children: spans }),
+		);
+	}
+	return el("div", {
+		style: { display: "flex", flexDirection: "column", opacity: 0.85 },
+		children: lines,
+	});
+}
 
 export const GET: APIRoute = async ({ url }) => {
 	const title = url.searchParams.get("title") || "Railly Hugo";
@@ -38,191 +81,107 @@ export const GET: APIRoute = async ({ url }) => {
 	const theme = url.searchParams.get("theme") || "dark";
 	const date = url.searchParams.get("date") || "";
 	const tag = url.searchParams.get("tag") || "";
-
 	const isDark = theme === "dark";
 
-	const [plexBold, plexRegular, plexMono] = await fontsPromise;
-	const logoBase64 = await logoPromise;
-	const logoSrc = `data:image/png;base64,${logoBase64}`;
+	const [serif, serifItalic, mono] = await fontsPromise;
+	const bg = isDark ? "#0f0e0c" : "#f4f1ea";
+	const fg = isDark ? "#ebe7df" : "#1b1915";
+	const muted = isDark ? "#8a867f" : "#7a756c";
+	const sky = isDark
+		? "linear-gradient(180deg, #0f0e0c 0%, #0f0e0c 45%, #1a1640 100%)"
+		: "linear-gradient(180deg, #f4f1ea 0%, #f4f1ea 45%, #f4c4be 100%)";
+	const desc =
+		description.length > 120 ? `${description.slice(0, 117)}…` : description;
+	const titleSize = title.length > 60 ? 54 : title.length > 36 ? 64 : 78;
 
-	const fonts = [
-		{
-			name: "IBM Plex Sans",
-			data: plexBold,
-			weight: 700 as const,
-			style: "normal" as const,
+	const tree = el("div", {
+		style: {
+			display: "flex",
+			flexDirection: "column",
+			width: "100%",
+			height: "100%",
+			backgroundColor: bg,
+			backgroundImage: sky,
+			fontFamily: "Redaction",
 		},
-		{
-			name: "IBM Plex Sans",
-			data: plexRegular,
-			weight: 400 as const,
-			style: "normal" as const,
-		},
-		{
-			name: "IBM Plex Mono",
-			data: plexMono,
-			weight: 400 as const,
-			style: "normal" as const,
-		},
-	];
-
-	const bg = isDark ? "#111111" : "#FDFDFC";
-	const fg = isDark ? "#fafafa" : "#111111";
-	const muted = isDark ? "#a3a3a3" : "#525252";
-	const border = isDark ? "#262626" : "#e5e5e5";
-	const truncatedDesc =
-		description.length > 120 ? `${description.slice(0, 120)}...` : description;
-
-	const titleSize = title.length > 30 ? "52px" : "62px";
-
-	return new ImageResponse(
-		{
-			type: "div",
-			props: {
-				tw: "flex flex-col w-full h-full",
+		children: [
+			el("div", {
 				style: {
-					fontFamily: "IBM Plex Sans",
-					backgroundColor: bg,
-					backgroundImage: `radial-gradient(circle at 25px 25px, ${isDark ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.03)"} 1px, transparent 0)`,
-					backgroundSize: "50px 50px",
+					display: "flex",
+					flexDirection: "column",
+					flex: 1,
+					padding: "56px 72px 0",
 				},
 				children: [
-					{
-						type: "div",
-						props: {
-							tw: "flex flex-col flex-1 px-16 pt-16 pb-16",
-							style: {
-								backgroundColor: isDark
-									? "rgba(17, 17, 17, 0.85)"
-									: "rgba(253, 253, 252, 0.85)",
-							},
-							children: [
-								{
-									type: "div",
-									props: {
-										tw: "flex flex-row items-center justify-between mb-8",
-										children: [
-											{
-												type: "div",
-												props: {
-													tw: "flex flex-row items-center gap-4",
-													children: [
-														{
-															type: "img",
-															props: {
-																src: logoSrc,
-																width: 48,
-																height: 48,
-																tw: "rounded-full",
-															},
-														},
-														{
-															type: "div",
-															props: {
-																style: {
-																	fontFamily: "IBM Plex Mono",
-																	fontSize: "22px",
-																	color: muted,
-																},
-																children: "railly.dev",
-															},
-														},
-													],
-												},
-											},
-											...(date
-												? [
-														{
-															type: "div",
-															props: {
-																style: {
-																	fontFamily: "IBM Plex Mono",
-																	fontSize: "20px",
-																	color: muted,
-																},
-																children: date,
-															},
-														},
-													]
-												: []),
-										],
-									},
-								},
-								{
-									type: "div",
-									props: {
-										tw: "flex flex-col flex-1 justify-center",
-										children: [
-											...(tag
-												? [
-														{
-															type: "div",
-															props: {
-																tw: "mb-4",
-																style: {
-																	fontFamily: "IBM Plex Mono",
-																	fontSize: "18px",
-																	color: muted,
-																	textTransform: "uppercase",
-																	letterSpacing: "0.1em",
-																},
-																children: tag,
-															},
-														},
-													]
-												: []),
-											{
-												type: "div",
-												props: {
-													style: {
-														fontSize: titleSize,
-														fontWeight: 700,
-														color: fg,
-														lineHeight: 1.1,
-														letterSpacing: "-0.03em",
-													},
-													children: title,
-												},
-											},
-											...(truncatedDesc
-												? [
-														{
-															type: "div",
-															props: {
-																tw: "mt-4",
-																style: {
-																	fontSize: "26px",
-																	color: muted,
-																	lineHeight: 1.5,
-																},
-																children: truncatedDesc,
-															},
-														},
-													]
-												: []),
-										],
-									},
-								},
-								{
-									type: "div",
-									props: {
-										tw: "flex w-full",
-										style: {
-											height: "1px",
-											backgroundColor: border,
-										},
-									},
-								},
-							],
+					el("div", {
+						style: {
+							display: "flex",
+							justifyContent: "space-between",
+							fontFamily: "Commit Mono",
+							fontSize: 18,
+							color: muted,
 						},
-					},
+						children: [
+							el("span", {
+								children: tag ? `railly.dev / ${tag}` : "railly.dev",
+							}),
+							el("span", { children: date || "Railly Hugo" }),
+						],
+					}),
+					el("div", {
+						style: {
+							display: "flex",
+							flexDirection: "column",
+							marginTop: 48,
+							maxWidth: 980,
+						},
+						children: [
+							el("div", {
+								style: {
+									fontSize: titleSize,
+									lineHeight: 1.08,
+									color: fg,
+									letterSpacing: "-0.01em",
+								},
+								children: title,
+							}),
+							...(desc
+								? [
+										el("div", {
+											style: {
+												marginTop: 22,
+												fontSize: 30,
+												lineHeight: 1.35,
+												color: muted,
+												fontStyle: "italic",
+											},
+											children: desc,
+										}),
+									]
+								: []),
+						],
+					}),
 				],
-			},
-		} as unknown as ReactElement<unknown>,
-		{
-			width: 1200,
-			height: 630,
-			fonts,
-		},
-	);
+			}),
+			el("div", {
+				style: {
+					display: "flex",
+					fontFamily: "Commit Mono",
+					fontSize: 14,
+					paddingLeft: 0,
+				},
+				children: [sceneRows(isDark)],
+			}),
+		],
+	});
+
+	return new ImageResponse(tree as unknown as ReactElement<unknown>, {
+		width: 1200,
+		height: 630,
+		fonts: [
+			{ name: "Redaction", data: serif, weight: 400, style: "normal" },
+			{ name: "Redaction", data: serifItalic, weight: 400, style: "italic" },
+			{ name: "Commit Mono", data: mono, weight: 400, style: "normal" },
+		],
+	});
 };
