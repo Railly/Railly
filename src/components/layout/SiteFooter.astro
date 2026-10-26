@@ -1,0 +1,41 @@
+---
+import AsciiSignature from "@/components/scene/AsciiSignature.astro";
+
+const links = [
+	{ href: "/projects", label: "Work" },
+	{ href: "/writing", label: "Writing" },
+	{ href: "/about", label: "About" },
+	{ href: "https://github.com/railly", label: "GitHub" },
+	{ href: "https://x.com/raillyhugo", label: "X" },
+	{ href: "https://linkedin.com/in/raillyhugo", label: "LinkedIn" },
+	{ href: "https://www.youtube.com/@raillydev", label: "YouTube" },
+	{ href: "mailto:hi@railly.dev", label: "Email" },
+];
+---
+
+<footer class="site-footer mt-28 text-[12px]">
+	<div class="opacity-80"><AsciiSignature text="Hunter" /></div>
+	<div class="mt-4 flex flex-wrap items-baseline gap-x-5 gap-y-2 border-t pt-4 text-black/70 dark:text-white/70">
+		{links.map((l) => <a href={l.href} class="transition-colors hover:text-current">{l.label}</a>)}
+		<span class="flex-1"></span>
+		<span class="tabular-nums">Buenos Aires <span data-clock>--:--</span></span>
+	</div>
+</footer>
+
+<style>
+	.site-footer .border-t {
+		border-color: color-mix(in oklab, currentColor 12%, transparent);
+	}
+	.site-footer a:hover {
+		color: currentColor;
+	}
+</style>
+
+<script>
+	const fmt = new Intl.DateTimeFormat("en-GB", { hour: "2-digit", minute: "2-digit", timeZone: "America/Argentina/Buenos_Aires" });
+	const tick = () => {
+		for (const el of document.querySelectorAll<HTMLElement>("[data-clock]")) el.textContent = fmt.format(new Date());
+	};
+	tick();
+	setInterval(tick, 15000);
+</script>

@@ -1,7 +1,6 @@
 ---
 import { getCollection } from "astro:content";
 import PremiereCountdown from "@/components/blog/PremiereCountdown";
-import Footer from "@/components/layout/Footer.astro";
 import PageLayout from "@/components/layout/PageLayout.astro";
 import SectionHeader from "@/components/layout/SectionHeader.astro";
 import { isPostListable } from "@/config/blog";
@@ -188,7 +187,6 @@ const formatDate = (date: Date) => {
                 </div>
             )
         }
-        <Footer />
     </PageLayout>
 </Layout>
 

@@ -1,0 +1,92 @@
+---
+// Footer signature: a name written in the same ASCII field, shimmering slowly.
+interface Props {
+	text: string;
+}
+const { text } = Astro.props;
+---
+
+<canvas class="ascii-sig" data-text={text} role="img" aria-label={text}></canvas>
+
+<style>
+	.ascii-sig {
+		display: block;
+		width: 100%;
+		height: clamp(90px, 22vw, 170px);
+	}
+</style>
+
+<script>
+	for (const canvas of document.querySelectorAll<HTMLCanvasElement>("canvas.ascii-sig")) {
+		const ctx = canvas.getContext("2d");
+		if (!ctx) continue;
+		const text = canvas.dataset.text ?? "";
+		const ramp = " .:-=+*#%@";
+		const cell = 7;
+		const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+		let cols = 0;
+		let rows = 0;
+		let mask: Float32Array = new Float32Array();
+		const build = () => {
+			const r = canvas.getBoundingClientRect();
+			const dpr = Math.min(devicePixelRatio || 1, 2);
+			canvas.width = r.width * dpr;
+			canvas.height = r.height * dpr;
+			ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+			cols = Math.floor(r.width / cell);
+			rows = Math.floor(r.height / cell);
+			// Rasterise the word at grid resolution and keep its coverage per cell.
+			const off = new OffscreenCanvas(cols, rows);
+			const o = off.getContext("2d");
+			if (!o) return;
+			o.fillStyle = "#fff";
+			o.textBaseline = "middle";
+			let size = rows;
+			o.font = `700 ${size}px "Redaction", "IBM Plex Serif", serif`;
+			size *= Math.min(1, (cols * 0.98) / o.measureText(text).width);
+			o.font = `700 ${size}px "Redaction", "IBM Plex Serif", serif`;
+			o.fillText(text, 0, rows / 2);
+			const data = o.getImageData(0, 0, cols, rows).data;
+			mask = new Float32Array(cols * rows);
+			for (let i = 0; i < mask.length; i++) mask[i] = data[i * 4 + 3] / 255;
+			ctx.font = `8px "Commit Mono", ui-monospace, monospace`;
+			ctx.textAlign = "center";
+			ctx.textBaseline = "middle";
+		};
+		const draw = (t: number) => {
+			const r = canvas.getBoundingClientRect();
+			ctx.clearRect(0, 0, r.width, r.height);
+			ctx.fillStyle = getComputedStyle(canvas).color;
+			for (let y = 0; y < rows; y++) {
+				for (let x = 0; x < cols; x++) {
+					const m = mask[y * cols + x];
+					const wave = (Math.sin(x * 0.18 - t * 1.1) + Math.sin(y * 0.3 + x * 0.05 + t * 0.7)) / 4 + 0.5;
+					if (m < 0.2) continue;
+					const v = 0.35 + m * 0.4 + wave * 0.25;
+					const i = Math.min(ramp.length - 1, Math.floor(v * ramp.length));
+					if (i <= 0) continue;
+					ctx.globalAlpha = 0.35 + wave * 0.6;
+					ctx.fillText(ramp[i], x * cell + cell / 2, y * cell + cell / 2);
+				}
+			}
+			ctx.globalAlpha = 1;
+		};
+		let last = 0;
+		const loop = (now: number) => {
+			if (now - last > 60) {
+				draw(now / 1000);
+				last = now;
+			}
+			requestAnimationFrame(loop);
+		};
+		document.fonts.ready.then(() => {
+			build();
+			if (still) draw(0);
+			else requestAnimationFrame(loop);
+		});
+		addEventListener("resize", () => {
+			build();
+			if (still) draw(0);
+		});
+	}
+</script>

@@ -1,6 +1,5 @@
 ---
 import { getCollection } from "astro:content";
-import Footer from "@/components/layout/Footer.astro";
 import PageLayout from "@/components/layout/PageLayout.astro";
 import SectionHeader from "@/components/layout/SectionHeader.astro";
 import NewsletterSection from "@/components/newsletter/NewsletterSection.astro";
@@ -54,6 +53,5 @@ const formatDate = (date: Date) => {
             </div>
         ) : null}
 
-        <Footer />
     </PageLayout>
 </Layout>

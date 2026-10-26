@@ -1,5 +1,4 @@
 ---
-import Footer from "../components/layout/Footer.astro";
 import PageLayout from "../components/layout/PageLayout.astro";
 import SectionHeader from "../components/layout/SectionHeader.astro";
 import Layout from "../layouts/Layout.astro";
@@ -126,7 +125,7 @@ const gridClis: GridCliEntry[] = [
 	description={ogDescription}
 	image={ogImage}
 >
-	<PageLayout class="flex flex-col gap-10">
+	<PageLayout class="flex flex-col gap-10" bare>
 		<div class="flex flex-col gap-2">
 			<h1 class="text-lg font-medium text-foreground">Agent-first developer tools</h1>
 			<p class="text-sm text-foreground-2">
@@ -324,6 +323,5 @@ const gridClis: GridCliEntry[] = [
 			</div>
 		</section>
 
-		<Footer />
 	</PageLayout>
 </Layout>

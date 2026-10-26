@@ -89,6 +89,7 @@ export const projects: Project[] = [
 		description: "Agent-native design system infrastructure",
 		url: "https://tinte.dev",
 		icon: "tinte",
+		featured: true,
 	},
 	{
 		slug: "elements",
@@ -97,6 +98,7 @@ export const projects: Project[] = [
 		description: "Full-stack shadcn components for auth and AI",
 		url: "https://tryelements.dev",
 		icon: "elements",
+		featured: true,
 	},
 	{
 		slug: "agentfiles",
@@ -105,6 +107,7 @@ export const projects: Project[] = [
 		description: "Edit AI agent files across 13+ tools",
 		url: "https://agentfiles.crafter.run",
 		icon: "agentfiles",
+		featured: true,
 	},
 	{
 		slug: "one-hunter",

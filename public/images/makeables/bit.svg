@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Bit">
+  <defs>
+    <mask id="mark" maskUnits="userSpaceOnUse" x="-10" y="-10" width="120" height="130">
+      <g fill="#fff">
+        <rect x="37.5" y="6" width="25" height="46" rx="12.5"/>
+        <rect x="37.5" y="6" width="25" height="46" rx="12.5" transform="rotate(72 50 52)"/>
+        <rect x="37.5" y="6" width="25" height="46" rx="12.5" transform="rotate(144 50 52)"/>
+        <rect x="37.5" y="6" width="25" height="46" rx="12.5" transform="rotate(216 50 52)"/>
+        <rect x="37.5" y="6" width="25" height="46" rx="12.5" transform="rotate(288 50 52)"/>
+        <circle cx="50" cy="52" r="15"/>
+      </g>
+      <g fill="#000"><rect x="39.7" y="41.5" width="7.2" height="13" rx="3.6"/><rect x="53.1" y="41.5" width="7.2" height="13" rx="3.6"/></g>
+    </mask>
+  </defs>
+  <path d="M7 29a25 25 0 0 1 50 0v3a25 25 0 0 1-50 0Z" fill="#91ad20"/>
+  <circle cx="32" cy="29" r="25" fill="#d7ff3c"/>
+  <circle cx="32" cy="29" r="19" fill="#91ad20"/>
+  <circle cx="32" cy="29.75" r="17.25" fill="#b7dc30"/>
+
+
+  <g transform="translate(19.5 16.5) scale(.25)"><rect x="-10" y="-10" width="120" height="130" fill="#0f0f0e" mask="url(#mark)"/></g>
+</svg>

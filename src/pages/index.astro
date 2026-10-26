@@ -1,20 +1,56 @@
 ---
 import BrandIcon from "@/components/brand/BrandIcon.astro";
-import Flag from "@/components/brand/Flag.astro";
 import type { BrandName } from "@/components/brand/registry";
-import Garua from "@/components/scene/Garua.astro";
+import Navigation from "@/components/layout/Navigation.astro";
+import SiteFooter from "@/components/layout/SiteFooter.astro";
+import AsciiField from "@/components/scene/AsciiField.astro";
 import { ogUrl, siteConfig } from "@/config/site";
 import Layout from "@/layouts/Layout.astro";
 import { compact, homeData } from "@/lib/home-data";
 
 const { projects, posts, appearances, achievements, videos } = await homeData();
+const featured = ["petdex", "makeables"];
+const tools = projects.filter((p) => !featured.includes(p.slug));
 const year = (d: Date) => d.getFullYear();
-const lastWritten = posts[0]?.data.pubDate.toLocaleDateString("en-US", {
-	month: "short",
-	day: "numeric",
-	year: "numeric",
-});
-// Marks for the organizations behind each talk, press item and prize.
+
+const experience = [
+	{
+		role: "Software Engineer",
+		org: "Vercel Labs",
+		icon: "vercel",
+		when: "Jul 2026 – now",
+		url: "https://vercel.com/labs",
+	},
+	{
+		role: "AI Software Engineer",
+		org: "Clerk",
+		icon: "clerk",
+		when: "Oct 2025 – Jun 2026",
+		url: "https://clerk.com",
+	},
+	{
+		role: "Software Engineer, contractor",
+		org: "Midudev",
+		icon: "midudev",
+		when: "Mar 2025 – Feb 2026",
+		url: "https://midu.dev",
+	},
+	{
+		role: "Founder",
+		org: "Crafter Station",
+		icon: "crafterStation",
+		when: "Sep 2023 – now",
+		url: "https://crafter.run",
+	},
+] satisfies {
+	role: string;
+	org: string;
+	icon: BrandName;
+	when: string;
+	url: string;
+}[];
+
+// Marks for the organizations behind each talk and prize.
 const marks: [RegExp, BrandName][] = [
 	[/openai|codex/i, "openai"],
 	[/youtube/i, "youtube"],
@@ -39,228 +75,243 @@ const markFor = (...texts: (string | undefined)[]) => {
 <Layout title="Railly Hugo - Open Source Developer at Vercel Labs | Crafter Station Founder" description={siteConfig.description}
 	image={ogUrl({ title: "Railly Hugo", description: "I build at the frontier of what agents and interfaces can do." })}
 >
-	<Garua />
-	<main class="home relative z-[1] mx-auto flex min-h-screen max-w-[44rem] flex-col px-6 pt-[9vh] pb-16 sm:pt-[18vh] text-[#1b1915] dark:text-[#ebe7df]">
-		<h1 class="sr-only">Railly Hugo, open source developer and software engineer at Vercel Labs</h1>
-		<div class="s font-serif text-[clamp(1.6rem,3.6vw,2.2rem)] leading-[1.45] tracking-[-0.01em]">
-			<span>I build at the frontier of what agents and interfaces can do. I’m </span><span class="nn"><img class="lg av" src="/images/railly-hugo-headshot.webp" alt="" />Railly Hugo</span><span>, a </span><span class="nn"><Flag country="pe" class="lg fl" width={20} height={20} />Peruvian</span><span> engineer at </span><span class="nn"><BrandIcon name="vercel" class="lg" width={20} height={20} />Vercel Labs</span><span>. I make </span>
-			<span class="k whitespace-nowrap"><button class="t" aria-expanded="false" aria-controls="x-work" data-hash="work" data-key="1">tools agents can use<sup><span>{projects.length}</span></sup></button><span class="nb">,</span></span><div class="x" id="x-work"><div>
-				{projects.map((p) => (
-					<a href={p.url} target="_blank" rel="noopener noreferrer" class="r">
-						<span class="n"><BrandIcon name={p.icon} width={14} height={14} class="logo" />{p.name}</span><span class="d">{p.description}</span><span class="m">{p.stars >= 100 ? compact.format(p.stars) : ""}</span>
-					</a>
-				))}
-			</div></div><span> give </span>
-			<span class="k whitespace-nowrap"><button class="t" aria-expanded="false" aria-controls="x-talks" data-hash="talks" data-key="2">talks and press<sup><span>{appearances.length}</span></sup></button><span class="nb">,</span></span><div class="x" id="x-talks"><div>
-				{appearances.map((a) => (
-					<a href={a.url} target="_blank" rel="noopener noreferrer" class="r">
-						<span class="n">{markFor(a.where, a.title) ? <BrandIcon name={markFor(a.where, a.title) as BrandName} width={14} height={14} class="logo" /> : <span class="logo-gap" />}{a.title}</span><span class="d">{a.where}</span><span class="m">{a.date.slice(0, 4)}</span>
-					</a>
-				))}
-			</div></div><span> run </span><a href="https://crafter.run" target="_blank" rel="noopener" class="nn cs"><BrandIcon name="crafterStation" class="lg" width={20} height={20} />Crafter Station</a><span>, </span>
-			<span class="k whitespace-nowrap"><button class="t" aria-expanded="false" aria-controls="x-cs" data-hash="community" data-key="3">a community of 1,000+ builders<sup><span>{achievements.length}</span></sup></button><span class="nb">,</span></span><div class="x" id="x-cs"><div>
-				<a href="https://github.com/crafter-station" target="_blank" rel="noopener noreferrer" class="r note"><span class="n"><BrandIcon name="crafterStation" width={14} height={14} class="logo" /><span><span class="win">Crafter Station</span> <span class="ev">non-profit building Peru's tech ecosystem</span></span></span><span class="m"></span></a>
-				{achievements.map((a) => (
-					<a href={a.eventUrl} target="_blank" rel="noopener noreferrer" class="r note">
-						<span class="n">{markFor(a.achievement, a.event) ? <BrandIcon name={markFor(a.achievement, a.event) as BrandName} width={14} height={14} class="logo" /> : <span class="logo-gap" />}<span><span class="win">{a.achievement}</span> <span class="ev">at {a.event}</span></span></span><span class="m">{a.year}</span>
-					</a>
-				))}
-			</div></div><span> and keep </span>
-			<button class="t" aria-expanded="false" aria-controls="x-notes" data-hash="notes" data-key="4">notes<sup><span>{posts.length}</span></sup></button><div class="x" id="x-notes"><div>
-				{posts.map((p) => (
-					<a href={`/blog/${p.slug}`} class="r note"><span class="n">{p.data.title}</span><span class="m">{year(p.data.pubDate)}</span></a>
-				))}
-			</div></div><span> and </span>
-			<span class="k whitespace-nowrap"><button class="t" aria-expanded="false" aria-controls="x-videos" data-hash="videos" data-key="5">videos<sup><span>{videos.length}</span></sup></button></span><div class="x" id="x-videos"><div class="vg">
+	<AsciiField />
+	<Navigation />
+	<main class="home relative z-[1] mx-auto max-w-[42rem] px-6 pt-12 pb-16 sm:pt-20 text-[#1b1915] dark:text-[#ebe7df]">
+		<header>
+			<h1 class="sr-only">Railly Hugo aka Hunter</h1>
+			<p class="font-serif text-[clamp(1.3rem,2.8vw,1.6rem)] leading-[1.5] tracking-[-0.01em]">
+				I build at the frontier of what agents and interfaces can do. Peruvian engineer at Vercel Labs in Buenos Aires, and founder of <a href="https://crafter.run" class="u">Crafter Station</a>, a community of 1,000+ builders.
+			</p>
+		</header>
+
+		<section aria-labelledby="h-now">
+			<h2 id="h-now">What I've been working on</h2>
+			<div class="grid gap-6 sm:grid-cols-2">
+				<a href="/work/petdex" class="card">
+					<div class="art art-pet" aria-hidden="true">
+						<span class="sprite" style="background-image:url(/images/petdex/boba.webp)"></span>
+						<span class="sprite" style="background-image:url(/images/petdex/bee-teemo.webp)"></span>
+						<span class="sprite" style="background-image:url(/images/petdex/aurelion-sol.webp)"></span>
+					</div>
+					<h3><img src="/images/brand/petdex-mark.svg" alt="" width="16" height="16" class="mark" />Petdex</h3>
+					<p>Animated pets for your coding agent. Built in a day, now 4,000+ stars, 78k npm downloads, and a dependency of Hermes Agent.</p>
+				</a>
+				<a href="https://makeables.dev" class="card">
+					<div class="art art-make" aria-hidden="true">
+						<span class="bit"></span>
+					</div>
+					<h3><img src="/images/brand/makeables-symbol.svg" alt="" width="16" height="16" class="mark dark:hidden" /><img src="/images/brand/makeables-symbol-light.svg" alt="" width="16" height="16" class="mark hidden dark:inline-block" />Makeables</h3>
+					<p>Cards, badges and stickers that feel like you. Tell an agent what you want, get a print-ready object.</p>
+				</a>
+			</div>
+		</section>
+
+		<section aria-labelledby="h-tools">
+			<h2 id="h-tools">Tools agents can use</h2>
+			{tools.map((p) => (
+				<a href={p.url} class="r">
+					<span class="n"><BrandIcon name={p.icon} width={14} height={14} class="logo" />{p.name}</span><span class="d">{p.description}</span><span class="m">{p.stars >= 100 ? compact.format(p.stars) : ""}</span>
+				</a>
+			))}
+		</section>
+
+		<section aria-labelledby="h-work">
+			<h2 id="h-work">Work</h2>
+			{experience.map((e) => (
+				<a href={e.url} class="r note">
+					<span class="n"><BrandIcon name={e.icon} width={14} height={14} class="logo" /><span><span>{e.role}</span> <span class="ev">at {e.org}</span></span></span><span class="m w">{e.when}</span>
+				</a>
+			))}
+		</section>
+
+		<section aria-labelledby="h-talks">
+			<h2 id="h-talks">Talks and press</h2>
+			{appearances.map((a) => (
+				<a href={a.url} class="r">
+					<span class="n">{markFor(a.where, a.title) ? <BrandIcon name={markFor(a.where, a.title) as BrandName} width={14} height={14} class="logo" /> : <span class="logo-gap" />}{a.title}</span><span class="d">{a.where}</span><span class="m">{a.date.slice(0, 4)}</span>
+				</a>
+			))}
+		</section>
+
+		<section aria-labelledby="h-prizes">
+			<h2 id="h-prizes">Prizes</h2>
+			{achievements.map((a) => (
+				<a href={a.eventUrl} class="r note">
+					<span class="n">{markFor(a.achievement, a.event) ? <BrandIcon name={markFor(a.achievement, a.event) as BrandName} width={14} height={14} class="logo" /> : <span class="logo-gap" />}<span><span>{a.achievement}</span> <span class="ev">at {a.event}</span></span></span><span class="m">{a.year}</span>
+				</a>
+			))}
+		</section>
+
+		<section aria-labelledby="h-notes">
+			<h2 id="h-notes">Notes</h2>
+			{posts.map((p) => (
+				<a href={`/blog/${p.slug}`} class="r note"><span class="n">{p.data.title}</span><span class="m">{year(p.data.pubDate)}</span></a>
+			))}
+		</section>
+
+		<section aria-labelledby="h-videos">
+			<h2 id="h-videos">Videos</h2>
+			<div class="vg">
 				{videos.map((v) => (
-					<a href={v.url} target="_blank" rel="noopener noreferrer" class="r v">
+					<a href={v.url} class="r v">
 						<img src={v.thumbnail} alt="" loading="lazy" />
 						<span class="n">{v.title}</span>
 					</a>
 				))}
-			</div></div><span> along the way.</span>
-		</div>
+			</div>
+		</section>
 
-		<footer class="road mt-auto flex flex-wrap items-baseline gap-x-5 gap-y-2 pt-24 pb-2 text-[12px] text-black/70 dark:text-white/70">
-			<button class="all transition-colors hover:text-current" type="button">Open everything</button>
-			<span class="hidden sm:inline">1 to 5, Esc</span>
-			<span data-town hidden></span>
-			<span class="flex-1"></span>
-			<span class="flex flex-wrap gap-x-4 gap-y-1">
-				<a href="/projects" class="hover:text-current">Work</a>
-				<a href="/writing" class="hover:text-current">Writing</a>
-				<a href="/about" class="hover:text-current">About</a>
-				<a href="https://github.com/railly" class="hover:text-current">GitHub</a>
-				<a href="https://x.com/raillyhugo" class="hover:text-current">X</a>
-				<a href="mailto:hi@railly.dev" class="hover:text-current">Email</a>
-				{lastWritten && <span class="hidden sm:inline">Last written {lastWritten}</span>}
-				<span class="hidden tabular-nums sm:inline">Buenos Aires <span data-clock>--:--</span></span>
-			</span>
-		</footer>
+		<section aria-labelledby="h-connect">
+			<h2 id="h-connect">Connect</h2>
+			<p class="text-[14.5px] opacity-80">Reach out at <a href="mailto:hi@railly.dev" class="u">hi@railly.dev</a></p>
+			<p class="mt-3 flex flex-wrap gap-x-5 gap-y-1 text-[14.5px]">
+				<a href="https://github.com/railly" class="u">GitHub</a>
+				<a href="https://x.com/raillyhugo" class="u">X</a>
+				<a href="/writing" class="u">Writing</a>
+				<a href="/about" class="u">About</a>
+			</p>
+		</section>
+
+		<SiteFooter />
 	</main>
 </Layout>
 
 <style>
-	/* Project marks stay monochrome so they sit in the type, not on it. */
-	.r .n {
-		display: inline-flex;
-		align-items: baseline;
+	section {
+		margin-top: 4.5rem;
 	}
-	.r :global(.logo),
-	.r .logo-gap {
-		align-self: center;
+	h2 {
+		font-size: 15px;
+		font-weight: 500;
+		margin-bottom: 1rem;
 	}
-	.r .logo-gap {
-		display: inline-block;
-		width: 14px;
-		margin-right: 0.5rem;
-		flex-shrink: 0;
-	}
-	.r .ev {
-		opacity: 0.55;
-	}
-	.r.note {
-		grid-template-columns: minmax(0, 1fr) 3rem;
-	}
-	.r :global(.logo) {
-		display: inline-block;
-		flex-shrink: 0;
-		margin-right: 0.5rem;
-		filter: grayscale(1);
-		opacity: 0.75;
-		transition: opacity 0.2s ease;
-	}
-	.r:hover :global(.logo) {
-		opacity: 1;
-	}
-
-	/* When the landscape sets, the sky above it opens: stars, Mars, a rocket on its way. */
-
-
-
-	/* The footer reads as a road through the fields: a lane cleared in the scene,
-	   and a soft halo in the ground colour around each word instead of a box. */
-	.road {
-		text-shadow:
-			0 0 6px #e6efdc,
-			0 0 14px #e6efdc,
-			0 0 2px #e6efdc;
-	}
-	@media (prefers-color-scheme: dark) {
-		.road {
-			text-shadow:
-				0 0 6px #0b0f14,
-				0 0 14px #0b0f14,
-				0 0 2px #0b0f14;
-		}
-	}
-
-	/* Reading: the landscape sets below the horizon like a sun going down,
-	   and a pool of moonlight opens behind the text. */
-
-
-
-
-
-
-
-	.nn {
-		white-space: nowrap;
-	}
-	.nn :global(.lg) {
-		display: inline-block;
-		width: 0.72em;
-		height: 0.72em;
-		margin-right: 0.18em;
-		vertical-align: -0.04em;
-	}
-	.nn :global(.av) {
-		border-radius: 999px;
-		object-fit: cover;
-		filter: grayscale(1) contrast(1.1);
-		width: 0.9em;
-		height: 0.9em;
-		vertical-align: -0.12em;
-	}
-	.nn :global(.fl) {
-		filter: grayscale(1) contrast(1.3);
-		border-radius: 2px;
-	}
-
-
-
-	.s {
-		animation: s-in 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
-	}
-	@keyframes s-in {
-		from { opacity: 0; transform: translateY(8px); }
-	}
-	/* Triggers read as italic phrases, not links. */
-	.t {
-		font-style: italic;
-	}
-
-	/* Focus mode: once something is open, the rest of the sentence steps back. */
-	.s span,
-	.s .t {
-		transition: opacity 0.45s ease;
-	}
-	.s.focus > span:not(.k),
-	.s.focus > a,
-	.s.focus .nb,
-	.s.focus .t[aria-expanded="false"] {
-		opacity: 0.32;
-	}
-	.s.focus .t[aria-expanded="false"]:hover {
-		opacity: 1;
-	}
-	.r .m.hot {
-		opacity: 1;
-	}
-
-	.t {
-		cursor: pointer;
-		color: inherit;
+	.u {
 		text-decoration: underline;
-		text-decoration-color: color-mix(in oklab, currentColor 25%, transparent);
+		text-decoration-color: color-mix(in oklab, currentColor 30%, transparent);
 		text-underline-offset: 0.22em;
 		text-decoration-thickness: 1px;
-		transition: text-decoration-color 0.25s ease, opacity 0.25s ease;
+		transition: text-decoration-color 0.2s ease;
 	}
-	.t:hover,
-	.t[aria-expanded="true"] {
+	.u:hover {
 		text-decoration-color: currentColor;
 	}
-	.t:focus-visible {
+
+	.card {
+		display: block;
+		border-radius: 4px;
+	}
+	.card h3 {
+		margin-top: 0.85rem;
+		font-size: 14.5px;
+		font-weight: 500;
+	}
+	.card p {
+		margin-top: 0.2rem;
+		font-size: 14.5px;
+		line-height: 1.5;
+		opacity: 0.6;
+	}
+	.card:hover h3 {
+		text-decoration: underline;
+		text-underline-offset: 0.2em;
+		text-decoration-thickness: 1px;
+	}
+	/* Each card is a small pixel tile: dot grid, stepped border, sprites kept crisp. */
+	.art {
+		position: relative;
+		display: flex;
+		align-items: flex-end;
+		justify-content: center;
+		gap: 4%;
+		aspect-ratio: 16 / 10;
+		padding: 0 8% 7%;
+		border-radius: 4px;
+		overflow: hidden;
+		background-image: radial-gradient(color-mix(in oklab, currentColor 16%, transparent) 1px, transparent 1.2px);
+		background-size: 8px 8px;
+		box-shadow:
+			inset 0 0 0 1px color-mix(in oklab, currentColor 12%, transparent),
+			3px 3px 0 color-mix(in oklab, currentColor 10%, transparent);
+		transition: box-shadow 0.25s ease;
+	}
+	.art-pet {
+		background-color: #ece4f4;
+	}
+	/* Makeables keeps its brand tile: acid Bit on near-black, in both themes. */
+	.art-make {
+		align-items: center;
+		padding: 0;
+		background-color: #0f0f0e;
+		color: #d7ff3c;
+	}
+	.bit {
+		width: 34%;
+		aspect-ratio: 108 / 112;
+		background: #d7ff3c;
+		-webkit-mask: url(/images/brand/makeables-symbol.svg) center / contain no-repeat;
+		mask: url(/images/brand/makeables-symbol.svg) center / contain no-repeat;
+		animation: bob 1.6s steps(2) infinite;
+	}
+	@keyframes bob {
+		50% { transform: translateY(-4%); }
+	}
+	@media (prefers-color-scheme: dark) {
+		.art-pet {
+			background-color: #1d1a26;
+		}
+	}
+	/* Petdex previews are 6-frame strips: play them as an idle loop. */
+	.sprite {
+		width: 26%;
+		aspect-ratio: 192 / 208;
+		background-size: 600% 100%;
+		image-rendering: pixelated;
+		animation: idle 0.9s steps(6) infinite;
+	}
+	.sprite:nth-child(2) {
+		width: 32%;
+		animation-delay: -0.3s;
+	}
+	.sprite:nth-child(3) {
+		animation-delay: -0.6s;
+	}
+	@keyframes idle {
+		from { background-position: 0 0; }
+		to { background-position: 120% 0; }
+	}
+	.card:hover .art {
+		box-shadow:
+			inset 0 0 0 1px color-mix(in oklab, currentColor 22%, transparent),
+			3px 3px 0 color-mix(in oklab, currentColor 18%, transparent);
+	}
+	.card h3 .mark {
+		display: inline-block;
+		width: 16px;
+		height: 16px;
+		margin-right: 0.45rem;
+		vertical-align: -0.2em;
+		border-radius: 3px;
+	}
+	.card h3 .mark.hidden {
+		display: none;
+	}
+	@media (prefers-color-scheme: dark) {
+		.card h3 .mark.dark\:hidden {
+			display: none;
+		}
+		.card h3 .mark.hidden {
+			display: inline-block;
+		}
+	}
+	.card:focus-visible,
+	.r:focus-visible {
 		outline: 2px solid currentColor;
 		outline-offset: 3px;
-		border-radius: 2px;
-	}
-	.t[aria-expanded="true"] sup::before {
-		content: "−";
-	}
-	.t[aria-expanded="true"] sup span {
-		display: none;
-	}
-	.t sup {
-		margin-left: 0.15em;
-		font-size: 0.5em;
-		font-variant-numeric: tabular-nums;
-		opacity: 0.45;
-		text-decoration: none;
-		display: inline-block;
 	}
 
-	.x {
-		display: none;
-	}
-	.x.open {
-		display: block;
-		margin: 0.9rem 0 1.1rem;
-		animation: x-in 0.5s cubic-bezier(0.22, 1, 0.36, 1);
-	}
-	@keyframes x-in {
-		from { opacity: 0; transform: translateY(-4px); }
+	.road {
+		border-color: color-mix(in oklab, currentColor 12%, transparent);
 	}
 
 	.r {
@@ -269,24 +320,59 @@ const markFor = (...texts: (string | undefined)[]) => {
 		gap: 1rem;
 		align-items: baseline;
 		padding: 0.5rem 0;
-		font-family: var(--font-sans);
 		font-size: 14.5px;
 		line-height: 1.45;
-		letter-spacing: 0;
 		border-top: 1px solid color-mix(in oklab, currentColor 9%, transparent);
 	}
-	.x.open .r {
-		animation: r-in 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
-		animation-delay: calc(var(--i, 0) * 35ms);
+	.r.note {
+		grid-template-columns: minmax(0, 1fr) 3rem;
 	}
-	@keyframes r-in {
-		from { opacity: 0; transform: translateY(6px); filter: blur(3px); }
+	.r .m.w {
+		white-space: nowrap;
+	}
+	.r.note:has(.w) {
+		grid-template-columns: minmax(0, 1fr) auto;
+	}
+	.r .n {
+		display: inline-flex;
+		align-items: baseline;
+	}
+	.r :global(.logo),
+	.r .logo-gap {
+		align-self: center;
+		display: inline-block;
+		flex-shrink: 0;
+		margin-right: 0.5rem;
+	}
+	.r .logo-gap {
+		width: 14px;
+	}
+	.r :global(.logo) {
+		filter: grayscale(1);
+		opacity: 0.75;
+		transition: opacity 0.2s ease;
+	}
+	.r:hover :global(.logo) {
+		opacity: 1;
+	}
+	.r .ev,
+	.r .d,
+	.r .m {
+		opacity: 0.55;
+	}
+	.r .m {
+		text-align: right;
+		font-variant-numeric: tabular-nums;
+	}
+	.r:hover .n {
+		text-decoration: underline;
+		text-underline-offset: 0.2em;
+		text-decoration-thickness: 1px;
 	}
 	.vg {
 		display: grid;
 		grid-template-columns: repeat(3, minmax(0, 1fr));
 		gap: 1.25rem 1rem;
-		padding-top: 0.25rem;
 	}
 	.r.v {
 		display: flex;
@@ -318,21 +404,6 @@ const markFor = (...texts: (string | undefined)[]) => {
 		.vg {
 			grid-template-columns: repeat(2, minmax(0, 1fr));
 		}
-	}
-	.r .d,
-	.r .m {
-		opacity: 0.5;
-	}
-	.r .m {
-		text-align: right;
-		font-variant-numeric: tabular-nums;
-	}
-	.r:hover .n {
-		text-decoration: underline;
-		text-underline-offset: 0.2em;
-		text-decoration-thickness: 1px;
-	}
-	@media (max-width: 640px) {
 		.r {
 			grid-template-columns: minmax(0, 1fr) auto;
 		}
@@ -341,62 +412,10 @@ const markFor = (...texts: (string | undefined)[]) => {
 		}
 	}
 	@media (prefers-reduced-motion: reduce) {
-		.x.open,
-		.x.open .r,
-		.s {
+		.sprite,
+		.bit {
 			animation: none;
 		}
 	}
 </style>
 
-<script>
-	const triggers = [...document.querySelectorAll<HTMLButtonElement>(".home .t")];
-	const sentence = document.querySelector<HTMLElement>(".home .s");
-	const syncFocus = () => {
-		const reading = triggers.some((t) => t.getAttribute("aria-expanded") === "true");
-		sentence?.classList.toggle("focus", reading);
-		document.documentElement.classList.toggle("reading", reading);
-		const open = triggers.filter((t) => t.getAttribute("aria-expanded") === "true");
-		history.replaceState(null, "", open.length === 1 ? `#${open[0].dataset.hash}` : location.pathname);
-	};
-	const set = (t: HTMLButtonElement, open: boolean) => {
-		const panel = document.getElementById(t.getAttribute("aria-controls") ?? "");
-		t.setAttribute("aria-expanded", String(open));
-		panel?.classList.toggle("open", open);
-		syncFocus();
-	};
-	for (const t of triggers) {
-		const panel = document.getElementById(t.getAttribute("aria-controls") ?? "");
-		panel?.querySelectorAll<HTMLElement>(".r").forEach((r, i) => r.style.setProperty("--i", String(i)));
-		t.addEventListener("click", () => set(t, t.getAttribute("aria-expanded") !== "true"));
-	}
-	const all = document.querySelector<HTMLButtonElement>(".home .all");
-	all?.addEventListener("click", () => {
-		const open = triggers.some((t) => t.getAttribute("aria-expanded") !== "true");
-		for (const t of triggers) set(t, open);
-		all.textContent = open ? "Close everything" : "Open everything";
-	});
-	const openFromHash = () => {
-		const t = triggers.find((x) => `#${x.dataset.hash}` === location.hash);
-		if (t) set(t, true);
-	};
-	openFromHash();
-	window.addEventListener("hashchange", openFromHash);
-	window.addEventListener("keydown", (e) => {
-		if (e.key === "Escape") {
-			for (const t of triggers) set(t, false);
-			if (all) all.textContent = "Open everything";
-			return;
-		}
-		if (e.metaKey || e.ctrlKey || e.altKey || (e.target as HTMLElement).closest("input,textarea")) return;
-		const t = triggers.find((x) => x.dataset.key === e.key);
-		if (t) set(t, t.getAttribute("aria-expanded") !== "true");
-	});
-	const clock = document.querySelector<HTMLElement>("[data-clock]");
-	if (clock) {
-		const fmt = new Intl.DateTimeFormat("en-GB", { hour: "2-digit", minute: "2-digit", timeZone: "America/Argentina/Buenos_Aires" });
-		const tick = () => (clock.textContent = fmt.format(new Date()));
-		tick();
-		setInterval(tick, 15000);
-	}
-</script>

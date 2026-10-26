@@ -29,7 +29,21 @@ const svg = render(chart.trim(), defaultOptions);
     height: auto;
     margin: 0 auto;
   }
+  /* The renderer only mixes hex colors, so the palette comes from site tokens instead. */
+  .mermaid-diagram :global(svg) {
+    --_text: var(--color-foreground) !important;
+    --_line: var(--color-foreground-3) !important;
+    --_arrow: var(--color-foreground-3) !important;
+    --_node-fill: var(--color-background-2) !important;
+    --_node-stroke: var(--color-ui-3) !important;
+    --_muted: var(--color-foreground-3) !important;
+    --_group-fill: var(--color-background-2) !important;
+    --_group-stroke: var(--color-ui-2) !important;
+    --_group-text: var(--color-foreground-2) !important;
+    font-family: var(--font-sans);
+  }
   .mermaid-diagram :global(svg text) {
+    font-family: var(--font-sans);
     user-select: none;
   }
 </style>

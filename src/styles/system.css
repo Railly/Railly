@@ -1,0 +1,71 @@
+/*
+ * Inner pages speak the home's language: serif titles, 15px medium section
+ * labels, hairline rows, faded secondary ink and small pixel-offset cards.
+ * Unlayered so it wins over per-page utility classes. /agents opts out.
+ */
+.page {
+    --ink-line: color-mix(in oklab, currentColor 10%, transparent);
+}
+.page h2:not(.sr-only) {
+    font-family: var(--font-sans);
+    font-size: 15px;
+    font-weight: 500;
+    font-style: normal;
+    letter-spacing: 0;
+    text-transform: none;
+    line-height: 1.4;
+    color: var(--color-foreground);
+}
+/* Labels: no shouting, no italics, no mono badges. */
+.page .uppercase {
+    text-transform: none;
+    letter-spacing: 0;
+}
+.page .italic {
+    font-style: normal;
+}
+.page .font-mono:is(.text-xs, .text-\[10px\], .text-\[11px\]) {
+    font-family: var(--font-sans);
+    font-size: 12px;
+}
+.page th {
+    font-size: 12px;
+    font-weight: 400;
+    text-transform: none;
+    letter-spacing: 0;
+    color: var(--color-foreground-3);
+}
+.page :is(td, th),
+.page .border-b,
+.page .border-t {
+    border-color: var(--ink-line);
+}
+/* Boxes become the home's tile: hairline edge and a 3px offset shadow. */
+.page :is(.rounded, .rounded-md, .rounded-lg, .rounded-xl, .rounded-2xl):is(.border) {
+    border-radius: 4px;
+    border-color: var(--ink-line);
+    box-shadow: 3px 3px 0 color-mix(in oklab, currentColor 7%, transparent);
+}
+.page a:is(.rounded, .rounded-md, .rounded-lg, .rounded-xl):is(.border):hover {
+    border-color: color-mix(in oklab, currentColor 20%, transparent);
+    background: transparent;
+}
+/* Primary actions: ink outline instead of a filled pill. */
+.page a.bg-foreground {
+    background: transparent;
+    color: var(--color-foreground);
+    border: 1px solid color-mix(in oklab, currentColor 30%, transparent);
+    border-radius: 4px;
+    box-shadow: 3px 3px 0 color-mix(in oklab, currentColor 14%, transparent);
+}
+.page a.bg-foreground:hover {
+    opacity: 1;
+    border-color: currentColor;
+}
+nav a:focus-visible,
+.page a:focus-visible,
+.page button:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 3px;
+    border-radius: 2px;
+}
