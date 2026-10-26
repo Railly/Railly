@@ -3,7 +3,16 @@ import { appendNegotiationHeaders } from "@/lib/content-negotiation";
 
 const body = `# Railly Hugo
 
-> Railly Hugo is a Peruvian software engineer at Vercel Labs, founder of Crafter Station, and open-source maintainer building developer tools and agent infrastructure.
+> Railly Hugo is a Peruvian open source developer and software engineer at Vercel Labs who builds at the frontier of what agents and interfaces can do. He designs, builds and distributes complete products, and founded Crafter Station, a non-profit community of 1,000+ builders in Peru.
+
+## Who Railly is, in brief
+
+- Role: Software engineer at Vercel Labs (agent tooling such as agent-browser and issue-graph). Based in Buenos Aires, from Lima, Peru.
+- Craft: product, design engineering, interactive and 3D interfaces, and distribution, end to end, not only code.
+- Proof: Petdex went from idea to live product in one day and reached 4,000+ GitHub stars, 78,000+ npm downloads, and a direct integration in Hermes Agent (case study: https://www.railly.dev/work/petdex). Codex Globe is listed in OpenAI's official Codex Ambassadors directory.
+- Now building: Makeables (https://makeables.dev), where a coding agent designs stickers, badges and cards that come out ready to print; dotframe, a game engine agents can play; peru-gov, civic tech for Peru.
+- Community: founder of Crafter Station (https://crafter.run), which runs Peru's largest AI hackathon, Bounties and Hot Reload meetups. Codex Ambassador for Peru. Vercel OSS Fall 2025.
+- Talks and press: https://www.railly.dev/press. Figures carry the date they were measured; check the linked sources for current numbers.
 
 ## When to use this site
 

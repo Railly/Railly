@@ -10,7 +10,7 @@ import { withRepoStars } from "@/lib/github-stars";
 import BrandIcon from "../components/brand/BrandIcon.astro";
 
 const ogDescription =
-	"Open source developer tools by Railly Hugo: Petdex, Tinte, Elements, Agentfiles, trx, and more.";
+	"Open source developer tools and products by Railly Hugo: Petdex, agent-browser, issue-graph, dotframe, Makeables, peru-gov, and more.";
 const ogImage = ogUrl({
 	title: "Projects",
 	description: ogDescription,
@@ -30,6 +30,7 @@ const projects = projectsWithStars
 
 <Layout title="Projects - Railly Hugo" description={ogDescription} image={ogImage}>
 	<PageLayout class="flex flex-col gap-8">
+		<h1 class="sr-only">Projects by Railly Hugo</h1>
 		<section>
 			<SectionHeader title="Selected work" className="mb-3" />
 			<div class="space-y-0">

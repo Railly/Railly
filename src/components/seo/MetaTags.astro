@@ -24,6 +24,7 @@ const {
 
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width" />
+{canonicalURL.pathname.startsWith("/v/") && <meta name="robots" content="noindex, nofollow" />}
 <link rel="canonical" href={canonicalURL} />
 <title>{title}</title>
 <meta name="title" content={title} />

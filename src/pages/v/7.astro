@@ -18,6 +18,7 @@ const lastWritten = posts[0]?.data.pubDate.toLocaleDateString("en-US", {
 	<div class="moonlight" aria-hidden="true"></div>
 	<canvas class="space" aria-hidden="true"></canvas>
 	<main class="v7 relative z-[1] mx-auto flex min-h-screen max-w-[44rem] flex-col px-6 pt-[18vh] pb-16 text-[#1b1915] dark:text-[#ebe7df]">
+		<h1 class="sr-only">Railly Hugo, open source developer and software engineer at Vercel Labs</h1>
 		<div class="s font-serif text-[clamp(1.6rem,3.6vw,2.2rem)] leading-[1.45] tracking-[-0.01em]">
 			<span>I build at the frontier of what agents and interfaces can do. I’m </span><span class="nn"><img class="lg av" src="/images/railly-hugo-headshot.webp" alt="" />Railly Hugo</span><span>, a </span><span class="nn"><Flag country="pe" class="lg fl" width={20} height={20} />Peruvian</span><span> engineer at </span><span class="nn"><BrandIcon name="vercel" class="lg" width={20} height={20} />Vercel Labs</span><span>. I make </span>
 			<span class="k whitespace-nowrap"><button class="t" aria-expanded="false" aria-controls="x-work" data-hash="work" data-key="1">tools agents can use<sup><span>{projects.length}</span></sup></button><span class="nb">,</span></span><div class="x" id="x-work"><div>
@@ -33,7 +34,7 @@ const lastWritten = posts[0]?.data.pubDate.toLocaleDateString("en-US", {
 						<span class="n">{a.title}</span><span class="d">{a.where}</span><span class="m">{a.date.slice(0, 4)}</span>
 					</a>
 				))}
-			</div></div><span> run </span><span class="nn"><BrandIcon name="crafterStation" class="lg" width={20} height={20} />Crafter Station</span><span>, </span>
+			</div></div><span> run </span><a href="https://crafter.run" target="_blank" rel="noopener" class="nn cs"><BrandIcon name="crafterStation" class="lg" width={20} height={20} />Crafter Station</a><span>, </span>
 			<span class="k whitespace-nowrap"><button class="t" aria-expanded="false" aria-controls="x-cs" data-hash="community" data-key="3">a community of 1,000+ builders<sup><span>{achievements.length}</span></sup></button><span class="nb">,</span></span><div class="x" id="x-cs"><div>
 				<a href="https://github.com/crafter-station" target="_blank" rel="noopener noreferrer" class="r"><span class="n">Crafter Station</span><span class="d">Non-profit building Peru's tech ecosystem</span><span class="m"></span></a>
 				{achievements.map((a) => (

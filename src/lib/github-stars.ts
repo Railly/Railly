@@ -22,7 +22,10 @@ function githubHeaders(token?: string): HeadersInit {
 	};
 }
 
-async function fetchStarsLive(repos: string[], token: string): Promise<Map<string, number> | null> {
+async function fetchStarsLive(
+	repos: string[],
+	token: string,
+): Promise<Map<string, number> | null> {
 	const stars = new Map<string, number>();
 	const unique = [...new Set(repos.filter(Boolean))];
 	if (unique.length === 0) return stars;
@@ -64,7 +67,9 @@ function starsFromCache(repos: string[]): Map<string, number> {
 	return stars;
 }
 
-export async function fetchRepoStars(repos: string[]): Promise<Map<string, number>> {
+export async function fetchRepoStars(
+	repos: string[],
+): Promise<Map<string, number>> {
 	const unique = [...new Set(repos.filter(Boolean))];
 	const token = githubToken();
 
@@ -79,7 +84,9 @@ export async function fetchRepoStars(repos: string[]): Promise<Map<string, numbe
 export async function withRepoStars<T extends { repo?: string }>(
 	items: T[],
 ): Promise<(T & { stars: number })[]> {
-	const repos = items.map((item) => item.repo).filter((repo): repo is string => Boolean(repo));
+	const repos = items
+		.map((item) => item.repo)
+		.filter((repo): repo is string => Boolean(repo));
 	const stars = await fetchRepoStars(repos);
 
 	return items.map((item) => ({

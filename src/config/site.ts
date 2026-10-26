@@ -10,7 +10,7 @@ interface OgUrlOptions {
 export const siteConfig: SiteConfig = {
 	name: "Railly Hugo",
 	description:
-		"Railly Hugo builds at the frontier of what agents and interfaces can do. Software engineer at Vercel Labs and founder of Crafter Station, based in Buenos Aires.",
+		"Railly Hugo is a Peruvian open source developer at Vercel Labs building at the frontier of agents and interfaces. Creator of Petdex and founder of Crafter Station.",
 	url: "https://www.railly.dev",
 	ogImage: "https://www.railly.dev/images/og.webp",
 	hero: {
