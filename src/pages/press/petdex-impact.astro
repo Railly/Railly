@@ -1,5 +1,6 @@
 ---
 import PageLayout from "@/components/layout/PageLayout.astro";
+import { ogUrl } from "@/config/site";
 import Layout from "@/layouts/Layout.astro";
 
 const weekly = [
@@ -46,6 +47,7 @@ const sources = [
 ---
 
 <Layout
+	image={ogUrl({ title: "One package drove Crafter Station’s Q2 open-source growth.", description: "Petdex: 28,875 npm downloads and 3,218 net new GitHub stars in Q2 2026.", tag: "press" })}
 	title="Petdex Impact Report · Q2 2026 | Railly Hugo"
 	description="A source-linked report on Petdex's 28,875 npm downloads, 3,218 net new GitHub stars, and contribution to Crafter Station's Q2 2026 growth."
 >

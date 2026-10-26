@@ -7,7 +7,7 @@ describe("buildSchemaGraph", () => {
 			title: "Railly Hugo",
 			description: "Personal site",
 			canonicalURL: new URL("https://www.railly.dev/"),
-			socialImageURL: new URL("https://www.railly.dev/images/og.webp"),
+			socialImageURL: new URL("https://www.railly.dev/api/og?title=Railly+Hugo"),
 			article: false,
 		}) as { "@graph": Array<Record<string, unknown>> };
 		const person = schema["@graph"].find(
