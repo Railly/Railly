@@ -18,8 +18,14 @@ import { join } from "node:path";
 
 const SITE = "https://railly.dev";
 const README_PATH = join(import.meta.dir, "..", "README.md");
-const PROFILE_PROJECTS = ["Petdex", "Agentfiles", "Tinte"];
-const TOP_POSTS = 3;
+const PROFILE_PROJECTS = [
+	"Petdex",
+	"agent-browser",
+	"issue-graph",
+	"dotframe",
+	"Makeables",
+];
+const TOP_POSTS = 2;
 
 type Project = {
 	name: string;
@@ -76,10 +82,13 @@ function renderProjects(projects: Project[]): string {
 		return project ? [project] : [];
 	})
 		.map((p) => {
-			const link = p.url.startsWith("https://github.com") ? p.github : p.url;
-			return `- [${p.name}](${link}) · ${p.description}`;
+			const url = p.url.startsWith("/")
+				? `https://www.railly.dev${p.url}`
+				: p.url;
+			const link = url.startsWith("https://github.com") ? p.github : url;
+			return `[${p.name}](${link})`;
 		})
-		.join("\n");
+		.join(" · ");
 }
 
 function formatDate(d: Date): string {
@@ -88,9 +97,7 @@ function formatDate(d: Date): string {
 
 function renderPosts(posts: Post[]): string {
 	if (posts.length === 0) return "_No posts yet._";
-	return posts
-		.map((p) => `- [${p.title}](${p.link}) — ${formatDate(p.pubDate)}`)
-		.join("\n");
+	return posts.map((p) => `[${p.title}](${p.link})`).join(" · ");
 }
 
 function replaceBlock(
@@ -101,7 +108,7 @@ function replaceBlock(
 	const start = `<!-- START:${marker} -->`;
 	const end = `<!-- END:${marker} -->`;
 	const regex = new RegExp(`${start}[\\s\\S]*?${end}`, "m");
-	const block = `${start}\n${replacement}\n${end}`;
+	const block = `${start}${replacement}${end}`;
 	if (!regex.test(content)) {
 		throw new Error(`Marker ${marker} not found in README.md`);
 	}
