@@ -14,7 +14,8 @@ const lastWritten = posts[0]?.data.pubDate.toLocaleDateString("en-US", {
 ---
 
 <Layout title="Railly Hugo (v6)" description="Variant 6">
-	<main class="v6 mx-auto flex min-h-screen max-w-[44rem] flex-col px-6 pt-[18vh] pb-16 text-[#1b1915] dark:text-[#ebe7df]">
+	<canvas class="orb" aria-hidden="true"></canvas>
+	<main class="v6 relative z-[1] mx-auto flex min-h-screen max-w-[44rem] flex-col px-6 pt-[18vh] pb-16 text-[#1b1915] dark:text-[#ebe7df]">
 		<div class="s font-serif text-[clamp(1.6rem,3.6vw,2.2rem)] leading-[1.45] tracking-[-0.01em]">
 			<span>I build at the frontier of what agents and interfaces can do. I’m </span><span class="nn"><img class="lg av" src="/images/railly-hugo-headshot.webp" alt="" />Railly Hugo</span><span>, a </span><span class="nn"><Flag country="pe" class="lg fl" width={20} height={20} />Peruvian</span><span> engineer at </span><span class="nn"><BrandIcon name="vercel" class="lg" width={20} height={20} />Vercel Labs</span><span>. I make </span>
 			<span class="k whitespace-nowrap"><button class="t" aria-expanded="false" aria-controls="x-work" data-hash="work" data-key="1">tools agents can use<sup><span>{projects.length}</span></sup></button><span class="nb">,</span></span><div class="x" id="x-work"><div>
@@ -70,6 +71,15 @@ const lastWritten = posts[0]?.data.pubDate.toLocaleDateString("en-US", {
 </Layout>
 
 <style>
+	.orb {
+		position: fixed;
+		inset: 0;
+		width: 100vw;
+		height: 100vh;
+		pointer-events: none;
+		z-index: 0;
+	}
+
 	.nn {
 		white-space: nowrap;
 	}
@@ -314,5 +324,113 @@ const lastWritten = posts[0]?.data.pubDate.toLocaleDateString("en-US", {
 		const tick = () => (clock.textContent = fmt.format(new Date()));
 		tick();
 		setInterval(tick, 15000);
+	}
+</script>
+
+<script>
+	// A lattice sphere rising past the right edge: a quiet moon made of points.
+	const orb = document.querySelector<HTMLCanvasElement>("canvas.orb");
+	const octx = orb?.getContext("2d");
+	if (orb && octx) {
+		const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+		const dark = matchMedia("(prefers-color-scheme: dark)");
+		const N = 5200;
+		const pts: [number, number, number][] = [];
+		const golden = Math.PI * (3 - Math.sqrt(5));
+		for (let i = 0; i < N; i++) {
+			const y = 1 - (i / (N - 1)) * 2;
+			const r = Math.sqrt(1 - y * y);
+			const a = golden * i;
+			pts.push([Math.cos(a) * r, y, Math.sin(a) * r]);
+		}
+		let W = 0;
+		let H = 0;
+		let dpr = 1;
+		let tx = 0;
+		let ty = 0;
+		let px = 0;
+		let py = 0;
+		const resize = () => {
+			dpr = Math.min(devicePixelRatio || 1, 2);
+			W = innerWidth;
+			H = innerHeight;
+			orb.width = W * dpr;
+			orb.height = H * dpr;
+		};
+		const draw = (t: number) => {
+			px += (tx - px) * 0.04;
+			py += (ty - py) * 0.04;
+			const isDark = dark.matches;
+			const R = Math.min(W, H) * (W < 700 ? 0.36 : 0.34);
+			const horizon = H * 0.84;
+			const cx = W - R * (W < 700 ? 0.5 : 0.62) + px * 16;
+			const cy = horizon - R * 0.62 + py * 8;
+			const ink = isDark ? "236,242,255" : "27,25,21";
+			octx.setTransform(dpr, 0, 0, dpr, 0, 0);
+			octx.clearRect(0, 0, W, H);
+
+			octx.save();
+			octx.beginPath();
+			octx.rect(0, 0, W, horizon);
+			octx.clip();
+			// Halo and a thin rim, like light wrapping a moon.
+			const halo = octx.createRadialGradient(cx, cy, R * 0.96, cx, cy, R * 1.5);
+			halo.addColorStop(0, isDark ? "rgba(160,215,255,0.22)" : "rgba(27,25,21,0.06)");
+			halo.addColorStop(1, "rgba(0,0,0,0)");
+			octx.fillStyle = halo;
+			octx.fillRect(0, 0, W, H);
+			octx.strokeStyle = isDark ? "rgba(190,230,255,0.45)" : "rgba(27,25,21,0.18)";
+			octx.lineWidth = 1;
+			octx.beginPath();
+			octx.arc(cx, cy, R, 0, Math.PI * 2);
+			octx.stroke();
+			octx.restore();
+
+			const rot = t * 0.00005 + px * 0.25;
+			const tilt = -0.3 + py * 0.08;
+			const cr = Math.cos(rot);
+			const sr = Math.sin(rot);
+			const ct = Math.cos(tilt);
+			const st = Math.sin(tilt);
+			for (const [x0, y0, z0] of pts) {
+				const x1 = x0 * cr + z0 * sr;
+				const z1 = -x0 * sr + z0 * cr;
+				const y2 = y0 * ct - z1 * st;
+				const z2 = y0 * st + z1 * ct;
+				if (z2 < 0) continue;
+				const sx = cx + x1 * R;
+				const sy = cy + y2 * R;
+				const light = Math.max(0, -x1 * 0.35 - y2 * 0.45 + z2 * 0.8);
+				const a = isDark ? 0.18 + light * 0.75 : 0.12 + light * 0.45;
+				const size = 0.6 + z2 * 1.2;
+				if (sy < horizon) {
+					octx.fillStyle = `rgba(${ink},${a.toFixed(3)})`;
+					octx.fillRect(sx, sy, size, size);
+				} else {
+					continue;
+				}
+				// Reflection on the water below the horizon: flattened, broken, fading.
+				const ry = horizon + (horizon - sy) * 0.35;
+				if (ry < H && Math.sin(sx * 0.9 + t * 0.002 + ry) > 0.2) {
+					const fade = 1 - (ry - horizon) / (H - horizon);
+					octx.fillStyle = `rgba(${ink},${(a * 0.35 * fade).toFixed(3)})`;
+					octx.fillRect(sx + Math.sin(ry * 0.3 + t * 0.001) * 2, ry, size * 1.6, size * 0.6);
+				}
+			}
+			octx.fillStyle = isDark ? "rgba(236,242,255,0.18)" : "rgba(27,25,21,0.16)";
+			octx.fillRect(0, horizon, W, 1);
+		};
+		const loop = (t: number) => {
+			draw(t);
+			if (!reduce) requestAnimationFrame(loop);
+		};
+		resize();
+		addEventListener("resize", resize);
+		addEventListener("pointermove", (e) => {
+			tx = e.clientX / W - 0.5;
+			ty = e.clientY / H - 0.5;
+		});
+		dark.addEventListener("change", () => draw(performance.now()));
+		requestAnimationFrame(loop);
 	}
 </script>
