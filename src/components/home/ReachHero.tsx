@@ -390,7 +390,7 @@ export function ReachHero() {
 	return (
 		<div
 			ref={wrapRef}
-			role="img"
+			role="button"
 			aria-label="A human hand drawn in crosses and an agent hand drawn in binary reach toward each other across a starfield. Press and hold to close the gap."
 			tabIndex={0}
 			onKeyDown={(e) => key(e, true)}
