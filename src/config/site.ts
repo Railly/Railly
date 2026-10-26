@@ -46,8 +46,8 @@ export const siteConfig: SiteConfig = {
 	],
 	locale: "en_US",
 	themeColor: {
-		light: "#050505",
-		dark: "#050505",
+		light: "#fcfcfc",
+		dark: "#0a0a0a",
 	},
 	icons: {
 		icon: "/favicon/favicon.ico",

@@ -6,15 +6,14 @@ interface Props {
 	title: string;
 	href: string;
 	viewAllLabel?: string;
-	index?: string;
 }
 
-const { title, href, viewAllLabel = "view all", index } = Astro.props;
+const { title, href, viewAllLabel = "view all" } = Astro.props;
 ---
 
-<div class="mb-5 flex items-center justify-between border-t border-ui pt-3">
-	<SectionHeader title={title} index={index} className="mb-0" />
-	<a href={href} class="group font-mono text-[11px] uppercase tracking-[0.16em] text-foreground-3 transition-colors duration-200 hover:text-foreground-2">
+<div class="mb-3 flex items-baseline justify-between">
+	<SectionHeader title={title} className="mb-0" />
+	<a href={href} class="group text-sm text-foreground-3 transition-colors duration-200 hover:text-foreground-2">
 		<span class="flex items-center gap-1">
 			<span>{viewAllLabel}</span>
 			<ArrowIcon size={10} />

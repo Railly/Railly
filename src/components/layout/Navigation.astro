@@ -1,11 +1,6 @@
 ---
-interface NavItem {
-	href: string;
-	label: string;
-}
-
-const navItems: NavItem[] = [
-	{ href: "/", label: "index" },
+const navItems = [
+	{ href: "/", label: "home" },
 	{ href: "/projects", label: "work" },
 	{ href: "/writing", label: "writing" },
 	{ href: "/press", label: "press" },
@@ -17,64 +12,26 @@ const navItems: NavItem[] = [
 ];
 
 const { pathname } = Astro.url;
-
-function isActive(href: string): boolean {
-	if (href === "/") {
-		return pathname === "/";
-	}
-	return pathname.startsWith(href);
-}
+const isActive = (href: string) =>
+	href === "/" ? pathname === "/" : pathname.startsWith(href);
 ---
 
-<header class="sticky top-0 z-40 border-b border-ui bg-background/80 backdrop-blur-md">
-	<div class="mx-auto flex h-12 max-w-[80rem] items-center gap-6 px-4 sm:px-6">
-		<a href="/" class="flex shrink-0 items-center gap-2.5">
-			<span class="font-display text-[15px] tracking-[-0.04em] text-foreground">RAILLY HUGO</span>
-			<span class="eyebrow hidden sm:inline">Hunter</span>
-		</a>
-
-		<nav class="min-w-0 flex-1 overflow-x-auto scrollbar-none">
-			<ul class="ml-auto flex w-max gap-5 font-mono text-[11px] uppercase tracking-[0.16em]">
-				{
-					navItems.map((item) => (
-						<li>
-							<a
-								href={item.href}
-								class:list={[
-									"flex items-center gap-1.5 py-1 transition-colors duration-200",
-									isActive(item.href) ? "text-foreground" : "text-foreground-3 hover:text-foreground",
-								]}
-							>
-								{isActive(item.href) && <span class="size-1 rounded-full bg-accent" />}
-								{item.label}
-							</a>
-						</li>
-					))
-				}
-			</ul>
-		</nav>
-
-		<span class="hidden shrink-0 font-mono text-[11px] tabular-nums tracking-[0.16em] text-foreground-3 lg:inline">
-			BUE <span data-clock>--:--</span>
-		</span>
-	</div>
-</header>
-
-<script>
-	function startClock() {
-		const el = document.querySelector<HTMLElement>("[data-clock]");
-		if (!el) return;
-		const fmt = new Intl.DateTimeFormat("en-GB", {
-			hour: "2-digit",
-			minute: "2-digit",
-			timeZone: "America/Argentina/Buenos_Aires",
-		});
-		const tick = () => {
-			el.textContent = fmt.format(new Date());
-		};
-		tick();
-		window.setInterval(tick, 15000);
-	}
-	startClock();
-	document.addEventListener("astro:after-swap", startClock);
-</script>
+<nav class="mx-auto max-w-[38rem] overflow-x-auto px-5 pt-8 scrollbar-none sm:pt-12">
+	<ul class="flex w-max gap-4 text-sm">
+		{
+			navItems.map((item) => (
+				<li>
+					<a
+						href={item.href}
+						class:list={[
+							"transition-colors duration-200",
+							isActive(item.href) ? "text-foreground" : "text-foreground-3 hover:text-foreground",
+						]}
+					>
+						{item.label}
+					</a>
+				</li>
+			))
+		}
+	</ul>
+</nav>

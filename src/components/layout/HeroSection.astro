@@ -1,89 +1,25 @@
 ---
-import { ReachHero } from "../home/ReachHero";
-
 interface Props {
 	name: string;
 	title: string;
-	stats?: { value: string; label: string }[];
 }
 
-const { stats = [] } = Astro.props;
+const { name } = Astro.props;
 
 const link =
-	"text-foreground underline decoration-ui-3 underline-offset-4 transition-colors hover:decoration-accent";
+	"text-foreground underline decoration-ui-3 underline-offset-4 transition-colors hover:decoration-foreground";
 ---
 
-<section class="flex flex-col gap-10">
-	<div class="hero-reveal" style="--reveal-delay: 0ms">
-		<ReachHero client:load />
-	</div>
-
-	<div class="grid gap-10 lg:grid-cols-12 lg:gap-8">
-		<h1
-			class="hero-reveal font-display text-[clamp(2.6rem,6.4vw,5.6rem)] text-foreground lg:col-span-8"
-			style="--reveal-delay: 90ms"
-		>
-			<span class="sr-only">Railly Hugo. </span>I build at the frontier of what agents and interfaces can do.
-		</h1>
-
-		<dl class="hero-reveal grid content-end gap-4 text-sm lg:col-span-4" style="--reveal-delay: 180ms">
-			<div class="grid grid-cols-[6.5rem_1fr] gap-3 border-t border-ui pt-3">
-				<dt class="eyebrow pt-0.5">Now</dt>
-				<dd class="text-foreground-2">Software engineer at <a href="https://vercel.com/labs" target="_blank" class={link}>Vercel Labs</a></dd>
-			</div>
-			<div class="grid grid-cols-[6.5rem_1fr] gap-3 border-t border-ui pt-3">
-				<dt class="eyebrow pt-0.5">Founder</dt>
-				<dd class="text-foreground-2"><a href="https://github.com/crafter-station" target="_blank" class={link}>Crafter Station</a> and <a href="https://github.com/crafter-research" target="_blank" class={link}>Crafter Research</a>, open civic tech for Peru</dd>
-			</div>
-			<div class="grid grid-cols-[6.5rem_1fr] gap-3 border-t border-ui pt-3">
-				<dt class="eyebrow pt-0.5">Signal</dt>
-				<dd class="text-foreground-2">Codex Ambassador, Vercel OSS Fall 2025</dd>
-			</div>
-			<div class="grid grid-cols-[6.5rem_1fr] gap-3 border-t border-ui pt-3">
-				<dt class="eyebrow pt-0.5">Elsewhere</dt>
-				<dd class="text-foreground-2"><a href="https://github.com/railly" target="_blank" class={link}>GitHub</a>, <a href="https://x.com/raillyhugo" target="_blank" class={link}>X</a>, <a href="/about" class={link}>about</a></dd>
-			</div>
-		</dl>
-	</div>
-
-	{
-		stats.length > 0 && (
-			<div class="hero-reveal grid grid-cols-2 border-y border-ui sm:grid-cols-4" style="--reveal-delay: 270ms">
-				{stats.map((s, i) => (
-					<div class:list={["flex flex-col gap-2 py-5", i > 0 && "sm:border-l sm:border-ui sm:pl-5", i % 2 === 1 && "border-l border-ui pl-5"]}>
-						<span class="font-display text-[clamp(2rem,4vw,3.25rem)] tabular-nums text-foreground">{s.value}</span>
-						<span class="eyebrow">{s.label}</span>
-					</div>
-				))}
-			</div>
-		)
-	}
+<section class="flex flex-col gap-4 text-[15px] leading-relaxed">
+	<h1 class="font-medium text-foreground">
+		{name}
+		<span class="block font-normal text-foreground-3">Software engineer at Vercel Labs</span>
+	</h1>
+	<p class="text-foreground">I build at the frontier of what agents and interfaces can do.</p>
+	<p class="text-foreground-2">
+		Right now that means agent tooling at <a href="https://vercel.com/labs" target="_blank" class={link}>Vercel Labs</a>. I also run <a href="https://github.com/crafter-station" target="_blank" class={link}>Crafter Station</a>, a community of 1,000+ builders in Peru, and open civic tech at <a href="https://github.com/crafter-research" target="_blank" class={link}>Crafter Research</a>. Based in Buenos Aires, from Lima.
+	</p>
+	<p class="text-foreground-2">
+		<a href="https://github.com/railly" target="_blank" class={link}>GitHub</a>, <a href="https://x.com/raillyhugo" target="_blank" class={link}>X</a>, <a href="mailto:hi@railly.dev" class={link}>email</a>.
+	</p>
 </section>
-
-<style>
-	@keyframes hero-reveal-in {
-		from {
-			opacity: 0;
-			filter: blur(6px);
-			transform: translateY(8px);
-		}
-		to {
-			opacity: 1;
-			filter: blur(0);
-			transform: translateY(0);
-		}
-	}
-
-	.hero-reveal {
-		opacity: 0;
-		animation: hero-reveal-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-		animation-delay: var(--reveal-delay, 0ms);
-	}
-
-	@media (prefers-reduced-motion: reduce) {
-		.hero-reveal {
-			opacity: 1;
-			animation: none;
-		}
-	}
-</style>

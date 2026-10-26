@@ -1,14 +1,10 @@
 ---
 interface Props {
 	title: string;
-	index?: string;
 	className?: string;
 }
 
-const { title, index, className = "" } = Astro.props;
+const { title, className = "" } = Astro.props;
 ---
 
-<h2 class={`eyebrow flex items-center gap-3 ${className}`}>
-	{index && <span class="text-accent">{index}</span>}
-	<span class="text-foreground-2">{title}</span>
-</h2>
+<h2 class={`text-sm text-foreground-3 ${className}`}>{title}</h2>
