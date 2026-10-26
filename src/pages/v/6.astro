@@ -79,8 +79,8 @@ const lastWritten = posts[0]?.data.pubDate.toLocaleDateString("en-US", {
 		pointer-events: none;
 		z-index: 0;
 		/* The scene rises from the bottom; the text keeps clean paper above it. */
-		-webkit-mask-image: linear-gradient(to bottom, transparent 34%, black 62%);
-		mask-image: linear-gradient(to bottom, transparent 34%, black 62%);
+		-webkit-mask-image: linear-gradient(to bottom, transparent 30%, black 56%, black 86%, rgba(0, 0, 0, 0.3) 100%);
+		mask-image: linear-gradient(to bottom, transparent 30%, black 56%, black 86%, rgba(0, 0, 0, 0.3) 100%);
 	}
 
 	.nn {
@@ -365,107 +365,238 @@ const lastWritten = posts[0]?.data.pubDate.toLocaleDateString("en-US", {
 			dpr = Math.min(devicePixelRatio || 1, 2);
 			W = innerWidth;
 			H = innerHeight;
-			cw = W < 700 ? 6 : 7;
-			ch = Math.round(cw * 1.55);
+			cw = W < 700 ? 7 : 8;
+			ch = Math.round(cw * 1.62);
 			cols = Math.ceil(W / cw);
 			rows = Math.ceil(H / ch);
 			orb.width = W * dpr;
 			orb.height = H * dpr;
 		};
 
-		const DENSE = " .:-=+*#%@";
-		const pick = (v: number) => DENSE[Math.max(0, Math.min(DENSE.length - 1, Math.floor(v * DENSE.length)))];
+		type Pal = {
+			sky: [string, string];
+			cloudTop: string;
+			cloudMid: string;
+			cloudLow: string;
+			slab: string;
+			slabSide: string;
+			rim: string;
+			win: string;
+			sea: string;
+			reflect: string;
+			hill: string;
+			house: string;
+			houseCool: string;
+			star: string | null;
+			moon: string;
+			grain: string;
+		};
+		const PAL: Record<"dark" | "light", Pal> = {
+			dark: {
+				sky: ["rgba(16,20,56,0)", "rgba(22,28,90,0.9)"],
+				cloudTop: "255,170,190",
+				cloudMid: "225,120,160",
+				cloudLow: "70,80,180",
+				slab: "58,52,128",
+				slabSide: "88,80,160",
+				rim: "255,150,170",
+				win: "255,214,150",
+				sea: "90,110,240",
+				reflect: "255,200,150",
+				hill: "50,130,80",
+				house: "255,220,150",
+				houseCool: "150,170,255",
+				star: "220,228,255",
+				moon: "255,248,230",
+				grain: "255,255,255",
+			},
+			light: {
+				sky: ["rgba(150,170,235,0)", "rgba(170,185,240,0.55)"],
+				cloudTop: "235,120,120",
+				cloudMid: "220,120,150",
+				cloudLow: "130,120,200",
+				slab: "50,48,96",
+				slabSide: "72,70,125",
+				rim: "235,110,130",
+				win: "255,170,90",
+				sea: "90,110,220",
+				reflect: "255,170,90",
+				hill: "60,140,90",
+				house: "220,140,60",
+				houseCool: "90,110,200",
+				star: null,
+				moon: "80,80,140",
+				grain: "0,0,0",
+			},
+		};
 
 		const draw = (t: number) => {
 			const isDark = dark.matches;
-			const k = isDark ? 1 : 0.95;
+			const P = PAL[isDark ? "dark" : "light"];
 			ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 			ctx.clearRect(0, 0, W, H);
-			ctx.font = `${ch * 0.82}px "Commit Mono", ui-monospace, monospace`;
+
+			const horizon = Math.floor(rows * 0.76);
+			const seaEnd = horizon + 4;
+			const horizonY = horizon * ch;
+
+			// Sky: gives the clouds a complement and the slab something to stand against.
+			const sky = ctx.createLinearGradient(0, H * 0.3, 0, horizonY);
+			sky.addColorStop(0, P.sky[0]);
+			sky.addColorStop(1, P.sky[1]);
+			ctx.fillStyle = sky;
+			ctx.fillRect(0, 0, W, horizonY);
+
+			ctx.font = `${ch * 0.86}px "Commit Mono", ui-monospace, monospace`;
 			ctx.textBaseline = "top";
+			const put = (x: number, y: number, c: string, rgb: string, a: number) => {
+				ctx.fillStyle = `rgba(${rgb},${a.toFixed(3)})`;
+				ctx.fillText(c, x * cw, y * ch);
+			};
 
-			const horizon = Math.floor(rows * 0.8);
-			const shore = horizon + 2;
-			const monoL = Math.floor(cols * (W < 700 ? 0.66 : 0.78));
-			const monoR = monoL + Math.max(7, Math.floor(cols * 0.1));
-			const monoTop = Math.floor(rows * 0.36);
-			const drift = t * 0.00004;
+			const mobile = W < 700;
+			const slabW = Math.floor(cols * (mobile ? 0.3 : 0.2));
+			const sideW = Math.max(2, Math.floor(cols * 0.035));
+			const slabL = Math.floor(cols * (mobile ? 0.62 : 0.74));
+			const slabR = slabL + slabW;
+			const slabTop = Math.floor(rows * 0.08);
+			const drift = t * 0.00003;
 
-			for (let y = 0; y < rows; y++) {
+			// Stars and moon.
+			for (let y = 0; y < horizon; y++) {
 				for (let x = 0; x < cols; x++) {
-					let c = "";
-					let col = "";
-					const gx = x / cols;
-					const gy = y / rows;
-					if (y < horizon) {
-						// Monolith with a grid of lit windows and a lit edge.
-						if (x >= monoL && x < monoR && y >= monoTop) {
-							if (x === monoL) {
-								c = "|";
-								col = `rgba(255,120,150,${0.75 * k})`;
-							} else if ((x - monoL) % 2 === 1 && (y - monoTop) % 2 === 1) {
-								const lit = hash(x, y) > 0.82 || (hash(x, y) > 0.78 && Math.sin(t * 0.001 + x * y) > 0.6);
-								c = lit ? "▪" : "·";
-								col = lit ? `rgba(255,214,150,${0.85 * k})` : `rgba(120,130,230,${0.45 * k})`;
-							} else {
-								c = ":";
-								col = `rgba(60,70,170,${0.35 * k})`;
+					if (P.star && hash(x, y) > 0.988) {
+						put(x, y, hash(y, x) > 0.6 ? "+" : ".", P.star, 0.3 + 0.4 * Math.abs(Math.sin(t * 0.0012 + x * 3)));
+					}
+				}
+			}
+			const mx = W * (mobile ? 0.18 : 0.14);
+			const my = H * 0.5;
+			const mr = mobile ? 9 : 12;
+			ctx.save();
+			ctx.fillStyle = `rgba(${P.moon},${isDark ? 0.95 : 0.7})`;
+			ctx.shadowColor = `rgba(${P.moon},0.6)`;
+			ctx.shadowBlur = isDark ? 18 : 0;
+			ctx.beginPath();
+			ctx.arc(mx, my, mr, 0, Math.PI * 2);
+			ctx.arc(mx + mr * 0.45, my - mr * 0.15, mr * 0.88, 0, Math.PI * 2, true);
+			ctx.fill("evenodd");
+			ctx.restore();
+
+			const cloudCells = new Map<number, [string, string, number]>();
+			// Cumulus: clusters of overlapping circles, lit from the top, blue underneath.
+			const blobs: [number, number, number][] = [];
+			const clusters = mobile ? 4 : 6;
+			for (let i = 0; i < clusters; i++) {
+				const base = ((i + 0.5) / clusters + (hash(i, 1) - 0.5) * 0.1 + drift) % 1;
+				const size = H * (0.07 + hash(i, 2) * 0.06);
+				const n = 4 + Math.floor(hash(i, 3) * 4);
+				for (let j = 0; j < n; j++) {
+					const off = (j / (n - 1) - 0.5) * size * 3.2;
+					const peak = 1 - Math.abs(j / (n - 1) - 0.5) * 1.4;
+					const r = size * (0.45 + peak * 0.55) * (0.8 + hash(i, j + 9) * 0.4);
+					blobs.push([base * W + off, horizonY - r * 0.55, r]);
+				}
+			}
+			for (let y = 0; y < horizon; y++) {
+				for (let x = 0; x < cols; x++) {
+					const px = x * cw + cw / 2;
+					const py = y * ch + ch / 2;
+					let best = -1;
+					let vert = 0;
+					for (const [bx, by, r] of blobs) {
+						const dx = px - bx;
+						const dy = py - by;
+						const d = Math.sqrt(dx * dx + dy * dy) / r;
+						if (d < 1) {
+							const f = 1 - d;
+							if (f > best) {
+								best = f;
+								vert = (py - (by - r)) / (2 * r);
 							}
-						} else {
-							// Cumulus bank: puffs shaded from above, pink where lit, blue in shadow.
-							const profile = fbm(gx * 3.2 + drift * 30, 1.7) * 0.7 + fbm(gx * 11 + drift * 50, 4.2) * 0.3;
-							const top = horizon - Math.floor(profile * rows * 0.3 + rows * 0.03);
-							if (y >= top && x < monoL - 1) {
-								const fx = gx * 22 + drift * 70;
-								const fy = gy * 16;
-								const d0 = fbm(fx, fy);
-								const dUp = fbm(fx, fy - 0.35);
-								const depth = (y - top) / Math.max(1, horizon - top);
-								const lit = Math.max(0, Math.min(1, (d0 - dUp) * 5 + (1 - depth) * 0.7 + 0.1));
-								c = pick(0.12 + lit * 0.88);
-								const r = Math.round(70 + lit * 185);
-								const g = Math.round(70 + lit * 50);
-								const b = Math.round(200 - lit * 50);
-								col = `rgba(${r},${g},${b},${(0.3 + lit * 0.6) * k})`;
-							} else if (hash(x, y) > 0.985) {
-								c = hash(y, x) > 0.5 ? "+" : ".";
-								col = `rgba(210,220,255,${(0.3 + 0.4 * Math.abs(Math.sin(t * 0.0015 + x))) * k})`;
-							} else if (hash(x * 3, y * 7) < 0.3) {
-								c = ".";
-								col = `rgba(70,90,230,${0.3 * gy * k})`;
-							}
-						}
-						// Crescent moon.
-						const mx = cols * (W < 700 ? 0.18 : 0.12);
-						const my = rows * 0.6;
-						const dx = (x - mx) / 2.2;
-						const dy = y - my;
-						if (dx * dx + dy * dy < 4 && (dx + 0.9) ** 2 + (dy - 0.3) ** 2 > 3) {
-							c = "@";
-							col = `rgba(255,248,230,${0.95 * k})`;
-						}
-					} else if (y < shore) {
-						c = Math.sin(x * 0.7 + t * 0.002 + y) > 0 ? "~" : "-";
-						col = `rgba(90,110,240,${0.5 * k})`;
-					} else {
-						// Field of houses fading into green hills toward the bottom.
-						const depth = (y - shore) / (rows - shore);
-						const hill = fbm(gx * 2.2, 3.1) * 0.5 + 0.35;
-						if (depth > hill + Math.sin(gx * 4) * 0.06) {
-							const g = fbm(gx * 9, gy * 9);
-							c = g > 0.62 ? "&" : g > 0.5 ? "^" : g > 0.4 ? "/" : ",";
-							col = `rgba(${Math.round(40 + g * 40)},${Math.round(120 + g * 70)},${Math.round(70 + g * 30)},${(0.45 + g * 0.35) * k})`;
-						} else if (hash(x, y) > 0.55 - depth * 0.2) {
-							const tw = hash(x * 5, y) > 0.7 ? 0.5 + 0.5 * Math.sin(t * 0.003 + x * 13 + y * 7) : 1;
-							const warm = hash(y, x * 3) > 0.35;
-							c = hash(x, y * 9) > 0.8 ? "*" : ".";
-							col = warm ? `rgba(255,220,150,${(0.35 + 0.4 * tw) * k})` : `rgba(150,170,255,${0.4 * tw * k})`;
 						}
 					}
-					if (!c) continue;
-					ctx.fillStyle = col;
-					ctx.fillText(c, x * cw, y * ch);
+					if (best < 0) continue;
+					const grain = fbm(x * 0.35 + drift * 200, y * 0.5) * 0.35;
+					const lit = Math.max(0, Math.min(1, (1 - vert) * 0.85 + best * 0.3 + grain - 0.15));
+					let rgb = P.cloudMid;
+					let set = "=+*";
+					if (lit > 0.62) {
+						rgb = P.cloudTop;
+						set = "*%#@";
+					} else if (lit < 0.3) {
+						rgb = P.cloudLow;
+						set = ".:-=";
+					}
+					const ci = Math.min(set.length - 1, Math.floor(((lit * 3) % 1) * set.length));
+					cloudCells.set(y * cols + x, [set[ci], rgb, 0.4 + lit * 0.55]);
 				}
+			}
+
+			// Monolith: a solid two-faced slab with a pink rim light, tapering into haze.
+			for (let y = slabTop; y < horizon; y++) {
+				const fadeIn = Math.min(1, (y - slabTop) / 6);
+				const fadeOut = y > horizon - 6 ? Math.max(0.4, 1 - (y - (horizon - 6)) / 10) : 1;
+				const a = fadeIn * fadeOut;
+				for (let x = slabL; x < slabR; x++) {
+					if (y === slabTop && x >= slabR - 1) continue;
+					if (cloudCells.has(y * cols + x)) continue;
+					if (x === slabL) {
+						put(x, y, "│", P.rim, 0.8 * a);
+					} else if (x < slabL + sideW) {
+						put(x, y, y === slabTop ? "▀" : "▒", P.slabSide, 0.95 * a);
+					} else if (y === slabTop) {
+						put(x, y, "▀", P.slabSide, 0.9 * a);
+					} else {
+						put(x, y, "▓", P.slab, 0.95 * a);
+						const wx = x - slabL - sideW;
+						const wy = y - slabTop;
+						if (wy % 3 === 1 && wx % 3 === 1 && hash(x, y) > 0.86) {
+							const blink = hash(x * 7, y) > 0.95 ? 0.5 + 0.5 * Math.sin(t * 0.002 + x) : 1;
+							put(x, y, "▪", P.win, 0.9 * a * blink);
+						}
+					}
+				}
+			}
+
+			for (const [i, [c, rgb, a]] of cloudCells) put(i % cols, Math.floor(i / cols), c, rgb, a);
+
+			// Sea, with a warm reflection under the slab.
+			for (let y = horizon; y < seaEnd; y++) {
+				for (let x = 0; x < cols; x++) {
+					if (x > slabL + sideW && x < slabR && (x + y) % 2 === 0 && hash(x, y) > 0.4) {
+						put(x, y, (y + x) % 4 === 0 ? "'" : ".", P.reflect, 0.6 - (y - horizon) * 0.1);
+					} else {
+						const wave = Math.sin(x * 0.55 + t * 0.0015 + y * 2);
+						put(x, y, wave > 0.3 ? "~" : "-", P.sea, 0.35 + 0.15 * wave);
+					}
+				}
+			}
+
+			// Field of houses giving way to hills.
+			for (let y = seaEnd; y < rows; y++) {
+				const depth = (y - seaEnd) / Math.max(1, rows - seaEnd);
+				for (let x = 0; x < cols; x++) {
+					const gx = x / cols;
+					const hill = fbm(gx * 2.2, 3.1) * 0.5 + 0.4;
+					if (depth > hill + Math.sin(gx * 4) * 0.06) {
+						const g = fbm(gx * 9, y * 0.4);
+						put(x, y, g > 0.62 ? "&" : g > 0.5 ? "^" : g > 0.4 ? "/" : ",", P.hill, 0.35 + g * 0.35);
+					} else {
+						const threshold = (isDark ? 0.6 : 0.82) - depth * 0.15 + (y > rows * 0.9 ? 0.2 : 0);
+						if (hash(x, y) > threshold) {
+							const warm = hash(y, x * 3) > 0.35;
+							const tw = hash(x * 5, y) > 0.7 ? 0.5 + 0.5 * Math.sin(t * 0.003 + x * 13 + y * 7) : 1;
+							put(x, y, hash(x, y * 9) > 0.85 ? "*" : ".", warm ? P.house : P.houseCool, (0.35 + 0.45 * tw) * (isDark ? 1 : 0.7));
+						}
+					}
+				}
+			}
+
+			// Grain.
+			ctx.fillStyle = `rgba(${P.grain},0.06)`;
+			for (let i = 0; i < (W * H) / 900; i++) {
+				ctx.fillRect(Math.random() * W, Math.random() * H, 1, 1);
 			}
 		};
 
