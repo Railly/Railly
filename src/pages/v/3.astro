@@ -1,0 +1,64 @@
+---
+import { homeData } from "@/components/variants/data";
+import Layout from "@/layouts/Layout.astro";
+
+const { projects, posts } = await homeData();
+const building = projects.filter((p) =>
+	["Makeables", "issue-graph", "agent-browser"].includes(p.name),
+);
+const made = projects.filter((p) => !building.includes(p));
+const link =
+	"underline decoration-black/25 underline-offset-[3px] transition-colors hover:decoration-current dark:decoration-white/30";
+const col = "flex flex-col gap-6";
+---
+
+<Layout title="Railly Hugo (v3)" description="Variant 3">
+	<main class="mx-auto max-w-[40rem] px-6 py-24 text-[16px] leading-[1.75] text-[#1a1a1a] dark:text-[#e8e8e8]">
+		<h1 class="mb-8">Railly Hugo</h1>
+		<p class="mb-6">
+			<em class="font-serif text-[1.08em]">Building at the frontier.</em> Agent tooling and interfaces at <a href="https://vercel.com/labs" class={link}>Vercel Labs</a>. Founder of <a href="https://github.com/crafter-station" class={link}>Crafter Station</a>, where 1,000+ builders in Peru ship together.
+		</p>
+		<p>Before this, hackathons. A lot of them. Based in Buenos Aires, from Lima.</p>
+
+		<div class="mt-20 grid gap-12 text-[15px] sm:grid-cols-3 sm:gap-8">
+			<section>
+				<h2 class="mb-5 text-[13px] text-[#8a8a8a]">Building</h2>
+				<div class={col}>
+					{building.map((p) => (
+						<a href={p.url} class="group block">
+							<span class={link}>{p.name}</span>
+							<span class="block text-[#8a8a8a]">{p.description}</span>
+						</a>
+					))}
+				</div>
+			</section>
+			<section>
+				<h2 class="mb-5 text-[13px] text-[#8a8a8a]">Projects</h2>
+				<div class={col}>
+					{made.map((p) => (
+						<a href={p.url} class="group block">
+							<span class={link}>{p.name}</span> <span aria-hidden class="text-[#8a8a8a]">↗</span>
+							<span class="block text-[#8a8a8a]">{p.description}</span>
+						</a>
+					))}
+				</div>
+			</section>
+			<section>
+				<h2 class="mb-5 text-[13px] text-[#8a8a8a]">Writing</h2>
+				<div class={col}>
+					{posts.slice(0, 3).map((p) => (
+						<a href={`/blog/${p.slug}`} class="block">
+							<span class={link}>{p.data.title}</span>
+						</a>
+					))}
+					<a href="/writing" class="block"><span class={link}>All writing</span><span class="block text-[#8a8a8a]">Notes on agents and craft.</span></a>
+				</div>
+			</section>
+		</div>
+
+		<h2 class="mt-24 mb-6">Now</h2>
+		<p>
+			Making <a href="https://makeables.dev" class={link}>Makeables</a>, where your agent designs things you can hold. Mindful that <em class="font-serif text-[1.08em]">the impossible is mostly unattempted.</em>
+		</p>
+	</main>
+</Layout>
