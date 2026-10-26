@@ -561,24 +561,41 @@ const lastWritten = posts[0]?.data.pubDate.toLocaleDateString("en-US", {
 			// Faro de La Marina: a small lighthouse on the right cliff, its beam sweeping the garúa.
 			const fx = Math.floor(cols * (mobile ? 0.8 : 0.82));
 			const fTop = coastTop(fx);
-			const towerH = mobile ? 6 : 9;
-			for (let y = fTop - towerH; y < fTop; y++) {
-				const band = (y - (fTop - towerH)) % 3 === 1;
-				cells[y * cols + fx - 1] = ["▐", band ? P.rim : P.tower, 0.9];
-				cells[y * cols + fx] = ["▌", band ? P.rim : P.tower, 0.9];
+			// Tapered tower with red and white bands, a gallery, a glass lantern and a cap.
+			const towerH = mobile ? 10 : 15;
+			const baseW = mobile ? 3 : 4;
+			for (let i = 0; i < towerH; i++) {
+				const y = fTop - 1 - i;
+				const half = Math.max(1, Math.round(baseW - (i / towerH) * (baseW - 1.6)));
+				const red = Math.floor(i / 3) % 2 === 1;
+				for (let dx = -half; dx <= half; dx++) {
+					const edge = dx === -half ? "▐" : dx === half ? "▌" : "█";
+					const shade = dx < 0 ? 1 : 0.78;
+					cells[y * cols + fx + dx] = [edge, red ? "196,58,52" : P.tower, (isDark ? 0.85 : 0.95) * shade];
+				}
+				if (i % 5 === 2) cells[y * cols + fx] = ["▪", isDark ? "255,214,140" : "70,60,60", 0.9];
 			}
-			const lampX = fx * cw;
-			const lampY = (fTop - towerH - 1) * ch + ch / 2;
-			cells[(fTop - towerH - 1) * cols + fx - 1] = ["◆", P.lamp, 1];
+			const galleryY = fTop - 1 - towerH;
+			for (let dx = -3; dx <= 3; dx++) cells[galleryY * cols + fx + dx] = ["▀", "60,58,66", 0.95];
+			cells[(galleryY - 1) * cols + fx - 1] = ["▕", "60,58,66", 0.9];
+			cells[(galleryY - 1) * cols + fx] = ["◆", P.lamp, isDark ? 1 : 0.5];
+			cells[(galleryY - 1) * cols + fx + 1] = ["▏", "60,58,66", 0.9];
+			for (let dx = -1; dx <= 1; dx++) cells[(galleryY - 2) * cols + fx + dx] = ["▄", "196,58,52", 0.95];
+			cells[(galleryY - 3) * cols + fx] = ["^", "60,58,66", 0.9];
+			for (let dx = -baseW - 2; dx <= baseW + 2; dx++) cells[(fTop) * cols + fx + dx] = ["▀", P.cliff, 0.9];
+			const lampX = fx * cw + cw / 2;
+			const lampY = (galleryY - 1) * ch + ch / 2;
 			const beamA = Math.PI - 0.1 - Math.abs(Math.sin(t * 0.00025)) * 0.22;
 			const beamW = 0.09;
 			const inBeam = (px: number, py: number) => {
+				if (!isDark) return 0;
 				const a = Math.atan2(py - lampY, px - lampX);
 				let d = Math.abs(a - beamA);
 				if (d > Math.PI) d = Math.PI * 2 - d;
 				const dist = Math.hypot(px - lampX, py - lampY);
 				return d < beamW * 2.5 && dist < W * 0.75 ? (1 - d / (beamW * 2.5)) ** 2 * 0.6 * (1 - dist / (W * 0.75)) : 0;
 			};
+			if (isDark) {
 			// Soft beam: several widening cones stacked and blurred, so the edge dissolves into the garúa.
 			ctx.save();
 			ctx.globalCompositeOperation = isDark ? "lighter" : "source-over";
@@ -602,6 +619,54 @@ const lastWritten = posts[0]?.data.pubDate.toLocaleDateString("en-US", {
 			ctx.fillStyle = halo;
 			ctx.fillRect(lampX - 60, lampY - 60, 120, 120);
 			ctx.restore();
+			} else {
+				// Day: a pale sun behind the garúa, soft rays, and paragliders off the Miraflores cliffs.
+				const sx = W * (mobile ? 0.3 : 0.2);
+				const sy = horizonPx - H * 0.2;
+				ctx.save();
+				ctx.filter = "blur(18px)";
+				const sun = ctx.createRadialGradient(sx, sy, 0, sx, sy, H * 0.35);
+				sun.addColorStop(0, "rgba(255,248,230,0.95)");
+				sun.addColorStop(0.15, "rgba(255,226,190,0.6)");
+				sun.addColorStop(1, "rgba(255,210,190,0)");
+				ctx.fillStyle = sun;
+				ctx.fillRect(0, 0, W, horizonPx);
+				for (let k = 0; k < 6; k++) {
+					const ang = Math.PI * 0.15 + k * 0.13 + Math.sin(t * 0.0001 + k) * 0.02;
+					const ray = ctx.createLinearGradient(sx, sy, sx + Math.cos(ang) * W, sy + Math.sin(ang) * W);
+					ray.addColorStop(0, "rgba(255,240,215,0.22)");
+					ray.addColorStop(1, "rgba(255,240,215,0)");
+					ctx.fillStyle = ray;
+					ctx.beginPath();
+					ctx.moveTo(sx, sy);
+					ctx.lineTo(sx + Math.cos(ang - 0.03) * W, sy + Math.sin(ang - 0.03) * W);
+					ctx.lineTo(sx + Math.cos(ang + 0.03) * W, sy + Math.sin(ang + 0.03) * W);
+					ctx.closePath();
+					ctx.fill();
+				}
+				ctx.restore();
+				ctx.fillStyle = "rgba(255,252,240,0.9)";
+				ctx.beginPath();
+				ctx.arc(sx, sy, mobile ? 10 : 14, 0, Math.PI * 2);
+				ctx.fill();
+				// Paragliders: a canopy and a pilot, drifting on the cliff lift.
+				ctx.font = `${ch * 0.86}px "Commit Mono", ui-monospace, monospace`;
+				for (let k = 0; k < 4; k++) {
+					const px = ((hash(k, 7) * W + t * (0.006 + k * 0.002)) % (W + 80)) - 40;
+					const py = horizonPx - H * (0.18 + hash(k, 8) * 0.14) + Math.sin(t * 0.0006 + k * 2) * 10;
+					ctx.fillStyle = ["rgba(230,80,70,0.85)", "rgba(40,90,180,0.8)", "rgba(250,180,40,0.85)", "rgba(40,140,110,0.8)"][k];
+					ctx.fillText("⌒", px, py);
+					ctx.fillStyle = "rgba(60,50,50,0.55)";
+					ctx.fillText("·", px + cw * 0.25, py + ch * 0.9);
+				}
+				// Gulls.
+				for (let k = 0; k < 5; k++) {
+					const gx = ((hash(k, 11) * W - t * 0.012) % W + W) % W;
+					const gy = H * (0.38 + hash(k, 12) * 0.12) + Math.sin(t * 0.002 + k) * 4;
+					ctx.fillStyle = "rgba(80,70,80,0.45)";
+					ctx.fillText(Math.sin(t * 0.006 + k) > 0 ? "v" : "~", gx, gy);
+				}
+			}
 
 			// Circuito de Playas: headlights moving along the road at the foot of the cliffs.
 			for (let k = 0; k < 7; k++) {
@@ -634,7 +699,7 @@ const lastWritten = posts[0]?.data.pubDate.toLocaleDateString("en-US", {
 						const band = smooth(Math.min(1, (y - fogTop) / (rows * 0.12))) * (y > horizon - 2 ? 0.7 : 1);
 						fogD = band * (fbm(x * 0.035 + drift * 60, y * 0.09 + drift * 10) * 1.3 - 0.12);
 						fogD *= 1 - clear[i];
-						const nearTower = Math.abs(x - fx) < 8 && y < coastTop(fx) + 6;
+						const nearTower = Math.abs(x - fx) < 10 && y < coastTop(fx) + 4;
 						if (nearTower) fogD *= 0.25;
 					}
 					const under = cells[i];
