@@ -25,7 +25,10 @@ function resolveToken(): string | undefined {
 	}
 }
 
-async function fetchStars(token: string, repos: string[]): Promise<Record<string, number>> {
+async function fetchStars(
+	token: string,
+	repos: string[],
+): Promise<Record<string, number>> {
 	const stars: Record<string, number> = {};
 	const unique = [...new Set(repos.filter(Boolean))];
 
@@ -52,11 +55,16 @@ async function fetchStars(token: string, repos: string[]): Promise<Record<string
 
 	const data = await res.json();
 	if (!data.data) {
-		throw new Error(`GitHub GraphQL failed: ${JSON.stringify(data.errors ?? data)}`);
+		throw new Error(
+			`GitHub GraphQL failed: ${JSON.stringify(data.errors ?? data)}`,
+		);
 	}
 
 	if (data.errors?.length) {
-		console.warn("Some repositories were skipped:", data.errors.map((error: { message: string }) => error.message).join("; "));
+		console.warn(
+			"Some repositories were skipped:",
+			data.errors.map((error: { message: string }) => error.message).join("; "),
+		);
 	}
 
 	for (const [i, repo] of unique.entries()) {
@@ -69,15 +77,21 @@ async function fetchStars(token: string, repos: string[]): Promise<Record<string
 const token = resolveToken();
 if (!token) {
 	if (existsSync(OUTPUT)) {
-		console.warn("No GitHub token found. Keeping existing project-stars.json cache.");
+		console.warn(
+			"No GitHub token found. Keeping existing project-stars.json cache.",
+		);
 		process.exit(0);
 	}
 
-	console.error("No GitHub token found. Set GITHUB_TOKEN or run `gh auth login`.");
+	console.error(
+		"No GitHub token found. Set GITHUB_TOKEN or run `gh auth login`.",
+	);
 	process.exit(1);
 }
 
-const repos = projects.map((project) => project.repo).filter((repo): repo is string => Boolean(repo));
+const repos = projects
+	.map((project) => project.repo)
+	.filter((repo): repo is string => Boolean(repo));
 const stars = await fetchStars(token, repos);
 
 const payload = {

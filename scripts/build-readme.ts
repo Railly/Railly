@@ -86,7 +86,7 @@ function renderProjects(projects: Project[]): string {
 				? `https://www.railly.dev${p.url}`
 				: p.url;
 			const link = url.startsWith("https://github.com") ? p.github : url;
-			return `[${p.name}](${link})`;
+			return `<a href="${link}">${p.name}</a>`;
 		})
 		.join(" · ");
 }
@@ -97,7 +97,7 @@ function formatDate(d: Date): string {
 
 function renderPosts(posts: Post[]): string {
 	if (posts.length === 0) return "_No posts yet._";
-	return posts.map((p) => `[${p.title}](${p.link})`).join(" · ");
+	return posts.map((p) => `<a href="${p.link}">${p.title}</a>`).join(" · ");
 }
 
 function replaceBlock(
