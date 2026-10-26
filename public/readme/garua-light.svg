@@ -8,7 +8,7 @@ text{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px}
 .rain{animation:fall 14s linear infinite}
 .r2{animation-delay:-7s}
 @keyframes drift{to{transform:translateX(-440px)}}
-@keyframes sweep{from{transform:rotate(-8deg)}to{transform:rotate(14deg)}}
+@keyframes sweep{from{transform:rotate(-3deg)}to{transform:rotate(8deg)}}
 @keyframes pulse{50%{opacity:.6}}
 @keyframes fall{from{transform:translate(0,-280px)}to{transform:translate(-60px,280px)}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important}}

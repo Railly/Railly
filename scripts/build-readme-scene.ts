@@ -120,8 +120,8 @@ function scene(mode: "dark" | "light") {
 	// Beam: a soft wedge that sweeps slowly; dark mode only feels right at night.
 	if (mode === "dark") {
 		out.unshift(
-			`<defs><radialGradient id="b" cx="${fx}" cy="${lampY}" r="620" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="${P.lamp}" stop-opacity=".35"/><stop offset="1" stop-color="${P.lamp}" stop-opacity="0"/></radialGradient><filter id="s"><feGaussianBlur stdDeviation="10"/></filter></defs>`,
-			`<g class="beam" style="transform-origin:${fx}px ${lampY}px"><path d="M${fx} ${lampY} L${fx - 620} ${lampY - 120} L${fx - 620} ${lampY + 40} Z" fill="url(#b)" filter="url(#s)"/></g>`,
+			`<defs><radialGradient id="b" cx="${fx}" cy="${lampY}" r="620" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="${P.lamp}" stop-opacity=".35"/><stop offset="1" stop-color="${P.lamp}" stop-opacity="0"/></radialGradient><filter id="s" x="-30%" y="-100%" width="160%" height="300%"><feGaussianBlur stdDeviation="10"/></filter><linearGradient id="f" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".35" stop-color="#fff" stop-opacity="1"/></linearGradient><mask id="m"><rect width="${W}" height="${H}" fill="url(#f)"/></mask></defs>`,
+			`<g mask="url(#m)"><g class="beam" style="transform-origin:${fx}px ${lampY}px"><path d="M${fx} ${lampY} L${fx - 620} ${lampY - 50} L${fx - 620} ${lampY + 60} Z" fill="url(#b)" filter="url(#s)"/></g></g>`,
 		);
 	} else {
 		out.unshift(
@@ -178,7 +178,7 @@ text{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px}
 .rain{animation:fall 14s linear infinite}
 .r2{animation-delay:-7s}
 @keyframes drift{to{transform:translateX(-${W / 2}px)}}
-@keyframes sweep{from{transform:rotate(-8deg)}to{transform:rotate(14deg)}}
+@keyframes sweep{from{transform:rotate(-3deg)}to{transform:rotate(8deg)}}
 @keyframes pulse{50%{opacity:.6}}
 @keyframes fall{from{transform:translate(0,-${H}px)}to{transform:translate(-60px,${H}px)}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important}}
