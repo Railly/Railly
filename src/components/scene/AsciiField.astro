@@ -1,0 +1,93 @@
+---
+// A slow grayscale ASCII field that lives in the margins and fades to clear paper behind the text.
+interface Props {
+	/** Half-width in px of the clear column behind the content. */
+	clear?: number;
+}
+const { clear = 400 } = Astro.props;
+---
+
+<canvas class="ascii-field" data-clear={clear} aria-hidden="true"></canvas>
+
+<style is:global>
+	body {
+		background-color: #f4f1ea;
+	}
+	@media (prefers-color-scheme: dark) {
+		body {
+			background-color: #0f0e0c;
+		}
+	}
+	.ascii-field {
+		position: fixed;
+		inset: 0;
+		width: 100vw;
+		height: 100vh;
+		pointer-events: none;
+		z-index: -1;
+	}
+</style>
+
+<script>
+	const canvas = document.querySelector<HTMLCanvasElement>("canvas.ascii-field");
+	const ctx = canvas?.getContext("2d");
+	if (canvas && ctx) {
+		const ramp = " .·:-=+*#%";
+		const cell = 14;
+		const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+		const dark = matchMedia("(prefers-color-scheme: dark)");
+		let w = 0;
+		let h = 0;
+		let dpr = 1;
+		const resize = () => {
+			dpr = Math.min(devicePixelRatio || 1, 2);
+			w = innerWidth;
+			h = innerHeight;
+			canvas.width = w * dpr;
+			canvas.height = h * dpr;
+			ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+			ctx.font = `11px "Commit Mono", ui-monospace, monospace`;
+			ctx.textAlign = "center";
+			ctx.textBaseline = "middle";
+		};
+		// Smooth layered waves stand in for noise: cheap and seamless.
+		const field = (x: number, y: number, t: number) =>
+			(Math.sin(x * 0.09 + t * 0.6) + Math.sin(y * 0.07 - t * 0.45) + Math.sin((x + y) * 0.05 + t * 0.3) + Math.sin(Math.hypot(x - 40, y - 30) * 0.08 - t * 0.5)) / 8 + 0.5;
+		const draw = (now: number) => {
+			const t = now / 1000;
+			ctx.clearRect(0, 0, w, h);
+			const ink = dark.matches ? "235 231 223" : "27 25 21";
+			// Clear column follows the reading width; the field eases in past it.
+			const inner = Math.min(w * 0.5, Number(canvas.dataset.clear) || 400);
+			const fade = Math.max(w * 0.5 - inner, 1);
+			const scroll = scrollY / cell;
+			for (let gy = 0; gy * cell < h + cell; gy++) {
+				for (let gx = 0; gx * cell < w + cell; gx++) {
+					const x = gx * cell + cell / 2;
+					const edge = Math.min(Math.max((Math.abs(x - w / 2) - inner) / fade, 0), 1);
+					if (edge <= 0) continue;
+					const weight = edge * edge * (3 - 2 * edge);
+					const v = field(gx, gy + scroll * 0.35, t) * weight;
+					if (v < 0.22) continue;
+					const i = Math.min(ramp.length - 1, Math.floor(v * ramp.length));
+					ctx.fillStyle = `rgb(${ink} / ${(v * v * 0.55).toFixed(3)})`;
+					ctx.fillText(ramp[i], x, gy * cell + cell / 2);
+				}
+			}
+		};
+		let last = 0;
+		const loop = (now: number) => {
+			if (now - last > 50) {
+				draw(now);
+				last = now;
+			}
+			requestAnimationFrame(loop);
+		};
+		resize();
+		addEventListener("resize", resize);
+		if (still) {
+			draw(0);
+			addEventListener("scroll", () => draw(0), { passive: true });
+		} else requestAnimationFrame(loop);
+	}
+</script>

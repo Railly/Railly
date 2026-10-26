@@ -1,21 +1,25 @@
 ---
-import Garua from "@/components/scene/Garua.astro";
+import AsciiField from "@/components/scene/AsciiField.astro";
 import Navigation from "./Navigation.astro";
+import SiteFooter from "./SiteFooter.astro";
 
 interface Props {
 	class?: string;
+	/** Keep the page's own styling instead of the site system. */
+	bare?: boolean;
 }
 
-const { class: className } = Astro.props;
+const { class: className, bare = false } = Astro.props;
 ---
 
-<Garua rest />
+<AsciiField />
 <div class="relative z-[1]">
 	<Navigation />
-	<main class="mx-auto max-w-[44rem] px-6 pt-16 pb-[34vh] text-foreground sm:pt-20">
+	<main class:list={[!bare && "page", "mx-auto max-w-[42rem] px-6 pt-16 pb-16 text-foreground sm:pt-20"]}>
 		<div class:list={["w-full", className]}>
 			<slot />
 		</div>
 		<slot name="rightSidebar" />
+		<div class="mx-auto max-w-[42rem]"><SiteFooter /></div>
 	</main>
 </div>

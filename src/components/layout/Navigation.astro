@@ -1,37 +1,176 @@
 ---
-const navItems = [
-	{ href: "/", label: "home" },
-	{ href: "/projects", label: "work" },
-	{ href: "/writing", label: "writing" },
-	{ href: "/press", label: "press" },
-	{ href: "/agents", label: "agents" },
-	{ href: "/developers", label: "developers" },
-	{ href: "/mentoring", label: "mentoring" },
-	{ href: "/uses", label: "uses" },
-	{ href: "/about", label: "about" },
+// Site header shared by every page: identity on the left, sections on the right.
+const primary = [
+	{ href: "/projects", label: "Work" },
+	{ href: "/writing", label: "Writing" },
+	{ href: "/press", label: "Press" },
+	{ href: "/about", label: "About" },
+];
+const more = [
+	{ href: "/agents", label: "Agents" },
+	{ href: "/developers", label: "Developers" },
+	{ href: "/mentoring", label: "Mentoring" },
+	{ href: "/uses", label: "Uses" },
 ];
 
 const { pathname } = Astro.url;
 const isActive = (href: string) =>
-	href === "/" ? pathname === "/" : pathname.startsWith(href);
+	pathname.startsWith(href) ||
+	(href === "/writing" && pathname.startsWith("/blog"));
+const moreActive = more.some((item) => isActive(item.href));
 ---
 
-<nav class="mx-auto max-w-[44rem] overflow-x-auto px-6 pt-8 scrollbar-none sm:pt-12">
-	<ul class="flex w-max gap-4 text-sm">
-		{
-			navItems.map((item) => (
-				<li>
-					<a
-						href={item.href}
-						class:list={[
-							"transition-colors duration-200",
-							isActive(item.href) ? "text-foreground" : "text-foreground-3 hover:text-foreground",
-						]}
-					>
-						{item.label}
-					</a>
-				</li>
-			))
-		}
-	</ul>
-</nav>
+<header class="site-header">
+	<nav aria-label="Main" class="mx-auto flex max-w-[42rem] items-center gap-4 px-6 py-5 text-[13px]">
+		<a href="/" class="id" aria-label="Railly Hugo, home" aria-current={pathname === "/" ? "page" : undefined}>
+			<span>Railly Hugo</span>
+			<span class="aka">aka</span>
+			<span class="px" aria-hidden="true" data-scramble="Hunter">Hunter</span>
+		</a>
+		<span class="flex-1"></span>
+		<ul class="flex items-center gap-4">
+			{
+				primary.map((item) => (
+					<li class:list={[(item.href === "/press" || item.href === "/writing") && "hidden sm:block"]}>
+						<a href={item.href} class="l" aria-current={isActive(item.href) ? "page" : undefined}>
+							{item.label}
+						</a>
+					</li>
+				))
+			}
+			<li class="relative">
+				<details class="more">
+					<summary class:list={["l", moreActive && "on"]}>More</summary>
+					<ul class="menu">
+						<li class="sm:hidden"><a href="/writing" class="l" aria-current={isActive("/writing") ? "page" : undefined}>Writing</a></li>
+						<li class="sm:hidden"><a href="/press" class="l" aria-current={isActive("/press") ? "page" : undefined}>Press</a></li>
+						{
+							more.map((item) => (
+								<li>
+									<a href={item.href} class="l" aria-current={isActive(item.href) ? "page" : undefined}>
+										{item.label}
+									</a>
+								</li>
+							))
+						}
+					</ul>
+				</details>
+			</li>
+		</ul>
+	</nav>
+</header>
+
+<style>
+	/* Sticky, with paper fading in behind it instead of a hard edge. */
+	.site-header {
+		position: sticky;
+		top: 0;
+		z-index: 20;
+		color: var(--color-foreground);
+	}
+	/* Paper behind the bar, fading out in every direction so the field never meets an edge. */
+	.site-header::before {
+		content: "";
+		position: absolute;
+		inset: 0 0 -2rem;
+		z-index: -1;
+		background: var(--color-background);
+		-webkit-mask-image: radial-gradient(ellipse 34rem 100% at 50% 0, black 62%, transparent 100%);
+		mask-image: radial-gradient(ellipse 34rem 100% at 50% 0, black 62%, transparent 100%);
+		pointer-events: none;
+	}
+	.id {
+		display: inline-flex;
+		align-items: baseline;
+		gap: 0.35em;
+		font-weight: 500;
+		white-space: nowrap;
+	}
+	.aka {
+		opacity: 0.55;
+		font-weight: 400;
+	}
+	.px {
+		font-family: var(--font-mono);
+		font-size: 12px;
+		letter-spacing: 0.04em;
+		padding: 0 0.3em;
+		background: color-mix(in oklab, currentColor 8%, transparent);
+		box-shadow: 2px 2px 0 color-mix(in oklab, currentColor 22%, transparent);
+		transition: box-shadow 0.2s ease;
+	}
+	.id:hover .px {
+		box-shadow: 3px 3px 0 color-mix(in oklab, currentColor 35%, transparent);
+	}
+	.l {
+		cursor: pointer;
+		color: var(--color-foreground-3);
+		transition: color 0.2s ease;
+		list-style: none;
+	}
+	.l:hover,
+	.l[aria-current="page"],
+	.l.on {
+		color: var(--color-foreground);
+	}
+	.l[aria-current="page"] {
+		text-decoration: underline;
+		text-decoration-color: color-mix(in oklab, currentColor 35%, transparent);
+		text-underline-offset: 0.3em;
+		text-decoration-thickness: 1px;
+	}
+	summary::-webkit-details-marker {
+		display: none;
+	}
+	summary::after {
+		content: "+";
+		margin-left: 0.25em;
+		opacity: 0.6;
+	}
+	.more[open] summary::after {
+		content: "−";
+	}
+	.menu {
+		position: absolute;
+		right: 0;
+		top: calc(100% + 0.6rem);
+		display: grid;
+		gap: 0.5rem;
+		min-width: 9rem;
+		padding: 0.75rem 0.9rem;
+		background: var(--color-background);
+		border: 1px solid color-mix(in oklab, currentColor 12%, transparent);
+		border-radius: 4px;
+		box-shadow: 3px 3px 0 color-mix(in oklab, currentColor 8%, transparent);
+	}
+	a:focus-visible,
+	summary:focus-visible {
+		outline: 2px solid currentColor;
+		outline-offset: 3px;
+		border-radius: 2px;
+	}
+</style>
+
+<script>
+	// Decode the alias glyph by glyph, once per page load.
+	const el = document.querySelector<HTMLElement>(".site-header [data-scramble]");
+	if (el && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+		const word = el.dataset.scramble ?? "";
+		const glyphs = "░▒▓█#@%&*";
+		let frame = 0;
+		const id = setInterval(() => {
+			const done = Math.floor(frame / 3);
+			el.textContent = [...word].map((c, i) => (i < done ? c : glyphs[(frame + i) % glyphs.length])).join("");
+			if (done >= word.length) clearInterval(id);
+			frame++;
+		}, 45);
+	}
+	// Close the More menu on outside click or Escape.
+	const more = document.querySelector<HTMLDetailsElement>(".site-header .more");
+	document.addEventListener("click", (e) => {
+		if (more?.open && !more.contains(e.target as Node)) more.open = false;
+	});
+	document.addEventListener("keydown", (e) => {
+		if (e.key === "Escape" && more) more.open = false;
+	});
+</script>

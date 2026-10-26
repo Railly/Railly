@@ -1,6 +1,9 @@
 ---
 import { getCollection } from "astro:content";
 import PremiereCountdown from "@/components/blog/PremiereCountdown";
+import Navigation from "@/components/layout/Navigation.astro";
+import SiteFooter from "@/components/layout/SiteFooter.astro";
+import AsciiField from "@/components/scene/AsciiField.astro";
 import { isPostListable } from "@/config/blog";
 import { getReadingTime } from "@/config/reading-time";
 import Layout from "@/layouts/Layout.astro";
@@ -41,6 +44,8 @@ const formatDate = (date: Date) => {
     title="Blog - Railly Hugo"
     description="Technical articles, tutorials, and thoughts on web development, AI, and building in public."
 >
+    <AsciiField clear={400} />
+    <Navigation />
   <main class="max-w-2xl mx-auto px-6 py-12">
     <h1 class="text-3xl font-medium text-foreground mb-12">Writing</h1>
     <div class="space-y-1">
@@ -93,4 +98,5 @@ const formatDate = (date: Date) => {
       }
     </div>
   </main>
+    <div class="relative z-[1] mx-auto max-w-[42rem] px-6 pb-16"><SiteFooter /></div>
 </Layout>

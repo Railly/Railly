@@ -3,6 +3,8 @@ import { type CollectionEntry, getCollection } from "astro:content";
 import Link from "@/components/content/Link.astro";
 import Quote from "@/components/content/Quote.astro";
 import Navigation from "@/components/layout/Navigation.astro";
+import SiteFooter from "@/components/layout/SiteFooter.astro";
+import AsciiField from "@/components/scene/AsciiField.astro";
 import Layout from "@/layouts/Layout.astro";
 
 export const prerender = true;
@@ -36,6 +38,7 @@ const ogImage = `/api/og?title=${encodeURIComponent(issue.data.title)}&descripti
     description={issue.data.subject}
     image={ogImage}
 >
+    <AsciiField clear={400} />
     <Navigation />
     <div class="w-full mx-auto py-12 sm:py-24">
         <div class="max-w-[83rem] mx-auto px-4 sm:px-6 lg:grid lg:grid-cols-[1fr_minmax(0,_2.5fr)_1fr] lg:gap-8">
@@ -55,7 +58,7 @@ const ogImage = `/api/og?title=${encodeURIComponent(issue.data.title)}&descripti
                             #{issue.data.weekNumber}
                         </span>
                     </div>
-                    <h1 class="text-2xl font-semibold tracking-[-0.03em] mb-5 text-foreground" style="text-wrap: balance;">
+                    <h1 class="page-title mb-5 text-foreground" style="text-wrap: balance;">
                         {issue.data.title}
                     </h1>
                     <div class="flex items-center gap-4 text-sm text-foreground-3">
@@ -72,10 +75,10 @@ const ogImage = `/api/og?title=${encodeURIComponent(issue.data.title)}&descripti
                             "prose-headings:text-foreground prose-headings:font-semibold prose-headings:scroll-mt-10 prose-headings:tracking-[-0.02em]",
                             "prose-h2:text-lg prose-h2:mt-12 prose-h2:mb-4",
                             "prose-h3:text-base prose-h3:mt-8 prose-h3:mb-3 prose-h3:font-medium",
-                            "prose-p:text-foreground-2 prose-p:text-[15px] prose-p:leading-[1.75] prose-p:tracking-[-0.01em] prose-p:[text-wrap:pretty]",
+                            "prose-p:text-foreground/90 prose-p:text-[15px] prose-p:leading-[1.75] prose-p:tracking-[-0.01em] prose-p:[text-wrap:pretty]",
                             "prose-a:text-foreground-2 prose-a:underline prose-a:decoration-foreground-3/50 prose-a:underline-offset-2 prose-a:decoration-1 prose-a:hover:text-foreground prose-a:hover:decoration-foreground prose-a:transition-colors",
                             "prose-strong:text-foreground/90 prose-strong:font-medium",
-                            "prose-li:text-foreground-2 prose-li:text-[15px] prose-li:leading-[1.75] prose-li:tracking-[-0.01em]",
+                            "prose-li:text-foreground/90 prose-li:text-[15px] prose-li:leading-[1.75] prose-li:tracking-[-0.01em]",
                             "prose-li:marker:text-foreground-3",
                             "prose-ul:my-5 prose-ul:space-y-1",
                             "prose-ol:my-5 prose-ol:space-y-1",
@@ -100,4 +103,5 @@ const ogImage = `/api/og?title=${encodeURIComponent(issue.data.title)}&descripti
             <div class="lg:col-start-3"></div>
         </div>
     </div>
+    <div class="relative z-[1] mx-auto max-w-[42rem] px-6 pb-16"><SiteFooter /></div>
 </Layout>

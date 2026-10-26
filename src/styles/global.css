@@ -3,6 +3,7 @@
 @import "./reset.css";
 @import "./fonts.css";
 @import "./code.css";
+@import "./system.css";
 
 @plugin "@midudev/tailwind-animations";
 @plugin "@tailwindcss/typography";
@@ -23,9 +24,10 @@
     --color-ui: #e2dccf;
     --color-ui-2: #d3ccbd;
     --color-ui-3: #bdb5a4;
+    /* Secondary inks are the main ink faded, like the home rows (opacity on #1b1915). */
     --color-foreground: #1b1915;
-    --color-foreground-2: #6e695f;
-    --color-foreground-3: #a39d91;
+    --color-foreground-2: color-mix(in oklab, #1b1915 72%, #f4f1ea);
+    --color-foreground-3: color-mix(in oklab, #1b1915 52%, #f4f1ea);
 
     --color-red: #6b6b6b;
     --color-orange: #6b6b6b;
@@ -62,8 +64,8 @@
         --color-ui-2: #2f2b24;
         --color-ui-3: #3f3a31;
         --color-foreground: #ebe7df;
-        --color-foreground-2: #a49e93;
-        --color-foreground-3: #66615a;
+        --color-foreground-2: color-mix(in oklab, #ebe7df 72%, #0f0e0c);
+        --color-foreground-3: color-mix(in oklab, #ebe7df 52%, #0f0e0c);
     }
 }
 
@@ -156,14 +158,13 @@
 }
 
 
-/* Garúa type: page titles in Redaction, like the home sentence. */
-@layer base {
-    main h1:not(.sr-only),
-    article h1 {
-        font-family: var(--font-serif);
-        font-weight: 400;
-        letter-spacing: -0.01em;
-        line-height: 1.15;
-        font-size: clamp(2rem, 4.4vw, 2.75rem);
-    }
+/* Page titles in Redaction, like the home sentence. Unlayered so it wins over utility classes. */
+main:not(.home) h1:not(.sr-only),
+article h1,
+.page-title {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+    font-size: clamp(1.75rem, 3.6vw, 2.35rem);
 }
