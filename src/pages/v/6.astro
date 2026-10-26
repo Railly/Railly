@@ -56,7 +56,7 @@ const lastWritten = posts[0]?.data.pubDate.toLocaleDateString("en-US", {
 			</div></div><span> along the way.</span>
 		</div>
 
-		<footer class="mt-auto flex flex-wrap items-baseline gap-x-5 gap-y-2 rounded-xl bg-[#f4f1ea]/75 px-4 py-3 text-[12px] text-black/55 backdrop-blur-md dark:bg-[#0f0e0c]/70 dark:text-white/55" style="margin-top: max(6rem, auto)">
+		<footer class="road mt-auto flex flex-wrap items-baseline gap-x-5 gap-y-2 pt-24 pb-2 text-[12px] text-black/70 dark:text-white/70">
 			<button class="all transition-colors hover:text-current" type="button">Open everything</button>
 			<span class="hidden sm:inline">1 to 5, Esc</span>
 			<span class="flex-1"></span>
@@ -72,6 +72,23 @@ const lastWritten = posts[0]?.data.pubDate.toLocaleDateString("en-US", {
 </Layout>
 
 <style>
+	/* The footer reads as a road through the fields: a lane cleared in the scene,
+	   and a soft halo in the ground colour around each word instead of a box. */
+	.road {
+		text-shadow:
+			0 0 6px #e6efdc,
+			0 0 14px #e6efdc,
+			0 0 2px #e6efdc;
+	}
+	@media (prefers-color-scheme: dark) {
+		.road {
+			text-shadow:
+				0 0 6px #0b0f14,
+				0 0 14px #0b0f14,
+				0 0 2px #0b0f14;
+		}
+	}
+
 	/* Reading: the landscape sets below the horizon like a sun going down,
 	   and a pool of moonlight opens behind the text. */
 	.orb {
@@ -614,8 +631,19 @@ const lastWritten = posts[0]?.data.pubDate.toLocaleDateString("en-US", {
 			}
 
 			// Ground. Night: a field of lit houses into hills. Day: green fields dotted with houses.
+			// The lane follows the footer wherever it sits on screen.
+			const fr = document.querySelector(".road")?.getBoundingClientRect();
+			const laneTop = fr ? Math.floor((fr.bottom - 26) / ch) : -1;
+			const laneBottom = fr ? Math.ceil((fr.bottom + 4) / ch) : -1;
 			for (let y = seaEnd; y < rows; y++) {
 				const depth = (y - seaEnd) / Math.max(1, rows - seaEnd);
+				if (y >= laneTop && y <= laneBottom) {
+					// The road: bare ground with dashed edges.
+					for (let x = 0; x < cols; x++) {
+						if ((y === laneTop || y === laneBottom) && x % 3 !== 0) put(x, y, "-", P.hill, isDark ? 0.35 : 0.5);
+					}
+					continue;
+				}
 				for (let x = 0; x < cols; x++) {
 					const gx = x / cols;
 					const hill = fbm(gx * 2.2, 3.1) * 0.5 + 0.4;
