@@ -1,5 +1,4 @@
 ---
-import { ClientRouter } from "astro:transitions";
 import AnnouncementBanner from "@/components/layout/AnnouncementBanner.astro";
 import Favicons from "@/components/seo/Favicons.astro";
 import MetaTags from "@/components/seo/MetaTags.astro";
@@ -64,7 +63,6 @@ const socialImageURL = new URL(image, siteConfig.url);
 			readingTimeMinutes={readingTimeMinutes}
 			wordCount={wordCount}
 		/>
-		<ClientRouter />
 		<slot name="head" />
 		<script defer src="https://counterscale.raillyhugo.workers.dev/tracker.js" data-site-id="railly-dev"></script>
 	</head>
