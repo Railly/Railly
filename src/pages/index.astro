@@ -3,7 +3,7 @@ import BrandIcon from "@/components/brand/BrandIcon.astro";
 import Flag from "@/components/brand/Flag.astro";
 import type { BrandName } from "@/components/brand/registry";
 import Garua from "@/components/scene/Garua.astro";
-import { siteConfig } from "@/config/site";
+import { ogUrl, siteConfig } from "@/config/site";
 import Layout from "@/layouts/Layout.astro";
 import { compact, homeData } from "@/lib/home-data";
 
@@ -36,7 +36,9 @@ const markFor = (...texts: (string | undefined)[]) => {
 };
 ---
 
-<Layout title="Railly Hugo - Open Source Developer at Vercel Labs | Crafter Station Founder" description={siteConfig.description}>
+<Layout title="Railly Hugo - Open Source Developer at Vercel Labs | Crafter Station Founder" description={siteConfig.description}
+	image={ogUrl({ title: "Railly Hugo", description: "I build at the frontier of what agents and interfaces can do." })}
+>
 	<Garua />
 	<main class="home relative z-[1] mx-auto flex min-h-screen max-w-[44rem] flex-col px-6 pt-[9vh] pb-16 sm:pt-[18vh] text-[#1b1915] dark:text-[#ebe7df]">
 		<h1 class="sr-only">Railly Hugo, open source developer and software engineer at Vercel Labs</h1>
