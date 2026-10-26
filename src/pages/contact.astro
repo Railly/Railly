@@ -1,9 +1,11 @@
 ---
 import PageLayout from "@/components/layout/PageLayout.astro";
+import { ogUrl } from "@/config/site";
 import Layout from "@/layouts/Layout.astro";
 ---
 
 <Layout
+	image={ogUrl({ title: "Contact", description: "How to reach Railly Hugo for work, talks and press.", tag: "contact" })}
 	title="Contact Railly Hugo | railly.dev"
 	description="Official contact information for Railly Hugo, software engineer, open-source maintainer, speaker, and founder of Crafter Station."
 >

@@ -6,6 +6,7 @@ import SiteFooter from "@/components/layout/SiteFooter.astro";
 import AsciiField from "@/components/scene/AsciiField.astro";
 import { isPostListable } from "@/config/blog";
 import { getReadingTime } from "@/config/reading-time";
+import { ogUrl } from "@/config/site";
 import Layout from "@/layouts/Layout.astro";
 
 const posts = await getCollection("blog", ({ data }) => {
@@ -41,6 +42,7 @@ const formatDate = (date: Date) => {
 ---
 
 <Layout
+    image={ogUrl({ title: "Writing", description: "Technical articles on agents, developer tools and building in public.", tag: "writing" })}
     title="Blog - Railly Hugo"
     description="Technical articles, tutorials, and thoughts on web development, AI, and building in public."
 >

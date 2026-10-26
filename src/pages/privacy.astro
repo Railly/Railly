@@ -1,9 +1,11 @@
 ---
 import PageLayout from "@/components/layout/PageLayout.astro";
+import { ogUrl } from "@/config/site";
 import Layout from "@/layouts/Layout.astro";
 ---
 
 <Layout
+	image={ogUrl({ title: "Privacy", description: "How railly.dev handles visitor and contributor data.", tag: "privacy" })}
 	title="Privacy | railly.dev"
 	description="Privacy information for visitors and contributors using Railly Hugo's personal portfolio and writing site."
 >

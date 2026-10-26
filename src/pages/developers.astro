@@ -1,5 +1,6 @@
 ---
 import PageLayout from "@/components/layout/PageLayout.astro";
+import { ogUrl } from "@/config/site";
 import Layout from "@/layouts/Layout.astro";
 
 const resources = [
@@ -44,6 +45,7 @@ const resources = [
 ---
 
 <Layout
+	image={ogUrl({ title: "Developer resources", description: "Open-source tools, project metadata and agent-readable endpoints.", tag: "developers" })}
 	title="Railly Developer Resources | Railly Hugo"
 	description="Canonical developer resources for Railly Hugo's open-source tools, projects, writing, and agent-readable endpoints."
 >

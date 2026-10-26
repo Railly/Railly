@@ -1,11 +1,13 @@
 ---
 import PageLayout from "@/components/layout/PageLayout.astro";
+import { ogUrl } from "@/config/site";
 import Layout from "@/layouts/Layout.astro";
 
 Astro.response.status = 404;
 ---
 
 <Layout
+	image={ogUrl({ title: "Page not found", description: "That URL does not match a public page on railly.dev." })}
 	title="Page not found | Railly Hugo"
 	description="That URL does not match a public page on railly.dev. Use the recovery links to continue."
 >

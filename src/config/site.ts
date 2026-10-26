@@ -12,7 +12,8 @@ export const siteConfig: SiteConfig = {
 	description:
 		"Railly Hugo is a Peruvian open source developer at Vercel Labs building at the frontier of agents and interfaces. Creator of Petdex and founder of Crafter Station.",
 	url: "https://www.railly.dev",
-	ogImage: "https://www.railly.dev/images/og.webp",
+	ogImage:
+		"https://www.railly.dev/api/og?title=Railly+Hugo&description=I+build+at+the+frontier+of+what+agents+and+interfaces+can+do.",
 	hero: {
 		title: "Hunter",
 		role: "Software Engineer",

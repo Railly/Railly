@@ -11,11 +11,11 @@ const font = (pkg: string, file: string) =>
 
 const fontsPromise = Promise.all([
 	font("redaction", "redaction-latin-400-normal.woff"),
-	font("redaction", "redaction-latin-400-italic.woff"),
+	font("geist-sans", "geist-sans-latin-400-normal.woff"),
+	font("geist-sans", "geist-sans-latin-500-normal.woff"),
 	font("ibm-plex-mono", "ibm-plex-mono-latin-400-normal.woff"),
 ]);
 
-// Deterministic hash so every card gets the same garúa for the same title.
 const hash = (x: number, y: number) => {
 	const h = Math.sin(x * 127.1 + y * 311.7) * 43758.5453;
 	return h - Math.floor(h);
@@ -27,50 +27,85 @@ const el = (type: string, props: Record<string, unknown>): El => ({
 	props,
 });
 
-// The scene, drawn as rows of monospace characters: fog dots, a coast, a lighthouse, the sea.
-function sceneRows(isDark: boolean) {
-	const cols = 120;
-	const rows = 11;
-	const lines: El[] = [];
-	const fog = isDark ? "#8f93c4" : "#b9a9a6";
-	const sea = isDark ? "#5a6ac4" : "#8ea0d6";
-	const band = isDark ? "#ff80a0" : "#f0808c";
-	const tower = isDark ? "#cec8ec" : "#ffffff";
-	const house = isDark ? "#ffd68c" : "#eb8c3c";
-	const fx = 100;
-	for (let y = 0; y < rows; y++) {
-		const spans: El[] = [];
-		for (let x = 0; x < cols; x++) {
-			let c = " ";
-			let color = fog;
-			const towerTop = 1;
-			if (
-				y < 8 &&
-				Math.abs(x - fx) <= (y < towerTop + 1 ? 0 : 1 + (y > 5 ? 1 : 0))
-			) {
-				c = y === 0 ? "*" : "#";
-				color = y === 0 ? house : Math.floor(y / 2) % 2 ? band : tower;
-			} else if (y < 8) {
-				const edge = Math.min(x, cols - x) / cols;
-				const coast = y > 5 - Math.round((0.5 - edge) * 4);
-				if (coast && y >= 5) {
-					c = hash(x, y) > 0.8 ? "o" : hash(x, y) > 0.4 ? "=" : ":";
-					color = c === "o" ? house : fog;
-				} else if (hash(x * 3, y) > 0.55 - y * 0.05) {
-					c = hash(x, y) > 0.7 ? ":" : ".";
-				}
-			} else if (hash(x, y * 7) > 0.35) {
-				c = hash(x, y) > 0.5 ? "~" : "-";
-				color = sea;
-			}
-			spans.push(el("span", { style: { color, width: 10 }, children: c }));
+// Same 5x7 bitmaps as the README signature and the site footer.
+const GLYPHS: Record<string, string[]> = {
+	H: ["1...1", "1...1", "1...1", "11111", "1...1", "1...1", "1...1"],
+	u: [".....", ".....", "1...1", "1...1", "1...1", "1..11", ".11.1"],
+	n: [".....", ".....", "1.11.", "11..1", "1...1", "1...1", "1...1"],
+	t: [".1...", ".1...", "1111.", ".1...", ".1...", ".1..1", "..11."],
+	e: [".....", ".....", ".111.", "1...1", "11111", "1....", ".1111"],
+	r: [".....", ".....", "1.11.", "11..1", "1....", "1....", "1...."],
+};
+const RAMP = "+*#%@";
+
+// "Hunter" in ASCII, as rows of monospace text.
+function signature(ink: string) {
+	const word = "Hunter";
+	const px = 2;
+	const cols = word.length * 6 * px - px;
+	const rows: El[] = [];
+	for (let r = 0; r < 7 * px; r++) {
+		let line = "";
+		for (let c = 0; c < cols; c++) {
+			const letter = Math.floor(c / (6 * px));
+			const gx = Math.floor((c % (6 * px)) / px);
+			const on = gx < 5 && GLYPHS[word[letter]][Math.floor(r / px)][gx] === "1";
+			line += on ? RAMP[Math.floor(hash(c, r) * RAMP.length)] : " ";
 		}
-		lines.push(
-			el("div", { style: { display: "flex", height: 16 }, children: spans }),
+		rows.push(
+			el("div", {
+				style: { display: "flex", height: 9, whiteSpace: "pre" },
+				children: line,
+			}),
 		);
 	}
 	return el("div", {
-		style: { display: "flex", flexDirection: "column", opacity: 0.85 },
+		style: {
+			display: "flex",
+			flexDirection: "column",
+			fontFamily: "Plex Mono",
+			fontSize: 9,
+			color: ink,
+			opacity: 0.45,
+		},
+		children: rows,
+	});
+}
+
+// The margin field from the site: dense at the outer edge, gone before the text.
+function field(ink: string, side: "left" | "right") {
+	const cols = 28;
+	const rows = 40;
+	const lines: El[] = [];
+	for (let r = 0; r < rows; r++) {
+		let line = "";
+		for (let c = 0; c < cols; c++) {
+			const edge = side === "right" ? c / cols : 1 - c / cols;
+			const v =
+				((Math.sin(c * 0.5 + r * 0.21) + Math.sin(r * 0.17 - c * 0.3)) / 4 +
+					0.5) *
+				edge ** 2.2;
+			line += v < 0.18 ? " " : " .·:-=+*#"[Math.min(8, Math.floor(v * 9) + 1)];
+		}
+		lines.push(
+			el("div", {
+				style: { display: "flex", height: 15.75, whiteSpace: "pre" },
+				children: line,
+			}),
+		);
+	}
+	return el("div", {
+		style: {
+			position: "absolute",
+			top: 0,
+			[side]: 0,
+			display: "flex",
+			flexDirection: "column",
+			fontFamily: "Plex Mono",
+			fontSize: 11,
+			color: ink,
+			opacity: 0.32,
+		},
 		children: lines,
 	});
 }
@@ -83,65 +118,87 @@ export const GET: APIRoute = async ({ url }) => {
 	const tag = url.searchParams.get("tag") || "";
 	const isDark = theme === "dark";
 
-	const [serif, serifItalic, mono] = await fontsPromise;
+	const [serif, sans, sansMedium, mono] = await fontsPromise;
 	const bg = isDark ? "#0f0e0c" : "#f4f1ea";
 	const fg = isDark ? "#ebe7df" : "#1b1915";
-	const muted = isDark ? "#8a867f" : "#7a756c";
-	const sky = isDark
-		? "linear-gradient(180deg, #0f0e0c 0%, #0f0e0c 45%, #1a1640 100%)"
-		: "linear-gradient(180deg, #f4f1ea 0%, #f4f1ea 45%, #f4c4be 100%)";
+	const muted = isDark ? "#8f8b84" : "#6e695f";
+	const tile = isDark ? "rgba(235,231,223,0.08)" : "rgba(27,25,21,0.07)";
+	const shadow = isDark ? "rgba(235,231,223,0.22)" : "rgba(27,25,21,0.22)";
 	const desc =
-		description.length > 120 ? `${description.slice(0, 117)}…` : description;
-	const titleSize = title.length > 60 ? 54 : title.length > 36 ? 64 : 78;
+		description.length > 130 ? `${description.slice(0, 127)}…` : description;
+	const titleSize = title.length > 60 ? 56 : title.length > 34 ? 66 : 80;
 
 	const tree = el("div", {
 		style: {
+			position: "relative",
 			display: "flex",
-			flexDirection: "column",
 			width: "100%",
 			height: "100%",
 			backgroundColor: bg,
-			backgroundImage: sky,
-			fontFamily: "Redaction",
+			fontFamily: "Geist",
 		},
 		children: [
+			field(fg, "left"),
+			field(fg, "right"),
 			el("div", {
 				style: {
 					display: "flex",
 					flexDirection: "column",
-					flex: 1,
-					padding: "56px 72px 0",
+					width: "100%",
+					padding: "60px 190px 56px",
 				},
 				children: [
+					// Header row: the same identity as the site header.
 					el("div", {
 						style: {
 							display: "flex",
+							alignItems: "center",
 							justifyContent: "space-between",
-							fontFamily: "Commit Mono",
-							fontSize: 18,
+							fontSize: 22,
 							color: muted,
 						},
 						children: [
-							el("span", {
-								children: tag ? `railly.dev / ${tag}` : "railly.dev",
+							el("div", {
+								style: { display: "flex", alignItems: "center", gap: 10 },
+								children: [
+									el("span", {
+										style: { color: fg, fontWeight: 500 },
+										children: "Railly Hugo",
+									}),
+									el("span", { children: "aka" }),
+									el("span", {
+										style: {
+											fontFamily: "Plex Mono",
+											fontSize: 20,
+											color: fg,
+											padding: "1px 8px",
+											backgroundColor: tile,
+											boxShadow: `3px 3px 0 ${shadow}`,
+										},
+										children: "Hunter",
+									}),
+								],
 							}),
-							el("span", { children: date || "Railly Hugo" }),
+							el("span", {
+								children: [tag, date].filter(Boolean).join(" · "),
+							}),
 						],
 					}),
 					el("div", {
 						style: {
 							display: "flex",
 							flexDirection: "column",
-							marginTop: 48,
-							maxWidth: 980,
+							flex: 1,
+							justifyContent: "center",
 						},
 						children: [
 							el("div", {
 								style: {
+									fontFamily: "Redaction",
 									fontSize: titleSize,
-									lineHeight: 1.08,
-									color: fg,
+									lineHeight: 1.12,
 									letterSpacing: "-0.01em",
+									color: fg,
 								},
 								children: title,
 							}),
@@ -149,11 +206,10 @@ export const GET: APIRoute = async ({ url }) => {
 								? [
 										el("div", {
 											style: {
-												marginTop: 22,
-												fontSize: 30,
-												lineHeight: 1.35,
+												marginTop: 24,
+												fontSize: 26,
+												lineHeight: 1.45,
 												color: muted,
-												fontStyle: "italic",
 											},
 											children: desc,
 										}),
@@ -161,16 +217,17 @@ export const GET: APIRoute = async ({ url }) => {
 								: []),
 						],
 					}),
+					el("div", {
+						style: {
+							display: "flex",
+							alignItems: "flex-end",
+							justifyContent: "space-between",
+							fontSize: 20,
+							color: muted,
+						},
+						children: [signature(fg), el("span", { children: "railly.dev" })],
+					}),
 				],
-			}),
-			el("div", {
-				style: {
-					display: "flex",
-					fontFamily: "Commit Mono",
-					fontSize: 14,
-					paddingLeft: 0,
-				},
-				children: [sceneRows(isDark)],
 			}),
 		],
 	});
@@ -180,8 +237,9 @@ export const GET: APIRoute = async ({ url }) => {
 		height: 630,
 		fonts: [
 			{ name: "Redaction", data: serif, weight: 400, style: "normal" },
-			{ name: "Redaction", data: serifItalic, weight: 400, style: "italic" },
-			{ name: "Commit Mono", data: mono, weight: 400, style: "normal" },
+			{ name: "Geist", data: sans, weight: 400, style: "normal" },
+			{ name: "Geist", data: sansMedium, weight: 500, style: "normal" },
+			{ name: "Plex Mono", data: mono, weight: 400, style: "normal" },
 		],
 	});
 };
