@@ -1,0 +1,660 @@
+---
+import BrandIcon from "@/components/brand/BrandIcon.astro";
+import Flag from "@/components/brand/Flag.astro";
+import { compact, homeData } from "@/components/variants/data";
+import Layout from "@/layouts/Layout.astro";
+
+const { projects, posts, appearances, achievements, videos } = await homeData();
+const year = (d: Date) => d.getFullYear();
+const lastWritten = posts[0]?.data.pubDate.toLocaleDateString("en-US", {
+	month: "short",
+	day: "numeric",
+	year: "numeric",
+});
+---
+
+<Layout title="Railly Hugo (v7)" description="Variant 7">
+	<canvas class="orb" aria-hidden="true"></canvas>
+	<div class="moonlight" aria-hidden="true"></div>
+	<main class="v7 relative z-[1] mx-auto flex min-h-screen max-w-[44rem] flex-col px-6 pt-[18vh] pb-16 text-[#1b1915] dark:text-[#ebe7df]">
+		<div class="s font-serif text-[clamp(1.6rem,3.6vw,2.2rem)] leading-[1.45] tracking-[-0.01em]">
+			<span>I build at the frontier of what agents and interfaces can do. I’m </span><span class="nn"><img class="lg av" src="/images/railly-hugo-headshot.webp" alt="" />Railly Hugo</span><span>, a </span><span class="nn"><Flag country="pe" class="lg fl" width={20} height={20} />Peruvian</span><span> engineer at </span><span class="nn"><BrandIcon name="vercel" class="lg" width={20} height={20} />Vercel Labs</span><span>. I make </span>
+			<span class="k whitespace-nowrap"><button class="t" aria-expanded="false" aria-controls="x-work" data-hash="work" data-key="1">tools agents can use<sup><span>{projects.length}</span></sup></button><span class="nb">,</span></span><div class="x" id="x-work"><div>
+				{projects.map((p) => (
+					<a href={p.url} target="_blank" rel="noopener noreferrer" class="r">
+						<span class="n">{p.name}</span><span class="d">{p.description}</span><span class="m">{p.stars >= 100 ? compact.format(p.stars) : ""}</span>
+					</a>
+				))}
+			</div></div><span> give </span>
+			<span class="k whitespace-nowrap"><button class="t" aria-expanded="false" aria-controls="x-talks" data-hash="talks" data-key="2">talks and press<sup><span>{appearances.length}</span></sup></button><span class="nb">,</span></span><div class="x" id="x-talks"><div>
+				{appearances.map((a) => (
+					<a href={a.url} target="_blank" rel="noopener noreferrer" class="r">
+						<span class="n">{a.title}</span><span class="d">{a.where}</span><span class="m">{a.date.slice(0, 4)}</span>
+					</a>
+				))}
+			</div></div><span> run </span>
+			<span class="k whitespace-nowrap"><button class="t" aria-expanded="false" aria-controls="x-cs" data-hash="community" data-key="3">a community of 1,000+ builders<sup><span>{achievements.length}</span></sup></button><span class="nb">,</span></span><div class="x" id="x-cs"><div>
+				<a href="https://github.com/crafter-station" target="_blank" rel="noopener noreferrer" class="r"><span class="n">Crafter Station</span><span class="d">Non-profit building Peru's tech ecosystem</span><span class="m"></span></a>
+				{achievements.map((a) => (
+					<a href={a.eventUrl} target="_blank" rel="noopener noreferrer" class="r">
+						<span class="n">{a.achievement}</span><span class="d">{a.event}</span><span class="m">{a.year}</span>
+					</a>
+				))}
+			</div></div><span> and keep </span>
+			<button class="t" aria-expanded="false" aria-controls="x-notes" data-hash="notes" data-key="4">notes<sup><span>{posts.length}</span></sup></button><div class="x" id="x-notes"><div>
+				{posts.map((p) => (
+					<a href={`/blog/${p.slug}`} class="r"><span class="n">{p.data.title}</span><span class="d">Essay</span><span class="m">{year(p.data.pubDate)}</span></a>
+				))}
+			</div></div><span> and </span>
+			<span class="k whitespace-nowrap"><button class="t" aria-expanded="false" aria-controls="x-videos" data-hash="videos" data-key="5">videos<sup><span>{videos.length}</span></sup></button></span><div class="x" id="x-videos"><div class="vg">
+				{videos.map((v) => (
+					<a href={v.url} target="_blank" rel="noopener noreferrer" class="r v">
+						<img src={v.thumbnail} alt="" loading="lazy" />
+						<span class="n">{v.title}</span>
+					</a>
+				))}
+			</div></div><span> along the way.</span>
+		</div>
+
+		<footer class="road mt-auto flex flex-wrap items-baseline gap-x-5 gap-y-2 pt-24 pb-2 text-[12px] text-black/70 dark:text-white/70">
+			<button class="all transition-colors hover:text-current" type="button">Open everything</button>
+			<span class="hidden sm:inline">1 to 5, Esc</span>
+			<span data-town hidden></span>
+			<span class="flex-1"></span>
+			<span class="flex gap-4">
+				<a href="https://github.com/railly" class="hover:text-current">GitHub</a>
+				<a href="https://x.com/raillyhugo" class="hover:text-current">X</a>
+				<a href="mailto:hi@railly.dev" class="hover:text-current">Email</a>
+				{lastWritten && <span>Last written {lastWritten}</span>}
+				<span class="hidden sm:inline">Move to clear the garúa</span>
+				<span class="tabular-nums">Buenos Aires <span data-clock>--:--</span></span>
+			</span>
+		</footer>
+	</main>
+</Layout>
+
+<style>
+	/* The footer reads as a road through the fields: a lane cleared in the scene,
+	   and a soft halo in the ground colour around each word instead of a box. */
+	.road {
+		text-shadow:
+			0 0 6px #e6efdc,
+			0 0 14px #e6efdc,
+			0 0 2px #e6efdc;
+	}
+	@media (prefers-color-scheme: dark) {
+		.road {
+			text-shadow:
+				0 0 6px #0b0f14,
+				0 0 14px #0b0f14,
+				0 0 2px #0b0f14;
+		}
+	}
+
+	/* Reading: the landscape sets below the horizon like a sun going down,
+	   and a pool of moonlight opens behind the text. */
+	.orb {
+		transition: transform 1.6s cubic-bezier(0.65, 0, 0.35, 1), filter 1.6s ease;
+	}
+	:global(html.reading) .orb {
+		transform: translateY(52vh);
+		filter: saturate(1.25);
+	}
+	.moonlight {
+		position: fixed;
+		inset: 0;
+		pointer-events: none;
+		z-index: 0;
+		opacity: 0;
+		background: radial-gradient(60% 55% at 50% 38%, rgb(255 250 240 / 0.9), transparent 70%);
+		transition: opacity 1.4s ease 0.2s;
+	}
+	:global(html.reading) .moonlight {
+		opacity: 1;
+	}
+	@media (prefers-color-scheme: dark) {
+		.moonlight {
+			background: radial-gradient(60% 55% at 50% 38%, rgb(60 70 140 / 0.22), transparent 70%);
+		}
+	}
+	.orb {
+		position: fixed;
+		inset: 0;
+		width: 100vw;
+		height: 100vh;
+		pointer-events: none;
+		z-index: 0;
+		/* The scene rises from the bottom; the text keeps clean paper above it. */
+		-webkit-mask-image: linear-gradient(to bottom, transparent 30%, black 56%, black 86%, rgba(0, 0, 0, 0.3) 100%);
+		mask-image: linear-gradient(to bottom, transparent 30%, black 56%, black 86%, rgba(0, 0, 0, 0.3) 100%);
+	}
+
+	.nn {
+		white-space: nowrap;
+	}
+	.nn :global(.lg) {
+		display: inline-block;
+		width: 0.72em;
+		height: 0.72em;
+		margin-right: 0.18em;
+		vertical-align: -0.04em;
+	}
+	.nn :global(.av) {
+		border-radius: 999px;
+		object-fit: cover;
+		filter: grayscale(1) contrast(1.1);
+		width: 0.9em;
+		height: 0.9em;
+		vertical-align: -0.12em;
+	}
+	.nn :global(.fl) {
+		filter: grayscale(1) contrast(1.3);
+		border-radius: 2px;
+	}
+
+	:global(body) {
+		background-color: #f4f1ea;
+		background-image:
+			radial-gradient(120% 70% at 50% -10%, rgb(255 255 255 / 0.75), transparent 60%),
+			url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+		background-attachment: fixed;
+	}
+	@media (prefers-color-scheme: dark) {
+		:global(body) {
+			background-color: #0f0e0c;
+			background-image:
+				radial-gradient(120% 70% at 50% -10%, rgb(255 236 200 / 0.06), transparent 60%),
+				url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+		}
+	}
+	.s {
+		animation: s-in 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+	}
+	@keyframes s-in {
+		from { opacity: 0; transform: translateY(8px); }
+	}
+	/* Triggers read as italic phrases, not links. */
+	.t {
+		font-style: italic;
+	}
+
+	/* Focus mode: once something is open, the rest of the sentence steps back. */
+	.s span,
+	.s .t {
+		transition: opacity 0.45s ease;
+	}
+	.s.focus > span:not(.k),
+	.s.focus .nb,
+	.s.focus .t[aria-expanded="false"] {
+		opacity: 0.32;
+	}
+	.s.focus .t[aria-expanded="false"]:hover {
+		opacity: 1;
+	}
+	.r .m.hot {
+		opacity: 1;
+	}
+
+	.t {
+		cursor: pointer;
+		color: inherit;
+		text-decoration: underline;
+		text-decoration-color: color-mix(in oklab, currentColor 25%, transparent);
+		text-underline-offset: 0.22em;
+		text-decoration-thickness: 1px;
+		transition: text-decoration-color 0.25s ease, opacity 0.25s ease;
+	}
+	.t:hover,
+	.t[aria-expanded="true"] {
+		text-decoration-color: currentColor;
+	}
+	.t:focus-visible {
+		outline: 2px solid currentColor;
+		outline-offset: 3px;
+		border-radius: 2px;
+	}
+	.t[aria-expanded="true"] sup::before {
+		content: "−";
+	}
+	.t[aria-expanded="true"] sup span {
+		display: none;
+	}
+	.t sup {
+		margin-left: 0.15em;
+		font-size: 0.5em;
+		font-variant-numeric: tabular-nums;
+		opacity: 0.45;
+		text-decoration: none;
+		display: inline-block;
+	}
+
+	.x {
+		display: none;
+	}
+	.x.open {
+		display: block;
+		margin: 0.9rem 0 1.1rem;
+		animation: x-in 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+	}
+	@keyframes x-in {
+		from { opacity: 0; transform: translateY(-4px); }
+	}
+
+	.r {
+		display: grid;
+		grid-template-columns: minmax(0, 12rem) minmax(0, 1fr) 3rem;
+		gap: 1rem;
+		align-items: baseline;
+		padding: 0.5rem 0;
+		font-family: var(--font-sans);
+		font-size: 14.5px;
+		line-height: 1.45;
+		letter-spacing: 0;
+		border-top: 1px solid color-mix(in oklab, currentColor 9%, transparent);
+	}
+	.x.open .r {
+		animation: r-in 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+		animation-delay: calc(var(--i, 0) * 35ms);
+	}
+	@keyframes r-in {
+		from { opacity: 0; transform: translateY(6px); filter: blur(3px); }
+	}
+	.vg {
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: 1.25rem 1rem;
+		padding-top: 0.25rem;
+	}
+	.r.v {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+		border-top: 0;
+		padding: 0;
+	}
+	.r.v img {
+		aspect-ratio: 16 / 9;
+		width: 100%;
+		object-fit: cover;
+		border-radius: 3px;
+		filter: grayscale(1) contrast(1.05);
+		opacity: 0.85;
+		transition: filter 0.4s ease, opacity 0.4s ease;
+	}
+	.r.v:hover img {
+		filter: none;
+		opacity: 1;
+	}
+	.r.v .n {
+		display: -webkit-box;
+		-webkit-line-clamp: 2;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+	}
+	@media (max-width: 640px) {
+		.vg {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+	}
+	.r .d,
+	.r .m {
+		opacity: 0.5;
+	}
+	.r .m {
+		text-align: right;
+		font-variant-numeric: tabular-nums;
+	}
+	.r:hover .n {
+		text-decoration: underline;
+		text-underline-offset: 0.2em;
+		text-decoration-thickness: 1px;
+	}
+	@media (max-width: 640px) {
+		.r {
+			grid-template-columns: minmax(0, 1fr) auto;
+		}
+		.r .d {
+			display: none;
+		}
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.x.open,
+		.x.open .r,
+		.s {
+			animation: none;
+		}
+	}
+</style>
+
+<script>
+	const triggers = [...document.querySelectorAll<HTMLButtonElement>(".v7 .t")];
+	const sentence = document.querySelector<HTMLElement>(".v7 .s");
+	const syncFocus = () => {
+		const reading = triggers.some((t) => t.getAttribute("aria-expanded") === "true");
+		sentence?.classList.toggle("focus", reading);
+		document.documentElement.classList.toggle("reading", reading);
+		const open = triggers.filter((t) => t.getAttribute("aria-expanded") === "true");
+		history.replaceState(null, "", open.length === 1 ? `#${open[0].dataset.hash}` : location.pathname);
+	};
+	const set = (t: HTMLButtonElement, open: boolean) => {
+		const panel = document.getElementById(t.getAttribute("aria-controls") ?? "");
+		t.setAttribute("aria-expanded", String(open));
+		panel?.classList.toggle("open", open);
+		syncFocus();
+	};
+	for (const t of triggers) {
+		const panel = document.getElementById(t.getAttribute("aria-controls") ?? "");
+		panel?.querySelectorAll<HTMLElement>(".r").forEach((r, i) => r.style.setProperty("--i", String(i)));
+		t.addEventListener("click", () => set(t, t.getAttribute("aria-expanded") !== "true"));
+	}
+	const all = document.querySelector<HTMLButtonElement>(".v7 .all");
+	all?.addEventListener("click", () => {
+		const open = triggers.some((t) => t.getAttribute("aria-expanded") !== "true");
+		for (const t of triggers) set(t, open);
+		all.textContent = open ? "Close everything" : "Open everything";
+	});
+	const openFromHash = () => {
+		const t = triggers.find((x) => `#${x.dataset.hash}` === location.hash);
+		if (t) set(t, true);
+	};
+	openFromHash();
+	window.addEventListener("hashchange", openFromHash);
+	window.addEventListener("keydown", (e) => {
+		if (e.key === "Escape") {
+			for (const t of triggers) set(t, false);
+			if (all) all.textContent = "Open everything";
+			return;
+		}
+		if (e.metaKey || e.ctrlKey || e.altKey || (e.target as HTMLElement).closest("input,textarea")) return;
+		const t = triggers.find((x) => x.dataset.key === e.key);
+		if (t) set(t, t.getAttribute("aria-expanded") !== "true");
+	});
+	const clock = document.querySelector<HTMLElement>("[data-clock]");
+	if (clock) {
+		const fmt = new Intl.DateTimeFormat("en-GB", { hour: "2-digit", minute: "2-digit", timeZone: "America/Argentina/Buenos_Aires" });
+		const tick = () => (clock.textContent = fmt.format(new Date()));
+		tick();
+		setInterval(tick, 15000);
+	}
+</script>
+<script>
+	// Garúa: Lima's winter fog over a still sea, a slab floating inside it,
+	// and a coastline of houses you only see when you push the fog away.
+	const orb = document.querySelector<HTMLCanvasElement>("canvas.orb");
+	const ctx = orb?.getContext("2d");
+	if (orb && ctx) {
+		const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+		const dark = matchMedia("(prefers-color-scheme: dark)");
+		const hash = (x: number, y: number) => {
+			const h = Math.sin(x * 127.1 + y * 311.7) * 43758.5453;
+			return h - Math.floor(h);
+		};
+		const smooth = (t: number) => t * t * (3 - 2 * t);
+		const noise = (x: number, y: number) => {
+			const xi = Math.floor(x);
+			const yi = Math.floor(y);
+			const xf = smooth(x - xi);
+			const yf = smooth(y - yi);
+			const a = hash(xi, yi);
+			const b = hash(xi + 1, yi);
+			const c = hash(xi, yi + 1);
+			const d = hash(xi + 1, yi + 1);
+			return a + (b - a) * xf + (c - a) * yf + (a - b - c + d) * xf * yf;
+		};
+		const fbm = (x: number, y: number) => noise(x, y) * 0.55 + noise(x * 2.1, y * 2.1) * 0.3 + noise(x * 4.3, y * 4.3) * 0.15;
+
+		let W = 0;
+		let H = 0;
+		let dpr = 1;
+		let cw = 8;
+		let ch = 13;
+		let cols = 0;
+		let rows = 0;
+		let clear = new Float32Array(0);
+		const resize = () => {
+			dpr = Math.min(devicePixelRatio || 1, 2);
+			W = innerWidth;
+			H = innerHeight;
+			cw = W < 700 ? 7 : 8;
+			ch = Math.round(cw * 1.62);
+			cols = Math.ceil(W / cw);
+			rows = Math.ceil(H / ch);
+			clear = new Float32Array(cols * rows);
+			orb.width = W * dpr;
+			orb.height = H * dpr;
+		};
+
+		const PAL = {
+			dark: {
+				skyTop: "rgba(13,16,32,0)",
+				skyLow: "rgba(26,22,60,0.95)",
+				glow: "rgba(255,120,150,0.10)",
+				fog: "150,160,200",
+				fogLit: "220,215,235",
+				slab: "40,42,86",
+				slabSide: "70,72,120",
+				rim: "255,150,170",
+				win: "242,195,0",
+				sea: "80,100,190",
+				seaFill: "rgba(12,16,40,0.9)",
+				cliff: "44,40,60",
+				house: "255,214,140",
+				star: "220,228,255",
+				grain: "255,255,255",
+			},
+			light: {
+				skyTop: "rgba(241,237,228,0)",
+				skyLow: "rgba(244,196,190,0.75)",
+				glow: "rgba(255,170,150,0.22)",
+				fog: "160,150,150",
+				fogLit: "250,246,240",
+				slab: "52,56,84",
+				slabSide: "82,86,116",
+				rim: "255,190,170",
+				win: "255,200,90",
+				sea: "120,140,200",
+				seaFill: "rgba(150,165,210,0.55)",
+				cliff: "150,130,120",
+				house: "235,140,60",
+				star: null as string | null,
+				grain: "0,0,0",
+			},
+		};
+
+		const litByYou = new Set<number>();
+		const meteors: { x: number; y: number; vx: number; vy: number; life: number }[] = [];
+		const pointer = { x: -1e4, y: -1e4 };
+		let horizonPx = 0;
+		addEventListener("pointermove", (e) => {
+			pointer.x = e.clientX;
+			pointer.y = e.clientY;
+		});
+		addEventListener("pointerdown", (e) => {
+			if ((e.target as HTMLElement).closest("a, button, .x")) return;
+			if (document.documentElement.classList.contains("reading")) return;
+			if (e.clientY < H * 0.5) {
+				meteors.push({ x: e.clientX, y: e.clientY, vx: -7 - Math.random() * 4, vy: 3 + Math.random() * 2, life: 1 });
+				return;
+			}
+			const gx = Math.floor(e.clientX / cw);
+			const gy = Math.floor(e.clientY / ch);
+			for (let dy = -2; dy <= 2; dy++) {
+				for (let dx = -4; dx <= 4; dx++) {
+					if (dx * dx * 0.25 + dy * dy > 4.5 || hash(gx + dx, gy + dy) < 0.5) continue;
+					litByYou.add((gy + dy) * 10000 + gx + dx);
+				}
+			}
+			const note = document.querySelector<HTMLElement>("[data-town]");
+			if (note) {
+				note.textContent = litByYou.size >= 120 ? `${litByYou.size} lights. You just built a town.` : `${litByYou.size} lights by you`;
+				note.hidden = false;
+			}
+		});
+
+		const FOG = " ...··::;";
+
+		const draw = (t: number) => {
+			const isDark = dark.matches;
+			const P = isDark ? PAL.dark : PAL.light;
+			const mobile = W < 700;
+			ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+			ctx.clearRect(0, 0, W, H);
+			ctx.font = `${ch * 0.86}px "Commit Mono", ui-monospace, monospace`;
+			ctx.textBaseline = "top";
+			const put = (x: number, y: number, c: string, rgb: string, a: number) => {
+				ctx.fillStyle = `rgba(${rgb},${a.toFixed(3)})`;
+				ctx.fillText(c, x * cw, y * ch);
+			};
+
+			const horizon = Math.floor(rows * 0.8);
+			horizonPx = horizon * ch;
+
+			// Sky, with a low warm glow behind the fog.
+			const sky = ctx.createLinearGradient(0, H * 0.3, 0, horizonPx);
+			sky.addColorStop(0, P.skyTop);
+			sky.addColorStop(1, P.skyLow);
+			ctx.fillStyle = sky;
+			ctx.fillRect(0, 0, W, horizonPx);
+			const glow = ctx.createRadialGradient(W * 0.5, horizonPx, 0, W * 0.5, horizonPx, W * 0.6);
+			glow.addColorStop(0, P.glow);
+			glow.addColorStop(1, "rgba(0,0,0,0)");
+			ctx.fillStyle = glow;
+			ctx.fillRect(0, 0, W, horizonPx);
+			ctx.fillStyle = P.seaFill;
+			ctx.fillRect(0, horizonPx, W, H - horizonPx);
+
+			if (P.star) {
+				for (let y = 0; y < horizon * 0.7; y++) {
+					for (let x = 0; x < cols; x++) {
+						if (hash(x, y) > 0.99) put(x, y, hash(y, x) > 0.6 ? "+" : ".", P.star, 0.25 + 0.35 * Math.abs(Math.sin(t * 0.0006 + x * 3)));
+					}
+				}
+			}
+
+			// The coast: low cliffs on both sides, houses along their tops. Mostly under the fog.
+			const coastTop = (x: number) => {
+				const gx = x / cols;
+				const edge = Math.min(gx, 1 - gx);
+				const rise = smooth(Math.max(0, 1 - edge / 0.42));
+				return horizon - Math.floor(rise * rows * 0.16 + fbm(gx * 6, 2) * 3);
+			};
+			const cells: (null | [string, string, number])[] = new Array(cols * rows).fill(null);
+			for (let x = 0; x < cols; x++) {
+				const top = coastTop(x);
+				for (let y = top; y < horizon; y++) {
+					const onTop = y < top + 2;
+					const h = hash(x, y);
+					if (onTop && h > 0.45) cells[y * cols + x] = [h > 0.85 ? "▪" : ".", P.house, 0.5 + 0.4 * h];
+					else cells[y * cols + x] = [h > 0.6 ? "▓" : "▒", P.cliff, isDark ? 0.8 : 0.55];
+				}
+			}
+
+			// The slab, floating in the lower right third.
+			const slabW = Math.floor(cols * (mobile ? 0.2 : 0.11));
+			const sideW = Math.max(2, Math.floor(slabW * 0.18));
+			const slabL = Math.floor(cols * (mobile ? 0.7 : 0.74));
+			const bob = Math.sin(t * 0.0004) * 0.6;
+			const slabTop = Math.floor(rows * 0.36 + bob);
+			const slabBottom = Math.floor(rows * 0.7 + bob);
+			for (let y = slabTop; y < slabBottom; y++) {
+				for (let x = slabL; x < slabL + slabW; x++) {
+					const wx = x - slabL - sideW;
+					const wy = y - slabTop;
+					let cell: [string, string, number];
+					if (x === slabL) cell = ["│", P.rim, 0.85];
+					else if (x < slabL + sideW) cell = ["▒", P.slabSide, 0.95];
+					else if (wy % 3 === 1 && wx % 3 === 1 && hash(x, y) > 0.6) cell = ["▪", P.win, 0.95];
+					else cell = ["█", P.slab, 0.95];
+					cells[y * cols + x] = cell;
+				}
+			}
+
+			// Fog: a slow field over the band under the text. The pointer clears it, and it closes back.
+			const fogTop = rows * 0.46;
+			const drift = t * 0.000012;
+			const R = mobile ? 7 : 11;
+			const pcx = pointer.x / cw;
+			const pcy = pointer.y / ch;
+			for (let y = 0; y < rows; y++) {
+				for (let x = 0; x < cols; x++) {
+					const i = y * cols + x;
+					const dx = (x - pcx) / 1.6;
+					const dy = y - pcy;
+					const d = Math.sqrt(dx * dx + dy * dy);
+					if (d < R) clear[i] = Math.max(clear[i], 1 - d / R);
+					else clear[i] *= 0.985;
+
+					let fogD = 0;
+					if (y > fogTop && y < horizon + 1) {
+						const band = smooth(Math.min(1, (y - fogTop) / (rows * 0.12))) * (y > horizon - 2 ? 0.7 : 1);
+						fogD = band * (fbm(x * 0.035 + drift * 60, y * 0.09 + drift * 10) * 1.3 - 0.12);
+						fogD *= 1 - clear[i];
+					}
+					const under = cells[i];
+					if (under && under[1] === P.slab) fogD *= 0.5;
+					if (under && fogD < 0.7) {
+						let [c, rgb, a] = under;
+						if (litByYou.has(i) && rgb === P.house) a = 1;
+						put(x, y, c, rgb, a * (1 - fogD));
+					}
+					if (fogD > 0.08) {
+						const ci = Math.min(FOG.length - 1, Math.floor(fogD * FOG.length));
+						const lit = 1 - (y - fogTop) / (horizon - fogTop);
+						put(x, y, FOG[ci], lit > 0.5 ? P.fogLit : P.fog, Math.min(0.7, 0.15 + fogD * 0.6));
+					}
+					if (litByYou.has(i) && !under && y > fogTop) put(x, y, "▪", P.house, 0.9 * (1 - fogD));
+				}
+			}
+
+			// Still sea, with the slab's windows reflected as broken warm marks.
+			for (let y = horizon; y < rows; y++) {
+				const depth = (y - horizon) / (rows - horizon);
+				for (let x = 0; x < cols; x++) {
+					if (x > slabL + sideW && x < slabL + slabW && hash(x, y) > 0.55 && depth < 0.6) {
+						put(x, y, (x + y) % 3 ? "." : "'", P.win, 0.55 * (1 - depth));
+					} else if (hash(x * 3, y) > 0.55 - depth * 0.2) {
+						const wave = Math.sin(x * 0.4 + t * 0.0008 + y * 1.7);
+						put(x, y, wave > 0.4 ? "~" : "-", P.sea, (0.25 + 0.2 * wave) * (1 - depth * 0.5));
+					}
+				}
+			}
+
+			for (let i = meteors.length - 1; i >= 0; i--) {
+				const m = meteors[i];
+				const g = ctx.createLinearGradient(m.x, m.y, m.x - m.vx * 9, m.y - m.vy * 9);
+				g.addColorStop(0, `rgba(255,255,255,${m.life})`);
+				g.addColorStop(1, "rgba(255,255,255,0)");
+				ctx.strokeStyle = g;
+				ctx.lineWidth = 1.5;
+				ctx.beginPath();
+				ctx.moveTo(m.x, m.y);
+				ctx.lineTo(m.x - m.vx * 9, m.y - m.vy * 9);
+				ctx.stroke();
+				m.x += m.vx;
+				m.y += m.vy;
+				m.life -= 0.025;
+				if (m.life <= 0 || m.y > horizonPx) meteors.splice(i, 1);
+			}
+
+			ctx.fillStyle = `rgba(${P.grain},0.05)`;
+			for (let i = 0; i < (W * H) / 900; i++) ctx.fillRect(hash(i, 1) * W, hash(i, 2) * H, 1, 1);
+		};
+
+		let last = 0;
+		const loop = (t: number) => {
+			if (t - last > (meteors.length ? 16 : 40)) {
+				draw(t);
+				last = t;
+			}
+			if (!reduce) requestAnimationFrame(loop);
+		};
+		resize();
+		addEventListener("resize", () => {
+			resize();
+			draw(performance.now());
+		});
+		dark.addEventListener("change", () => draw(performance.now()));
+		draw(0);
+		requestAnimationFrame(loop);
+	}
+</script>
