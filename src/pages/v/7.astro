@@ -378,7 +378,7 @@ const lastWritten = posts[0]?.data.pubDate.toLocaleDateString("en-US", {
 	}
 </script>
 <script>
-	// Garúa: Lima's winter fog over a still sea, a slab floating inside it,
+	// Garúa: Lima's winter drizzle and fog over a still sea, a lighthouse on the cliff,
 	// and a coastline of houses you only see when you push the fog away.
 	const orb = document.querySelector<HTMLCanvasElement>("canvas.orb");
 	const ctx = orb?.getContext("2d");
@@ -431,14 +431,14 @@ const lastWritten = posts[0]?.data.pubDate.toLocaleDateString("en-US", {
 				glow: "rgba(255,120,150,0.10)",
 				fog: "150,160,200",
 				fogLit: "220,215,235",
-				slab: "40,42,86",
-				slabSide: "70,72,120",
 				rim: "255,150,170",
-				win: "242,195,0",
 				sea: "80,100,190",
 				seaFill: "rgba(12,16,40,0.9)",
-				cliff: "44,40,60",
+				cliff: "92,84,122",
 				house: "255,214,140",
+				tower: "200,196,210",
+				lamp: "255,236,170",
+				drop: "190,200,235",
 				star: "220,228,255",
 				grain: "255,255,255",
 			},
@@ -448,14 +448,14 @@ const lastWritten = posts[0]?.data.pubDate.toLocaleDateString("en-US", {
 				glow: "rgba(255,170,150,0.22)",
 				fog: "160,150,150",
 				fogLit: "250,246,240",
-				slab: "52,56,84",
-				slabSide: "82,86,116",
 				rim: "255,190,170",
-				win: "255,200,90",
 				sea: "120,140,200",
 				seaFill: "rgba(150,165,210,0.55)",
-				cliff: "150,130,120",
+				cliff: "120,98,88",
 				house: "235,140,60",
+				tower: "245,242,236",
+				lamp: "255,190,90",
+				drop: "110,110,140",
 				star: null as string | null,
 				grain: "0,0,0",
 			},
@@ -491,6 +491,12 @@ const lastWritten = posts[0]?.data.pubDate.toLocaleDateString("en-US", {
 			}
 		});
 
+		const drops = Array.from({ length: 420 }, () => ({
+			x: Math.random() * 2000,
+			y: Math.random() * 1200,
+			v: 0.9 + Math.random() * 0.9,
+			c: Math.random() > 0.5 ? "'" : ",",
+		}));
 		const FOG = " ...··::;";
 
 		const draw = (t: number) => {
@@ -545,28 +551,57 @@ const lastWritten = posts[0]?.data.pubDate.toLocaleDateString("en-US", {
 					const onTop = y < top + 2;
 					const h = hash(x, y);
 					if (onTop && h > 0.45) cells[y * cols + x] = [h > 0.85 ? "▪" : ".", P.house, 0.5 + 0.4 * h];
-					else cells[y * cols + x] = [h > 0.6 ? "▓" : "▒", P.cliff, isDark ? 0.8 : 0.55];
+					else {
+						const shade = fbm(x * 0.3, y * 0.5);
+						cells[y * cols + x] = [shade > 0.55 ? "#" : shade > 0.4 ? "=" : ":", P.cliff, (isDark ? 0.6 : 0.45) + shade * 0.3];
+					}
 				}
 			}
 
-			// The slab, floating in the lower right third.
-			const slabW = Math.floor(cols * (mobile ? 0.2 : 0.11));
-			const sideW = Math.max(2, Math.floor(slabW * 0.18));
-			const slabL = Math.floor(cols * (mobile ? 0.7 : 0.74));
-			const bob = Math.sin(t * 0.0004) * 0.6;
-			const slabTop = Math.floor(rows * 0.36 + bob);
-			const slabBottom = Math.floor(rows * 0.7 + bob);
-			for (let y = slabTop; y < slabBottom; y++) {
-				for (let x = slabL; x < slabL + slabW; x++) {
-					const wx = x - slabL - sideW;
-					const wy = y - slabTop;
-					let cell: [string, string, number];
-					if (x === slabL) cell = ["│", P.rim, 0.85];
-					else if (x < slabL + sideW) cell = ["▒", P.slabSide, 0.95];
-					else if (wy % 3 === 1 && wx % 3 === 1 && hash(x, y) > 0.6) cell = ["▪", P.win, 0.95];
-					else cell = ["█", P.slab, 0.95];
-					cells[y * cols + x] = cell;
-				}
+			// Faro de La Marina: a small lighthouse on the right cliff, its beam sweeping the garúa.
+			const fx = Math.floor(cols * (mobile ? 0.8 : 0.82));
+			const fTop = coastTop(fx);
+			const towerH = mobile ? 6 : 9;
+			for (let y = fTop - towerH; y < fTop; y++) {
+				const band = (y - (fTop - towerH)) % 3 === 1;
+				cells[y * cols + fx - 1] = ["▐", band ? P.rim : P.tower, 0.9];
+				cells[y * cols + fx] = ["▌", band ? P.rim : P.tower, 0.9];
+			}
+			const lampX = fx * cw;
+			const lampY = (fTop - towerH - 1) * ch + ch / 2;
+			cells[(fTop - towerH - 1) * cols + fx - 1] = ["◆", P.lamp, 1];
+			const beamA = Math.PI - 0.1 - Math.abs(Math.sin(t * 0.00025)) * 0.22;
+			const beamW = 0.09;
+			const inBeam = (px: number, py: number) => {
+				const a = Math.atan2(py - lampY, px - lampX);
+				let d = Math.abs(a - beamA);
+				if (d > Math.PI) d = Math.PI * 2 - d;
+				const dist = Math.hypot(px - lampX, py - lampY);
+				return d < beamW && dist < W * 0.75 ? (1 - d / beamW) * (1 - dist / (W * 0.75)) : 0;
+			};
+			ctx.save();
+			ctx.globalCompositeOperation = isDark ? "lighter" : "source-over";
+			const L = W * 0.75;
+			const beam = ctx.createRadialGradient(lampX, lampY, 0, lampX, lampY, L);
+			beam.addColorStop(0, `rgba(${P.lamp},${isDark ? 0.22 : 0.35})`);
+			beam.addColorStop(1, `rgba(${P.lamp},0)`);
+			ctx.fillStyle = beam;
+			ctx.beginPath();
+			ctx.moveTo(lampX, lampY);
+			ctx.arc(lampX, lampY, L, beamA - beamW, beamA + beamW);
+			ctx.closePath();
+			ctx.fill();
+			ctx.restore();
+
+			// Circuito de Playas: headlights moving along the road at the foot of the cliffs.
+			for (let k = 0; k < 7; k++) {
+				const dir = k % 2 ? 1 : -1;
+				const speed = 0.0015 + hash(k, 4) * 0.001;
+				let x = (hash(k, 3) * cols + dir * t * speed * 1) % cols;
+				if (x < 0) x += cols;
+				const xi = Math.floor(x);
+				const row = horizon - 1;
+				cells[row * cols + xi] = ["•", dir > 0 ? P.lamp : "255,90,80", 0.95];
 			}
 
 			// Fog: a slow field over the band under the text. The pointer clears it, and it closes back.
@@ -589,9 +624,10 @@ const lastWritten = posts[0]?.data.pubDate.toLocaleDateString("en-US", {
 						const band = smooth(Math.min(1, (y - fogTop) / (rows * 0.12))) * (y > horizon - 2 ? 0.7 : 1);
 						fogD = band * (fbm(x * 0.035 + drift * 60, y * 0.09 + drift * 10) * 1.3 - 0.12);
 						fogD *= 1 - clear[i];
+						const nearTower = Math.abs(x - fx) < 8 && y < coastTop(fx) + 6;
+						if (nearTower) fogD *= 0.25;
 					}
 					const under = cells[i];
-					if (under && under[1] === P.slab) fogD *= 0.5;
 					if (under && fogD < 0.7) {
 						let [c, rgb, a] = under;
 						if (litByYou.has(i) && rgb === P.house) a = 1;
@@ -600,23 +636,39 @@ const lastWritten = posts[0]?.data.pubDate.toLocaleDateString("en-US", {
 					if (fogD > 0.08) {
 						const ci = Math.min(FOG.length - 1, Math.floor(fogD * FOG.length));
 						const lit = 1 - (y - fogTop) / (horizon - fogTop);
-						put(x, y, FOG[ci], lit > 0.5 ? P.fogLit : P.fog, Math.min(0.7, 0.15 + fogD * 0.6));
+						const b = inBeam(x * cw, y * ch);
+						put(x, y, FOG[ci], b > 0.05 ? P.lamp : lit > 0.5 ? P.fogLit : P.fog, Math.min(0.9, 0.15 + fogD * 0.6 + b * 0.8));
 					}
 					if (litByYou.has(i) && !under && y > fogTop) put(x, y, "▪", P.house, 0.9 * (1 - fogD));
 				}
 			}
 
-			// Still sea, with the slab's windows reflected as broken warm marks.
+			// Still sea, with the lighthouse reflected as broken warm marks.
 			for (let y = horizon; y < rows; y++) {
 				const depth = (y - horizon) / (rows - horizon);
 				for (let x = 0; x < cols; x++) {
-					if (x > slabL + sideW && x < slabL + slabW && hash(x, y) > 0.55 && depth < 0.6) {
-						put(x, y, (x + y) % 3 ? "." : "'", P.win, 0.55 * (1 - depth));
+					const ref = Math.abs(x - fx) < 2 && hash(x, y) > 0.5 && depth < 0.7;
+					if (ref) {
+						put(x, y, (x + y) % 3 ? "." : "'", P.lamp, 0.5 * (1 - depth));
 					} else if (hash(x * 3, y) > 0.55 - depth * 0.2) {
 						const wave = Math.sin(x * 0.4 + t * 0.0008 + y * 1.7);
 						put(x, y, wave > 0.4 ? "~" : "-", P.sea, (0.25 + 0.2 * wave) * (1 - depth * 0.5));
 					}
 				}
+			}
+
+			// Garúa proper: a fine slow drizzle, brighter where the beam catches it.
+			for (const d of drops) {
+				d.y += d.v;
+				d.x -= d.v * 0.35;
+				if (d.y > H || d.x < 0) {
+					d.y = -10;
+					d.x = Math.random() * W * 1.2;
+				}
+				const b = inBeam(d.x, d.y);
+				const a = (isDark ? 0.32 : 0.34) + b * 0.9;
+				ctx.fillStyle = `rgba(${b > 0.05 ? P.lamp : P.drop},${a.toFixed(3)})`;
+				ctx.fillText(d.c, d.x, d.y);
 			}
 
 			for (let i = meteors.length - 1; i >= 0; i--) {
