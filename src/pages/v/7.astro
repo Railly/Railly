@@ -577,20 +577,30 @@ const lastWritten = posts[0]?.data.pubDate.toLocaleDateString("en-US", {
 				let d = Math.abs(a - beamA);
 				if (d > Math.PI) d = Math.PI * 2 - d;
 				const dist = Math.hypot(px - lampX, py - lampY);
-				return d < beamW && dist < W * 0.75 ? (1 - d / beamW) * (1 - dist / (W * 0.75)) : 0;
+				return d < beamW * 2.5 && dist < W * 0.75 ? (1 - d / (beamW * 2.5)) ** 2 * 0.6 * (1 - dist / (W * 0.75)) : 0;
 			};
+			// Soft beam: several widening cones stacked and blurred, so the edge dissolves into the garúa.
 			ctx.save();
 			ctx.globalCompositeOperation = isDark ? "lighter" : "source-over";
-			const L = W * 0.75;
-			const beam = ctx.createRadialGradient(lampX, lampY, 0, lampX, lampY, L);
-			beam.addColorStop(0, `rgba(${P.lamp},${isDark ? 0.22 : 0.35})`);
-			beam.addColorStop(1, `rgba(${P.lamp},0)`);
-			ctx.fillStyle = beam;
-			ctx.beginPath();
-			ctx.moveTo(lampX, lampY);
-			ctx.arc(lampX, lampY, L, beamA - beamW, beamA + beamW);
-			ctx.closePath();
-			ctx.fill();
+			ctx.filter = "blur(14px)";
+			const L = W * 0.8;
+			for (const [spread, alpha] of [[1, 0.1], [1.8, 0.07], [2.8, 0.045], [4, 0.03]] as const) {
+				const beam = ctx.createRadialGradient(lampX, lampY, 0, lampX, lampY, L);
+				beam.addColorStop(0, `rgba(${P.lamp},${alpha * (isDark ? 1.4 : 2)})`);
+				beam.addColorStop(0.5, `rgba(${P.lamp},${alpha * (isDark ? 0.6 : 0.9)})`);
+				beam.addColorStop(1, `rgba(${P.lamp},0)`);
+				ctx.fillStyle = beam;
+				ctx.beginPath();
+				ctx.moveTo(lampX, lampY);
+				ctx.arc(lampX, lampY, L, beamA - beamW * spread, beamA + beamW * spread);
+				ctx.closePath();
+				ctx.fill();
+			}
+			const halo = ctx.createRadialGradient(lampX, lampY, 0, lampX, lampY, 60);
+			halo.addColorStop(0, `rgba(${P.lamp},${isDark ? 0.35 : 0.5})`);
+			halo.addColorStop(1, `rgba(${P.lamp},0)`);
+			ctx.fillStyle = halo;
+			ctx.fillRect(lampX - 60, lampY - 60, 120, 120);
 			ctx.restore();
 
 			// Circuito de Playas: headlights moving along the road at the foot of the cliffs.
