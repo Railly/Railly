@@ -16,6 +16,7 @@ const lastWritten = posts[0]?.data.pubDate.toLocaleDateString("en-US", {
 <Layout title="Railly Hugo (v7)" description="Variant 7">
 	<canvas class="orb" aria-hidden="true"></canvas>
 	<div class="moonlight" aria-hidden="true"></div>
+	<canvas class="space" aria-hidden="true"></canvas>
 	<main class="v7 relative z-[1] mx-auto flex min-h-screen max-w-[44rem] flex-col px-6 pt-[18vh] pb-16 text-[#1b1915] dark:text-[#ebe7df]">
 		<div class="s font-serif text-[clamp(1.6rem,3.6vw,2.2rem)] leading-[1.45] tracking-[-0.01em]">
 			<span>I build at the frontier of what agents and interfaces can do. I’m </span><span class="nn"><img class="lg av" src="/images/railly-hugo-headshot.webp" alt="" />Railly Hugo</span><span>, a </span><span class="nn"><Flag country="pe" class="lg fl" width={20} height={20} />Peruvian</span><span> engineer at </span><span class="nn"><BrandIcon name="vercel" class="lg" width={20} height={20} />Vercel Labs</span><span>. I make </span>
@@ -74,6 +75,21 @@ const lastWritten = posts[0]?.data.pubDate.toLocaleDateString("en-US", {
 </Layout>
 
 <style>
+	/* When the landscape sets, the sky above it opens: stars, Mars, a rocket on its way. */
+	.space {
+		position: fixed;
+		inset: 0;
+		width: 100vw;
+		height: 100vh;
+		pointer-events: none;
+		z-index: 0;
+		opacity: 0;
+		transition: opacity 1.8s ease 0.4s;
+	}
+	:global(html.reading) .space {
+		opacity: 1;
+	}
+
 	/* The footer reads as a road through the fields: a lane cleared in the scene,
 	   and a soft halo in the ground colour around each word instead of a box. */
 	.road {
@@ -864,5 +880,122 @@ const lastWritten = posts[0]?.data.pubDate.toLocaleDateString("en-US", {
 		dark.addEventListener("change", () => draw(performance.now()));
 		draw(0);
 		requestAnimationFrame(loop);
+	}
+</script>
+<script>
+	const space = document.querySelector<HTMLCanvasElement>("canvas.space");
+	const sctx = space?.getContext("2d");
+	if (space && sctx) {
+		const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+		const dark = matchMedia("(prefers-color-scheme: dark)");
+		const hash = (x: number, y: number) => {
+			const h = Math.sin(x * 127.1 + y * 311.7) * 43758.5453;
+			return h - Math.floor(h);
+		};
+		let W = 0;
+		let H = 0;
+		let dpr = 1;
+		const resize = () => {
+			dpr = Math.min(devicePixelRatio || 1, 2);
+			W = innerWidth;
+			H = innerHeight;
+			space.width = W * dpr;
+			space.height = H * dpr;
+		};
+		let launched = -1;
+		const draw = (t: number) => {
+			const isDark = dark.matches;
+			const reading = document.documentElement.classList.contains("reading");
+			if (!reading) {
+				launched = -1;
+				return;
+			}
+			if (launched < 0) launched = t;
+			sctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+			sctx.clearRect(0, 0, W, H);
+			sctx.textBaseline = "middle";
+			const ink = isDark ? "235,232,255" : "60,60,110";
+
+			// Stars, kept away from the reading column so the rows stay clean.
+			const col = Math.min(720, W * 0.6);
+			const left = (W - col) / 2 - 40;
+			const right = (W + col) / 2 + 40;
+			for (let i = 0; i < 260; i++) {
+				const x = hash(i, 1) * W;
+				const y = hash(i, 2) * H;
+				const inColumn = x > left && x < right;
+				const a = (inColumn ? 0.12 : 0.55) * (0.5 + 0.5 * Math.sin(t * 0.0008 + i));
+				sctx.fillStyle = `rgba(${ink},${(a * (isDark ? 1 : 0.6)).toFixed(3)})`;
+				sctx.font = `${hash(i, 3) > 0.9 ? 12 : 9}px "Commit Mono", monospace`;
+				sctx.fillText(hash(i, 4) > 0.85 ? "+" : hash(i, 4) > 0.6 ? "·" : ".", x, y);
+			}
+
+			// Mars, small and dusty, upper right.
+			const mx = W - Math.max(70, W * 0.1);
+			const my = H * 0.16;
+			const mr = W < 700 ? 14 : 22;
+			sctx.save();
+			sctx.shadowColor = "rgba(255,120,90,0.5)";
+			sctx.shadowBlur = 24;
+			const g = sctx.createRadialGradient(mx - mr * 0.4, my - mr * 0.4, mr * 0.1, mx, my, mr);
+			g.addColorStop(0, "rgba(255,170,130,1)");
+			g.addColorStop(1, "rgba(190,80,60,1)");
+			sctx.fillStyle = g;
+			sctx.beginPath();
+			sctx.arc(mx, my, mr, 0, Math.PI * 2);
+			sctx.fill();
+			sctx.restore();
+			sctx.fillStyle = `rgba(${ink},0.45)`;
+			sctx.font = '10px "Commit Mono", monospace';
+			sctx.fillText("mars", mx - mr, my + mr + 14);
+
+			// A rocket climbing from the lower left toward Mars, leaving an ASCII exhaust.
+			const p = Math.min(1, (t - launched) / 26000);
+			const sx = W * 0.06;
+			const sy = H * 0.95;
+			const cx = W * 0.2;
+			const cy = H * 0.15;
+			const bez = (u: number) => [
+				(1 - u) ** 2 * sx + 2 * (1 - u) * u * cx + u * u * (mx - mr * 2),
+				(1 - u) ** 2 * sy + 2 * (1 - u) * u * cy + u * u * my,
+			];
+			const [rx, ry] = bez(p);
+			const [ax, ay] = bez(Math.min(1, p + 0.01));
+			for (let k = 1; k < 40; k++) {
+				const u = p - k * 0.006;
+				if (u < 0) break;
+				const [tx, ty] = bez(u);
+				sctx.fillStyle = `rgba(255,${180 - k * 3},${150 - k * 2},${(0.8 - k / 45).toFixed(3)})`;
+				sctx.font = '10px "Commit Mono", monospace';
+				sctx.fillText(k < 4 ? "*" : k < 12 ? ":" : ".", tx + Math.sin(k + t * 0.01) * 1.5, ty);
+			}
+			if (p < 1) {
+				sctx.save();
+				sctx.translate(rx, ry);
+				sctx.rotate(Math.atan2(ay - ry, ax - rx) + Math.PI / 2);
+				sctx.fillStyle = isDark ? "rgba(240,238,250,0.95)" : "rgba(50,50,80,0.9)";
+				sctx.beginPath();
+				sctx.moveTo(0, -11);
+				sctx.quadraticCurveTo(4, -5, 3.5, 7);
+				sctx.lineTo(-3.5, 7);
+				sctx.quadraticCurveTo(-4, -5, 0, -11);
+				sctx.fill();
+				sctx.fillRect(-6, 4, 2.5, 4);
+				sctx.fillRect(3.5, 4, 2.5, 4);
+				sctx.fillStyle = "rgba(255,190,120,0.95)";
+				sctx.fillRect(-1.5, 7, 3, 3 + Math.random() * 3);
+				sctx.restore();
+			} else {
+				sctx.fillStyle = `rgba(${ink},0.55)`;
+				sctx.fillText("landed.", mx - mr, my - mr - 10);
+			}
+		};
+		const loop = (t: number) => {
+			draw(t);
+			requestAnimationFrame(loop);
+		};
+		resize();
+		addEventListener("resize", resize);
+		if (!reduce) requestAnimationFrame(loop);
 	}
 </script>
