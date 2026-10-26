@@ -1,6 +1,7 @@
 ---
 import BrandIcon from "../brand/BrandIcon.astro";
 import Flag from "../brand/Flag.astro";
+import { ReachHero } from "../home/ReachHero";
 
 interface Props {
 	name: string;
@@ -39,6 +40,10 @@ const roles = ["Hunter"];
     </span>
     <Flag country="pe" />
 </header>
+
+<div class="hero-reveal w-full" style="--reveal-delay: 40ms">
+    <ReachHero client:load />
+</div>
 
 <section class="flex flex-col gap-2">
     <p class="hero-reveal text-lg text-foreground !m-0" style="--reveal-delay: 90ms">
