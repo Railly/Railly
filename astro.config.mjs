@@ -24,7 +24,7 @@ export default defineConfig({
 	},
 
 	integrations: [
-		sitemap({ filter: (page) => !/\/v\/\d+\/?$/.test(new URL(page).pathname) }),
+		sitemap(),
 		mdx({
 			remarkPlugins: [remarkMath],
 			rehypePlugins: [rehypeKatex],

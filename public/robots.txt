@@ -1,5 +1,4 @@
 User-agent: *
 Allow: /
-Disallow: /v/
 
 Sitemap: https://www.railly.dev/sitemap-index.xml
