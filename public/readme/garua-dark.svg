@@ -8,13 +8,13 @@ text{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px}
 .rain{animation:fall 14s linear infinite}
 .r2{animation-delay:-7s}
 @keyframes drift{to{transform:translateX(-440px)}}
-@keyframes sweep{from{transform:rotate(-3deg)}to{transform:rotate(8deg)}}
+@keyframes sweep{from{transform:rotate(0deg)}to{transform:rotate(6deg)}}
 @keyframes pulse{50%{opacity:.6}}
 @keyframes fall{from{transform:translate(0,-280px)}to{transform:translate(-60px,280px)}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important}}
 </style>
 <defs><radialGradient id="b" cx="700" cy="62" r="620" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffecaa" stop-opacity=".35"/><stop offset="1" stop-color="#ffecaa" stop-opacity="0"/></radialGradient><filter id="s" x="-30%" y="-100%" width="160%" height="300%"><feGaussianBlur stdDeviation="10"/></filter><linearGradient id="f" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".35" stop-color="#fff" stop-opacity="1"/></linearGradient><mask id="m"><rect width="880" height="280" fill="url(#f)"/></mask></defs>
-<g mask="url(#m)"><g class="beam" style="transform-origin:700px 62px"><path d="M700 62 L80 12 L80 122 Z" fill="url(#b)" filter="url(#s)"/></g></g>
+<g mask="url(#m)"><g class="beam" style="transform-origin:700px 62px"><path d="M700 62 L80 72 L80 172 Z" fill="url(#b)" filter="url(#s)"/></g></g>
 <text x="0" y="130" fill="#8f93c4" fill-opacity="0.25">.</text>
 <text x="8" y="130" fill="#8f93c4" fill-opacity="0.25">.</text>
 <text x="40" y="130" fill="#8f93c4" fill-opacity="0.25">.</text>

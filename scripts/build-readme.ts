@@ -25,7 +25,7 @@ const PROFILE_PROJECTS = [
 	"dotframe",
 	"Makeables",
 ];
-const TOP_POSTS = 2;
+const TOP_POSTS = 1;
 
 type Project = {
 	name: string;
@@ -88,7 +88,7 @@ function renderProjects(projects: Project[]): string {
 			const link = url.startsWith("https://github.com") ? p.github : url;
 			return `<a href="${link}">${p.name}</a>`;
 		})
-		.join(" · ");
+		.join("&nbsp;&nbsp;·&nbsp;&nbsp;");
 }
 
 function formatDate(d: Date): string {

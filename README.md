@@ -3,10 +3,13 @@
   <img src="./public/readme/garua-light.svg" width="440" alt="ASCII garúa over the sea with a lighthouse" />
 </picture>
 
-I build at the frontier of what agents and interfaces can do. Peruvian engineer at [Vercel Labs](https://vercel.com/labs), founder of [Crafter Station](https://crafter.run).
+**Railly Hugo**<br />
+<sub>MTS @ ▲ Vercel | Founder, ꕤ Crafter Station</sub>
 
-<p><!-- START:PROJECTS --><a href="https://www.railly.dev/work/petdex">Petdex</a> · <a href="https://agent-browser.dev">agent-browser</a> · <a href="https://issue-graph.dev">issue-graph</a> · <a href="https://dotframe.crafter.games">dotframe</a> · <a href="https://makeables.dev">Makeables</a><!-- END:PROJECTS --></p>
+I build at the frontier of what agents and interfaces can do.
 
-<p><sub>Notes: <!-- START:WRITING --><a href="https://www.railly.dev/blog/agentic-second-brain-four-months-later/">My Agentic Second Brain, Four Months Later</a> · <a href="https://www.railly.dev/blog/webctl/">webctl: reverse-engineer any website into an agent CLI</a><!-- END:WRITING --></sub></p>
+<p><sub><!-- START:PROJECTS --><a href="https://www.railly.dev/work/petdex">Petdex</a>&nbsp;&nbsp;·&nbsp;&nbsp;<a href="https://agent-browser.dev">agent-browser</a>&nbsp;&nbsp;·&nbsp;&nbsp;<a href="https://issue-graph.dev">issue-graph</a>&nbsp;&nbsp;·&nbsp;&nbsp;<a href="https://dotframe.crafter.games">dotframe</a>&nbsp;&nbsp;·&nbsp;&nbsp;<a href="https://makeables.dev">Makeables</a><!-- END:PROJECTS --></sub></p>
+
+<p><sub>Latest: <!-- START:WRITING --><a href="https://www.railly.dev/blog/agentic-second-brain-four-months-later/">My Agentic Second Brain, Four Months Later</a><!-- END:WRITING --></sub></p>
 
 <p><sub><a href="https://railly.dev">railly.dev</a> · <a href="https://x.com/raillyhugo">x</a> · <a href="https://www.youtube.com/@raillydev">youtube</a></sub></p>
