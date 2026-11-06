@@ -1,6 +1,6 @@
 <!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Grid drill · demo</title>
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link rel="stylesheet" href="vendor/leaflet.css">
 <style>
 :root{--ink:#16161d;--muted:#6b6b78;--accent:#e0005a;--accent-soft:rgba(224,0,90,.14);--card:rgba(255,255,255,.86);--ease:cubic-bezier(.22,1,.36,1)}
 html,body,#map{margin:0;height:100%;width:100%;background:#eef0f3}
@@ -96,7 +96,7 @@ kbd{font-family:"Commit Mono",ui-monospace,monospace;background:var(--paper-2);b
   <div id="help"><kbd>drag</kbd> move · <kbd>click</kbd> a cell to drill in or step aside · <kbd>←↑→↓</kbd> neighbor · <kbd>⌫</kbd> up · type a cell like <kbd>b</kbd><kbd>3</kbd> to drill in · <kbd>/</kbd> type a code · <kbd>f</kbd> fullscreen</div>
 </div>
 <div id="toast"></div>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="vendor/leaflet.js"></script>
 <script>
 // World-anchored 4x4 quadtree on Web Mercator. Level k cell = tile at zoom 2k. One segment per level: row A-D + column 1-4.
 const N=4, ROWS='ABCD', W=256;
