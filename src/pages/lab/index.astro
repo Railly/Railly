@@ -1,24 +1,13 @@
 ---
 import PageLayout from "@/components/layout/PageLayout.astro";
 import { ogUrl } from "@/config/site";
+import { labExperiments } from "@/data/lab";
 import Layout from "@/layouts/Layout.astro";
 
 const description = "Experiments in interfaces for people and AI agents.";
 const ogImage = ogUrl({ title: "Lab", description, tag: "lab" });
 
-const experiments = [
-	{
-		n: "001",
-		href: "/lab/grid-drill",
-		title: "Grid drill",
-		summary:
-			"A short code for every place on Earth, one cell at a time. An AI agent did better without it.",
-		date: "Nov 2026",
-		status: "Didn't ship",
-		poster: "/lab/grid-drill/run-card-poster.webp",
-		video: "/lab/grid-drill/run-card.mp4",
-	},
-];
+const experiments = labExperiments;
 ---
 
 <Layout title="Lab | Railly Hugo" description={description} image={ogImage}>
