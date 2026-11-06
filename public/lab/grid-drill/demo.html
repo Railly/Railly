@@ -1,0 +1,211 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Grid drill · demo</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<style>
+:root{--ink:#16161d;--muted:#6b6b78;--accent:#e0005a;--accent-soft:rgba(224,0,90,.14);--card:rgba(255,255,255,.86);--ease:cubic-bezier(.22,1,.36,1)}
+html,body,#map{margin:0;height:100%;width:100%;background:#eef0f3}
+body{font-family:ui-sans-serif,-apple-system,"Inter",system-ui,sans-serif;color:var(--ink);overflow:hidden}
+.leaflet-tile-pane{filter:saturate(.55) contrast(1.02) brightness(1.03)}
+.leaflet-control-attribution{font-size:9px;background:rgba(255,255,255,.6)!important}
+#grid{position:absolute;inset:0;z-index:1000;pointer-events:none;overflow:hidden}
+.c{position:absolute;box-sizing:border-box;will-change:transform,opacity;transition:opacity .45s var(--ease),transform .45s var(--ease),background-color .2s,border-color .2s}
+.c.enter{opacity:0;transform:scale(.92)}
+.c.leave{opacity:0;transform:scale(1.04)}
+.ch{border:1px solid rgba(224,0,90,.42)}
+.ch.hover{background:var(--accent-soft);border-color:rgba(224,0,90,.9)}
+.nb{border:1px dashed rgba(59,59,179,.35)}
+.nb.hover{background:rgba(59,59,179,.08);border-color:rgba(59,59,179,.8)}
+.sel{border:2.5px solid var(--accent);border-radius:2px;animation:pulse 2.4s var(--ease) infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--accent) 45%,transparent)}70%{box-shadow:0 0 0 14px transparent}100%{box-shadow:0 0 0 0 transparent}}
+.l{position:absolute;left:5px;top:5px;font:600 12px/1 ui-monospace,"SF Mono",Menlo,monospace;color:#fff;background:var(--accent);padding:3px 5px;border-radius:4px;letter-spacing:.02em;box-shadow:0 1px 3px rgba(0,0,0,.18)}
+.nb .l{background:rgba(59,59,179,.75);font-weight:500}
+.p{position:absolute;left:6px;bottom:5px;font:10px/1 ui-monospace,Menlo,monospace;color:rgba(59,59,179,.85);background:rgba(255,255,255,.78);padding:2px 4px;border-radius:3px}
+#hud{position:absolute;top:16px;left:16px;z-index:2000;background:var(--card);backdrop-filter:blur(14px) saturate(1.4);-webkit-backdrop-filter:blur(14px) saturate(1.4);border:1px solid rgba(0,0,0,.06);border-radius:14px;box-shadow:0 10px 40px rgba(20,20,40,.16);padding:14px 16px 12px;width:min(420px,calc(100vw - 64px))}
+#top{display:flex;align-items:center;gap:8px}
+#chips{flex:1;display:flex;flex-wrap:wrap;gap:4px;min-height:30px;align-items:center}
+.chip{font:600 15px/1 ui-monospace,"SF Mono",Menlo,monospace;padding:6px 7px;border-radius:7px;background:#f3f3f6;color:var(--ink);cursor:pointer;transition:background .2s,color .2s,transform .35s var(--ease),opacity .35s var(--ease)}
+.chip:hover{background:var(--accent-soft);color:var(--accent)}
+.chip.last{background:var(--accent);color:#fff}
+.chip.new{opacity:0;transform:translateY(6px) scale(.9)}
+.dot{color:#c2c2cc;font:600 14px ui-monospace,monospace}
+#code{display:none;flex:1;font:600 15px ui-monospace,"SF Mono",Menlo,monospace;border:1px solid #ddd;border-radius:8px;padding:6px 8px;outline:none}
+#code:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+button{all:unset;cursor:pointer;font:500 12px ui-sans-serif,system-ui;color:var(--muted);padding:6px 8px;border-radius:7px;transition:background .2s,color .2s}
+button:hover{background:#f0f0f4;color:var(--ink)}
+#meta{display:flex;justify-content:space-between;margin-top:9px;font:12px ui-monospace,Menlo,monospace;color:var(--muted)}
+#size{color:var(--accent);font-weight:600}
+#help{margin-top:8px;font-size:11px;color:#9a9aa6;line-height:1.5}
+kbd{font:10px ui-monospace,monospace;background:#f1f1f4;border:1px solid #e3e3e8;border-bottom-width:2px;border-radius:4px;padding:0 4px;color:#555}
+#toast{position:absolute;left:50%;bottom:28px;transform:translate(-50%,20px);opacity:0;z-index:3000;background:var(--ink);color:#fff;font:500 13px ui-sans-serif,system-ui;padding:9px 14px;border-radius:999px;transition:all .35s var(--ease);pointer-events:none}
+#toast.on{opacity:1;transform:translate(-50%,0)}
+@media (max-width:600px){#help{display:none}}
+@media (prefers-reduced-motion:reduce){.c,.chip,#toast{transition:none}.sel{animation:none}}
+
+/* railly.dev theme: monochrome ink on warm paper, Geist Sans + Commit Mono */
+@font-face{font-family:"Geist Sans";src:url(fonts/geist-sans-latin-400-normal.woff2) format("woff2");font-weight:400}
+@font-face{font-family:"Geist Sans";src:url(fonts/geist-sans-latin-500-normal.woff2) format("woff2");font-weight:500 600}
+@font-face{font-family:"Commit Mono";src:url(fonts/commit-mono-latin-400-normal.woff2) format("woff2")}
+:root{--ink:#1b1915;--muted:color-mix(in oklab,#1b1915 52%,#f4f1ea);--accent:#1b1915;--accent-soft:rgba(27,25,21,.07);--card:rgba(244,241,234,.94);--paper:#f4f1ea;--paper-2:#ece7dc;--ui:#e2dccf;--ui-2:#d3ccbd}
+html,body,#map{background:var(--paper)}
+body{font-family:"Geist Sans",ui-sans-serif,system-ui,sans-serif}
+.leaflet-tile-pane{filter:grayscale(1) sepia(.16) contrast(.9) brightness(1.05)}
+.ch{border-color:rgba(27,25,21,.32)}.ch.hover{background:var(--accent-soft);border-color:var(--ink)}
+.nb{border:1px dashed rgba(27,25,21,.2)}.nb.hover{background:rgba(27,25,21,.04);border-color:rgba(27,25,21,.5)}
+.sel{border:2px solid var(--ink);border-radius:0}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(27,25,21,.28)}70%{box-shadow:0 0 0 12px rgba(27,25,21,0)}100%{box-shadow:0 0 0 0 rgba(27,25,21,0)}}
+.l{font-family:"Commit Mono",ui-monospace,monospace;font-weight:400;background:var(--ink);color:var(--paper);border-radius:3px;box-shadow:none}
+.nb .l{background:var(--ui);color:var(--ink)}
+.p{font-family:"Commit Mono",ui-monospace,monospace;color:var(--muted);background:rgba(244,241,234,.85)}
+#hud{background:var(--card);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid var(--ui);border-radius:6px;box-shadow:0 1px 0 var(--ui-2)}
+.chip{font-family:"Commit Mono",ui-monospace,monospace;font-weight:400;background:var(--paper-2);color:var(--ink);border-radius:4px;border:1px solid var(--ui)}
+.chip:hover{background:var(--ui);color:var(--ink)}
+.chip.last{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+#code{font-family:"Commit Mono",ui-monospace,monospace;border-color:var(--ui);border-radius:4px;background:var(--paper)}
+#code:focus{border-color:var(--ink);box-shadow:0 0 0 3px var(--accent-soft)}
+#meta{font-family:"Commit Mono",ui-monospace,monospace}#size{color:var(--ink)}
+button{font-family:"Geist Sans",system-ui;border-radius:4px}button:hover{background:var(--paper-2)}
+kbd{font-family:"Commit Mono",ui-monospace,monospace;background:var(--paper-2);border-color:var(--ui);color:var(--ink)}
+#help{color:var(--muted)}
+#toast{background:var(--ink);color:var(--paper);border-radius:4px}
+@media (prefers-color-scheme:dark){
+:root{--ink:#ededed;--muted:color-mix(in oklab,#ededed 52%,#0f0e0c);--accent-soft:rgba(237,237,237,.08);--card:rgba(15,14,12,.92);--paper:#0f0e0c;--paper-2:#18160f;--ui:#24211b;--ui-2:#2f2b24}
+.leaflet-tile-pane{filter:invert(1) grayscale(1) contrast(.85) brightness(.9)}
+.ch{border-color:rgba(237,237,237,.3)}.nb{border-color:rgba(237,237,237,.16)}
+.p{background:rgba(15,14,12,.8)}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(237,237,237,.25)}70%{box-shadow:0 0 0 12px rgba(237,237,237,0)}100%{box-shadow:0 0 0 0 rgba(237,237,237,0)}}
+}
+
+/* compact HUD when embedded in a page */
+.embed #help{display:none}
+.embed #hud{top:10px;left:10px;width:auto;max-width:calc(100vw - 20px);padding:8px 10px 7px;border-radius:5px}
+.embed .chip{font-size:11px;padding:4px 5px}.embed .dot{font-size:10px}
+.embed #chips{gap:2px;min-height:22px}
+.embed #meta{margin-top:5px;font-size:10px;gap:14px}
+.embed button{font-size:11px;padding:4px 6px}
+.embed .l{font-size:10px;padding:2px 3px;left:3px;top:3px}
+.ch.pending{background:var(--accent-soft);border-color:var(--ink)}
+.chip.ghost{background:transparent;border:1px dashed var(--ink);color:var(--ink);animation:blink 1s steps(2) infinite}
+@keyframes blink{50%{opacity:.35}}
+#full{font-size:15px;line-height:1}
+:fullscreen #hud{top:20px;left:20px}
+</style></head><body>
+<div id="map"></div><div id="grid"></div>
+<div id="hud">
+  <div id="top"><div id="chips"></div><input id="code" spellcheck="false" placeholder="C2.B2.C2.C3"><button id="type" title="type a code (/)">type</button><button id="copy">copy</button><button id="full" title="fullscreen (f)" aria-label="Fullscreen">⤢</button></div>
+  <div id="meta"><span id="ll"></span><span id="size"></span></div>
+  <div id="help"><kbd>drag</kbd> move · <kbd>click</kbd> a cell to drill in or step aside · <kbd>←↑→↓</kbd> neighbor · <kbd>⌫</kbd> up · type a cell like <kbd>b</kbd><kbd>3</kbd> to drill in · <kbd>/</kbd> type a code · <kbd>f</kbd> fullscreen</div>
+</div>
+<div id="toast"></div>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+// World-anchored 4x4 quadtree on Web Mercator. Level k cell = tile at zoom 2k. One segment per level: row A-D + column 1-4.
+const N=4, ROWS='ABCD', W=256;
+const map=L.map('map',{zoomSnap:0,zoomControl:false,maxZoom:20,minZoom:1,keyboard:false,wheelPxPerZoomLevel:110,inertiaDeceleration:2600}).setView([-34.6037,-58.3816],3);
+L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}',{maxZoom:20,maxNativeZoom:19,attribution:'Tiles © Esri'}).addTo(map);
+const $=id=>document.getElementById(id);
+const embedded=new URLSearchParams(location.search).has('embed');
+// compact HUD only while the frame is small; a fullscreen frame gets the full HUD
+const fitHud=()=>document.documentElement.classList.toggle('embed',embedded&&innerWidth<900);
+fitHud();
+const gridEl=$('grid'), chipsEl=$('chips'), codeEl=$('code'), llEl=$('ll'), sizeEl=$('size'), toastEl=$('toast');
+const cellSize=k=>W/N**k;
+function encode(ix,iy,k){ const d=[]; for(let l=k-1;l>=0;l--) d.push(ROWS[Math.floor(iy/N**l)%N]+(Math.floor(ix/N**l)%N+1)); return d; }
+function decode(code){ let ix=0,iy=0,k=0; for(const t of code.toUpperCase().split(/[.\s-]+/).filter(Boolean)){ const r=ROWS.indexOf(t[0]), c=+t.slice(1)-1; if(r<0||!(c>=0&&c<N)) break; ix=ix*N+c; iy=iy*N+r; k++; } return {ix,iy,k}; }
+function bounds(ix,iy,k){ const s=cellSize(k); return L.latLngBounds(map.unproject([ix*s,(iy+1)*s],0),map.unproject([(ix+1)*s,iy*s],0)); }
+const meters=(k,lat)=>40075016*Math.cos(lat*Math.PI/180)/N**k;
+const fmt=m=>m>=1000?`${(m/1000).toFixed(m>=10000?0:1)} km`:`${Math.round(m)} m`;
+function zoomFor(k){ const s=map.getSize(), sh=Math.min(s.x,s.y); return Math.min(20,Math.log2(N**k*(sh/2.1)/W)); }
+
+let sel={ix:5,iy:9,k:2}, programmatic=false, prevCode=[];
+// keyed cells: reuse DOM nodes so moves stay smooth and only new cells animate in
+const live=new Map();
+function place(key,ix,iy,k,cls,label,sub,enterDelay){
+  const s=cellSize(k), sc=2**map.getZoom(), o=map.getPixelOrigin(), pane=map._getMapPanePos();
+  const p=L.point(ix*s*sc,iy*s*sc).subtract(o).add(pane), q=L.point((ix+1)*s*sc,(iy+1)*s*sc).subtract(o).add(pane);
+  let d=live.get(key);
+  if(!d){ d=document.createElement('div'); d.className='c '+cls+' enter';
+    d.innerHTML=(label?`<span class="l">${label}</span>`:'')+(sub?`<span class="p">${sub}</span>`:'');
+    gridEl.appendChild(d); live.set(key,d); d.style.transitionDelay=(enterDelay||0)+'ms';
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{ d.classList.remove('enter'); setTimeout(()=>d.style.transitionDelay='0ms',700); })); }
+  d._seen=true;
+  Object.assign(d.style,{left:p.x+'px',top:p.y+'px',width:(q.x-p.x)+'px',height:(q.y-p.y)+'px'});
+  const sp=d.querySelector('.p'); if(sp) sp.style.display=(q.x-p.x)>120?'':'none';
+}
+function draw(){
+  for(const d of live.values()) d._seen=false;
+  const {ix,iy,k}=sel, n=N**k;
+  for(let dy=-2;dy<=2;dy++) for(let dx=-2;dx<=2;dx++){ if(!dx&&!dy) continue; const y=iy+dy; if(y<0||y>=n) continue; const x=(ix+dx+n)%n;
+    const code=encode(x,y,k); place(`n${k}:${x}:${y}`,x,y,k,'nb',code.at(-1),code.slice(0,-1).join('.'),40*(Math.abs(dx)+Math.abs(dy))); }
+  if(k<10) for(let r=0;r<N;r++) for(let c=0;c<N;c++){ const x=ix*N+c,y=iy*N+r; place(`c${k+1}:${x}:${y}`,x,y,k+1,'ch',ROWS[r]+(c+1),'',18*(r+c)); }
+  place(`s${k}:${ix}:${iy}`,ix,iy,k,'sel','','',0);
+  for(const [key,d] of live){ if(!d._seen){ live.delete(key); d.classList.add('leave'); setTimeout(()=>d.remove(),450); } }
+  const ctr=bounds(ix,iy,k).getCenter();
+  llEl.textContent=`${ctr.lat.toFixed(5)}, ${ctr.lng.toFixed(5)}`;
+  sizeEl.textContent=`cell ≈ ${fmt(meters(k,ctr.lat))}`;
+}
+function renderChips(){
+  const code=encode(sel.ix,sel.iy,sel.k); chipsEl.innerHTML='';
+  code.forEach((seg,i)=>{ if(i){ const dot=document.createElement('span'); dot.className='dot'; dot.textContent='.'; chipsEl.appendChild(dot); }
+    const c=document.createElement('span'); c.className='chip'+(i===code.length-1?' last':'')+(prevCode[i]!==seg?' new':''); c.textContent=seg;
+    c.title='go up to this level'; c.onclick=e=>{ e.stopPropagation(); const up=code.length-1-i; select({ix:Math.floor(sel.ix/N**up),iy:Math.floor(sel.iy/N**up),k:i+1}); };
+    chipsEl.appendChild(c); if(c.classList.contains('new')) setTimeout(()=>c.classList.remove('new'),20+i*25); });
+  prevCode=code;
+}
+function select(c,{fly=true,duration}={}){
+  sel=c; programmatic=true; renderChips(); draw();
+  const target=bounds(c.ix,c.iy,c.k).getCenter(), z=zoomFor(c.k);
+  if(fly) map.flyTo(target,z,{duration:duration??Math.min(1.4,.55+Math.abs(z-map.getZoom())*.09),easeLinearity:.18});
+  else map.setView(target,z,{animate:false});
+  map.once('moveend',()=>{ programmatic=false; draw(); });
+}
+function toast(t){ toastEl.textContent=t; toastEl.classList.add('on'); clearTimeout(toast._t); toast._t=setTimeout(()=>toastEl.classList.remove('on'),1600); }
+
+map.on('move zoom resize viewreset',draw);
+// refit the selected cell when the frame changes size (entering or leaving fullscreen)
+let rz; window.addEventListener('resize',()=>{ fitHud(); clearTimeout(rz); rz=setTimeout(()=>{ map.invalidateSize(); select(sel,{duration:.6}); },120); });
+map.on('moveend',()=>{ if(programmatic) return; const cp=map.project(map.getCenter(),0), s=cellSize(sel.k); const c={ix:Math.floor(cp.x/s),iy:Math.floor(cp.y/s),k:sel.k}; if(c.ix!==sel.ix||c.iy!==sel.iy){ sel=c; renderChips(); draw(); } });
+function cellAt(latlng){ const p=map.project(latlng,0), k=sel.k, s=cellSize(k), x=Math.floor(p.x/s), y=Math.floor(p.y/s);
+  if(x===sel.ix&&y===sel.iy){ const s2=cellSize(k+1), cx=Math.floor(p.x/s2), cy=Math.floor(p.y/s2); return {key:`c${k+1}:${cx}:${cy}`,cell:{ix:cx,iy:cy,k:k+1}}; }
+  return {key:`n${k}:${x}:${y}`,cell:{ix:x,iy:y,k}}; }
+let hovered=null;
+map.on('mousemove',e=>{ const {key}=cellAt(e.latlng); if(hovered!==key){ live.get(hovered)?.classList.remove('hover'); hovered=key; live.get(key)?.classList.add('hover'); } });
+map.on('mouseout',()=>{ live.get(hovered)?.classList.remove('hover'); hovered=null; });
+map.on('click',e=>select(cellAt(e.latlng).cell));
+
+function openInput(){ chipsEl.style.display='none'; codeEl.style.display='block'; codeEl.value=encode(sel.ix,sel.iy,sel.k).join('.'); codeEl.focus(); codeEl.select(); }
+$('type').onclick=openInput;
+function closeInput(){ codeEl.style.display='none'; chipsEl.style.display='flex'; }
+codeEl.addEventListener('keydown',e=>{ e.stopPropagation(); if(e.key==='Enter'){ const d=decode(codeEl.value); closeInput(); if(d.k) select(d); else toast('Use segments like C2.B3'); } if(e.key==='Escape') closeInput(); });
+codeEl.addEventListener('blur',closeInput);
+$('copy').onclick=async()=>{ const t=encode(sel.ix,sel.iy,sel.k).join('.'); try{ await navigator.clipboard.writeText(t); toast(`Copied ${t}`); }catch{ toast(t); } };
+let pendingRow=null;
+function setPending(r){ pendingRow=r; for(const d of live.values()) d.classList.remove('pending');
+  chipsEl.querySelector('.ghost')?.remove(); chipsEl.querySelector('.dot.gd')?.remove();
+  if(r===null) return;
+  const {ix,iy,k}=sel; for(let c=0;c<N;c++) live.get(`c${k+1}:${ix*N+c}:${iy*N+r}`)?.classList.add('pending');
+  const dot=document.createElement('span'); dot.className='dot gd'; dot.textContent='.'; const g=document.createElement('span'); g.className='chip ghost'; g.textContent=ROWS[r]+'·'; chipsEl.append(dot,g); }
+const inFrame=window.self!==window.top;
+function toggleFull(){
+  if(inFrame){ window.parent.postMessage({gridDrill:'toggle-fullscreen'},'*'); return; }
+  if(document.fullscreenElement) document.exitFullscreen?.(); else document.documentElement.requestFullscreen?.().catch(()=>toast('Fullscreen is not available here'));
+}
+$('full').onclick=toggleFull;
+document.addEventListener('keydown',e=>{
+  if(e.target===codeEl) return;
+  if(e.metaKey||e.ctrlKey||e.altKey) return;
+  const kl=e.key.length===1?e.key.toLowerCase():e.key;
+  const ri='abcd'.indexOf(kl);
+  if(ri>=0&&e.key.length===1){ e.preventDefault(); setPending(ri); return; }
+  if(pendingRow!==null&&/^[1-4]$/.test(e.key)){ e.preventDefault(); const r=pendingRow, c=+e.key-1; setPending(null); select({ix:sel.ix*N+c,iy:sel.iy*N+r,k:sel.k+1}); return; }
+  if(e.key==='Escape'){ if(pendingRow!==null){ setPending(null); return; } if(inFrame) window.parent.postMessage({gridDrill:'exit-fullscreen'},'*'); return; }
+  if(kl==='f'){ e.preventDefault(); toggleFull(); return; }
+  if(pendingRow!==null) setPending(null);
+  if(e.key==='/'){ e.preventDefault(); openInput(); return; }
+  const mv={ArrowLeft:[-1,0],ArrowRight:[1,0],ArrowUp:[0,-1],ArrowDown:[0,1]}[e.key];
+  if(mv){ e.preventDefault(); const n=N**sel.k; select({ix:(sel.ix+mv[0]+n)%n,iy:Math.max(0,Math.min(n-1,sel.iy+mv[1])),k:sel.k}); }
+  if(e.key==='Backspace'&&sel.k>1){ e.preventDefault(); select({ix:Math.floor(sel.ix/N),iy:Math.floor(sel.iy/N),k:sel.k-1}); }
+});
+const start=decode(decodeURIComponent(location.hash.slice(1)));
+window.gd={encode,decode,select,map,bounds,sel:()=>sel,at:(lat,lng,k)=>{const p=map.project([lat,lng],0),s=cellSize(k);return {ix:Math.floor(p.x/s),iy:Math.floor(p.y/s),k}}};
+select(start.k?start:sel,{fly:false});
+</script></body></html>
