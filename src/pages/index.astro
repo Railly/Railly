@@ -4,6 +4,7 @@ import type { BrandName } from "@/components/brand/registry";
 import Navigation from "@/components/layout/Navigation.astro";
 import SiteFooter from "@/components/layout/SiteFooter.astro";
 import AsciiField from "@/components/scene/AsciiField.astro";
+import InkReveal from "@/components/ui/InkReveal.astro";
 import { ogUrl, siteConfig } from "@/config/site";
 import { labExperiments } from "@/data/lab";
 import Layout from "@/layouts/Layout.astro";
@@ -81,13 +82,14 @@ const markFor = (...texts: (string | undefined)[]) => {
 	<main class="home relative z-[1] mx-auto max-w-[42rem] px-6 pt-12 pb-16 sm:pt-20 text-[#1b1915] dark:text-[#ebe7df]">
 		<header>
 			<h1 class="sr-only">Railly Hugo aka Hunter</h1>
-			<p class="font-serif text-[clamp(1.3rem,2.8vw,1.6rem)] leading-[1.5] tracking-[-0.01em]">
+			<p data-ink-hero data-ink="agents,interfaces,station" class="font-serif text-[clamp(1.3rem,2.8vw,1.6rem)] leading-[1.5] tracking-[-0.01em]">
 				I build at the frontier of what agents and interfaces can do. Peruvian engineer at Vercel Labs in Buenos Aires, and founder of <a href="https://crafter.run" class="u">Crafter Station</a>, a community of 1,000+ builders.
 			</p>
+			<InkReveal />
 		</header>
 
 		<section aria-labelledby="h-now">
-			<h2 id="h-now">What I've been working on</h2>
+			<h2 data-ink-view data-ink="agents" id="h-now">What I've been working on</h2>
 			<div class="grid gap-6 sm:grid-cols-2">
 				<a href="/work/petdex" class="card">
 					<div class="art art-pet" aria-hidden="true">
@@ -109,7 +111,7 @@ const markFor = (...texts: (string | undefined)[]) => {
 		</section>
 
 		<section aria-labelledby="h-tools">
-			<h2 id="h-tools">Tools agents can use</h2>
+			<h2 data-ink-view data-ink="agents" id="h-tools">Tools agents can use</h2>
 			{tools.map((p) => (
 				<a href={p.url} class="r">
 					<span class="n"><BrandIcon name={p.icon} width={14} height={14} class="logo" />{p.name}</span><span class="d">{p.description}</span><span class="m">{p.stars >= 100 ? compact.format(p.stars) : ""}</span>
@@ -118,7 +120,7 @@ const markFor = (...texts: (string | undefined)[]) => {
 		</section>
 
 		<section aria-labelledby="h-work">
-			<h2 id="h-work">Work</h2>
+			<h2 data-ink-view data-ink="agents" id="h-work">Work</h2>
 			{experience.map((e) => (
 				<a href={e.url} class="r note">
 					<span class="n"><BrandIcon name={e.icon} width={14} height={14} class="logo" /><span><span>{e.role}</span> <span class="ev">at {e.org}</span></span></span><span class="m w">{e.when}</span>
@@ -127,7 +129,7 @@ const markFor = (...texts: (string | undefined)[]) => {
 		</section>
 
 		<section aria-labelledby="h-talks">
-			<h2 id="h-talks">Talks and press</h2>
+			<h2 data-ink-view data-ink="agents" id="h-talks">Talks and press</h2>
 			{appearances.map((a) => (
 				<a href={a.url} class="r">
 					<span class="n">{markFor(a.where, a.title) ? <BrandIcon name={markFor(a.where, a.title) as BrandName} width={14} height={14} class="logo" /> : <span class="logo-gap" />}{a.title}</span><span class="d">{a.where}</span><span class="m">{a.date.slice(0, 4)}</span>
@@ -136,7 +138,7 @@ const markFor = (...texts: (string | undefined)[]) => {
 		</section>
 
 		<section aria-labelledby="h-prizes">
-			<h2 id="h-prizes">Prizes</h2>
+			<h2 data-ink-view data-ink="agents" id="h-prizes">Prizes</h2>
 			{achievements.map((a) => (
 				<a href={a.eventUrl} class="r note">
 					<span class="n">{markFor(a.achievement, a.event) ? <BrandIcon name={markFor(a.achievement, a.event) as BrandName} width={14} height={14} class="logo" /> : <span class="logo-gap" />}<span><span>{a.achievement}</span> <span class="ev">at {a.event}</span></span></span><span class="m">{a.year}</span>
@@ -145,14 +147,14 @@ const markFor = (...texts: (string | undefined)[]) => {
 		</section>
 
 		<section aria-labelledby="h-notes">
-			<h2 id="h-notes">Notes</h2>
+			<h2 data-ink-view data-ink="agents" id="h-notes">Notes</h2>
 			{posts.map((p) => (
 				<a href={`/blog/${p.slug}`} class="r note"><span class="n">{p.data.title}</span><span class="m">{year(p.data.pubDate)}</span></a>
 			))}
 		</section>
 
 		<section aria-labelledby="h-lab">
-			<h2 id="h-lab">Lab</h2>
+			<h2 data-ink-view data-ink="agents" id="h-lab">Lab</h2>
 			{labExperiments.slice(0, 2).map((e) => (
 				<a href={e.href} class="card lab">
 					<div class="art art-lab" aria-hidden="true">
@@ -169,7 +171,7 @@ const markFor = (...texts: (string | undefined)[]) => {
 		</section>
 
 		<section aria-labelledby="h-videos">
-			<h2 id="h-videos">Videos</h2>
+			<h2 data-ink-view data-ink="agents" id="h-videos">Videos</h2>
 			<div class="vg">
 				{videos.map((v) => (
 					<a href={v.url} class="r v">
@@ -181,7 +183,7 @@ const markFor = (...texts: (string | undefined)[]) => {
 		</section>
 
 		<section aria-labelledby="h-connect">
-			<h2 id="h-connect">Connect</h2>
+			<h2 data-ink-view data-ink="agents" id="h-connect">Connect</h2>
 			<p class="text-[14.5px] opacity-80">Reach out at <a href="mailto:hi@railly.dev" class="u">hi@railly.dev</a></p>
 			<p class="mt-3 flex flex-wrap gap-x-5 gap-y-1 text-[14.5px]">
 				<a href="https://github.com/railly" class="u">GitHub</a>
