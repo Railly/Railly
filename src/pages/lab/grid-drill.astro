@@ -72,13 +72,16 @@ const sources = [
 		href: "https://en.wikipedia.org/wiki/Maidenhead_Locator_System",
 	},
 ];
+
+import InkReveal from "@/components/ui/InkReveal.astro";
 ---
 
 <Layout title={`${title} | Lab | Railly Hugo`} description={description} image={ogImage}>
 	<PageLayout class="flex flex-col gap-16">
 		<section class="flex flex-col gap-4">
 			<a href="/lab" class="font-mono text-xs uppercase tracking-wider text-foreground-3 hover:text-foreground">Lab · Experiment 001</a>
-			<h1 class="max-w-2xl text-2xl font-medium leading-tight text-foreground sm:text-3xl">{title}</h1>
+			<h1 data-ink-hero class="max-w-2xl text-2xl font-medium leading-tight text-foreground sm:text-3xl">{title}</h1>
+			<InkReveal />
 			<p class="font-mono text-xs text-foreground-3">Nov 2026 · Interactive map · Didn't ship</p>
 			<p class="max-w-2xl font-serif text-xl leading-snug text-foreground">
 				What if every place on Earth had a short code you could zoom into, one cell at a time? I built it in a day, then tested it with an AI agent over 600 runs.

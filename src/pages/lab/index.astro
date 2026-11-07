@@ -1,5 +1,6 @@
 ---
 import PageLayout from "@/components/layout/PageLayout.astro";
+import InkReveal from "@/components/ui/InkReveal.astro";
 import { ogUrl } from "@/config/site";
 import { labExperiments } from "@/data/lab";
 import Layout from "@/layouts/Layout.astro";
@@ -14,9 +15,10 @@ const experiments = labExperiments;
 	<PageLayout class="flex flex-col gap-12">
 		<section class="flex flex-col gap-4">
 			<p class="font-mono text-xs uppercase tracking-wider text-foreground-3">Lab</p>
-			<h1 class="max-w-2xl font-serif text-2xl leading-snug text-foreground sm:text-3xl">
+			<h1 data-ink-hero data-ink="interfaces,agents" class="max-w-2xl font-serif text-2xl leading-snug text-foreground sm:text-3xl">
 				Experiments in interfaces for people and agents.
 			</h1>
+			<InkReveal />
 		</section>
 
 		<ul class="flex flex-col">
@@ -28,7 +30,7 @@ const experiments = labExperiments;
 						</div>
 						<div class="flex flex-col gap-1.5">
 							<p class="font-mono text-xs text-foreground-3">{e.n} · {e.date} · {e.status}</p>
-							<h2 class="text-lg font-medium text-foreground group-hover:underline group-hover:decoration-ui group-hover:underline-offset-4">{e.title}</h2>
+							<h2 data-ink-view class="text-lg font-medium text-foreground group-hover:underline group-hover:decoration-ui group-hover:underline-offset-4">{e.title}</h2>
 							<p class="max-w-xl text-sm leading-relaxed text-foreground-2">{e.summary}</p>
 							<p class="mt-2 font-mono text-xs text-foreground-3 transition-colors group-hover:text-foreground">Read the experiment →</p>
 						</div>

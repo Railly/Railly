@@ -9,6 +9,7 @@ import Navigation from "@/components/layout/Navigation.astro";
 import SiteFooter from "@/components/layout/SiteFooter.astro";
 import AsciiField from "@/components/scene/AsciiField.astro";
 import ArrowIcon from "@/components/ui/ArrowIcon.astro";
+import InkReveal from "@/components/ui/InkReveal.astro";
 import { isPostVisible } from "@/config/blog";
 import { getReadingTime } from "@/config/reading-time";
 import Layout from "@/layouts/Layout.astro";
@@ -106,6 +107,7 @@ const {
                 <!-- Title Section -->
                 <header class="mb-10">
                     <h1
+                        data-ink-hero
                         class="page-title mb-5 text-foreground"
                         style="text-wrap: balance;"
                         transition:name={`blog-card-${post.slug}`}
@@ -113,6 +115,7 @@ const {
                     >
                         {post.data.title}
                     </h1>
+                    <InkReveal />
 
                     {
                         post.data.description && (

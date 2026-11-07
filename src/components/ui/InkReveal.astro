@@ -1,0 +1,211 @@
+---
+// Spider-Verse style text reveal for one element marked [data-ink]: words land on 12fps steps
+// through a sliced misprint, a CMY misregistration and, for a few words, a comic panel.
+// The main line ([data-ink-hero]) reveals on load and misprints a word now and then; section titles reveal on scroll.
+---
+
+<style is:global>
+	[data-ink] .iw {
+		position: relative;
+		white-space: pre;
+	}
+	[data-ink].ink-run .iw {
+		visibility: hidden;
+	}
+	[data-ink] .iw.on {
+		visibility: visible;
+	}
+	/* Frame 1: the word arrives sliced and shifted, like a bad plate. */
+	[data-ink] .iw.f-slice {
+		color: transparent;
+	}
+	[data-ink] .iw.f-slice::before,
+	[data-ink] .iw.f-slice::after {
+		content: attr(data-t);
+		position: absolute;
+		inset: 0;
+		white-space: pre;
+	}
+	[data-ink] .iw.f-slice::before {
+		color: #ff2bd6;
+		clip-path: inset(0 0 52% 0);
+		transform: translate(var(--dx, 4px), -2px);
+	}
+	[data-ink] .iw.f-slice::after {
+		color: #00b8e6;
+		clip-path: inset(48% 0 0 0);
+		transform: translate(calc(var(--dx, 4px) * -1), 1px);
+		text-shadow: 2px 0 #ffd400;
+	}
+	/* Frames 2-3: plates out of register, then settling. */
+	[data-ink] .iw.f-reg {
+		text-shadow:
+			calc(var(--dx, 4px) * 0.8) 1px 0 #ff2bd6,
+			calc(var(--dx, 4px) * -0.8) 2px 0 #00b8e6,
+			1px -2px 0 #ffd400;
+	}
+	[data-ink] .iw.f-reg2 {
+		text-shadow:
+			1.5px 0 0 #ff2bd6,
+			-1.5px 1px 0 #00b8e6;
+	}
+	/* Comic panel: a skewed inked polygon behind the word, text knocked out. */
+	[data-ink] .iw.f-panel {
+		color: #fff;
+		z-index: 2;
+	}
+	[data-ink] .iw .panel {
+		position: absolute;
+		left: -0.22em;
+		top: -0.2em;
+		width: calc(100% + 0.44em);
+		height: calc(100% + 0.4em);
+		z-index: -1;
+		overflow: visible;
+		pointer-events: none;
+	}
+	[data-ink] .iw .dots {
+		position: absolute;
+		width: 0.9em;
+		height: 0.6em;
+		right: -0.5em;
+		top: -0.35em;
+		background: radial-gradient(circle, #e4003a 36%, transparent 40%) 0 0 / 0.2em 0.2em;
+		pointer-events: none;
+	}
+</style>
+
+<script is:inline>
+	(() => {
+		const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+		const FRAME = 1000 / 12;
+		const fills = ["#2bd64f", "#c22bff", "#3a1fff", "#ffd400"];
+		const rand = (a, b) => a + Math.random() * (b - a);
+		const key = (w) => w.dataset.t.replace(/[^\w]/g, "").toLowerCase();
+
+		// Split text nodes into word spans, keeping links and other markup intact.
+		const split = (root) => {
+			const words = [];
+			const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+			const nodes = [];
+			while (walker.nextNode()) nodes.push(walker.currentNode);
+			for (const node of nodes) {
+				const frag = document.createDocumentFragment();
+				for (const part of node.textContent.split(/(\s+)/)) {
+					if (!part) continue;
+					if (/^\s+$/.test(part)) {
+						frag.append(part);
+						continue;
+					}
+					const s = document.createElement("span");
+					s.className = "iw";
+					s.dataset.t = part;
+					s.textContent = part;
+					frag.append(s);
+					words.push(s);
+				}
+				node.replaceWith(frag);
+			}
+			return words;
+		};
+
+		const panel = (w) => {
+			const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+			svg.setAttribute("class", "panel");
+			svg.setAttribute("viewBox", "0 0 100 100");
+			svg.setAttribute("preserveAspectRatio", "none");
+			const j = () => rand(-6, 6);
+			const fill = fills[Math.floor(Math.random() * fills.length)];
+			const shard = fills[(fills.indexOf(fill) + 1) % fills.length];
+			svg.innerHTML =
+				`<polygon points="${2 + j()},${8 + j()} ${98 + j()},${2 + j()} ${96 + j()},${94 + j()} ${4 + j()},${98 + j()}" fill="${fill}" stroke="#111" stroke-width="5" vector-effect="non-scaling-stroke" stroke-linejoin="miter"/>` +
+				`<polygon points="55,0 100,${rand(10, 30)} 100,0" fill="${shard}" stroke="#111" stroke-width="3" vector-effect="non-scaling-stroke"/>`;
+			const dots = document.createElement("span");
+			dots.className = "dots";
+			w.append(svg, dots);
+			return () => {
+				svg.remove();
+				dots.remove();
+			};
+		};
+
+		// Frame sequences on 12fps steps; Spider-Verse animates "on twos".
+		const play = (w, withPanel) => {
+			if (w.dataset.busy) return;
+			w.dataset.busy = "1";
+			w.style.setProperty("--dx", `${rand(3, 6) * (Math.random() < 0.5 ? -1 : 1)}px`);
+			const seq = withPanel ? ["f-panel", "f-panel", "f-reg", "f-reg2", ""] : ["f-slice", "f-reg", "f-reg2", ""];
+			let undo = null;
+			seq.forEach((cls, i) => {
+				setTimeout(() => {
+					w.classList.remove("f-slice", "f-reg", "f-reg2", "f-panel");
+					if (undo && cls !== "f-panel") {
+						undo();
+						undo = null;
+					}
+					if (cls === "f-panel" && !undo) undo = panel(w);
+					if (cls) w.classList.add(cls);
+					else delete w.dataset.busy;
+					w.classList.add("on");
+				}, i * FRAME);
+			});
+		};
+
+		// Words that get a comic panel; with no list, the longest word in the line.
+		const panelsFor = (root, words) => {
+			const list = (root.dataset.ink || "").split(",").filter(Boolean);
+			if (list.length || !words.length) return list;
+			return [words.map(key).reduce((a, b) => (b.length > a.length ? b : a))];
+		};
+
+		const reveal = (root, words, stagger) => {
+			const panels = panelsFor(root, words);
+			root.classList.add("ink-run");
+			words.forEach((w, i) => setTimeout(() => play(w, panels.includes(key(w))), i * stagger));
+			setTimeout(() => root.classList.remove("ink-run"), words.length * stagger + 600);
+		};
+
+		// Hero: reveal on load, then now and then a word or a panel word misprints again.
+		const hero = document.querySelector("[data-ink-hero]");
+		if (hero && !hero.dataset.inkReady && !still) {
+			hero.dataset.inkReady = "1";
+			const words = split(hero);
+			const panels = panelsFor(hero, words);
+			setTimeout(() => reveal(hero, words, 38), 120);
+			let onScreen = true;
+			new IntersectionObserver(([e]) => (onScreen = e.isIntersecting)).observe(hero);
+			const twitch = () => {
+				if (onScreen && !document.hidden) {
+					const w = words[Math.floor(Math.random() * words.length)];
+					play(w, panels.includes(key(w)));
+				}
+				setTimeout(twitch, rand(3500, 7000));
+			};
+			setTimeout(twitch, 120 + words.length * 38 + 2500);
+		}
+
+		// Section titles: reveal once when they scroll into view.
+		const titles = () => {
+			if (still) return;
+			const io = new IntersectionObserver(
+				(entries) => {
+					for (const e of entries) {
+						if (!e.isIntersecting) continue;
+						io.unobserve(e.target);
+						reveal(e.target, e.target._inkWords, 55);
+					}
+				},
+				{ rootMargin: "0px 0px -15% 0px" },
+			);
+			for (const el of document.querySelectorAll("[data-ink-view]")) {
+				if (el.dataset.inkReady) continue;
+				el.dataset.inkReady = "1";
+				el._inkWords = split(el);
+				el.classList.add("ink-run");
+				io.observe(el);
+			}
+		};
+		if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", titles);
+		else titles();
+	})();
+</script>
