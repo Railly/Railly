@@ -1,0 +1,372 @@
+/* /signal: heatmap, owner filter, weekly strips. Grayscale ink levels only. */
+
+:root {
+	--sg-0: color-mix(in oklab, var(--color-foreground) 7%, transparent);
+	--sg-1: color-mix(in oklab, var(--color-foreground) 24%, transparent);
+	--sg-2: color-mix(in oklab, var(--color-foreground) 45%, transparent);
+	--sg-3: color-mix(in oklab, var(--color-foreground) 70%, transparent);
+	--sg-4: var(--color-foreground);
+	--sg-weeks: 53;
+}
+
+/* Big total in the hero */
+.sg-total {
+	font-family: var(--font-serif);
+	font-weight: 400;
+	font-size: clamp(4rem, 15vw, 7.25rem);
+	line-height: 0.9;
+	letter-spacing: -0.035em;
+	font-variant-numeric: lining-nums tabular-nums;
+}
+
+.sg-cell {
+	display: block;
+	border-radius: 2px;
+	background: var(--sg-0);
+}
+.sg-cell[data-l="1"] {
+	background: var(--sg-1);
+}
+.sg-cell[data-l="2"] {
+	background: var(--sg-2);
+}
+.sg-cell[data-l="3"] {
+	background: var(--sg-3);
+}
+.sg-cell[data-l="4"] {
+	background: var(--sg-4);
+}
+
+/* Year heatmap */
+.sg-scroll {
+	scrollbar-width: thin;
+	scrollbar-color: var(--ed-line-2) transparent;
+}
+.sg-months,
+.sg-days,
+.sg-wave,
+.sg-wave-months,
+.sg-axis-months,
+.sg-strip {
+	display: grid;
+	grid-template-columns: repeat(var(--sg-weeks), minmax(0, 1fr));
+}
+.sg-months,
+.sg-wave-months,
+.sg-axis-months {
+	margin-bottom: 6px;
+	white-space: nowrap;
+}
+.sg-months > span,
+.sg-wave-months > span,
+.sg-axis-months > span {
+	grid-row: 1;
+}
+.sg-days {
+	grid-template-rows: repeat(7, auto);
+	grid-auto-flow: column;
+	gap: 3px;
+}
+.sg-months {
+	column-gap: 3px;
+}
+.sg-day {
+	aspect-ratio: 1;
+	outline-offset: 1px;
+	transition: transform 120ms ease-out;
+	cursor: default;
+}
+.sg-day:hover,
+.sg-day:focus-visible {
+	transform: scale(1.35);
+	box-shadow: 0 0 0 1.5px var(--color-background);
+	position: relative;
+	z-index: 1;
+}
+.sg-day:focus-visible {
+	outline: 1.5px solid var(--color-foreground);
+}
+
+/* Owner tiles (toggle group) */
+.sg-owner {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	min-width: 0;
+	padding: 0.85rem 0.9rem 1.1rem;
+	text-align: left;
+	color: var(--color-foreground);
+	background: var(--color-background);
+	border: 1px solid var(--ed-line);
+	border-radius: 4px;
+	box-shadow: 3px 3px 0 var(--ed-shadow);
+	cursor: pointer;
+	transition:
+		translate 160ms cubic-bezier(0.22, 1, 0.36, 1),
+		box-shadow 160ms cubic-bezier(0.22, 1, 0.36, 1),
+		border-color 160ms,
+		background-color 160ms,
+		color 160ms;
+}
+.sg-owner:hover {
+	translate: -1px -1px;
+	border-color: var(--ed-line-2);
+	box-shadow: 4px 4px 0 var(--ed-shadow-2);
+}
+.sg-owner:active {
+	translate: 1px 1px;
+	box-shadow: 1px 1px 0 var(--ed-shadow-2);
+}
+.sg-owner:focus-visible {
+	outline: 2px solid var(--color-foreground);
+	outline-offset: 2px;
+}
+.sg-owner[data-pressed] {
+	color: var(--color-background);
+	background: var(--color-foreground);
+	border-color: var(--color-foreground);
+	box-shadow: 3px 3px 0 var(--ed-shadow-2);
+}
+.sg-owner .sg-owner-share,
+.sg-owner .sg-owner-meta {
+	color: var(--color-foreground-3);
+}
+.sg-owner[data-pressed] .sg-owner-share,
+.sg-owner[data-pressed] .sg-owner-meta {
+	color: color-mix(in oklab, var(--color-background) 70%, var(--color-foreground));
+}
+.sg-owner[data-pressed] img {
+	--tw-ring-color: var(--color-foreground);
+}
+.sg-owner-bar {
+	position: absolute;
+	inset-inline: 0.9rem;
+	bottom: 0.55rem;
+	height: 2px;
+	border-radius: 2px;
+	background: var(--ed-line);
+	overflow: hidden;
+}
+.sg-owner-bar > span {
+	display: block;
+	height: 100%;
+	background: var(--color-foreground);
+	transition: width 300ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.sg-owner[data-pressed] .sg-owner[data-pressed] img {
+	--tw-ring-color: var(--color-foreground);
+}
+.sg-owner-bar {
+	background: color-mix(in oklab, var(--color-background) 22%, transparent);
+}
+.sg-owner[data-pressed] .sg-owner-bar > span {
+	background: var(--color-background);
+}
+
+/* Weekly waveform for the selected owner */
+.sg-wave {
+	height: 72px;
+	align-items: end;
+	column-gap: 2px;
+	border-bottom: 1px solid var(--ed-line-2);
+}
+.sg-bar {
+	display: flex;
+	align-items: flex-end;
+	height: 100%;
+	cursor: default;
+}
+.sg-bar > span {
+	display: block;
+	width: 100%;
+	border-radius: 1.5px 1.5px 0 0;
+	background: var(--sg-2);
+	transition:
+		height 380ms cubic-bezier(0.22, 1, 0.36, 1),
+		background-color 120ms;
+}
+.sg-bar[data-peak] > span {
+	background: var(--color-foreground);
+}
+.sg-bar:hover > span {
+	background: var(--color-foreground);
+}
+.sg-wave-months {
+	margin-top: -4px;
+	column-gap: 2px;
+}
+
+/* Feed rows */
+.sg-feed-row {
+	display: grid;
+	grid-template-columns: auto minmax(0, 1fr) auto;
+	align-items: start;
+	gap: 0.75rem;
+	padding-block: 0.875rem;
+}
+.sg-feed-title {
+	font-size: 15px;
+	line-height: 1.45;
+	color: var(--color-foreground);
+	text-wrap: pretty;
+}
+.sg-feed-row:hover .sg-feed-title {
+	text-decoration: underline;
+	text-underline-offset: 4px;
+	text-decoration-thickness: 1px;
+}
+.sg-repo {
+	color: var(--color-foreground-2);
+}
+.sg-mark {
+	flex-shrink: 0;
+	width: 7px;
+	height: 7px;
+	border-radius: 999px;
+	background: var(--color-foreground);
+}
+.sg-mark-release {
+	border-radius: 1px;
+	rotate: 45deg;
+}
+.sg-mark-commit {
+	background: transparent;
+	box-shadow: inset 0 0 0 1.5px var(--color-foreground-3);
+}
+.sg-tail > .ed-item:first-child {
+	border-top: 0;
+}
+.sg-more {
+	display: flex;
+	width: 100%;
+	cursor: pointer;
+	align-items: center;
+	gap: 0.5rem;
+	padding-block: 0.75rem;
+	font-family: var(--font-mono);
+	font-size: 12px;
+	color: var(--color-foreground-3);
+}
+.sg-more::after {
+	content: "";
+	flex: 1;
+	border-bottom: 1.5px dotted var(--ed-line-2);
+}
+.sg-more:hover {
+	color: var(--color-foreground);
+}
+.sg-more-sm {
+	padding-block: 0.4rem 0;
+}
+
+/* Per-repo weekly strips */
+.sg-group-head {
+	display: flex;
+	align-items: center;
+	gap: 0.6rem;
+	padding-bottom: 0.6rem;
+	margin-bottom: 0.35rem;
+	border-bottom: 1px solid var(--ed-line);
+}
+.sg-group-head .ed-leader {
+	align-self: center;
+	margin-bottom: 0;
+}
+.sg-repos {
+	display: flex;
+	flex-direction: column;
+}
+.sg-repo-row {
+	display: grid;
+	grid-template-columns: 9.5rem minmax(0, 1fr) 3.25rem;
+	align-items: center;
+	column-gap: 0.85rem;
+	padding-block: 4px;
+}
+.sg-repo-name {
+	font-size: 13.5px;
+	color: var(--color-foreground-2);
+	min-width: 0;
+}
+.sg-repo-name:hover {
+	color: var(--color-foreground);
+	text-decoration: underline;
+	text-underline-offset: 3px;
+	text-decoration-thickness: 1px;
+}
+.sg-strip {
+	gap: 2px;
+}
+.sg-strip > .sg-cell {
+	height: 13px;
+	border-radius: 1.5px;
+}
+.sg-repo-total {
+	text-align: right;
+}
+.sg-axis {
+	padding-block: 0;
+}
+.sg-axis-months {
+	column-gap: 2px;
+	margin-bottom: 0;
+}
+
+@media (max-width: 639px) {
+	.sg-repo-row {
+		grid-template-columns: minmax(0, 1fr) auto;
+		grid-template-areas:
+			"name total"
+			"strip strip";
+		row-gap: 5px;
+		padding-block: 6px;
+	}
+	.sg-repo-name {
+		grid-area: name;
+	}
+	.sg-repo-total {
+		grid-area: total;
+	}
+	.sg-strip {
+		grid-area: strip;
+		gap: 1.5px;
+	}
+	.sg-strip > .sg-cell {
+		height: 11px;
+	}
+	.sg-axis {
+		grid-template-areas: "strip strip";
+	}
+	.sg-axis > .ed-label {
+		display: none;
+	}
+	.sg-axis-months {
+		grid-area: strip;
+	}
+	.sg-axis-months > span:nth-child(even) {
+		visibility: hidden;
+	}
+	.sg-wave-months > span:nth-child(even) {
+		visibility: hidden;
+	}
+	.sg-wave {
+		column-gap: 1.5px;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.sg-day,
+	.sg-owner,
+	.sg-owner-bar > span,
+	.sg-bar > span {
+		transition: none;
+	}
+	.sg-day:hover,
+	.sg-day:focus-visible {
+		transform: none;
+	}
+	.sg-owner:hover,
+	.sg-owner:active {
+		translate: none;
+	}
+}
