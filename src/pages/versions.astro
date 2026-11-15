@@ -1,0 +1,199 @@
+---
+import PageLayout from "@/components/layout/PageLayout.astro";
+import SectionHeader from "@/components/layout/SectionHeader.astro";
+import Layout from "@/layouts/Layout.astro";
+
+const ogTitle = "Versions";
+const ogDescription =
+	"Every major version of railly.dev since 2020, from a dark blog built in college to the site you are reading now.";
+const ogImage = `/api/og?title=${encodeURIComponent(ogTitle)}&description=${encodeURIComponent(ogDescription)}&tag=versions`;
+
+interface Version {
+	id: string;
+	year: string;
+	period: string;
+	title: string;
+	note: string;
+	stack: string;
+	domain: string;
+	image: string;
+	width: number;
+	height: number;
+	href?: string;
+}
+
+const versions: Version[] = [
+	{
+		id: "now",
+		year: "2026",
+		period: "Nov 2026",
+		title: "Garúa",
+		note: "One page, serif type, and the work at Vercel Labs up front.",
+		stack: "Astro 5",
+		domain: "railly.dev",
+		image: "/images/versions/now-2026.webp",
+		width: 1440,
+		height: 900,
+		href: "/",
+	},
+	{
+		id: "v6",
+		year: "2025",
+		period: "Nov 2025 to Oct 2026",
+		title: "Sidebar",
+		note: "Sidebar navigation and list rows. The Clerk years, then the move to Buenos Aires.",
+		stack: "Astro 5",
+		domain: "railly.dev",
+		image: "/images/versions/v6-2025.webp",
+		width: 1280,
+		height: 577,
+	},
+	{
+		id: "v5",
+		year: "2024",
+		period: "May 2024 to 2025",
+		title: "Plain text",
+		note: "The first railly.dev. No cards, no images, just a list of what I was building.",
+		stack: "Astro 4",
+		domain: "railly.dev",
+		image: "/images/versions/v5-2024.webp",
+		width: 1280,
+		height: 577,
+	},
+	{
+		id: "v4",
+		year: "2023",
+		period: "Oct 2023 to 2025",
+		title: "Bento",
+		note: "Railly Hugo ~ Hunter. The version that lasted longest, through Globant and Disney.",
+		stack: "Next.js 13",
+		domain: "raillyhugo.com",
+		image: "/images/versions/v4-2023.webp",
+		width: 800,
+		height: 562,
+	},
+	{
+		id: "v3",
+		year: "2022",
+		period: "Feb to Dec 2022",
+		title: "Blog era",
+		note: "Gradient cards on a dotted grid. I started writing posts and shipping side projects here.",
+		stack: "Next.js 12",
+		domain: "raillyhugo.com",
+		image: "/images/versions/v3-2022.webp",
+		width: 800,
+		height: 562,
+	},
+	{
+		id: "v2",
+		year: "2021",
+		period: "Aug to Dec 2021",
+		title: "Hola, soy Railly Hugo",
+		note: "My first Next.js site, in Spanish, written while I was still studying software engineering.",
+		stack: "Next.js 12",
+		domain: "raillyhugo.com",
+		image: "/images/versions/v2-2021.webp",
+		width: 800,
+		height: 360,
+	},
+	{
+		id: "v1",
+		year: "2021",
+		period: "Apr to Jul 2021",
+		title: "First portfolio",
+		note: "A single card and an illustration. Built with Create React App, my first site as a frontend developer.",
+		stack: "Create React App",
+		domain: "raillyhugo.com",
+		image: "/images/versions/v1-2021.webp",
+		width: 1440,
+		height: 900,
+	},
+	{
+		id: "v0",
+		year: "2020",
+		period: "Sep 2020",
+		title: "Dark blog",
+		note: "Where it started. A static blog on GitHub Pages, with posts about C++ and OpenGL.",
+		stack: "HTML and CSS",
+		domain: "railly.github.io",
+		image: "/images/versions/v0-2020.webp",
+		width: 800,
+		height: 360,
+	},
+];
+---
+
+<Layout
+	title="Versions - Railly Hugo"
+	description={ogDescription}
+	image={ogImage}
+>
+	<PageLayout class="flex flex-col gap-16">
+		<section class="flex flex-col gap-4">
+			<p class="font-mono text-xs uppercase tracking-wider text-foreground-3">
+				Versions
+			</p>
+			<h1 class="max-w-2xl text-2xl font-medium leading-tight text-foreground sm:text-3xl">
+				Eight versions of this site, from a college blog to Vercel Labs.
+			</h1>
+			<p class="max-w-2xl text-base leading-relaxed text-foreground-2">
+				I rebuilt my personal site every time my work changed. Each one is still here, rebuilt from its original commit, so you can open it and see what I thought good looked like that year.
+			</p>
+		</section>
+
+		<section>
+			<SectionHeader title="Timeline" className="mb-6" />
+			<ol class="relative flex flex-col gap-14 border-l border-ui pl-6 sm:pl-8">
+				{versions.map((v) => (
+					<li id={v.id} class="relative scroll-mt-24">
+						<span
+							class:list={[
+								"absolute top-1.5 -left-[29px] size-2.5 rounded-full border sm:-left-[37px]",
+								v.id === "now"
+									? "border-foreground bg-foreground"
+									: "border-ui-3 bg-background",
+							]}
+							aria-hidden
+						/>
+						<div class="mb-3 flex flex-wrap items-baseline gap-x-3 gap-y-1">
+							<span class="font-mono text-xs text-foreground-3 tabular-nums">{v.year}</span>
+							<h2 class="text-[15px] font-medium text-foreground">{v.title}</h2>
+							<span class="font-mono text-xs text-foreground-3">{v.id === "now" ? "current" : v.id}</span>
+						</div>
+						<p class="mb-4 max-w-xl text-sm leading-relaxed text-foreground-2">{v.note}</p>
+						<a
+							href={v.href ?? `https://${v.id}.railly.dev`}
+							target={v.href ? undefined : "_blank"}
+							rel={v.href ? undefined : "noopener noreferrer"}
+							class="group block overflow-hidden rounded-lg border border-ui bg-background-2 transition-colors hover:border-ui-3"
+						>
+							<img
+								src={v.image}
+								alt={`railly.dev ${v.title} version, ${v.period}`}
+								width={v.width}
+								height={v.height}
+								loading={v.id === "now" ? "eager" : "lazy"}
+								class="block aspect-[16/9] w-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.01]"
+							/>
+						</a>
+						<div class="mt-3 flex flex-wrap gap-x-4 gap-y-1 font-mono text-xs text-foreground-3">
+							<span>{v.period}</span>
+							<span>{v.stack}</span>
+							<span>{v.domain}</span>
+							{v.id !== "now" && (
+								<a
+									href={`https://${v.id}.railly.dev`}
+									target="_blank"
+									rel="noopener noreferrer"
+									class="text-foreground underline decoration-ui underline-offset-4 hover:decoration-foreground"
+								>
+									{v.id}.railly.dev
+								</a>
+							)}
+						</div>
+					</li>
+				))}
+			</ol>
+		</section>
+	</PageLayout>
+</Layout>
