@@ -51,7 +51,7 @@ const versions: Version[] = [
 	{
 		id: "v5",
 		year: "2024",
-		period: "May 2024 to 2025",
+		period: "May 2024 to mid 2025",
 		title: "Plain text",
 		note: "The first railly.dev. No cards, no images, just a list of what I was building.",
 		stack: "Astro 4",
@@ -63,10 +63,10 @@ const versions: Version[] = [
 	{
 		id: "v4",
 		year: "2023",
-		period: "Oct 2023 to 2025",
+		period: "Oct 2023 to early 2026",
 		title: "Bento",
-		note: "Railly Hugo ~ Hunter. The version that lasted longest, through Globant and Disney.",
-		stack: "Next.js 13",
+		note: "Railly Hugo ~ Hunter. The version that lasted longest, from PCI Energy to Globant and the Disney team.",
+		stack: "Next.js 14",
 		domain: "raillyhugo.com",
 		image: "/images/versions/v4-2023.webp",
 		width: 1440,
@@ -87,7 +87,7 @@ const versions: Version[] = [
 	{
 		id: "v2",
 		year: "2021",
-		period: "Aug to Dec 2021",
+		period: "Aug 2021 to Feb 2022",
 		title: "Hola, soy Railly Hugo",
 		note: "My first Next.js site, in Spanish, written while I was still studying software engineering.",
 		stack: "Next.js 12",
@@ -121,6 +121,24 @@ const versions: Version[] = [
 		height: 900,
 	},
 ];
+
+const resumes = [
+	{
+		year: "2024",
+		role: "Full-stack developer at Globant, on the Disney Insights Engineering team",
+		href: "/cv/railly-hugo-cv-2024.pdf",
+	},
+	{
+		year: "2023",
+		role: "UI developer at PCI Energy Solutions",
+		href: "/cv/railly-hugo-cv-2023.pdf",
+	},
+	{
+		year: "2022",
+		role: "Frontend developer at ID Business Intelligence",
+		href: "/cv/railly-hugo-cv-2022.pdf",
+	},
+];
 ---
 
 <Layout
@@ -137,7 +155,7 @@ const versions: Version[] = [
 				Eight versions of this site, from a college blog to Vercel Labs.
 			</h1>
 			<p class="max-w-2xl text-base leading-relaxed text-foreground-2">
-				I rebuilt my personal site every time my work changed. Each one is still here, rebuilt from its original commit, so you can open it and see what I thought good looked like that year.
+				I rebuilt my personal site every time my work changed. Each one still runs, rebuilt from its original code or saved from its original deploy, so you can open it and see what I thought good looked like that year.
 			</p>
 		</section>
 
@@ -169,7 +187,7 @@ const versions: Version[] = [
 						>
 							<img
 								src={v.image}
-								alt={`railly.dev ${v.title} version, ${v.period}`}
+								alt={`${v.domain}, ${v.title} version, ${v.period}`}
 								width={v.width}
 								height={v.height}
 								loading={v.id === "now" ? "eager" : "lazy"}
@@ -194,6 +212,27 @@ const versions: Version[] = [
 					</li>
 				))}
 			</ol>
+		</section>
+
+		<section id="cv" class="scroll-mt-24">
+			<SectionHeader title="Résumés" className="mb-2" />
+			<p class="mb-5 max-w-xl text-sm leading-relaxed text-foreground-2">
+				The CVs each of these sites linked to, with the old contact details removed.
+			</p>
+			<div class="flex flex-col">
+				{resumes.map((r) => (
+					<a
+						href={r.href}
+						target="_blank"
+						rel="noopener noreferrer"
+						class="group -mx-3 flex items-baseline gap-4 border-b border-ui px-3 py-3 transition-colors hover:bg-background-2"
+					>
+						<span class="w-10 shrink-0 font-mono text-xs text-foreground-3 tabular-nums">{r.year}</span>
+						<span class="min-w-0 flex-1 text-sm text-foreground">{r.role}</span>
+						<span class="shrink-0 font-mono text-xs text-foreground-3 group-hover:text-foreground-2">PDF</span>
+					</a>
+				))}
+			</div>
 		</section>
 	</PageLayout>
 </Layout>
