@@ -1,7 +1,10 @@
 ---
 import { getCollection } from "astro:content";
+import List from "@/components/editorial/List.astro";
+import ListRow from "@/components/editorial/ListRow.astro";
+import PageHero from "@/components/editorial/PageHero.astro";
+import Section from "@/components/editorial/Section.astro";
 import PageLayout from "@/components/layout/PageLayout.astro";
-import SectionHeader from "@/components/layout/SectionHeader.astro";
 import NewsletterSection from "@/components/newsletter/NewsletterSection.astro";
 import Layout from "@/layouts/Layout.astro";
 
@@ -27,31 +30,25 @@ const formatDate = (date: Date) => {
     description={ogDescription}
     image={ogImage}
 >
-    <PageLayout class="flex flex-col gap-8">
-        <h1 class="sr-only">Newsletter</h1>
-        <NewsletterSection />
+    <PageLayout class="flex flex-col">
+        <PageHero eyebrow={[`${sortedIssues.length} ${sortedIssues.length === 1 ? "edition" : "editions"}`, "On Substack"]} title="Newsletter">
+            <NewsletterSection />
+        </PageHero>
 
         {sortedIssues.length > 0 ? (
-            <div class="space-y-0">
-                <SectionHeader title="Earlier editions" className="mb-4" />
-                {sortedIssues.map((issue) => (
-                    <a
-                        href={`/newsletter/${issue.slug}`}
-                        class="group flex items-baseline gap-4 py-3 border-b border-ui hover:bg-background-2 transition-colors -mx-3 px-3"
-                    >
-                        <span class="text-foreground-3 tabular-nums text-sm shrink-0 font-mono">
-                            #{issue.data.weekNumber}
-                        </span>
-                        <span class="flex-1 text-foreground font-medium text-sm">
-                            {issue.data.title}
-                        </span>
-                        <span class="text-foreground-3 tabular-nums text-sm shrink-0">
-                            {formatDate(issue.data.pubDate)}
-                        </span>
-                    </a>
-                ))}
-            </div>
+            <Section id="h-editions" number={1} title="Earlier editions" class="mt-16">
+                <List>
+                    {sortedIssues.map((issue) => (
+                        <ListRow
+                            href={`/newsletter/${issue.slug}`}
+                            index={`#${issue.data.weekNumber}`}
+                            title={issue.data.title}
+                            meta={formatDate(issue.data.pubDate)}
+                            arrow={false}
+                        />
+                    ))}
+                </List>
+            </Section>
         ) : null}
-
     </PageLayout>
 </Layout>

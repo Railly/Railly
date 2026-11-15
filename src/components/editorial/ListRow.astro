@@ -1,0 +1,67 @@
+---
+// One row: index (letter/number) · leading mark · title | description · meta · arrow.
+// Inside <List> it renders an <li>; pass as="div" to use it alone.
+// Below 640px the description wraps under the title.
+interface Props {
+	href?: string;
+	/** Opens in a new tab. */
+	external?: boolean;
+	/** "a.", "b." or "01". */
+	index?: string;
+	title?: string;
+	/** Faded text after the title, e.g. "at Vercel Labs". */
+	titleSuffix?: string;
+	description?: string;
+	/** Right column: stars, years, dates. Set in mono. */
+	meta?: string | number;
+	/** Arrow at the end. Default: shown for links without meta. */
+	arrow?: boolean;
+	/** Tighter rows for long lists. */
+	dense?: boolean;
+	as?: "li" | "div";
+	class?: string;
+}
+
+const {
+	href,
+	index,
+	title,
+	titleSuffix,
+	description,
+	meta,
+	dense = false,
+	as = "li",
+	class: className,
+} = Astro.props;
+const { external = false } = Astro.props;
+const arrow = Astro.props.arrow ?? (Boolean(href) && meta === undefined);
+const Row = href ? "a" : "div";
+const Item = as;
+const hasDesc = Astro.slots.has("description") || description;
+// An empty meta ("") still reserves the column, so descriptions line up across rows.
+const hasMeta = Astro.slots.has("meta") || meta !== undefined;
+---
+
+<Item class:list={["ed ed-item", className]}>
+	<Row
+		href={href}
+		target={external ? "_blank" : undefined}
+		rel={external ? "noopener noreferrer" : undefined}
+		class="ed-row"
+		data-dense={dense ? "" : undefined}
+	>
+		{index && <span class="ed-label ed-row-index">{index}</span>}
+		<span class="ed-row-main" data-split={hasDesc ? "" : undefined}>
+			<span class="ed-row-title">
+				{Astro.slots.has("leading") && <span class="ed-row-lead"><slot name="leading" /></span>}
+				<span class="ed-row-text">
+					{Astro.slots.has("title") ? <slot name="title" /> : title}
+					{titleSuffix && <span class="ed-row-faded">{titleSuffix}</span>}
+				</span>
+			</span>
+			{hasDesc && <span class="ed-row-desc">{Astro.slots.has("description") ? <slot name="description" /> : description}</span>}
+		</span>
+		{hasMeta && <span class="ed-num ed-row-meta">{Astro.slots.has("meta") ? <slot name="meta" /> : meta}</span>}
+		{arrow && <span aria-hidden="true" class="ed-row-arrow">&rarr;</span>}
+	</Row>
+</Item>

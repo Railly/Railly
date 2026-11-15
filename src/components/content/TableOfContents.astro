@@ -8,28 +8,33 @@ interface Props {
 const { headings } = Astro.props;
 
 const mainHeadings = headings.filter((heading) => heading.depth <= 3);
+let h2Count = 0;
+const items = mainHeadings.map((heading) => ({
+	...heading,
+	number: heading.depth === 2 ? String(++h2Count).padStart(2, "0") : undefined,
+}));
 ---
 
 <nav
-    class="sticky top-24 w-64 hidden lg:block opacity-65 hover:opacity-100 transition-opacity duration-300"
+    data-toc
+    aria-label="Contents"
+    class="ed sticky top-24 ml-auto hidden w-full max-w-64 opacity-65 transition-opacity duration-300 hover:opacity-100 xl:block"
 >
-    <a
-        href="/writing"
-        class="flex items-center gap-1.5 text-sm mb-6 text-foreground-2 hover:text-foreground transition-colors duration-200"
-    >
-        <ArrowIcon size={16} class="rotate-180" />
+    <a href="/writing" class="ed-label mb-6 flex items-center gap-1.5">
+        <ArrowIcon size={12} class="rotate-180" />
         <span>writing</span>
     </a>
 
-    <ul class="space-y-0.5 text-sm border-l border-ui">
+    <ul class="toc-list">
         {
-            mainHeadings.map((heading) => (
-                <li class={heading.depth === 3 ? "ml-3" : ""}>
+            items.map((heading) => (
+                <li class={heading.depth === 3 ? "pl-6" : ""}>
                     <a
                         href={`#${heading.slug}`}
-                        class="toc-link block py-1 px-3 text-sm border-l-2 -ml-px transition-all duration-200 border-transparent text-foreground-2 hover:text-foreground hover:border-ui-2"
+                        class="toc-link border-transparent text-foreground-2"
                         data-heading={heading.slug}
                     >
+                        {heading.number && <span class="toc-num">{heading.number}</span>}
                         <span class="line-clamp-2">{heading.text}</span>
                     </a>
                 </li>
@@ -38,19 +43,48 @@ const mainHeadings = headings.filter((heading) => heading.depth <= 3);
     </ul>
 </nav>
 
-<nav class="sticky top-24 w-64 block lg:hidden">
-    <a
-        href="/writing"
-        class="flex items-center gap-1.5 text-sm mb-6 text-foreground-2 hover:text-foreground transition-colors duration-200"
-    >
-        <ArrowIcon size={16} class="rotate-180" />
+<nav aria-label="Back to writing" class="ed mb-8 block xl:hidden">
+    <a href="/writing" class="ed-label inline-flex items-center gap-1.5">
+        <ArrowIcon size={12} class="rotate-180" />
         <span>writing</span>
     </a>
 </nav>
 
+<style>
+    .toc-list {
+        display: flex;
+        flex-direction: column;
+        border-left: 1px solid var(--ed-line);
+    }
+    .toc-link {
+        display: flex;
+        align-items: baseline;
+        gap: 0.5rem;
+        margin-left: -1px;
+        padding: 0.3125rem 0.75rem;
+        border-left-width: 1px;
+        border-left-style: solid;
+        font-size: 13px;
+        line-height: 1.45;
+        transition:
+            color 0.2s ease,
+            border-color 0.2s ease;
+    }
+    .toc-link:hover {
+        color: var(--color-foreground);
+    }
+    .toc-num {
+        flex: 0 0 1rem;
+        font-family: var(--font-mono);
+        font-size: 10.5px;
+        color: var(--color-foreground-3);
+        font-variant-numeric: tabular-nums;
+    }
+</style>
+
 <script>
     function setupTableOfContents() {
-        const toc = document.querySelector("nav.hidden.lg\\:block");
+        const toc = document.querySelector("nav[data-toc]");
         if (!toc) return;
 
         const navEl = toc as HTMLElement;

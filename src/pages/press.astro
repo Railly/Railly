@@ -1,6 +1,11 @@
 ---
+import Button from "@/components/editorial/Button.astro";
+import List from "@/components/editorial/List.astro";
+import ListRow from "@/components/editorial/ListRow.astro";
+import PageHero from "@/components/editorial/PageHero.astro";
+import Section from "@/components/editorial/Section.astro";
 import PageLayout from "@/components/layout/PageLayout.astro";
-import SectionHeader from "@/components/layout/SectionHeader.astro";
+import LinkedStats from "@/components/press/LinkedStats.astro";
 import Layout from "@/layouts/Layout.astro";
 
 const updatedAt = "October 20, 2026";
@@ -74,33 +79,15 @@ const topics = [
 	description={ogDescription}
 	image={ogImage}
 >
-	<PageLayout class="flex flex-col gap-16">
-		<section class="grid gap-8 sm:grid-cols-[1fr_13rem] sm:items-start">
-			<div class="flex flex-col gap-5">
-				<div>
-					<p class="mb-2 font-mono text-xs uppercase tracking-wider text-foreground-3">
-						Press kit
-					</p>
-					<h1 class="max-w-2xl text-2xl font-medium leading-tight text-foreground sm:text-3xl">
-						Railly Hugo builds open source infrastructure and communities for the next generation of software builders.
-					</h1>
-				</div>
-				<p class="max-w-2xl text-base leading-relaxed text-foreground-2">
-					Peruvian software engineer based in Buenos Aires, creator and principal contributor of Petdex, founder of Crafter Station, and Software Engineer at Vercel Labs.
-				</p>
-				<div class="flex flex-wrap gap-2 text-xs">
-					<a href="mailto:hi@railly.dev" class="rounded border border-ui px-3 py-1.5 text-foreground transition-colors hover:border-ui-2 hover:bg-background-2">
-						hi@railly.dev
-					</a>
-					<a href="https://github.com/Railly" target="_blank" rel="noopener noreferrer" class="rounded border border-ui px-3 py-1.5 text-foreground transition-colors hover:border-ui-2 hover:bg-background-2">
-						GitHub
-					</a>
-					<a href="https://linkedin.com/in/railly-hugo" target="_blank" rel="noopener noreferrer" class="rounded border border-ui px-3 py-1.5 text-foreground transition-colors hover:border-ui-2 hover:bg-background-2">
-						LinkedIn
-					</a>
-				</div>
-			</div>
-			<div class="overflow-hidden rounded-lg border border-ui bg-background-2">
+	<PageLayout class="flex flex-col">
+		<div class="grid gap-8 sm:grid-cols-[minmax(0,1fr)_11rem] sm:items-end">
+			<PageHero
+				eyebrow={["Press kit", "Railly Hugo"]}
+				title="Railly Hugo builds open source infrastructure and communities for the next generation of software builders."
+				lede="Peruvian software engineer based in Buenos Aires, creator and principal contributor of Petdex, founder of Crafter Station, and Software Engineer at Vercel Labs."
+				class="gap-5"
+			/>
+			<figure class="ed-tile overflow-hidden bg-background-2 max-sm:max-w-[13rem]">
 				<img
 					src="/images/railly-hugo-headshot.webp"
 					alt="Railly Hugo"
@@ -109,114 +96,105 @@ const topics = [
 					height="1200"
 					loading="eager"
 				/>
-			</div>
-		</section>
+			</figure>
+		</div>
+		<div class="ed mt-6 flex flex-wrap gap-3">
+			<Button href="mailto:hi@railly.dev" variant="primary">hi@railly.dev</Button>
+			<Button href="https://github.com/Railly" external>GitHub</Button>
+			<Button href="https://linkedin.com/in/railly-hugo" external>LinkedIn</Button>
+		</div>
 
-		<section>
-			<div class="mb-5 flex items-end justify-between gap-4">
-				<SectionHeader title="Verified snapshot" className="mb-0" />
-				<span class="font-mono text-xs text-foreground-3">{updatedAt}</span>
-			</div>
-			<div class="grid gap-px overflow-hidden rounded-lg border border-ui bg-ui sm:grid-cols-2">
-				{metrics.map((metric) => (
-					<a href={metric.href} target="_blank" rel="noopener noreferrer" class="group bg-background p-5 transition-colors hover:bg-background-2">
-						<div class="font-mono text-2xl font-medium tabular-nums text-foreground">{metric.value}</div>
-						<div class="mt-1 text-sm text-foreground-2">{metric.label}</div>
-						<div class="mt-2 text-xs text-foreground-3 group-hover:text-foreground-2">{metric.note}</div>
-					</a>
-				))}
-			</div>
-		</section>
+		<Section id="h-snapshot" number={1} title="Verified snapshot" note={updatedAt} class="mt-16">
+			<LinkedStats stats={metrics.map((m) => ({ value: m.value, label: m.label, href: m.href, note: m.note }))} />
+		</Section>
 
-		<section>
-			<SectionHeader title="Primary story" className="mb-5" />
-			<div class="rounded-lg border border-ui p-6">
-				<p class="text-lg font-medium leading-relaxed text-foreground">
+		<Section id="h-story" number={2} title="Primary story">
+			<div class="ed-tile flex flex-col gap-5 bg-[var(--ed-wash)] p-6 sm:p-8">
+				<p class="ed-display">
 					A project created by a Peruvian builder became infrastructure for one of GitHub's largest open source AI agent repositories.
 				</p>
-				<p class="mt-4 text-sm leading-relaxed text-foreground-2">
+				<p class="text-[14.5px] leading-relaxed text-foreground-2">
 					Petdex is an open source gallery of animated companions for coding agents. Hermes Agent consumes Petdex's public manifest directly, turning the catalog into an integration surface rather than a standalone gallery. The larger story connects open source product adoption with Crafter Station's work helping Latin American builders create and ship technology.
 				</p>
-				<div class="mt-5 flex flex-wrap gap-3 text-sm">
-					<a href="https://petdex.dev" target="_blank" rel="noopener noreferrer" class="text-foreground underline decoration-ui underline-offset-4 hover:decoration-foreground">Open Petdex</a>
-					<a href="https://github.com/crafter-station/petdex" target="_blank" rel="noopener noreferrer" class="text-foreground underline decoration-ui underline-offset-4 hover:decoration-foreground">View source</a>
-					<a href="/press/petdex-impact" class="text-foreground underline decoration-ui underline-offset-4 hover:decoration-foreground">Read the Q2 impact report</a>
+				<div class="flex flex-wrap gap-3 pt-1">
+					<Button href="https://petdex.dev" variant="primary" external>Open Petdex</Button>
+					<Button href="https://github.com/crafter-station/petdex" external>View source</Button>
+					<Button href="/press/petdex-impact">Read the Q2 impact report <span aria-hidden="true">&rarr;</span></Button>
 				</div>
 			</div>
-		</section>
+		</Section>
 
-		<section>
-			<SectionHeader title="Independent validation" className="mb-5" />
-			<div class="flex flex-col divide-y divide-ui border-y border-ui">
-				{validation.map((item) => (
-					<div class="py-5 first:pt-0 last:pb-0">
-						<h3 class="text-sm font-medium text-foreground">{item.title}</h3>
-						<p class="mt-2 max-w-2xl text-sm leading-relaxed text-foreground-2">{item.detail}</p>
-						<a href={item.href} target="_blank" rel="noopener noreferrer" class="mt-3 inline-block text-xs text-foreground underline decoration-ui underline-offset-4 hover:decoration-foreground">
-							{item.linkLabel}
-						</a>
-					</div>
+		<Section id="h-validation" number={3} title="Independent validation">
+			<List>
+				{validation.map((item, i) => (
+					<ListRow href={item.href} external index={`${String.fromCharCode(97 + i)}.`} title={item.title}>
+						<span slot="description" class="flex flex-col gap-2">
+							<span>{item.detail}</span>
+							<span class="ed-label text-foreground-2">{item.linkLabel} &nearr;</span>
+						</span>
+					</ListRow>
 				))}
-			</div>
-		</section>
+			</List>
+		</Section>
 
-		<section>
-			<SectionHeader title="Biographies" className="mb-5" />
-			<div class="grid gap-8 lg:grid-cols-2">
-				<div>
-					<h3 class="font-mono text-xs uppercase tracking-wider text-foreground-3">Español</h3>
-					<p class="mt-3 text-sm leading-relaxed text-foreground-2">
+		<Section id="h-bios" number={4} title="Biographies">
+			<div class="grid gap-x-10 gap-y-8 lg:grid-cols-2">
+				<div lang="es" class="flex flex-col gap-3 border-t border-[var(--ed-line)] pt-4">
+					<h3 class="ed-label">Español</h3>
+					<p class="text-sm leading-relaxed text-foreground-2">
 						Railly Hugo es un ingeniero de software peruano, creador principal de Petdex y fundador de Crafter Station. Actualmente trabaja en Vercel Labs y construye herramientas open source para agentes de IA, además de programas que ayudan a builders latinoamericanos a publicar productos.
 					</p>
-					<p class="mt-4 text-sm leading-relaxed text-foreground-2">
+					<p class="text-sm leading-relaxed text-foreground-2">
 						Nacido en Lima y radicado en Buenos Aires, Railly lidera Petdex, una galería open source de mascotas animadas para agentes de programación con más de 4.200 estrellas en GitHub. Su catálogo es consumido directamente por Hermes Agent mediante una API pública. También fundó Crafter Station, una organización comunitaria sin fines de lucro enfocada en crear, publicar y fortalecer el ecosistema tecnológico del Perú. En 2025, Text0, proyecto creado junto a Anthony Cueva, fue reconocido como ganador oficial del primer Next.js Global Hackathon. Antes de incorporarse a Vercel Labs, trabajó en evaluaciones de IA y developer tooling en Clerk.
 					</p>
 				</div>
-				<div>
-					<h3 class="font-mono text-xs uppercase tracking-wider text-foreground-3">English</h3>
-					<p class="mt-3 text-sm leading-relaxed text-foreground-2">
+				<div lang="en" class="flex flex-col gap-3 border-t border-[var(--ed-line)] pt-4">
+					<h3 class="ed-label">English</h3>
+					<p class="text-sm leading-relaxed text-foreground-2">
 						Railly Hugo is a Peruvian software engineer, principal creator of Petdex, and founder of Crafter Station. He currently works at Vercel Labs and builds open source tools for AI agents alongside programs that help Latin American builders ship products.
 					</p>
-					<p class="mt-4 text-sm leading-relaxed text-foreground-2">
+					<p class="text-sm leading-relaxed text-foreground-2">
 						Born in Lima and based in Buenos Aires, Railly leads Petdex, an open source gallery of animated companions for coding agents with more than 4,200 GitHub stars. Hermes Agent consumes its catalog directly through a public API. He also founded Crafter Station, a nonprofit community organization focused on creating, shipping, and strengthening Peru's technology ecosystem. In 2025, Text0, built with Anthony Cueva, was recognized as an official winner of the first Next.js Global Hackathon. Before joining Vercel Labs, he worked on AI evaluations and developer tooling at Clerk.
 					</p>
 				</div>
 			</div>
-		</section>
+		</Section>
 
-		<section class="grid gap-10 lg:grid-cols-2">
-			<div>
-				<SectionHeader title="Interview topics" className="mb-5" />
-				<ul class="flex flex-col gap-3">
-					{topics.map((topic) => (
-						<li class="flex gap-3 text-sm text-foreground-2">
-							<span class="select-none text-foreground-3" aria-hidden>&rarr;</span>
-							<span>{topic}</span>
-						</li>
-					))}
-				</ul>
-			</div>
-			<div>
-				<SectionHeader title="Media assets" className="mb-5" />
-				<div class="flex flex-col gap-3 text-sm">
-					<a href="/images/railly-hugo-headshot.png" download="railly-hugo-headshot.png" class="flex items-center justify-between rounded border border-ui px-4 py-3 text-foreground transition-colors hover:border-ui-2 hover:bg-background-2">
-						<span>High-resolution headshot</span>
-						<span class="font-mono text-xs text-foreground-3">2048 x 2048</span>
-					</a>
-					<a href="mailto:hi@railly.dev?subject=Railly%20Hugo%20media%20assets" class="flex items-center justify-between rounded border border-ui px-4 py-3 text-foreground transition-colors hover:border-ui-2 hover:bg-background-2">
-						<span>Request product or event images</span>
-						<span class="font-mono text-xs text-foreground-3">email</span>
-					</a>
-				</div>
-			</div>
-		</section>
+		<Section id="h-topics" number={5} title="Interview topics">
+			<List>
+				{topics.map((topic, i) => <ListRow dense index={`${String.fromCharCode(97 + i)}.`} title={topic} />)}
+			</List>
+		</Section>
 
-		<section class="rounded-lg border border-ui bg-background-2 p-6">
-			<SectionHeader title="Press contact" className="mb-3" />
-			<p class="max-w-2xl text-sm leading-relaxed text-foreground-2">
-				For interviews, fact checks, or additional assets, email <a href="mailto:hi@railly.dev" class="text-foreground underline decoration-ui underline-offset-4 hover:decoration-foreground">hi@railly.dev</a>. Railly speaks independently about his open source and community work, not on behalf of Vercel.
+		<Section id="h-assets" number={6} title="Media assets">
+			<ul class="grid gap-4 sm:grid-cols-2">
+				<li>
+					<a href="/images/railly-hugo-headshot.png" download="railly-hugo-headshot.png" class="ed ed-tile ed-tile-box flex h-full items-center gap-4 p-4">
+						<img src="/images/railly-hugo-headshot.webp" alt="" width="48" height="48" class="size-12 shrink-0 rounded-[3px] object-cover" loading="lazy" />
+						<span class="flex min-w-0 flex-col gap-1">
+							<span class="text-[14.5px] font-medium">High-resolution headshot</span>
+							<span class="ed-label">2048 x 2048</span>
+						</span>
+						<span aria-hidden="true" class="ml-auto text-foreground-3">&darr;</span>
+					</a>
+				</li>
+				<li>
+					<a href="mailto:hi@railly.dev?subject=Railly%20Hugo%20media%20assets" class="ed ed-tile ed-tile-box flex h-full items-center gap-4 p-4">
+						<span aria-hidden="true" class="ed-art size-12 shrink-0 bg-background-2"></span>
+						<span class="flex min-w-0 flex-col gap-1">
+							<span class="text-[14.5px] font-medium">Request product or event images</span>
+							<span class="ed-label">email</span>
+						</span>
+						<span aria-hidden="true" class="ml-auto text-foreground-3">&rarr;</span>
+					</a>
+				</li>
+			</ul>
+		</Section>
+
+		<Section id="h-contact" number={7} title="Press contact">
+			<p class="text-[15px] leading-relaxed text-foreground-2">
+				For interviews, fact checks, or additional assets, email <a href="mailto:hi@railly.dev" class="ed-link text-foreground">hi@railly.dev</a>. Railly speaks independently about his open source and community work, not on behalf of Vercel.
 			</p>
-		</section>
-
+		</Section>
 	</PageLayout>
 </Layout>

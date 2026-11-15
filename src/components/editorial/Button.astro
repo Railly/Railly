@@ -1,0 +1,32 @@
+---
+// Ink-outline button with the offset shadow. `primary` is filled with ink.
+// With `href` it renders a link; otherwise a <button>.
+interface Props {
+	href?: string;
+	variant?: "primary" | "secondary";
+	type?: "button" | "submit" | "reset";
+	external?: boolean;
+	class?: string;
+}
+
+const {
+	href,
+	variant = "secondary",
+	type = "button",
+	class: className,
+} = Astro.props;
+const { external = false } = Astro.props;
+const classes = ["ed ed-btn", variant === "primary" && "ed-btn-ink", className];
+---
+
+{
+	href ? (
+		<a href={href} target={external ? "_blank" : undefined} rel={external ? "noopener noreferrer" : undefined} class:list={classes}>
+			<slot />
+		</a>
+	) : (
+		<button type={type} class:list={classes}>
+			<slot />
+		</button>
+	)
+}

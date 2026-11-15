@@ -1,4 +1,6 @@
 ---
+// Editorial callout: hairline tile with the offset shadow and a mono label.
+// Monochrome; warning and important get a stronger rule and an ink marker.
 type CalloutType = "note" | "tip" | "warning" | "important";
 
 interface Props {
@@ -18,61 +20,102 @@ const defaultTitles: Record<CalloutType, string> = {
 const displayTitle = title ?? defaultTitles[type];
 ---
 
-<div class:list={["callout not-prose my-6 border-l-2 py-3 px-4 rounded-r-md", `callout-${type}`]}>
-    <p class="callout-title text-xs font-medium uppercase tracking-wide mb-1">
+<aside class:list={["callout not-prose", `callout-${type}`]} data-type={type}>
+    <p class="callout-title">
+        <span class="callout-mark" aria-hidden="true"></span>
         {displayTitle}
     </p>
-    <div class="text-sm text-foreground-2 [&_p]:mb-0 [&_code]:text-xs [&_a]:underline [&_a]:underline-offset-2 [&_a]:decoration-current/50 hover:[&_a]:decoration-current">
+    <div class="callout-body">
         <slot />
     </div>
-</div>
+</aside>
 
 <style>
-    .callout-note {
-        border-color: #878580;
-        background: rgb(135 133 128 / 0.06);
+    .callout {
+        margin: 2rem 0;
+        padding: 1rem 1.25rem 1.125rem;
+        border: 1px solid var(--ed-line);
+        border-radius: 4px;
+        background: var(--color-background);
+        box-shadow: 3px 3px 0 var(--ed-shadow);
     }
-    .callout-note .callout-title { color: #878580; }
-
-    .callout-tip {
-        border-color: #5b9a8b;
-        background: rgb(91 154 139 / 0.06);
+    .callout[data-type="warning"],
+    .callout[data-type="important"] {
+        border-color: var(--ed-line-2);
+        box-shadow: 3px 3px 0 var(--ed-shadow-2);
     }
-    .callout-tip .callout-title { color: #5b9a8b; }
-
-    .callout-warning {
-        border-color: #ad8b32;
-        background: rgb(173 139 50 / 0.06);
+    .callout-title {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin: 0 0 0.5rem;
+        font-family: var(--font-mono);
+        font-size: 11px;
+        line-height: 1.4;
+        letter-spacing: 0.02em;
+        color: var(--color-foreground-2);
     }
-    .callout-warning .callout-title { color: #ad8b32; }
-
-    .callout-important {
-        border-color: #c27054;
-        background: rgb(194 112 84 / 0.06);
+    .callout-mark {
+        flex-shrink: 0;
+        width: 6px;
+        height: 6px;
+        border: 1px solid var(--color-foreground-3);
+        border-radius: 999px;
     }
-    .callout-important .callout-title { color: #c27054; }
-
-    @media (prefers-color-scheme: dark) {
-        .callout-note {
-            border-color: #878580;
-            background: rgb(135 133 128 / 0.08);
-        }
-        .callout-tip {
-            border-color: #6ab0a0;
-            background: rgb(106 176 160 / 0.08);
-        }
-        .callout-tip .callout-title { color: #6ab0a0; }
-
-        .callout-warning {
-            border-color: #c9a840;
-            background: rgb(201 168 64 / 0.08);
-        }
-        .callout-warning .callout-title { color: #c9a840; }
-
-        .callout-important {
-            border-color: #d88870;
-            background: rgb(216 136 112 / 0.08);
-        }
-        .callout-important .callout-title { color: #d88870; }
+    .callout[data-type="tip"] .callout-mark {
+        border-radius: 1px;
+    }
+    .callout[data-type="warning"] .callout-mark,
+    .callout[data-type="important"] .callout-mark {
+        border-color: var(--color-foreground);
+        background: var(--color-foreground);
+    }
+    .callout-body {
+        font-size: 14.5px;
+        line-height: 1.65;
+        color: var(--color-foreground-2);
+        text-wrap: pretty;
+    }
+    .callout-body :global(p) {
+        margin: 0;
+    }
+    .callout-body :global(p + p),
+    .callout-body :global(* + ul),
+    .callout-body :global(* + ol) {
+        margin-top: 0.625rem;
+    }
+    .callout-body :global(ul),
+    .callout-body :global(ol) {
+        padding-left: 1.25em;
+        list-style: disc;
+    }
+    .callout-body :global(ol) {
+        list-style: decimal;
+    }
+    .callout-body :global(li + li) {
+        margin-top: 0.25rem;
+    }
+    .callout-body :global(strong) {
+        font-weight: 600;
+        color: var(--color-foreground);
+    }
+    .callout-body :global(a) {
+        color: var(--color-foreground);
+        text-decoration: underline;
+        text-decoration-color: color-mix(in oklab, currentColor 30%, transparent);
+        text-decoration-thickness: 1px;
+        text-underline-offset: 0.22em;
+    }
+    .callout-body :global(a:hover) {
+        text-decoration-color: currentColor;
+    }
+    .callout-body :global(code) {
+        padding: 0.05em 0.3em;
+        border: 1px solid var(--ed-line);
+        border-radius: 3px;
+        background: var(--color-background);
+        font-family: var(--font-mono);
+        font-size: 0.82em;
+        color: var(--color-foreground);
     }
 </style>

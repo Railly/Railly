@@ -1,0 +1,31 @@
+---
+// Numbered Redaction heading: "01  What I help with". Used by Section and
+// layout/SectionHeader; use it alone when a heading needs no section wrapper.
+interface Props {
+	title: string;
+	number?: string | number;
+	id?: string;
+	level?: 2 | 3;
+	/** Word list for the InkReveal scroll effect (see ui/InkReveal.astro). */
+	ink?: string | false;
+	class?: string;
+}
+
+const {
+	title,
+	number,
+	id,
+	level = 2,
+	ink = "",
+	class: className,
+} = Astro.props;
+const Tag = level === 3 ? "h3" : "h2";
+const label =
+	typeof number === "number" ? String(number).padStart(2, "0") : number;
+const inkAttrs = ink === false ? {} : { "data-ink-view": "", "data-ink": ink };
+---
+
+<div class:list={["ed ed-section-heading", className]}>
+	{label && <span class="ed-label">{label}</span>}
+	<Tag id={id} class="ed-section-title" {...inkAttrs}>{title}</Tag>
+</div>

@@ -40,7 +40,8 @@ const { href } = Astro.props;
   }
 
   .sn-ref {
-    font-size: 0.65em;
+    font-family: var(--font-mono);
+    font-size: 0.6em;
     color: var(--color-foreground-3);
     margin-left: 1px;
     vertical-align: super;
@@ -52,9 +53,9 @@ const { href } = Astro.props;
   }
 
   .sn-num {
-    font-weight: 500;
+    font-family: var(--font-mono);
+    font-size: 10.5px;
     color: var(--color-foreground-3);
-    font-size: 12px;
   }
 
   .sn-num::before {
@@ -84,13 +85,15 @@ const { href } = Astro.props;
     margin-top: 0.5rem;
     border-radius: 4px;
     width: 100%;
-    border: 1px solid var(--color-ui);
+    border: 1px solid var(--ed-line);
   }
 
   .sn-content :global(code) {
-    font-size: 0.9em;
-    background: var(--color-background-2);
-    padding: 1px 4px;
+    font-family: var(--font-mono);
+    font-size: 0.88em;
+    background: var(--ed-wash);
+    border: 1px solid var(--ed-line);
+    padding: 0 3px;
     border-radius: 3px;
   }
 
@@ -114,8 +117,8 @@ const { href } = Astro.props;
     opacity: 1;
   }
 
-  /* Desktop: Tufte-style margin sidenote */
-  @media (min-width: 1024px) {
+  /* Desktop: Tufte-style margin sidenote, in the article grid's right column (xl). */
+  @media (min-width: 1280px) {
     .sn {
       float: right;
       clear: right;
@@ -124,11 +127,11 @@ const { href } = Astro.props;
       margin-top: 0.15rem;
       margin-bottom: 1.25rem;
       padding-left: 10px;
-      border-left: 2px solid transparent;
-      font-size: 13px;
-      line-height: 1.5;
+      border-left: 1px solid var(--ed-line);
+      font-size: 12.5px;
+      line-height: 1.55;
       color: var(--color-foreground-2);
-      opacity: 0.35;
+      opacity: 0.5;
       transition: opacity 0.25s ease, border-color 0.25s ease;
     }
 
@@ -145,7 +148,7 @@ const { href } = Astro.props;
     /* Click-activated: full opacity + border accent */
     .sn-wrap.active .sn {
       opacity: 1;
-      border-left-color: var(--color-foreground-3);
+      border-left-color: var(--color-foreground);
     }
 
     .sn-wrap.active .sn-term {
@@ -153,21 +156,22 @@ const { href } = Astro.props;
     }
   }
 
-  /* Mobile: inline disclosure */
-  @media (max-width: 1023px) {
+  /* Below xl: inline disclosure */
+  @media (max-width: 1279px) {
     .sn-wrap {
       display: inline;
     }
 
     .sn {
       display: none;
-      padding: 8px 12px;
-      margin: 6px 0;
-      border-radius: 6px;
-      background: var(--color-background-2);
+      padding: 10px 12px;
+      margin: 8px 0;
+      border-radius: 4px;
+      background: var(--color-background);
       color: var(--color-foreground-2);
-      border: 1px solid var(--color-ui);
-      font-size: 13px;
+      border: 1px solid var(--ed-line);
+      box-shadow: 3px 3px 0 var(--ed-shadow);
+      font-size: 13.5px;
       line-height: 1.5;
     }
 

@@ -10,13 +10,13 @@ interface Props {
 const { title = "Preview:", content, previewHeight = "250px" } = Astro.props;
 ---
 
-<div class="content-preview relative pt-[2em]">
+<div class="ed content-preview relative pt-[2em]">
     <div class="flex justify-between items-center mb-4">
         <h2 class="text-lg font-medium text-foreground my-0">
             {title}
         </h2>
         <button
-            class="toggle-button inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium text-foreground-2/70 hover:text-foreground transition-colors rounded-full border border-ui hover:border-foreground-2 bg-background/50 hover:bg-background cursor-pointer"
+            class="toggle-button inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap px-2.5 py-1 font-mono text-[11px] text-foreground-2 hover:text-foreground transition-colors rounded-[4px] border border-[var(--ed-line-2)] hover:border-foreground bg-background shadow-[2px_2px_0_var(--ed-shadow)] cursor-pointer"
         >
             <svg
                 class="w-3.5 h-3.5 transition-transform duration-200"
@@ -31,11 +31,11 @@ const { title = "Preview:", content, previewHeight = "250px" } = Astro.props;
                     stroke-width="2"
                     d="M4 6h16M4 12h16m-7 6h7"></path>
             </svg>
-            <span class="hidden md:inline text-[13px]">View Full</span>
+            <span class="hidden md:inline ">View Full</span>
         </button>
     </div>
     <div
-        class="preview-wrapper relative overflow-hidden rounded-lg border border-ui mask-b-from-20% mask-b-to-80%"
+        class="preview-wrapper relative overflow-hidden rounded-[4px] border border-[var(--ed-line)] mask-b-from-20% mask-b-to-80%"
         style={`max-height: ${previewHeight};`}
     >
         <CustomCode

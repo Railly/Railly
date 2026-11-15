@@ -1,0 +1,12 @@
+---
+// Mono line above a title: short facts joined by middle dots.
+interface Props {
+	items: string | string[];
+	class?: string;
+}
+
+const { items, class: className } = Astro.props;
+const text = Array.isArray(items) ? items.join(" · ") : items;
+---
+
+<p class:list={["ed ed-label", className]}>{text}</p>

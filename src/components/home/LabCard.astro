@@ -1,0 +1,101 @@
+---
+// Lab experiment: looping recording beside its meta line, title and summary.
+interface Props {
+	href: string;
+	title: string;
+	summary: string;
+	/** Mono line above the title, e.g. "001 · Nov 2026 · Didn't ship". */
+	meta: string;
+	video: string;
+	poster: string;
+}
+
+const { href, title, summary, meta, video, poster } = Astro.props;
+---
+
+<a href={href} class="ed lab">
+	<div class="art" aria-hidden="true">
+		<video src={video} poster={poster} muted loop playsinline preload="none" data-lab-loop></video>
+	</div>
+	<div>
+		<p class="ed-label">{meta}</p>
+		<h3>{title}</h3>
+		<p class="summary">{summary}</p>
+	</div>
+</a>
+
+<style>
+	.lab {
+		display: grid;
+		grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+		gap: 1.5rem;
+		align-items: center;
+		border-radius: 4px;
+	}
+	.lab h3 {
+		margin-top: 0.35rem;
+		font-family: var(--font-serif);
+		font-size: 19px;
+		font-weight: 400;
+		line-height: 1.375;
+	}
+	.summary {
+		margin-top: 0.2rem;
+		font-size: 14.5px;
+		line-height: 1.5;
+		color: var(--color-foreground-3);
+	}
+	.lab:hover h3 {
+		text-decoration: underline;
+		text-underline-offset: 0.2em;
+		text-decoration-thickness: 1px;
+	}
+	.art {
+		position: relative;
+		aspect-ratio: 16 / 10;
+		border-radius: 4px;
+		overflow: hidden;
+		background: var(--ed-wash);
+		box-shadow:
+			inset 0 0 0 1px var(--ed-line),
+			3px 3px 0 var(--ed-shadow);
+		transition: box-shadow 0.25s ease;
+	}
+	.lab:hover .art {
+		box-shadow:
+			inset 0 0 0 1px var(--ed-line-2),
+			4px 4px 0 var(--ed-shadow-2);
+	}
+	.art video {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+	@media (max-width: 640px) {
+		.lab {
+			grid-template-columns: 1fr;
+			gap: 0.85rem;
+		}
+	}
+</style>
+
+<script>
+	// Lab loops play only while on screen, and never with reduced motion (the poster stays).
+	function initLabLoops() {
+		const still = matchMedia("(prefers-reduced-motion: reduce)");
+		const io = new IntersectionObserver(
+			(entries) => {
+				for (const { target, isIntersecting } of entries) {
+					const v = target as HTMLVideoElement;
+					if (isIntersecting && !still.matches) v.play().catch(() => {});
+					else v.pause();
+				}
+			},
+			{ threshold: 0.3 },
+		);
+		for (const v of document.querySelectorAll<HTMLVideoElement>("video[data-lab-loop]")) io.observe(v);
+	}
+	document.addEventListener("astro:page-load", initLabLoops);
+</script>

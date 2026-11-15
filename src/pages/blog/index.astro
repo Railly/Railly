@@ -1,11 +1,10 @@
 ---
 import { getCollection } from "astro:content";
-import PremiereCountdown from "@/components/blog/PremiereCountdown";
-import Navigation from "@/components/layout/Navigation.astro";
-import SiteFooter from "@/components/layout/SiteFooter.astro";
-import AsciiField from "@/components/scene/AsciiField.astro";
+import PostList from "@/components/blog/PostList.astro";
+import PageHero from "@/components/editorial/PageHero.astro";
+import Section from "@/components/editorial/Section.astro";
+import PageLayout from "@/components/layout/PageLayout.astro";
 import { isPostListable } from "@/config/blog";
-import { getReadingTime } from "@/config/reading-time";
 import { ogUrl } from "@/config/site";
 import Layout from "@/layouts/Layout.astro";
 
@@ -32,13 +31,13 @@ const years = Object.keys(postsByYear)
 	.sort((a, b) => b - a);
 
 const newestPost = sortedPosts[0];
-const isNewest = (slug: string) => slug === newestPost?.slug;
-
-const formatDate = (date: Date) => {
-	const day = date.getDate().toString().padStart(2, "0");
-	const month = (date.getMonth() + 1).toString().padStart(2, "0");
-	return `${day}/${month}`;
-};
+const plural = (n: number, word: string) => `${n} ${word}${n === 1 ? "" : "s"}`;
+const eyebrow = [
+	plural(sortedPosts.length, "post"),
+	years.length > 1
+		? `${years[years.length - 1]} – ${years[0]}`
+		: String(years[0] ?? ""),
+].filter(Boolean);
 ---
 
 <Layout
@@ -46,59 +45,21 @@ const formatDate = (date: Date) => {
     title="Blog - Railly Hugo"
     description="Technical articles, tutorials, and thoughts on web development, AI, and building in public."
 >
-    <AsciiField clear={400} />
-    <Navigation />
-  <main class="max-w-2xl mx-auto px-6 py-12">
-    <h1 class="text-3xl font-medium text-foreground mb-12">Writing</h1>
-    <div class="space-y-1">
-      {
-        years.map((year) => (
-          <>
-            {postsByYear[year].map((post, index) => {
-              const isPremiere = post.data.status === "premiere" && new Date() < post.data.pubDate;
-              const Element = isPremiere ? "div" : "a";
-              return (
-                <Element
-                  {...(!isPremiere ? { href: `/blog/${post.slug}` } : {})}
-                  class:list={[
-                    "group flex items-baseline gap-4 py-3 border-b border-ui transition-colors -mx-3 px-3",
-                    isPremiere ? "cursor-default" : "hover:bg-background-2",
-                  ]}
+    <PageLayout class="flex flex-col">
+        <PageHero eyebrow={eyebrow} title="Writing" />
+
+        {
+            years.map((year, i) => (
+                <Section
+                    id={`h-${year}`}
+                    number={i + 1}
+                    title={String(year)}
+                    note={plural(postsByYear[year].length, "post")}
+                    class={i === 0 ? "mt-16" : "mt-14"}
                 >
-                  <span class="text-foreground-3 tabular-nums w-12 shrink-0 text-sm">
-                    {index === 0 ? year : ""}
-                  </span>
-                  <span class:list={[
-                    "flex-1 font-medium text-sm",
-                    isPremiere ? "text-foreground-3" : "text-foreground group-hover:text-foreground",
-                  ]}>
-                    {post.data.title}
-                    {isPremiere ? (
-                      <span class="ml-2 text-xs font-normal px-1.5 py-0.5 border border-ui rounded text-foreground-3">
-                        Premiere
-                      </span>
-                    ) : isNewest(post.slug) ? (
-                      <span class="ml-2 text-xs font-normal px-1.5 py-0.5 bg-ui rounded text-foreground-2">
-                        Newest
-                      </span>
-                    ) : null}
-                  </span>
-                  {isPremiere ? (
-                    <PremiereCountdown pubDate={post.data.pubDate.toISOString()} client:load />
-                  ) : (
-                    <span class="text-foreground-3 tabular-nums text-sm shrink-0 flex items-center gap-2">
-                      <span class="hidden sm:inline">{getReadingTime(post.body || "").text}</span>
-                      <span class="hidden sm:inline">·</span>
-                      {formatDate(post.data.pubDate)}
-                    </span>
-                  )}
-                </Element>
-              );
-            })}
-          </>
-        ))
-      }
-    </div>
-  </main>
-    <div class="relative z-[1] mx-auto max-w-[42rem] px-6 pb-16"><SiteFooter /></div>
+                    <PostList posts={postsByYear[year]} newestSlug={newestPost?.slug} readingTime />
+                </Section>
+            ))
+        }
+    </PageLayout>
 </Layout>

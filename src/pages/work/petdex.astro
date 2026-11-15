@@ -1,6 +1,12 @@
 ---
+import Button from "@/components/editorial/Button.astro";
+import List from "@/components/editorial/List.astro";
+import ListRow from "@/components/editorial/ListRow.astro";
+import PageHero from "@/components/editorial/PageHero.astro";
+import Section from "@/components/editorial/Section.astro";
+import Timeline from "@/components/editorial/Timeline.astro";
 import PageLayout from "@/components/layout/PageLayout.astro";
-import SectionHeader from "@/components/layout/SectionHeader.astro";
+import LinkedStats from "@/components/press/LinkedStats.astro";
 import Layout from "@/layouts/Layout.astro";
 
 const title = "Petdex: from a one-day build to a dependency of Hermes Agent";
@@ -68,49 +74,68 @@ const sources = [
 ---
 
 <Layout title={`${title} | Railly Hugo`} description={description} image={ogImage}>
-	<PageLayout class="flex flex-col gap-16">
-		<section class="flex flex-col gap-4">
-			<p class="font-mono text-xs uppercase tracking-wider text-foreground-3">Case study</p>
-			<h1 class="max-w-2xl text-2xl font-medium leading-tight text-foreground sm:text-3xl">{title}</h1>
-			<p class="max-w-2xl text-base leading-relaxed text-foreground-2">
-				Petdex is an open gallery of animated pets for coding agents. I created it and remain its main contributor.
-			</p>
-			<div class="flex flex-wrap gap-4 text-sm">
-				<a href="https://petdex.dev" target="_blank" rel="noopener noreferrer" class="text-foreground underline decoration-ui underline-offset-4 hover:decoration-foreground">Open Petdex</a>
-				<a href="https://github.com/crafter-station/petdex" target="_blank" rel="noopener noreferrer" class="text-foreground underline decoration-ui underline-offset-4 hover:decoration-foreground">View source</a>
+	<PageLayout class="flex flex-col">
+		<PageHero
+			eyebrow={["Case study", "Petdex"]}
+			title={title}
+			lede="Petdex is an open gallery of animated pets for coding agents. I created it and remain its main contributor."
+		>
+			<div class="flex flex-wrap gap-3">
+				<Button href="https://petdex.dev" variant="primary" external>Open Petdex</Button>
+				<Button href="https://github.com/crafter-station/petdex" external>View source</Button>
 			</div>
-		</section>
+		</PageHero>
 
-		<section class="grid grid-cols-2 gap-px overflow-hidden rounded border border-ui bg-ui sm:grid-cols-4">
-			{metrics.map((m) => (
-				<a href={m.href} class="bg-background p-4 transition-colors hover:bg-background-2" target={m.href.startsWith("http") ? "_blank" : undefined} rel="noopener noreferrer">
-					<p class="font-mono text-xl tabular-nums text-foreground">{m.value}</p>
-					<p class="mt-1 text-xs text-foreground-3">{m.label}</p>
-				</a>
-			))}
-		</section>
-		<p class="-mt-12 text-xs text-foreground-3">Figures checked on October 20, 2026.</p>
+		<div aria-hidden="true" class="ed-art pets mt-12 flex aspect-[21/8] items-end justify-center gap-[4%] bg-[var(--ed-wash)] pb-[3%]">
+			<span class="sprite" style="background-image:url(/images/petdex/boba.webp)"></span>
+			<span class="sprite" style="background-image:url(/images/petdex/bee-teemo.webp)"></span>
+			<span class="sprite" style="background-image:url(/images/petdex/aurelion-sol.webp)"></span>
+		</div>
 
-		<section class="flex flex-col gap-8">
-			{steps.map((step) => (
-				<div class="grid gap-2 sm:grid-cols-[7rem_1fr]">
-					<p class="font-mono text-xs uppercase tracking-wider text-foreground-3">{step.label}</p>
-					<div>
-						<h2 class="text-base font-medium text-foreground">{step.title}</h2>
-						<p class="mt-1 max-w-2xl text-sm leading-relaxed text-foreground-2">{step.body}</p>
-					</div>
-				</div>
-			))}
-		</section>
+		<div class="ed mt-12 flex flex-col gap-3">
+			<LinkedStats cols={4} stats={metrics} />
+			<p class="ed-label">Figures checked on October 20, 2026.</p>
+		</div>
 
-		<section>
-			<SectionHeader title="Sources" className="mb-3" />
-			<ul class="flex flex-col gap-2 text-sm">
+		<Timeline label="How Petdex grew" class="mt-16" steps={steps.map((s) => ({ when: s.label, title: s.title, description: s.body }))} />
+
+		<Section id="h-sources" number={1} title="Sources">
+			<List>
 				{sources.map((s) => (
-					<li><a href={s.href} target={s.href.startsWith("http") ? "_blank" : undefined} rel="noopener noreferrer" class="text-foreground-2 underline decoration-ui underline-offset-4 hover:text-foreground">{s.label}</a></li>
+					<ListRow dense href={s.href} external={s.href.startsWith("http")} title={s.label} />
 				))}
-			</ul>
-		</section>
-
+			</List>
+		</Section>
 	</PageLayout>
 </Layout>
+
+<style>
+	/* Petdex previews are 6-frame strips: play them as an idle loop. */
+	.sprite {
+		width: 15%;
+		aspect-ratio: 192 / 208;
+		background-size: 600% 100%;
+		image-rendering: pixelated;
+		animation: idle 0.9s steps(6) infinite;
+	}
+	.sprite:nth-child(2) {
+		width: 19%;
+		animation-delay: -0.3s;
+	}
+	.sprite:nth-child(3) {
+		animation-delay: -0.6s;
+	}
+	@keyframes idle {
+		from {
+			background-position: 0 0;
+		}
+		to {
+			background-position: 120% 0;
+		}
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.sprite {
+			animation: none;
+		}
+	}
+</style>

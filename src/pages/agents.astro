@@ -1,7 +1,13 @@
 ---
-import PageLayout from "../components/layout/PageLayout.astro";
-import SectionHeader from "../components/layout/SectionHeader.astro";
-import Layout from "../layouts/Layout.astro";
+import BrandIcon from "@/components/brand/BrandIcon.astro";
+import type { BrandName } from "@/components/brand/registry";
+import List from "@/components/editorial/List.astro";
+import ListRow from "@/components/editorial/ListRow.astro";
+import PageHero from "@/components/editorial/PageHero.astro";
+import Section from "@/components/editorial/Section.astro";
+import Tile from "@/components/editorial/Tile.astro";
+import PageLayout from "@/components/layout/PageLayout.astro";
+import Layout from "@/layouts/Layout.astro";
 
 const ogTitle = "Agent-first developer tools";
 const ogDescription = "Tools I'm building for AI agents, not humans.";
@@ -29,6 +35,7 @@ type GridCliEntry = {
 	description: string;
 	github: string;
 	npm?: string;
+	icon?: BrandName;
 };
 
 const heroClis: HeroCliEntry[] = [
@@ -86,18 +93,21 @@ const heroClis: HeroCliEntry[] = [
 const gridClis: GridCliEntry[] = [
 	{
 		name: "agentfiles",
+		icon: "agentfiles",
 		stars: 529,
 		description: "Manage agent files across 13+ tools. From Obsidian.",
 		github: "https://github.com/Railly/agentfiles",
 	},
 	{
 		name: "skill-kit",
+		icon: "skillKit",
 		stars: 56,
 		description: "Local-first analytics for agent skills.",
 		github: "https://github.com/crafter-station/skill-kit",
 	},
 	{
 		name: "trx",
+		icon: "trx",
 		stars: 78,
 		description: "Agent-native transcription via Whisper.",
 		github: "https://github.com/crafter-station/trx",
@@ -105,6 +115,7 @@ const gridClis: GridCliEntry[] = [
 	},
 	{
 		name: "spoti-cli",
+		icon: "spotiCli",
 		stars: 0,
 		description: "Spotify Web API for agents.",
 		github: "https://github.com/crafter-station/spoti-cli",
@@ -112,12 +123,50 @@ const gridClis: GridCliEntry[] = [
 	},
 	{
 		name: "sunat-cli",
+		icon: "sunatCli",
 		stars: 0,
 		description: "Peruvian tax automation for agents (SUNAT).",
 		github: "https://github.com/crafter-station/sunat-cli",
 		npm: "https://www.npmjs.com/package/@crafter/sunat-cli",
 	},
 ];
+const prs = [
+	{
+		repo: "vercel-labs/emulate",
+		pr: 38,
+		state: "merged",
+		title: "Clerk emulator package (OIDC, JWKS, OAuth, Backend API, 55 tests)",
+		note: "co-authored with Chris Tate",
+		url: "https://github.com/vercel-labs/emulate/pull/38",
+	},
+	{
+		repo: "vercel-labs/agent-browser",
+		pr: 1141,
+		state: "open",
+		title: "Policy check now matches CLI parent commands",
+		note: null,
+		url: "https://github.com/vercel-labs/agent-browser/pull/1141",
+	},
+	{
+		repo: "vercel-labs/workflow-builder-template",
+		pr: 76,
+		state: "merged",
+		title: "Clerk integration plugin",
+		note: null,
+		url: "https://github.com/vercel-labs/workflow-builder-template/pull/76",
+	},
+];
+
+// Text links under each stack tile, in the order the old icon row used.
+const linksFor = (cli: HeroCliEntry) =>
+	[
+		cli.github && { label: "GitHub", href: cli.github, external: true },
+		cli.site && { label: "Site", href: cli.site, external: true },
+		cli.npm && { label: "npm", href: cli.npm, external: true },
+		cli.blogPost && { label: "Post", href: cli.blogPost, external: false },
+	].filter((l): l is { label: string; href: string; external: boolean } =>
+		Boolean(l),
+	);
 ---
 
 <Layout
@@ -125,203 +174,72 @@ const gridClis: GridCliEntry[] = [
 	description={ogDescription}
 	image={ogImage}
 >
-	<PageLayout class="flex flex-col gap-10" bare>
-		<div class="flex flex-col gap-2">
-			<h1 class="text-lg font-medium text-foreground">Agent-first developer tools</h1>
-			<p class="text-sm text-foreground-2">
-				Tools I'm building for AI agents, not humans.
-			</p>
-		</div>
+	<PageLayout class="flex flex-col">
+		<PageHero
+			eyebrow={["Agents", `${heroClis.length + gridClis.length} CLIs`, `${prs.length} PRs to Vercel Labs`]}
+			title="Agent-first developer tools"
+			lede="Tools I'm building for AI agents, not humans."
+		/>
 
-		<section class="w-full">
-			<div class="mb-4">
-				<SectionHeader title="Contributing to Vercel Labs" className="mb-0" />
-			</div>
-			<div class="space-y-0">
-				{[
-					{
-						repo: "vercel-labs/emulate",
-						pr: 38,
-						state: "merged",
-						title: "Clerk emulator package (OIDC, JWKS, OAuth, Backend API, 55 tests)",
-						note: "co-authored with Chris Tate",
-						url: "https://github.com/vercel-labs/emulate/pull/38",
-					},
-					{
-						repo: "vercel-labs/agent-browser",
-						pr: 1141,
-						state: "open",
-						title: "Policy check now matches CLI parent commands",
-						note: null,
-						url: "https://github.com/vercel-labs/agent-browser/pull/1141",
-					},
-					{
-						repo: "vercel-labs/workflow-builder-template",
-						pr: 76,
-						state: "merged",
-						title: "Clerk integration plugin",
-						note: null,
-						url: "https://github.com/vercel-labs/workflow-builder-template/pull/76",
-					},
-				].map((pr) => (
-					<a
-						href={pr.url}
-						target="_blank"
-						rel="noopener noreferrer"
-						class="group flex items-center gap-3 py-3 border-b border-ui hover:bg-background-2 transition-colors -mx-3 px-3"
-					>
-						<span class="font-mono text-foreground text-sm shrink-0">
-							{pr.repo}<span class="text-foreground-3">#{pr.pr}</span>
-						</span>
-						<span class={`text-xs px-2 py-0.5 rounded border font-mono shrink-0 ${pr.state === "merged" ? "border-ui bg-background-2 text-foreground-2" : "border-ui bg-background text-foreground-3"}`}>
-							{pr.state}
-						</span>
-						<span class="flex-1 text-sm text-foreground-2 hidden sm:block truncate">
-							{pr.title}{pr.note && <span class="text-foreground-3"> ({pr.note})</span>}
-						</span>
-					</a>
+		<Section id="h-labs" number={1} title="Contributing to Vercel Labs" note="Pull requests" class="mt-16">
+			<List>
+				{prs.map((pr) => (
+					<ListRow href={pr.url} external meta={pr.state}>
+						<BrandIcon slot="leading" name="vercel" width={14} height={14} />
+						<span slot="title" class="repo">{pr.repo}<span class="text-foreground-3">#{pr.pr}</span></span>
+						<Fragment slot="description">{pr.title}{pr.note && <span class="text-foreground-3"> ({pr.note})</span>}</Fragment>
+					</ListRow>
 				))}
-			</div>
-		</section>
+			</List>
+		</Section>
 
-		<section class="w-full">
-			<div class="mb-4">
-				<SectionHeader title="The Stack" className="mb-0" />
-			</div>
-			<div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-				{heroClis.map((cli) => (
-					<div class="group relative rounded-lg border border-ui hover:border-ui-2 transition-all bg-background hover:bg-background-2 p-4 flex flex-col gap-3">
-						<div class="flex items-start justify-between gap-2">
+		<Section id="h-stack" number={2} title="The stack">
+			<div class="grid gap-5 sm:grid-cols-2">
+				{heroClis.map((cli) => {
+					const links = linksFor(cli);
+					return (
+						<Tile as="article" class="flex flex-col gap-3 p-5">
 							<div class="flex flex-col gap-1">
-								<span class="font-medium text-foreground text-sm font-mono">{cli.name}</span>
-								<span class="text-xs text-foreground-2">{cli.tagline}</span>
+								<h3 class="font-serif text-[21px] leading-snug text-foreground">{cli.name}</h3>
+								<p class="text-[14.5px] leading-snug text-foreground-2">{cli.tagline}</p>
 							</div>
-							<div class="flex items-center gap-2 shrink-0">
-								{cli.github && (
-									<a
-										href={cli.github}
-										target="_blank"
-										rel="noopener noreferrer"
-										class="inline-flex items-center justify-center size-9 -m-1.5 rounded-md border border-transparent text-foreground-3 hover:text-foreground hover:bg-background-2 hover:border-ui transition-colors"
-										title="GitHub"
-									>
-										<svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
-											<path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
-										</svg>
-									</a>
-								)}
-								{cli.site && (
-									<a
-										href={cli.site}
-										target="_blank"
-										rel="noopener noreferrer"
-										class="inline-flex items-center justify-center size-9 -m-1.5 rounded-md border border-transparent text-foreground-3 hover:text-foreground hover:bg-background-2 hover:border-ui transition-colors"
-										title="Visit site"
-									>
-										<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-											<path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-											<polyline points="15 3 21 3 21 9" />
-											<line x1="10" y1="14" x2="21" y2="3" />
-										</svg>
-									</a>
-								)}
-								{cli.npm && (
-									<a
-										href={cli.npm}
-										target="_blank"
-										rel="noopener noreferrer"
-										class="inline-flex items-center justify-center size-9 -m-1.5 rounded-md border border-transparent text-foreground-3 hover:text-foreground hover:bg-background-2 hover:border-ui transition-colors"
-										title="npm"
-									>
-										<svg width="15" height="15" viewBox="0 0 256 256" fill="currentColor">
-											<title>npm</title>
-											<polygon points="0 256 0 0 256 0 256 256" />
-											<polygon points="48 48 208 48 208 208 176 208 176 80 128 80 128 208 48 208" fill="var(--color-background)" />
-										</svg>
-									</a>
-								)}
-								{cli.blogPost && (
-									<a
-										href={cli.blogPost}
-										class="inline-flex items-center justify-center size-9 -m-1.5 rounded-md border border-transparent text-foreground-3 hover:text-foreground hover:bg-background-2 hover:border-ui transition-colors"
-										title="Read the post"
-									>
-										<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-											<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-											<polyline points="14 2 14 8 20 8" />
-											<line x1="16" y1="13" x2="8" y2="13" />
-											<line x1="16" y1="17" x2="8" y2="17" />
-											<polyline points="10 9 9 9 8 9" />
-										</svg>
-									</a>
+							<p class="text-[13.5px] leading-relaxed text-foreground-3">{cli.description}</p>
+							<p class="ed-label">{cli.tags.map((t) => t.label).join(" · ")}</p>
+							<div class="mt-auto flex flex-wrap gap-x-4 gap-y-1 border-t border-[var(--ed-line)] pt-3 text-[13.5px]">
+								{links.length > 0 ? (
+									links.map((l) => (
+										<a href={l.href} target={l.external ? "_blank" : undefined} rel={l.external ? "noopener noreferrer" : undefined} class="ed-link">{l.label}</a>
+									))
+								) : (
+									cli.private && <span class="ed-label">private</span>
 								)}
 							</div>
-						</div>
-						<p class="text-xs text-foreground-3 leading-relaxed">{cli.description}</p>
-						<div class="flex flex-wrap gap-1.5 mt-auto pt-1">
-							{cli.tags.map((tag) => (
-								<span class="text-xs px-2 py-0.5 rounded border border-ui bg-background-2 text-foreground-3 font-mono">
-									{tag.label}
-								</span>
-							))}
-						</div>
-					</div>
-				))}
+						</Tile>
+					);
+				})}
 			</div>
-		</section>
+		</Section>
 
-		<section class="w-full">
-			<div class="mb-4">
-				<SectionHeader title="More Shipped" className="mb-0" />
-			</div>
-			<div class="space-y-0">
+		<Section id="h-more" number={3} title="More shipped" note="GitHub stars">
+			<List>
 				{gridClis.map((cli) => (
-					<div class="group flex items-center gap-4 py-4 border-b border-ui hover:bg-background-2 transition-colors -mx-3 px-3">
-						<span class="font-mono text-foreground font-medium text-sm w-28 shrink-0">{cli.name}</span>
-						{cli.stars > 0 && (
-							<span class="flex items-center gap-1 text-foreground-3 text-xs w-12 shrink-0 tabular-nums">
-								<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
-									<path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-								</svg>
-								{cli.stars}
-							</span>
-						)}
-						{cli.stars === 0 && (
-							<span class="w-12 shrink-0" />
-						)}
-						<span class="flex-1 text-sm text-foreground-2 hidden sm:block">{cli.description}</span>
-						<div class="flex items-center gap-3 shrink-0">
-							<a
-								href={cli.github}
-								target="_blank"
-								rel="noopener noreferrer"
-								class="inline-flex items-center justify-center size-9 -m-1.5 rounded-md border border-transparent text-foreground-3 hover:text-foreground hover:bg-background-2 hover:border-ui transition-colors"
-								title="GitHub"
-							>
-								<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-									<path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
-								</svg>
-							</a>
-							{cli.npm && (
-								<a
-									href={cli.npm}
-									target="_blank"
-									rel="noopener noreferrer"
-									class="inline-flex items-center justify-center size-9 -m-1.5 rounded-md border border-transparent text-foreground-3 hover:text-foreground hover:bg-background-2 hover:border-ui transition-colors"
-									title="npm"
-								>
-									<svg width="14" height="14" viewBox="0 0 256 256" fill="currentColor">
-										<title>npm</title>
-										<polygon points="0 256 0 0 256 0 256 256" />
-										<polygon points="48 48 208 48 208 208 176 208 176 80 128 80 128 208 48 208" fill="var(--color-background)" />
-									</svg>
-								</a>
-							)}
-						</div>
-					</div>
+					<ListRow meta={cli.stars > 0 ? cli.stars : ""}>
+						{cli.icon ? <BrandIcon slot="leading" name={cli.icon} width={14} height={14} /> : <span slot="leading" />}
+						<a slot="title" href={cli.github} target="_blank" rel="noopener noreferrer" class="ed-link">{cli.name}</a>
+						<Fragment slot="description">
+							{cli.description}
+							{cli.npm && <a href={cli.npm} target="_blank" rel="noopener noreferrer" class="ed-label ml-1.5">npm</a>}
+						</Fragment>
+					</ListRow>
 				))}
-			</div>
-		</section>
-
+			</List>
+		</Section>
 	</PageLayout>
 </Layout>
+
+<style>
+	/* Long repo slugs wrap instead of pushing the row past a phone's width. */
+	.repo {
+		overflow-wrap: anywhere;
+	}
+</style>

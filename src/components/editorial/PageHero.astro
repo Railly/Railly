@@ -1,0 +1,35 @@
+---
+import Eyebrow from "./Eyebrow.astro";
+
+// Page opener: eyebrow, Redaction H1, lede. Extra content (buttons, a StatStrip)
+// goes in the default slot. A rich lede (with links) goes in the `lede` slot.
+interface Props {
+	eyebrow?: string | string[];
+	title?: string;
+	/** Screen-reader-only H1, for pages whose visible opener is not a title. */
+	srTitle?: string;
+	lede?: string;
+	/** InkReveal word list for the title (comic-panel words). `false` turns the effect off. */
+	ink?: string | false;
+	class?: string;
+}
+
+const {
+	eyebrow,
+	title,
+	srTitle,
+	lede,
+	ink = "",
+	class: className,
+} = Astro.props;
+const inkAttrs = ink === false ? {} : { "data-ink-hero": "", "data-ink": ink };
+const hasLede = Astro.slots.has("lede") || lede;
+---
+
+<header class:list={["ed ed-hero", className]}>
+	{srTitle && <h1 class="sr-only">{srTitle}</h1>}
+	{eyebrow && <Eyebrow items={eyebrow} />}
+	{title && <h1 class="ed-hero-title" {...inkAttrs}>{title}</h1>}
+	{hasLede && <p class="ed-lede">{Astro.slots.has("lede") ? <slot name="lede" /> : lede}</p>}
+	<slot />
+</header>

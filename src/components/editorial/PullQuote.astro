@@ -1,0 +1,26 @@
+---
+// Large Redaction quote with a small attribution line.
+interface Props {
+	quote: string;
+	name: string;
+	context?: string;
+	image?: string;
+	href?: string;
+	class?: string;
+}
+
+const { quote, name, context, image, href, class: className } = Astro.props;
+---
+
+<figure class:list={["ed ed-quote", className]}>
+	<blockquote>
+		<span aria-hidden="true" class="ed-quote-mark">&ldquo;</span>{quote}<span aria-hidden="true" class="ed-quote-mark">&rdquo;</span>
+	</blockquote>
+	<figcaption>
+		{image && <img src={image} alt="" class="size-7 rounded-full object-cover ring-1 ring-ui" />}
+		<span>
+			{href ? <a href={href} target="_blank" rel="noopener noreferrer" class="ed-link font-medium">{name}</a> : <span class="font-medium">{name}</span>}
+			{context && <span class="text-foreground-3"> · {context}</span>}
+		</span>
+	</figcaption>
+</figure>

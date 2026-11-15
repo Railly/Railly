@@ -1,6 +1,8 @@
 ---
+import PageHero from "@/components/editorial/PageHero.astro";
+import Section from "@/components/editorial/Section.astro";
+import LabCard from "@/components/home/LabCard.astro";
 import PageLayout from "@/components/layout/PageLayout.astro";
-import InkReveal from "@/components/ui/InkReveal.astro";
 import { ogUrl } from "@/config/site";
 import { labExperiments } from "@/data/lab";
 import Layout from "@/layouts/Layout.astro";
@@ -12,32 +14,20 @@ const experiments = labExperiments;
 ---
 
 <Layout title="Lab | Railly Hugo" description={description} image={ogImage}>
-	<PageLayout class="flex flex-col gap-12">
-		<section class="flex flex-col gap-4">
-			<p class="font-mono text-xs uppercase tracking-wider text-foreground-3">Lab</p>
-			<h1 data-ink-hero data-ink="interfaces,agents" class="max-w-2xl font-serif text-2xl leading-snug text-foreground sm:text-3xl">
+	<PageLayout class="flex flex-col">
+		<PageHero eyebrow={["Lab", `${experiments.length} ${experiments.length === 1 ? "experiment" : "experiments"}`]}>
+			<h1 data-ink-hero data-ink="interfaces,agents" class="ed-display">
 				Experiments in interfaces for people and agents.
 			</h1>
-			<InkReveal />
-		</section>
+		</PageHero>
 
-		<ul class="flex flex-col">
-			{experiments.map((e) => (
-				<li class="border-t border-ui last:border-b">
-					<a href={e.href} class="group grid gap-5 py-6 sm:grid-cols-[minmax(0,26rem)_1fr] sm:items-center sm:gap-8">
-						<div class="relative aspect-[16/10] w-full overflow-hidden rounded border border-ui bg-background-2">
-							<video src={e.video} poster={e.poster} muted loop playsinline preload="metadata" data-lab-loop aria-hidden="true" class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.015]"></video>
-						</div>
-						<div class="flex flex-col gap-1.5">
-							<p class="font-mono text-xs text-foreground-3">{e.n} · {e.date} · {e.status}</p>
-							<h2 data-ink-view class="text-lg font-medium text-foreground group-hover:underline group-hover:decoration-ui group-hover:underline-offset-4">{e.title}</h2>
-							<p class="max-w-xl text-sm leading-relaxed text-foreground-2">{e.summary}</p>
-							<p class="mt-2 font-mono text-xs text-foreground-3 transition-colors group-hover:text-foreground">Read the experiment →</p>
-						</div>
-					</a>
-				</li>
-			))}
-		</ul>
+		<Section id="h-experiments" number={1} title="Experiments" class="mt-16">
+			<div class="flex flex-col gap-10">
+				{experiments.map((e) => (
+					<LabCard href={e.href} title={e.title} summary={e.summary} meta={`${e.n} · ${e.date} · ${e.status}`} video={e.video} poster={e.poster} />
+				))}
+			</div>
+		</Section>
 	</PageLayout>
 </Layout>
 

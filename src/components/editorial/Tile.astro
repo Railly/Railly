@@ -1,0 +1,23 @@
+---
+// Bordered box with the 3px offset shadow. With `href` it is a link that lifts
+// on hover. Padding and layout come from `class`.
+interface Props {
+	href?: string;
+	external?: boolean;
+	as?: "div" | "article" | "li" | "section";
+	class?: string;
+}
+
+const { href, as = "div", class: className } = Astro.props;
+const { external = false } = Astro.props;
+const Tag = href ? "a" : as;
+---
+
+<Tag
+	href={href}
+	target={href && external ? "_blank" : undefined}
+	rel={href && external ? "noopener noreferrer" : undefined}
+	class:list={["ed ed-tile ed-tile-box", className]}
+>
+	<slot />
+</Tag>

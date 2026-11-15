@@ -1,0 +1,25 @@
+---
+// Three-column article frame from 1280px up: contents rail on the left, a
+// 40rem text column in the middle, the right column left free for sidenotes.
+// Below 1280px it is a single centered column.
+interface Props {
+	class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<div
+	class:list={[
+		"mx-auto w-full max-w-[42rem] px-6 xl:grid xl:max-w-[83rem] xl:grid-cols-[minmax(0,1fr)_minmax(0,40rem)_minmax(0,1fr)] xl:gap-8",
+		className,
+	]}
+>
+	<div class="xl:col-start-1">
+		<slot name="aside" />
+	</div>
+	<div class="min-w-0 xl:col-start-2">
+		<slot />
+	</div>
+	<div class="xl:col-start-3"><slot name="right" /></div>
+</div>

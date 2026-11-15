@@ -1,0 +1,79 @@
+/*
+ * Mentoring-only pieces. The shared look (labels, tiles, buttons, leaders,
+ * tokens) lives in src/styles/editorial.css.
+ */
+
+@keyframes m-marquee {
+	to {
+		transform: translateX(-33.333%);
+	}
+}
+.m-marquee-track {
+	animation: m-marquee 70s linear infinite;
+}
+.m-marquee:hover .m-marquee-track,
+.m-marquee:focus-within .m-marquee-track {
+	animation-play-state: paused;
+}
+
+/* Toasts: a small stack bottom-right, from the docs' stack recipe. */
+[data-slot="toast-region"].m-toasts {
+	position: fixed;
+	inset: auto 16px 16px auto;
+	margin: 0;
+	padding: 0;
+	border: 0;
+	background: transparent;
+	overflow: visible;
+	width: min(356px, calc(100vw - 32px));
+	height: var(--toast-front-height);
+}
+[data-slot="toast-region"].m-toasts[data-expanded] {
+	height: calc(var(--toast-stack-height) + (var(--toast-count) - 1) * 10px);
+}
+.m-toasts [data-slot="toast"] {
+	--y: calc(var(--toast-index) * -10px);
+	position: absolute;
+	inset-inline: 0;
+	bottom: 0;
+	z-index: calc(100 - var(--toast-index));
+	overflow: hidden;
+	height: var(--toast-height);
+	translate: var(--toast-swipe-x, 0px) calc(var(--y) + var(--toast-swipe-y, 0px));
+	scale: calc(1 - var(--toast-index) * 0.05);
+	transition-property: translate, scale, opacity, height;
+	transition-duration: 400ms;
+	transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+	user-select: none;
+}
+.m-toasts [data-slot="toast"]:not([data-front], [data-expanded]) {
+	height: var(--toast-front-height);
+}
+.m-toasts [data-slot="toast"][data-expanded] {
+	--y: calc(-1 * (var(--toast-offset) + var(--toast-index) * 10px));
+	scale: 1;
+}
+.m-toasts [data-slot="toast"][data-starting-style] {
+	transition: none;
+}
+.m-toasts [data-slot="toast"][data-starting-style][data-front] {
+	--y: 120%;
+}
+.m-toasts [data-slot="toast"]:is([data-starting-style]:not([data-front]), [data-ending-style]) {
+	opacity: 0;
+}
+.m-toasts [data-slot="toast"][data-swiping] {
+	transition: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.m-marquee {
+		overflow-x: auto;
+	}
+	.m-marquee-track {
+		animation: none;
+	}
+	.m-toasts [data-slot="toast"] {
+		transition-property: opacity;
+	}
+}

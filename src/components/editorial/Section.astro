@@ -1,0 +1,47 @@
+---
+import SectionTitle from "./SectionTitle.astro";
+
+// A page section: number + Redaction title, optional right-side note, content.
+// Default rhythm: 5rem above, 1.25rem between head and content. Override with
+// utilities on `class` (mt-16, gap-6).
+interface Props {
+	/** Heading id; the section is labelled by it. */
+	id: string;
+	title: string;
+	number?: string | number;
+	/** Short mono note on the right of the heading. Use the `note` slot for links. */
+	note?: string;
+	/** Anchor id for the <section> itself (e.g. "options" for #options links). */
+	anchor?: string;
+	/** Put the note right after the title (a badge) instead of on the right. */
+	noteInline?: boolean;
+	ink?: string | false;
+	class?: string;
+}
+
+const {
+	id,
+	title,
+	number,
+	note,
+	anchor,
+	noteInline = false,
+	ink,
+	class: className,
+} = Astro.props;
+const hasNote = Astro.slots.has("note") || note;
+---
+
+<section id={anchor} aria-labelledby={id} class:list={["ed ed-section", className]}>
+	{
+		hasNote ? (
+			<div class="ed-section-head" data-inline={noteInline ? "" : undefined}>
+				<SectionTitle id={id} title={title} number={number} ink={ink} />
+				<span class="ed-label">{Astro.slots.has("note") ? <slot name="note" /> : note}</span>
+			</div>
+		) : (
+			<SectionTitle id={id} title={title} number={number} ink={ink} />
+		)
+	}
+	<slot />
+</section>

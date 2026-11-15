@@ -1,7 +1,10 @@
 ---
+import ListRow from "@/components/editorial/ListRow.astro";
 import BrandIcon from "../brand/BrandIcon.astro";
 import type { BrandName } from "../brand/registry";
 
+// One selected project as an editorial row: mark + name | description + role,
+// stars on the right. Renders an <li>; place it inside an editorial <List>.
 interface Props {
 	project: {
 		name: string;
@@ -22,33 +25,13 @@ const starLabel =
 				notation: "compact",
 				maximumFractionDigits: 1,
 			}).format(project.stars)
-		: null;
+		: "";
 ---
 
-<a
-	href={project.url}
-	target={project.url.startsWith("http") ? "_blank" : undefined}
-	rel="noopener noreferrer"
-	class="group -mx-3 flex items-start gap-3 rounded-md px-3 py-2.5 transition-colors hover:bg-background-2"
->
-	<span class="mt-0.5 flex size-5 shrink-0 items-center justify-center">
-		<BrandIcon name={project.icon} width={18} height={18} class="text-foreground" />
+<ListRow href={project.url} external={project.url.startsWith("http")} title={project.name} meta={starLabel} arrow={false}>
+	<BrandIcon slot="leading" name={project.icon} width={14} height={14} />
+	<span slot="description" class="flex flex-col gap-0.5">
+		<span>{project.description}</span>
+		{project.role && <span class="text-foreground-2">{project.role}</span>}
 	</span>
-
-	<span class="flex min-w-0 flex-1 flex-col gap-0.5">
-		<span class="flex items-baseline gap-2">
-			<span class="text-sm font-medium text-foreground">{project.name}</span>
-			<span class="hidden min-w-0 truncate text-sm text-foreground-3 md:block">{project.description}</span>
-		</span>
-		{project.role && <span class="text-sm text-foreground-2">{project.role}</span>}
-	</span>
-
-	{
-		starLabel && (
-			<span class="mt-0.5 flex shrink-0 items-center gap-1 font-mono text-xs tabular-nums text-foreground-3 transition-colors group-hover:text-foreground-2">
-				{starLabel}
-				<span aria-hidden class="text-[0.7rem] leading-none">★</span>
-			</span>
-		)
-	}
-</a>
+</ListRow>

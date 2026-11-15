@@ -1,8 +1,9 @@
 ---
 import { getCollection } from "astro:content";
-import PremiereCountdown from "@/components/blog/PremiereCountdown";
+import PostList from "@/components/blog/PostList.astro";
+import PageHero from "@/components/editorial/PageHero.astro";
+import Section from "@/components/editorial/Section.astro";
 import PageLayout from "@/components/layout/PageLayout.astro";
-import SectionHeader from "@/components/layout/SectionHeader.astro";
 import { isPostListable } from "@/config/blog";
 import Layout from "@/layouts/Layout.astro";
 
@@ -33,32 +34,18 @@ const postsByYear = activePosts.reduce(
 	{} as Record<number, typeof activePosts>,
 );
 
-const archivedByYear = archivedPosts.reduce(
-	(acc, post) => {
-		const year = post.data.pubDate.getFullYear();
-		if (!acc[year]) acc[year] = [];
-		acc[year].push(post);
-		return acc;
-	},
-	{} as Record<number, typeof archivedPosts>,
-);
-
 const years = Object.keys(postsByYear)
 	.map(Number)
 	.sort((a, b) => b - a);
 
-const archivedYears = Object.keys(archivedByYear)
-	.map(Number)
-	.sort((a, b) => b - a);
-
 const newestPost = activePosts[0];
-const isNewest = (slug: string) => slug === newestPost?.slug;
-
-const formatDate = (date: Date) => {
-	const day = date.getDate().toString().padStart(2, "0");
-	const month = (date.getMonth() + 1).toString().padStart(2, "0");
-	return `${day}/${month}`;
-};
+const plural = (n: number, word: string) => `${n} ${word}${n === 1 ? "" : "s"}`;
+const eyebrow = [
+	plural(activePosts.length, "post"),
+	years.length > 1
+		? `${years[years.length - 1]} – ${years[0]}`
+		: String(years[0] ?? ""),
+].filter(Boolean);
 ---
 
 <Layout
@@ -66,125 +53,62 @@ const formatDate = (date: Date) => {
     description={ogDescription}
     image={ogImage}
 >
-    <PageLayout class="flex flex-col gap-8">
-        <div class="flex items-center justify-between">
-            <SectionHeader title="Writing" className="mb-0" />
-            {
-                archivedPosts.length > 0 && (
-                    <archive-toggle>
-                        <button class="group text-xs text-foreground-3 hover:text-foreground-2 transition-colors duration-200">
-                            <span class="flex items-center gap-1">
-                                <span>archive</span>
-                                <svg
-                                    width="10"
-                                    height="10"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    class="archive-icon transition-transform duration-200"
-                                >
-                                    <polyline points="6 9 12 15 18 9" />
-                                </svg>
-                            </span>
-                        </button>
-                    </archive-toggle>
-                )
-            }
-        </div>
+    <PageLayout class="flex flex-col">
+        <PageHero eyebrow={eyebrow} title="Writing" lede={ogDescription} />
 
-        <div class="space-y-0">
-            {
-                years.map((year) => (
-                    <>
-                        {postsByYear[year].map((post, index) => {
-                            const isPremiere = post.data.status === "premiere" && new Date() < post.data.pubDate;
-                            const Element = isPremiere ? "div" : "a";
-                            return (
-                                <Element
-                                    {...(!isPremiere ? { href: `/blog/${post.slug}` } : {})}
-                                    class:list={[
-                                        "group flex items-baseline gap-4 py-3 border-b border-ui transition-colors -mx-3 px-3",
-                                        isPremiere ? "cursor-default" : "hover:bg-background-2",
-                                    ]}
-                                >
-                                    <span class="text-foreground-3 tabular-nums w-12 shrink-0 text-sm">
-                                        {index === 0 ? year : ""}
-                                    </span>
-                                    <span class:list={[
-                                        "flex-1 font-medium text-sm",
-                                        isPremiere ? "text-foreground-3" : "text-foreground group-hover:text-foreground",
-                                    ]}>
-                                        {post.data.title}
-                                        {isPremiere ? (
-                                            <span class="ml-2 text-xs font-normal px-1.5 py-0.5 border border-ui rounded text-foreground-3">
-                                                Premiere
-                                            </span>
-                                        ) : isNewest(post.slug) ? (
-                                            <span class="ml-2 text-xs font-normal px-1.5 py-0.5 bg-ui rounded text-foreground-2">
-                                                Newest
-                                            </span>
-                                        ) : null}
-                                    </span>
-                                    {isPremiere ? (
-                                        <PremiereCountdown pubDate={post.data.pubDate.toISOString()} client:load />
-                                    ) : (
-                                        <>
-                                            <span
-                                                data-views-slug={post.slug}
-                                                class="text-xs text-foreground-3 tabular-nums shrink-0"
-                                            ></span>
-                                            <span class="text-foreground-3 tabular-nums text-sm shrink-0">
-                                                {formatDate(post.data.pubDate)}
-                                            </span>
-                                        </>
-                                    )}
-                                </Element>
-                            );
-                        })}
-                    </>
-                ))
-            }
-            {
-                activePosts.length === 0 && (
-                    <div class="py-12 text-center">
-                        <p class="text-foreground-2">More stories coming soon</p>
-                    </div>
-                )
-            }
-        </div>
+        {
+            years.map((year, i) => (
+                <Section
+                    id={`h-${year}`}
+                    number={i + 1}
+                    title={String(year)}
+                    note={plural(postsByYear[year].length, "post")}
+                    class={i === 0 ? "mt-16" : "mt-14"}
+                >
+                    <PostList posts={postsByYear[year]} newestSlug={newestPost?.slug} views />
+                </Section>
+            ))
+        }
+        {
+            activePosts.length === 0 && (
+                <div class="py-12 text-center">
+                    <p class="text-foreground-2">More stories coming soon</p>
+                </div>
+            )
+        }
 
         {
             archivedPosts.length > 0 && (
-                <div class="archived-posts hidden mt-4 pt-6 border-t border-ui/30">
-                    <p class="text-xs text-foreground-3 mb-4 font-mono">
-                        Older writings — kept for reference
-                    </p>
-                    <div class="space-y-0 opacity-60">
-                        {archivedYears.map((year) => (
-                            <>
-                                {archivedByYear[year].map((post, index) => (
-                                    <a
-                                        href={`/blog/${post.slug}`}
-                                        class="group flex items-baseline gap-4 py-3 border-b border-ui hover:bg-background-2 transition-colors -mx-3 px-3"
-                                    >
-                                        <span class="text-foreground-3 tabular-nums w-12 shrink-0 text-sm">
-                                            {index === 0 ? year : ""}
-                                        </span>
-                                        <span class="flex-1 text-foreground group-hover:text-foreground font-medium text-sm">
-                                            {post.data.title}
-                                        </span>
-                                        <span class="text-foreground-3 tabular-nums text-sm shrink-0">
-                                            {formatDate(post.data.pubDate)}
-                                        </span>
-                                    </a>
-                                ))}
-                            </>
-                        ))}
-                    </div>
-                </div>
+                <>
+                    <archive-toggle class="mt-14 block">
+                        <button type="button" class="ed-label inline-flex items-center gap-1.5 hover:text-foreground" aria-expanded="false">
+                            <span>archive</span>
+                            <svg
+                                width="10"
+                                height="10"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                class="archive-icon transition-transform duration-200"
+                                aria-hidden="true"
+                            >
+                                <polyline points="6 9 12 15 18 9" />
+                            </svg>
+                        </button>
+                    </archive-toggle>
+                    <Section
+                        id="h-archive"
+                        number={years.length + 1}
+                        title="Archive"
+                        note="Older writings — kept for reference"
+                        class="archived-posts mt-8 hidden"
+                    >
+                        <PostList posts={archivedPosts} yearIndex class="opacity-70" />
+                    </Section>
+                </>
             )
         }
     </PageLayout>
@@ -200,6 +124,7 @@ const formatDate = (date: Date) => {
             if (button && icon && archivedSection) {
                 button.addEventListener('click', () => {
                     const isHidden = archivedSection.classList.contains('hidden');
+                    button.setAttribute('aria-expanded', String(isHidden));
 
                     if (isHidden) {
                         archivedSection.classList.remove('hidden');

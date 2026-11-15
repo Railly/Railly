@@ -1,0 +1,11 @@
+---
+// Hairline-divided list. Children are ListRow items.
+interface Props {
+	as?: "ul" | "ol";
+	class?: string;
+}
+
+const { as: Tag = "ul", class: className } = Astro.props;
+---
+
+<Tag class:list={["ed ed-list", className]}><slot /></Tag>

@@ -1,0 +1,29 @@
+---
+// Numbered steps joined by a dashed rule: marker · when · title · description.
+interface Step {
+	when: string;
+	title: string;
+	description: string;
+}
+
+interface Props {
+	steps: Step[];
+	label?: string;
+	class?: string;
+}
+
+const { steps, label, class: className } = Astro.props;
+---
+
+<ol aria-label={label} class:list={["ed ed-timeline", className]}>
+	{
+		steps.map((step, i) => (
+			<li class="ed-step">
+				<span aria-hidden="true" class="ed-step-marker">{String(i + 1).padStart(2, "0")}</span>
+				<span class="ed-label ed-step-when">{step.when}</span>
+				<span class="ed-step-title">{step.title}</span>
+				<span class="ed-step-desc">{step.description}</span>
+			</li>
+		))
+	}
+</ol>

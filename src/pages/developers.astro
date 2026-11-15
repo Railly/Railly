@@ -1,4 +1,8 @@
 ---
+import List from "@/components/editorial/List.astro";
+import ListRow from "@/components/editorial/ListRow.astro";
+import PageHero from "@/components/editorial/PageHero.astro";
+import Section from "@/components/editorial/Section.astro";
 import PageLayout from "@/components/layout/PageLayout.astro";
 import { ogUrl } from "@/config/site";
 import Layout from "@/layouts/Layout.astro";
@@ -49,37 +53,30 @@ const resources = [
 	title="Railly Developer Resources | Railly Hugo"
 	description="Canonical developer resources for Railly Hugo's open-source tools, projects, writing, and agent-readable endpoints."
 >
-	<PageLayout class="flex flex-col gap-12">
-		<header class="space-y-4">
-			<h1 class="text-2xl font-semibold tracking-tight">Railly Developer Resources</h1>
-			<p class="max-w-2xl text-sm leading-relaxed text-foreground-2">
+	<PageLayout class="flex flex-col">
+		<PageHero eyebrow={["Developers", "OpenAPI 3.1", "Read-only"]} title="Railly Developer Resources">
+			<Fragment slot="lede">
 				This is the canonical developer-resource index for Railly Hugo and railly.dev.
 				Use it to discover open-source developer tools, agent infrastructure, public
 				project metadata, implementation notes, and each project's source documentation.
-			</p>
-		</header>
+			</Fragment>
+		</PageHero>
 
-		<section aria-labelledby="available-resources" class="space-y-5">
-			<h2 id="available-resources" class="text-sm font-medium uppercase tracking-wider text-foreground-2">Available resources</h2>
-			<ul class="divide-y divide-ui/50">
-				{resources.map((resource) => (
-					<li class="py-4 first:pt-0">
-						<a href={resource.href} class="font-medium text-foreground underline decoration-ui underline-offset-4">{resource.title}</a>
-						<p class="mt-1 text-sm leading-relaxed text-foreground-2">{resource.detail}</p>
-					</li>
+		<Section id="available-resources" number={1} title="Available resources" note={`${resources.length} links`} class="mt-16">
+			<List>
+				{resources.map((resource, i) => (
+					<ListRow href={resource.href} index={`${String.fromCharCode(97 + i)}.`} title={resource.title} description={resource.detail} />
 				))}
-			</ul>
-		</section>
+			</List>
+		</Section>
 
-		<section aria-labelledby="availability" class="space-y-3">
-			<h2 id="availability" class="text-sm font-medium uppercase tracking-wider text-foreground-2">Availability</h2>
-			<p class="max-w-2xl text-sm leading-relaxed text-foreground-2">
+		<Section id="availability" number={2} title="Availability">
+			<p class="text-[15px] leading-relaxed text-foreground-2">
 				railly.dev is a portfolio and discovery layer, not a hosted API product.
 				Its read-only project catalog is documented by OpenAPI. It does not expose
 				site-wide authentication, webhooks, or an MCP server. Follow each linked project's repository and documentation
 				for its supported installation, interfaces, and usage.
 			</p>
-		</section>
-
+		</Section>
 	</PageLayout>
 </Layout>
