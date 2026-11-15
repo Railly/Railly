@@ -1,0 +1,113 @@
+---
+import PageHero from "@/components/editorial/PageHero.astro";
+import Section from "@/components/editorial/Section.astro";
+import StatStrip from "@/components/editorial/StatStrip.astro";
+import PageLayout from "@/components/layout/PageLayout.astro";
+import { Feed } from "@/components/signal/Feed";
+import { Heatmap } from "@/components/signal/Heatmap";
+import {
+	calendar,
+	commits,
+	meta,
+	months,
+	owners,
+	pulls,
+	releases,
+	repos,
+	stats,
+	weeklyThresholds,
+	weekStarts,
+} from "@/components/signal/model";
+import { Owners } from "@/components/signal/Owners";
+import { WeekGrid } from "@/components/signal/WeekGrid";
+import Layout from "@/layouts/Layout.astro";
+import "@/components/signal/signal.css";
+
+const fmt = (n: number) => n.toLocaleString("en-US");
+const ogTitle = "Signal";
+const ogDescription = `${fmt(meta.mergedPrs)} merged pull requests and ${fmt(meta.releases)} releases across ${meta.ownerCount} GitHub owners in the last 12 months.`;
+const ogImage = `/api/og?title=${encodeURIComponent(ogTitle)}&description=${encodeURIComponent(ogDescription)}&tag=signal`;
+---
+
+<Layout title={`${ogTitle} — Railly Hugo`} description={ogDescription} image={ogImage}>
+	<PageLayout class="flex flex-col">
+		<PageHero eyebrow={["GitHub", "last 12 months", `updated ${meta.updated}`]} title="Signal">
+			<Fragment slot="lede">
+				What shipped comes first: {fmt(meta.mergedPrs)} merged pull requests and {meta.releases} releases across {meta.ownerCount} GitHub owners. Commits come second. Everything named here is public.
+			</Fragment>
+		</PageHero>
+
+		<figure class="ed mt-12 flex flex-col gap-6">
+			<div class="flex flex-wrap items-end justify-between gap-x-6 gap-y-3">
+				<p class="sg-total" data-ink-view data-ink="">{fmt(calendar.total)}</p>
+				<figcaption class="max-w-[15rem] pb-2 text-[14.5px] leading-snug text-foreground-2">
+					contributions in the last 12 months, on {fmt(meta.activeDays)} of {fmt(calendar.weeks.flat().length)} days.
+					<span class="text-foreground-3">{fmt(calendar.privateCount)} in private repos, counted but not named.</span>
+				</figcaption>
+			</div>
+			<Heatmap client:load weeks={calendar.weeks} thresholds={calendar.thresholds} months={months} />
+		</figure>
+
+		<StatStrip class="mt-12" stats={stats} cols={3} mobileCols={2} />
+
+		<Section id="h-owners" anchor="owners" number={1} title="Where the work lands" note={`${fmt(meta.publicInRepos)} public`}>
+			<p class="-mt-1 text-[14.5px] leading-relaxed text-foreground-2">
+				Public contributions by GitHub owner. Pick one to filter the rest of the page.
+			</p>
+			<Owners client:load owners={owners} weekStarts={weekStarts} months={months} />
+		</Section>
+
+		<Section id="h-shipped" anchor="shipped" number={2} title="Shipped" note="Releases, then merged pull requests" class="gap-7">
+			<div class="flex flex-col gap-2">
+				<h3 class="ed-label">Releases</h3>
+				<Feed
+					client:visible
+					items={releases}
+					visible={4}
+					label="Releases"
+					empty="No releases from this owner in the last 12 months."
+				/>
+			</div>
+			<div class="flex flex-col gap-2">
+				<h3 class="ed-label">Merged pull requests</h3>
+				<Feed
+					client:visible
+					items={pulls}
+					visible={8}
+					label="Merged pull requests"
+					empty="No merged pull requests from this owner in the latest 100."
+				/>
+			</div>
+		</Section>
+
+		<Section id="h-commits" anchor="commits" number={3} title="Latest commits" note="On default branches">
+			<Feed
+				client:visible
+				items={commits}
+				visible={8}
+				label="Latest commits"
+				empty="No recent commits for this owner in the latest snapshot."
+			/>
+		</Section>
+
+		<Section id="h-weeks" anchor="weeks" number={4} title="Week by week" note={`${fmt(repos.length)} public repos`}>
+			<WeekGrid
+				client:visible
+				owners={owners}
+				repos={repos}
+				thresholds={weeklyThresholds}
+				months={months}
+				weekStarts={weekStarts}
+			/>
+		</Section>
+
+		<p class="mt-16 text-[14.5px] leading-relaxed text-foreground-3">
+			Pulled from the GitHub API at build time. Private work only shows up as a count. Full profile on <a
+				href={meta.userUrl}
+				target="_blank"
+				rel="noopener noreferrer"
+				class="ed-link text-foreground">GitHub</a
+			>.
+		</p>
+	</PageLayout>
+</Layout>
