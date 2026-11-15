@@ -180,7 +180,7 @@ const resumes = [
 						</div>
 						<p class="mb-4 max-w-xl text-sm leading-relaxed text-foreground-2">{v.note}</p>
 						<a
-							href={v.href ?? `https://${v.id}.railly.dev`}
+							href={v.href ?? `https://railly-${v.id}.vercel.app`}
 							target={v.href ? undefined : "_blank"}
 							rel={v.href ? undefined : "noopener noreferrer"}
 							class="group block overflow-hidden rounded-lg border border-ui bg-background-2 transition-colors hover:border-ui-3"
@@ -200,12 +200,12 @@ const resumes = [
 							<span>{v.domain}</span>
 							{v.id !== "now" && (
 								<a
-									href={`https://${v.id}.railly.dev`}
+									href={`https://railly-${v.id}.vercel.app`}
 									target="_blank"
 									rel="noopener noreferrer"
 									class="text-foreground underline decoration-ui underline-offset-4 hover:decoration-foreground"
 								>
-									{v.id}.railly.dev
+									railly-{v.id}.vercel.app
 								</a>
 							)}
 						</div>
