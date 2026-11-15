@@ -4,6 +4,8 @@ interface ViewCounterProps {
 	slug: string;
 	increment?: boolean;
 	className?: string;
+	/** Rendered before the count, only once there is one (e.g. " · " in an eyebrow). */
+	separator?: string;
 }
 
 const incrementedSlugs = new Set<string>();
@@ -20,6 +22,7 @@ export default function ViewCounter({
 	slug,
 	increment = false,
 	className = "text-sm text-foreground-2",
+	separator,
 }: ViewCounterProps) {
 	const [views, setViews] = useState<number | null>(null);
 	const hasFetchedRef = useRef(false);
@@ -81,6 +84,7 @@ export default function ViewCounter({
 
 	return (
 		<span className={className}>
+			{separator && <span aria-hidden="true">{separator}</span>}
 			{views.toLocaleString()} {views === 1 ? "view" : "views"}
 		</span>
 	);

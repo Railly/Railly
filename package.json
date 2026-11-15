@@ -36,6 +36,8 @@
 		"@tailwindcss/vite": "^4.1.17",
 		"@types/react": "^19.2.7",
 		"@types/react-dom": "^19.2.3",
+		"@ui-sdk/core": "0.1.0-beta.2",
+		"@ui-sdk/react": "0.1.0-beta.2",
 		"@vercel/kv": "^3.0.0",
 		"@vercel/og": "^0.11.1",
 		"astro": "5.15.9",

@@ -1,4 +1,6 @@
 ---
+// Markdown blockquotes render here: a Redaction pull quote with a faded
+// opening mark and a mono attribution after a hairline.
 interface Props {
 	author?: string;
 	source?: string;
@@ -7,52 +9,106 @@ interface Props {
 
 const { author, source, href } = Astro.props;
 
-const Wrapper = href ? "a" : "div";
+const Wrapper = href ? "a" : "figure";
 ---
 
 <Wrapper
     href={href}
     target={href ? "_blank" : undefined}
     rel={href ? "noopener noreferrer" : undefined}
-    class:list={[
-        "not-prose relative my-16 block no-underline",
-        href && "cursor-pointer hover:opacity-80 transition-opacity",
-    ]}
+    class:list={["pull-quote not-prose", href && "pull-quote-link"]}
 >
-    <span
-        class="quote-block relative block font-serif text-[24px] leading-[1.33] md:text-[30px] text-foreground [&_p]:font-serif [&_p]:font-medium [&_p]:leading-[inherit] [&_p]:mb-0"
-    >
-        <span
-            class="absolute -left-3 text-foreground-2/90 select-none"
-            style="font-family: Georgia;">"</span
-        >
+    <blockquote class="quote-block">
+        <span class="quote-mark" aria-hidden="true">&ldquo;</span>
         <slot />
-    </span>
-    <style is:global>
-        .quote-block p:last-child::after {
-            content: '"';
-            font-family: Georgia;
-            color: var(--color-foreground-2);
-            opacity: 0.9;
-            margin-left: 2px;
-        }
-    </style>
+    </blockquote>
     {
         author && (
-            <div class="ml-auto mt-6 flex w-full items-center gap-3 md:w-[60%]">
-                <div class="hidden h-px flex-grow bg-foreground-3/50 md:block" />
-                <div class="flex flex-col md:ml-auto md:text-right">
-                    <span class="text-[13px] font-medium leading-none text-foreground-2">
-                        {author}
-                        {source && (
-                            <span class="mt-1 block text-foreground-3 md:mt-0 md:inline">
-                                <span class="hidden md:inline-block">, </span>
-                                {source}
-                            </span>
-                        )}
-                    </span>
-                </div>
-            </div>
+            <figcaption class="quote-by">
+                <span class="quote-rule" aria-hidden="true" />
+                <span class="quote-author">{author}</span>
+                {source && <span class="quote-source">{source}</span>}
+            </figcaption>
         )
     }
 </Wrapper>
+
+<style>
+    .pull-quote {
+        display: block;
+        margin: 3rem 0;
+        text-decoration: none;
+        color: inherit;
+    }
+    .pull-quote-link {
+        transition: opacity 0.2s ease;
+    }
+    .pull-quote-link:hover {
+        opacity: 0.8;
+    }
+    .quote-block {
+        position: relative;
+        margin: 0;
+        padding: 0;
+        border: 0;
+        font-family: var(--font-serif);
+        font-weight: 400;
+        font-size: clamp(1.4rem, 3.4vw, 1.75rem);
+        line-height: 1.32;
+        letter-spacing: -0.01em;
+        color: var(--color-foreground);
+        text-wrap: pretty;
+    }
+    .quote-mark {
+        position: absolute;
+        left: -0.55em;
+        color: var(--color-foreground-3);
+        user-select: none;
+    }
+    .quote-block :global(p) {
+        margin: 0;
+        font: inherit;
+    }
+    .quote-block :global(p + p) {
+        margin-top: 0.6em;
+    }
+    .quote-block :global(p:last-child::after) {
+        content: "\201D";
+        margin-left: 0.05em;
+        color: var(--color-foreground-3);
+    }
+    .quote-block :global(strong) {
+        font-weight: 400;
+    }
+    .quote-block :global(code) {
+        font-size: 0.7em;
+    }
+    .quote-by {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        gap: 0.25rem 0.625rem;
+        margin-top: 1.25rem;
+        font-family: var(--font-mono);
+        font-size: 11px;
+        letter-spacing: 0.02em;
+        color: var(--color-foreground-3);
+    }
+    .quote-rule {
+        width: 2rem;
+        height: 1px;
+        align-self: center;
+        background: var(--ed-line-2);
+    }
+    .quote-author {
+        color: var(--color-foreground-2);
+    }
+    @media (max-width: 640px) {
+        .quote-block {
+            padding-left: 0.5em;
+        }
+        .quote-mark {
+            left: 0;
+        }
+    }
+</style>

@@ -1,10 +1,14 @@
 ---
 import { type CollectionEntry, getCollection } from "astro:content";
+import ArticleGrid from "@/components/blog/ArticleGrid.astro";
+import ArticleHeader from "@/components/blog/ArticleHeader.astro";
+import ArticleProse from "@/components/blog/ArticleProse.astro";
 import ClapButton from "@/components/blog/ClapButton";
 import ViewCounter from "@/components/blog/ViewCounter";
 import Link from "@/components/content/Link.astro";
 import Quote from "@/components/content/Quote.astro";
 import TableOfContents from "@/components/content/TableOfContents.astro";
+import Tile from "@/components/editorial/Tile.astro";
 import Navigation from "@/components/layout/Navigation.astro";
 import SiteFooter from "@/components/layout/SiteFooter.astro";
 import AsciiField from "@/components/scene/AsciiField.astro";
@@ -92,223 +96,72 @@ const {
 >
     <AsciiField clear={560} />
     <Navigation />
-    <div class="w-full mx-auto py-12 sm:py-24">
-        <!-- Main Content Grid - TOC aligned with content -->
-        <div
-            class="max-w-[83rem] mx-auto px-4 sm:px-6 lg:grid lg:grid-cols-[1fr_minmax(0,_2.5fr)_1fr] lg:gap-8"
-        >
-            <!-- Left Sidebar - Table of Contents -->
-            <div class="lg:col-start-1">
-                <TableOfContents headings={headings} />
-            </div>
+    <div class="relative z-[1] w-full pt-12 pb-16 sm:pt-20">
+        <ArticleGrid>
+            <TableOfContents slot="aside" headings={headings} />
 
-            <!-- Main Column -->
-            <div class="lg:col-start-2">
-                <!-- Title Section -->
-                <header class="mb-10">
-                    <h1
-                        data-ink-hero
-                        class="page-title mb-5 text-foreground"
-                        style="text-wrap: balance;"
-                        transition:name={`blog-card-${post.slug}`}
-                        transition:animate="fade"
-                    >
-                        {post.data.title}
-                    </h1>
-                    <InkReveal />
+            <ArticleHeader
+                eyebrow={[
+                    { text: publishedDate, datetime: post.data.pubDate.toISOString() },
+                    ...(updatedDate ? [`Updated ${updatedDate}`] : []),
+                    { text: readingTimeText, title: `${words.toLocaleString()} words` },
+                ]}
+                title={post.data.title}
+                description={post.data.description}
+                tags={post.data.tags?.slice(0, 3)}
+                transitionName={`blog-card-${post.slug}`}
+                ink
+            >
+                <ViewCounter slot="meta" slug={post.slug} increment={true} separator=" · " className="" client:only="react" />
+                <InkReveal slot="after-title" />
+            </ArticleHeader>
 
-                    {
-                        post.data.description && (
-                            <p class="text-[15px] leading-[1.6] tracking-[-0.01em] mb-5 text-foreground-2" style="text-wrap: pretty;">
-                                {post.data.description}
-                            </p>
-                        )
-                    }
-
-                    <!-- Metadata -->
-                    <div class="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-foreground-3">
-                        <time datetime={post.data.pubDate.toISOString()}>
-                            {publishedDate}
-                        </time>
-                        {
-                            updatedDate && (
-                                <span class="text-foreground-3">
-                                    · Updated {updatedDate}
-                                </span>
-                            )
-                        }
-                        <span class="text-foreground-3">·</span>
-                        <span title={`${words.toLocaleString()} words`}>{readingTimeText}</span>
-                        <span class="text-foreground-3">·</span>
-                        <ViewCounter
-                            slug={post.slug}
-                            increment={true}
-                            client:only="react"
-                        />
-                        {
-                            post.data.tags && post.data.tags.length > 0 && (
-                                <>
-                                    <span class="text-foreground-3">·</span>
-                                    <div class="flex flex-wrap gap-1.5">
-                                        {post.data.tags.slice(0, 3).map((tag) => (
-                                            <span class="text-foreground-3">
-                                                #{tag}
-                                            </span>
-                                        ))}
-                                    </div>
-                                </>
-                            )
-                        }
-                    </div>
-                </header>
-
-                <!-- Hero Image -->
-                {
-                    post.data.heroImage && (
-                        <div
-                            class="mb-12"
-                            transition:name={`blog-hero-${post.slug}`}
-                            transition:animate="fade"
-                        >
-                            <div class="relative w-full aspect-[2/1] rounded-lg overflow-hidden bg-muted border border-ui">
-                                <img
-                                    src={post.data.heroImage.src}
-                                    alt={post.data.heroImage.alt}
-                                    class="object-cover w-full h-full"
-                                />
-                            </div>
+            {
+                post.data.heroImage && (
+                    <div class="mb-12" transition:name={`blog-hero-${post.slug}`} transition:animate="fade">
+                        <div class="ed-tile relative aspect-[2/1] w-full overflow-hidden bg-background-2">
+                            <img src={post.data.heroImage.src} alt={post.data.heroImage.alt} class="h-full w-full object-cover" />
                         </div>
-                    )
-                }
-
-                <!-- Article Content -->
-                <article class="blog-content">
-                    <div
-                        class:list={[
-                            "prose prose-theme max-w-none",
-                            "prose-headings:text-foreground prose-headings:font-semibold prose-headings:scroll-mt-10 prose-headings:tracking-[-0.02em]",
-                            "prose-h2:text-lg prose-h2:mt-12 prose-h2:mb-4",
-                            "prose-h3:text-base prose-h3:mt-8 prose-h3:mb-3 prose-h3:font-medium",
-                            "prose-p:text-foreground/90 prose-p:text-[15px] prose-p:tracking-normal prose-p:mt-0 prose-p:mb-3 prose-p:[text-wrap:pretty]",
-                            "prose-a:text-foreground-2 prose-a:underline prose-a:decoration-foreground-3/50 prose-a:underline-offset-2 prose-a:decoration-1 prose-a:hover:text-foreground prose-a:hover:decoration-foreground prose-a:transition-colors",
-                            "prose-strong:text-foreground/90 prose-strong:font-medium",
-                            "prose-li:text-foreground/90 prose-li:text-[15px] prose-li:tracking-normal",
-                            "prose-li:marker:text-foreground-3",
-                            "prose-ul:my-5 prose-ul:space-y-1",
-                            "prose-ol:my-5 prose-ol:space-y-1",
-                            "prose-code:before:content-none prose-code:after:content-none",
-                            "prose-table:text-foreground prose-table:border-ui prose-table:border prose-table:rounded-lg",
-                            "prose-tr:border-ui prose-tr:border-b",
-                            "prose-td:border-ui prose-td:border-r",
-                            "prose-td:p-2 prose-td:text-foreground-2",
-                            "prose-th:p-2 prose-th:text-foreground",
-                            "prose-img:rounded-xl prose-img:border-ui/50 prose-img:border",
-                            "prose-blockquote:border-none prose-blockquote:not-italic prose-blockquote:p-0 prose-blockquote:m-0",
-                            "prose-hr:border-ui/50 prose-hr:my-10",
-                            "prose-figcaption:text-sm prose-figcaption:text-foreground-3 prose-figcaption:mt-3 prose-figcaption:text-center",
-                            "dark:prose-invert",
-                        ]}
-                    >
-                        <Content components={{ blockquote: Quote, a: Link }} />
                     </div>
-                </article>
+                )
+            }
+
+            <article class="blog-content">
+                <ArticleProse>
+                    <Content components={{ blockquote: Quote, a: Link }} />
+                </ArticleProse>
+            </article>
+
+            <div class="mt-16 flex justify-center">
+                <ClapButton slug={post.slug} client:only="react" />
             </div>
 
-            <!-- Right Sidebar (empty for balance) -->
-            <div class="lg:col-start-3"></div>
-        </div>
-
-        <!-- Clap Button -->
-        <div class="max-w-3xl mx-auto px-4 sm:px-6 mt-16 flex justify-center">
-            <ClapButton slug={post.slug} client:only="react" />
-        </div>
-
-        <!-- Navigation Footer -->
-        <div class="max-w-3xl mx-auto px-4 sm:px-6 mt-16">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <!-- Previous Post -->
-                <a
-                    href={`/blog/${previousPost.slug}`}
-                    class="group block p-4 border border-ui rounded-lg hover:border-foreground-3 hover:bg-background-2 transition-all"
-                >
-                    <span class="text-xs text-foreground-3 uppercase tracking-wider flex items-center gap-1">
+            <nav aria-label="More writing" class="ed mt-16 grid grid-cols-1 gap-4 md:grid-cols-2">
+                <Tile href={`/blog/${previousPost.slug}`} class="group flex flex-col gap-2 p-4">
+                    <span class="ed-label flex items-center gap-1">
                         <ArrowIcon size={12} class="rotate-180" />
                         Previous
                     </span>
-                    <h4 class="mt-2 text-sm text-foreground-2 group-hover:text-foreground transition-colors leading-snug line-clamp-2">
+                    <span class="line-clamp-2 text-[14.5px] leading-snug font-medium text-foreground">
                         {previousPost.data.title}
-                    </h4>
-                </a>
-
-                <!-- Next Post -->
-                <a
-                    href={`/blog/${nextPost.slug}`}
-                    class="group block p-4 border border-ui rounded-lg hover:border-foreground-3 hover:bg-background-2 transition-all md:text-right"
-                >
-                    <span class="text-xs text-foreground-3 uppercase tracking-wider flex items-center gap-1 md:justify-end">
+                    </span>
+                </Tile>
+                <Tile href={`/blog/${nextPost.slug}`} class="group flex flex-col gap-2 p-4 md:items-end md:text-right">
+                    <span class="ed-label flex items-center gap-1">
                         Next
                         <ArrowIcon size={12} />
                     </span>
-                    <h4 class="mt-2 text-sm text-foreground-2 group-hover:text-foreground transition-colors leading-snug line-clamp-2">
+                    <span class="line-clamp-2 text-[14.5px] leading-snug font-medium text-foreground">
                         {nextPost.data.title}
-                    </h4>
-                </a>
-            </div>
-        </div>
+                    </span>
+                </Tile>
+            </nav>
+        </ArticleGrid>
     </div>
 
     <style>
         :target {
             scroll-margin-top: 2.5rem;
-        }
-
-        .blog-content :global(p:not(.quote-block p)),
-        .blog-content :global(li) {
-            font-family: var(--font-sans);
-            font-weight: 450;
-            line-height: 24px;
-        }
-
-        .blog-content {
-            counter-reset: sidenote;
-            overflow: visible;
-        }
-
-        .blog-content > div {
-            overflow: visible;
-        }
-
-        .blog-content :global(h2),
-        .blog-content :global(h3) {
-            scroll-margin-top: 2.5rem;
-        }
-
-        .blog-content :global(h2:target),
-        .blog-content :global(h3:target) {
-            scroll-margin-top: 2.5rem;
-        }
-
-        .blog-content :global(p + p) {
-            margin-top: 1rem;
-        }
-
-        .blog-content :global(h2 + p),
-        .blog-content :global(h3 + p) {
-            margin-top: 0;
-        }
-
-        /* Inline code only (not code inside pre blocks) */
-        .blog-content :global(:not(pre) > code) {
-            background-color: var(--color-background-2);
-            padding: 0.125rem 0.375rem;
-            font-size: 0.875rem;
-            border-radius: 0.25rem;
-            color: var(--color-foreground);
-        }
-
-        /* Code blocks */
-        .blog-content :global(pre code) {
-            font-size: 13px;
         }
     </style>
     <div class="relative z-[1] mx-auto max-w-[42rem] px-6 pb-16"><SiteFooter /></div>

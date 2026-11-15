@@ -1,0 +1,96 @@
+---
+// A framed grid of stats where every cell links to its source: Redaction value,
+// sans label, optional mono note. Hairlines between cells, tile edge outside.
+// Like StatStrip, but for numbers that need a citation.
+interface Stat {
+	value: string;
+	label: string;
+	href: string;
+	note?: string;
+}
+
+interface Props {
+	stats: Stat[];
+	/** Columns from 640px up. Mobile is always 2. */
+	cols?: 2 | 4;
+	class?: string;
+}
+
+const { stats, cols = 2, class: className } = Astro.props;
+---
+
+<ul class:list={["ed ed-tile ed-lstats", className]} data-cols={cols}>
+	{
+		stats.map((s) => {
+			const external = s.href.startsWith("http");
+			return (
+				<li>
+					<a href={s.href} target={external ? "_blank" : undefined} rel={external ? "noopener noreferrer" : undefined} class="ed-lstat group">
+						<span class="ed-lstat-value">{s.value}</span>
+						<span class="ed-lstat-label">{s.label}</span>
+						{s.note && <span class="ed-label">{s.note}</span>}
+						<span aria-hidden="true" class="ed-lstat-arrow">{external ? "↗" : "→"}</span>
+					</a>
+				</li>
+			);
+		})
+	}
+</ul>
+
+<style>
+	.ed-lstats {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 1px;
+		overflow: hidden;
+		background: var(--ed-line);
+	}
+	@media (min-width: 40rem) {
+		.ed-lstats[data-cols="4"] {
+			grid-template-columns: repeat(4, minmax(0, 1fr));
+		}
+	}
+	.ed-lstat {
+		position: relative;
+		display: flex;
+		height: 100%;
+		flex-direction: column;
+		gap: 0.375rem;
+		padding: 1rem 1.125rem 1.125rem;
+		background: var(--color-background);
+		transition: background-color 0.2s ease;
+	}
+	.ed-lstat:hover {
+		background: color-mix(in oklab, var(--color-foreground) 3.5%, var(--color-background));
+	}
+	.ed-lstat-value {
+		font-family: var(--font-serif);
+		font-size: 30px;
+		line-height: 1.1;
+		font-variant-numeric: tabular-nums;
+	}
+	.ed-lstat-label {
+		font-size: 13.5px;
+		line-height: 1.45;
+		color: var(--color-foreground-2);
+	}
+	.ed-lstat-arrow {
+		position: absolute;
+		top: 0.875rem;
+		right: 1rem;
+		font-size: 13px;
+		color: var(--color-foreground-3);
+		transition:
+			translate 0.2s ease,
+			color 0.2s ease;
+	}
+	.ed-lstat:hover .ed-lstat-arrow {
+		color: var(--color-foreground);
+		translate: 1px -1px;
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.ed-lstat-arrow {
+			transition: none;
+		}
+	}
+</style>

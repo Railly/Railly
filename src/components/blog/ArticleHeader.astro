@@ -1,0 +1,109 @@
+---
+// Editorial article opener: mono eyebrow, Redaction title, lede, mono tags.
+// The `meta` slot appends live items (a view counter) to the eyebrow line;
+// the `before` slot sits above the eyebrow (breadcrumbs, a draft notice).
+interface Props {
+	/** Facts for the eyebrow, joined by middle dots. `datetime` renders a <time>, `href` a link, `title` a hover hint. */
+	eyebrow: (
+		| string
+		| { text: string; datetime?: string; href?: string; title?: string }
+	)[];
+	title: string;
+	description?: string;
+	tags?: string[];
+	/** View-transition name for the title. */
+	transitionName?: string;
+	/** Hook the title into the InkReveal hero effect. */
+	ink?: boolean;
+	class?: string;
+}
+
+const {
+	eyebrow,
+	title,
+	description,
+	tags,
+	transitionName,
+	ink = false,
+	class: className,
+} = Astro.props;
+---
+
+<header class:list={["ed article-head", className]}>
+	<slot name="before" />
+	<p class="ed-label article-eyebrow">
+		{
+			eyebrow.map((item, i) => (
+				<>
+					{i > 0 && <span aria-hidden="true"> · </span>}
+					{typeof item === "string" ? (
+						<span>{item}</span>
+					) : item.href ? (
+						<a href={item.href} class="ed-label">
+							{item.text}
+						</a>
+					) : item.datetime ? (
+						<time datetime={item.datetime} title={item.title}>
+							{item.text}
+						</time>
+					) : (
+						<span title={item.title}>{item.text}</span>
+					)}
+				</>
+			))
+		}
+		<slot name="meta" />
+	</p>
+	{
+		transitionName ? (
+			<h1 class="article-title" data-ink-hero={ink ? "" : undefined} data-ink={ink ? "" : undefined} transition:name={transitionName} transition:animate="fade">
+				{title}
+			</h1>
+		) : (
+			<h1 class="article-title" data-ink-hero={ink ? "" : undefined} data-ink={ink ? "" : undefined}>
+				{title}
+			</h1>
+		)
+	}
+	<slot name="after-title" />
+	{description && <p class="ed-lede article-lede">{description}</p>}
+	{
+		tags && tags.length > 0 && (
+			<p class="ed-label article-tags">
+				{tags.map((tag) => (
+					<span>#{tag}</span>
+				))}
+			</p>
+		)
+	}
+</header>
+
+<style is:global>
+	.article-head {
+		display: flex;
+		flex-direction: column;
+		gap: 1.25rem;
+		padding-bottom: 2rem;
+		margin-bottom: 2.5rem;
+		border-bottom: 1px solid var(--ed-line);
+	}
+	.article-head .article-title {
+		font-family: var(--font-serif);
+		font-weight: 400;
+		font-size: clamp(2rem, 5vw, 2.75rem);
+		line-height: 1.15;
+		letter-spacing: -0.015em;
+		text-wrap: balance;
+		color: var(--color-foreground);
+	}
+	.article-head .article-lede {
+		font-size: 17px;
+		line-height: 1.6;
+		text-wrap: pretty;
+	}
+	.article-tags {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.25rem 0.75rem;
+	}
+</style>

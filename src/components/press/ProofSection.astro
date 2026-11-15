@@ -1,0 +1,24 @@
+---
+import Eyebrow from "@/components/editorial/Eyebrow.astro";
+import SectionTitle from "@/components/editorial/SectionTitle.astro";
+
+// A report section whose heading is a claim: mono eyebrow ("Proof 01 ·
+// GitHub attribution") above a Redaction title, then the evidence.
+interface Props {
+	id: string;
+	eyebrow: string | string[];
+	/** The claim. Omit it when the evidence itself is the headline. */
+	title?: string;
+	class?: string;
+}
+
+const { id, eyebrow, title, class: className } = Astro.props;
+---
+
+<section aria-labelledby={id} class:list={["ed ed-section", className]}>
+	<div class="flex flex-col gap-2.5">
+		{title ? <Eyebrow items={eyebrow} /> : <h2 id={id} class="ed-label">{Array.isArray(eyebrow) ? eyebrow.join(" · ") : eyebrow}</h2>}
+		{title && <SectionTitle id={id} title={title} />}
+	</div>
+	<slot />
+</section>

@@ -1,4 +1,5 @@
 ---
+// Metric tiles: Redaction value, sans label, mono detail.
 interface Metric {
 	value: string;
 	label: string;
@@ -12,14 +13,14 @@ interface Props {
 const { items } = Astro.props;
 ---
 
-<div class="not-prose my-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
+<div class="not-prose my-10 grid grid-cols-2 gap-3 sm:grid-cols-4">
 	{items.map((item) => (
-		<div class="rounded-xl border border-ui/70 bg-background-2/45 px-4 py-4">
-			<p class="font-mono text-xl font-medium tracking-[-0.04em] text-foreground">
+		<div class="ed-tile flex flex-col gap-1.5 bg-background px-4 py-4">
+			<p class="font-serif text-[28px] leading-none text-foreground [font-variant-numeric:tabular-nums]">
 				{item.value}
 			</p>
-			<p class="mt-1 text-sm font-medium text-foreground-2">{item.label}</p>
-			{item.detail && <p class="mt-1 text-xs leading-relaxed text-foreground-3">{item.detail}</p>}
+			<p class="text-[13.5px] leading-snug font-medium text-foreground-2">{item.label}</p>
+			{item.detail && <p class="ed-label">{item.detail}</p>}
 		</div>
 	))}
 </div>

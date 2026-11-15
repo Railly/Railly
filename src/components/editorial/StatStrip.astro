@@ -1,0 +1,50 @@
+---
+// Row of stats between hairlines. `number` sets values in large Redaction;
+// `text` sets short facts (names, dates) in medium sans.
+interface Stat {
+	label: string;
+	value: string | number;
+}
+
+interface Props {
+	stats: Stat[];
+	variant?: "number" | "text";
+	/** Columns from 640px up. Default: one per stat. */
+	cols?: number;
+	/** Columns below 640px. Default: same as cols, or 2 when there are 4+. */
+	mobileCols?: number;
+	class?: string;
+}
+
+const { stats, variant = "number", class: className } = Astro.props;
+const cols = Astro.props.cols ?? stats.length;
+const mobileCols = Astro.props.mobileCols ?? (cols >= 4 ? 2 : cols);
+
+const pos = (i: number, n: number) => {
+	const c = i % n;
+	if (c === 0) return "first";
+	if (c === n - 1 || i === stats.length - 1) return "last";
+	return "mid";
+};
+---
+
+<dl
+	class:list={["ed ed-stats", className]}
+	data-variant={variant}
+	style={`--ed-cols:${cols};--ed-cols-m:${mobileCols}`}
+>
+	{
+		stats.map((s, i) => (
+			<div
+				class="ed-stat"
+				data-m={pos(i, mobileCols)}
+				data-mrow={i >= mobileCols ? "n" : "0"}
+				data-d={pos(i, cols)}
+				data-drow={i >= cols ? "n" : "0"}
+			>
+				<dt class="ed-label">{s.label}</dt>
+				<dd class="ed-stat-value">{s.value}</dd>
+			</div>
+		))
+	}
+</dl>

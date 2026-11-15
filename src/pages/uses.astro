@@ -29,8 +29,11 @@ import TogglLogo from "@/assets/svgs/logos/toggl.svg";
 import TriggerLogo from "@/assets/svgs/logos/trigger.svg";
 import TypescriptLogo from "@/assets/svgs/logos/typescript.svg";
 import VercelLogo from "@/assets/svgs/logos/vercel.svg";
+import List from "@/components/editorial/List.astro";
+import ListRow from "@/components/editorial/ListRow.astro";
+import PageHero from "@/components/editorial/PageHero.astro";
+import Section from "@/components/editorial/Section.astro";
 import PageLayout from "@/components/layout/PageLayout.astro";
-import SectionHeader from "@/components/layout/SectionHeader.astro";
 import Layout from "@/layouts/Layout.astro";
 
 const ogTitle = "Uses";
@@ -356,59 +359,42 @@ const sections: { title: string; items: Item[] }[] = [
 		],
 	},
 ];
+const slug = (t: string) => t.toLowerCase().replace(/[^a-z0-9]+/g, "-");
 ---
 
 <Layout title={`${ogTitle} — Railly Hugo`} description={ogDescription} image={ogImage}>
-	<PageLayout class="flex flex-col gap-8">
-		<SectionHeader title="Uses" />
+	<PageLayout class="flex flex-col">
+		<PageHero eyebrow={["Hardware", "Software", "Dev stack", "AI tools"]} title="Uses">
+			<Fragment slot="lede">
+				Hardware, software, and tools I use daily. Inspired by <a
+					href="https://uses.tech"
+					target="_blank"
+					class="ed-link text-foreground"
+				>uses.tech</a>.
+			</Fragment>
+		</PageHero>
 
-		<p class="text-foreground-2 leading-relaxed">
-			Hardware, software, and tools I use daily. Inspired by <a
-				href="https://uses.tech"
-				target="_blank"
-				class="text-foreground underline decoration-ui hover:bg-foreground hover:text-background transition-colors"
-			>uses.tech</a>.
-		</p>
-
-		{sections.map((section) => (
-			<section class="w-full">
-				<h2 class="text-sm font-serif italic text-foreground-2 uppercase tracking-wider mb-3">
-					{section.title}
-				</h2>
-				<div class="space-y-0">
+		{sections.map((section, i) => (
+			<Section id={`h-${slug(section.title)}`} number={i + 1} title={section.title} note={String(section.items.length).padStart(2, "0")} class="mt-16">
+				<List>
 					{section.items.map((item) => (
-						<div class="flex items-center gap-4 py-2.5 border-b border-ui">
-							<span class="text-foreground font-medium text-sm shrink-0 w-52 flex items-center gap-2">
-								{logoMap[item.name] && (
-									<img
-										src={logoMap[item.name].src}
-										alt=""
-										class:list={[
-											"h-4 w-4 shrink-0 object-contain",
-											monoLogos.has(item.name) && "dark:invert",
-										]}
-									/>
-								)}
-								{item.url ? (
-									<a
-										href={item.url}
-										target="_blank"
-										class="hover:underline decoration-ui"
-									>
-										{item.name}
-									</a>
-								) : (
-									item.name
-								)}
-							</span>
-							<span class="text-foreground-3 text-sm">
-								{item.description}
-							</span>
-						</div>
+						<ListRow dense href={item.url} external={Boolean(item.url)} title={item.name} description={item.description} arrow={false}>
+							{logoMap[item.name] ? (
+								<img
+									slot="leading"
+									src={logoMap[item.name].src}
+									alt=""
+									width="14"
+									height="14"
+									class:list={["h-3.5 w-3.5 object-contain", monoLogos.has(item.name) && "dark:invert"]}
+								/>
+							) : (
+								<span slot="leading" />
+							)}
+						</ListRow>
 					))}
-				</div>
-			</section>
+				</List>
+			</Section>
 		))}
-
 	</PageLayout>
 </Layout>

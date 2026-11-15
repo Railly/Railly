@@ -22,14 +22,14 @@ const moreActive = more.some((item) => isActive(item.href));
 ---
 
 <header class="site-header">
-	<nav aria-label="Main" class="mx-auto flex max-w-[42rem] items-center gap-4 px-6 py-5 text-[13px]">
+	<nav aria-label="Main" class="mx-auto flex max-w-[42rem] items-center gap-3 px-6 py-5 text-[13px] sm:gap-4">
 		<a href="/" class="id" aria-label="Railly Hugo, home" aria-current={pathname === "/" ? "page" : undefined}>
 			<span>Railly Hugo</span>
 			<span class="aka">aka</span>
 			<span class="px" aria-hidden="true" data-scramble="Hunter">Hunter</span>
 		</a>
 		<span class="flex-1"></span>
-		<ul class="flex items-center gap-4">
+		<ul class="flex items-center gap-3 sm:gap-4">
 			{
 				primary.map((item) => (
 					<li class:list={[(item.href === "/press" || item.href === "/writing") && "hidden sm:block"]}>

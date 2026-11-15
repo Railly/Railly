@@ -1,6 +1,11 @@
 ---
+import Button from "@/components/editorial/Button.astro";
+import List from "@/components/editorial/List.astro";
+import ListRow from "@/components/editorial/ListRow.astro";
+import Section from "@/components/editorial/Section.astro";
+import StatStrip from "@/components/editorial/StatStrip.astro";
+import Timeline from "@/components/editorial/Timeline.astro";
 import PageLayout from "@/components/layout/PageLayout.astro";
-import SectionHeader from "@/components/layout/SectionHeader.astro";
 import { ogUrl } from "@/config/site";
 import Layout from "@/layouts/Layout.astro";
 
@@ -72,28 +77,25 @@ const sources = [
 		href: "https://en.wikipedia.org/wiki/Maidenhead_Locator_System",
 	},
 ];
-
-import InkReveal from "@/components/ui/InkReveal.astro";
 ---
 
 <Layout title={`${title} | Lab | Railly Hugo`} description={description} image={ogImage}>
-	<PageLayout class="flex flex-col gap-16">
-		<section class="flex flex-col gap-4">
-			<a href="/lab" class="font-mono text-xs uppercase tracking-wider text-foreground-3 hover:text-foreground">Lab · Experiment 001</a>
-			<h1 data-ink-hero class="max-w-2xl text-2xl font-medium leading-tight text-foreground sm:text-3xl">{title}</h1>
-			<InkReveal />
-			<p class="font-mono text-xs text-foreground-3">Nov 2026 · Interactive map · Didn't ship</p>
-			<p class="max-w-2xl font-serif text-xl leading-snug text-foreground">
+	<PageLayout class="flex flex-col">
+		<header class="ed ed-hero">
+			<a href="/lab" class="ed-label">Lab · Experiment 001</a>
+			<h1 data-ink-hero data-ink="" class="ed-hero-title">{title}</h1>
+			<p class="ed-label -mt-2">Nov 2026 · Interactive map · Didn't ship</p>
+			<p class="ed-display">
 				What if every place on Earth had a short code you could zoom into, one cell at a time? I built it in a day, then tested it with an AI agent over 600 runs.
 			</p>
-			<div class="flex flex-wrap gap-4 text-sm">
-				<a href="/lab/grid-drill/demo.html" target="_blank" rel="noopener" class="text-foreground underline decoration-ui underline-offset-4 hover:decoration-foreground">Open the demo</a>
-				<a href="#film" class="text-foreground underline decoration-ui underline-offset-4 hover:decoration-foreground">Watch it run</a>
+			<div class="flex flex-wrap gap-3">
+				<Button href="/lab/grid-drill/demo.html" external variant="primary">Open the demo <span aria-hidden="true">&nearr;</span></Button>
+				<Button href="#film">Watch it run <span aria-hidden="true">&darr;</span></Button>
 			</div>
-		</section>
+		</header>
 
-		<section class="flex flex-col gap-3">
-			<div id="demo-wrap" class="demo-wrap relative aspect-[16/10] w-full overflow-hidden rounded border border-ui bg-background-2">
+		<section aria-label="Grid drill demo" class="ed mt-16 flex flex-col gap-3">
+			<div id="demo-wrap" class="demo-wrap ed-tile relative aspect-[16/10] w-full overflow-hidden bg-[var(--ed-wash)]">
 				<iframe
 					id="demo-frame"
 					src="/lab/grid-drill/demo.html?embed"
@@ -102,55 +104,38 @@ import InkReveal from "@/components/ui/InkReveal.astro";
 					allow="fullscreen"
 					class="absolute inset-0 h-full w-full"
 				></iframe>
-				<button id="demo-close" type="button" class="demo-close absolute right-3 top-3 z-10 hidden rounded border border-ui bg-background px-2.5 py-1 font-mono text-xs text-foreground hover:bg-background-2">Close · Esc</button>
+				<button id="demo-close" type="button" class="demo-close ed-btn absolute right-3 top-3 z-10">Close · Esc</button>
 			</div>
 			<div class="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
-				<p class="text-xs text-foreground-3">Click a cell, or type the one you see (<span class="font-mono">b</span> then <span class="font-mono">3</span>) to go one level deeper. Arrows move to a neighbor, Backspace goes up.</p>
-				<button id="demo-full" type="button" class="font-mono text-xs text-foreground underline decoration-ui underline-offset-4 hover:decoration-foreground">Fullscreen ⤢</button>
+				<p class="max-w-[30rem] text-[13px] leading-relaxed text-foreground-3">Click a cell, or type the one you see (<kbd class="ed-num text-foreground">b</kbd> then <kbd class="ed-num text-foreground">3</kbd>) to go one level deeper. Arrows move to a neighbor, Backspace goes up.</p>
+				<button id="demo-full" type="button" class="ed-label">Fullscreen ⤢</button>
 			</div>
 		</section>
 
-		<section class="flex flex-col gap-4">
-			<SectionHeader title="From the world to the Obelisco in six clicks" />
-			<ol class="grid grid-cols-2 gap-3 sm:grid-cols-3">
+		<Section id="h-steps" number={1} title="From the world to the Obelisco in six clicks">
+			<ol class="grid grid-cols-2 gap-x-4 gap-y-5 sm:grid-cols-3">
 				{steps.map((s, i) => (
-					<li class="flex flex-col gap-1.5">
-						<picture>
+					<li class="flex flex-col gap-2">
+						<picture class="ed-tile block overflow-hidden">
 							<source type="image/webp" srcset={s.src.replace(/\.jpg$/, ".webp")} />
-							<img src={s.src} alt={`Step ${i + 1}: cell ${s.code}`} width="480" height="360" loading="lazy" decoding="async" class="aspect-[4/3] w-full rounded border border-ui object-cover" />
+							<img src={s.src} alt={`Step ${i + 1}: cell ${s.code}`} width="480" height="360" loading="lazy" decoding="async" class="block aspect-[4/3] w-full object-cover" />
 						</picture>
-						<p class="font-mono text-[11px] text-foreground-3"><span class="text-foreground">{String(i + 1).padStart(2, "0")}</span> {s.code} · {s.size}</p>
+						<p class="ed-label"><span class="step-n">{String(i + 1).padStart(2, "0")}</span> {s.code} · {s.size}</p>
 					</li>
 				))}
 			</ol>
+		</Section>
+
+		<section aria-label="Results" class="ed mt-16 flex flex-col gap-3">
+			<StatStrip stats={metrics} cols={4} mobileCols={2} />
+			<p class="ed-label">Median miss over 50 random pins, three runs each. Measured on November 6, 2026.</p>
 		</section>
 
-		<section class="flex flex-col gap-3">
-			<div class="grid grid-cols-2 gap-px overflow-hidden rounded border border-ui bg-ui sm:grid-cols-4">
-				{metrics.map((m) => (
-					<div class="bg-background p-4">
-						<p class="font-mono text-xl tabular-nums text-foreground">{m.value}</p>
-						<p class="mt-1 text-xs text-foreground-3">{m.label}</p>
-					</div>
-				))}
-			</div>
-			<p class="text-xs text-foreground-3">Median miss over 50 random pins, three runs each. Measured on November 6, 2026.</p>
+		<section aria-label="How the experiment went" class="ed mt-16">
+			<Timeline label="How the experiment went" steps={notes.map((n) => ({ when: n.label, title: n.title, description: n.body }))} />
 		</section>
 
-		<section class="flex flex-col gap-8">
-			{notes.map((n) => (
-				<div class="grid gap-2 sm:grid-cols-[7rem_1fr]">
-					<p class="font-mono text-xs uppercase tracking-wider text-foreground-3">{n.label}</p>
-					<div>
-						<h2 class="text-base font-medium text-foreground">{n.title}</h2>
-						<p class="mt-1 max-w-2xl text-sm leading-relaxed text-foreground-2">{n.body}</p>
-					</div>
-				</div>
-			))}
-		</section>
-
-		<section id="film" class="flex flex-col gap-3 scroll-mt-24">
-			<SectionHeader title="Watch it run" />
+		<Section id="h-film" anchor="film" number={2} title="Watch it run" class="scroll-mt-24">
 			<video
 				src="/lab/grid-drill/run.mp4"
 				poster="/lab/grid-drill/run-poster.webp"
@@ -160,19 +145,16 @@ import InkReveal from "@/components/ui/InkReveal.astro";
 				controls
 				preload="metadata"
 				data-lab-loop
-				class="aspect-[16/10] w-full rounded border border-ui bg-background-2"
+				class="ed-tile aspect-[16/10] w-full bg-[var(--ed-wash)]"
 			></video>
-			<p class="text-xs text-foreground-3">The demo above, driven with real clicks from the world to the Obelisco and back. No sound.</p>
-		</section>
+			<p class="ed-label">The demo above, driven with real clicks from the world to the Obelisco and back. No sound.</p>
+		</Section>
 
-		<section>
-			<SectionHeader title="Sources" className="mb-3" />
-			<ul class="flex flex-col gap-2 text-sm">
-				{sources.map((s) => (
-					<li><a href={s.href} target="_blank" rel="noopener noreferrer" class="text-foreground-2 underline decoration-ui underline-offset-4 hover:text-foreground">{s.label}</a></li>
-				))}
-			</ul>
-		</section>
+		<Section id="h-sources" number={3} title="Sources">
+			<List>
+				{sources.map((s) => <ListRow dense href={s.href} external title={s.label} />)}
+			</List>
+		</Section>
 	</PageLayout>
 </Layout>
 
@@ -189,6 +171,9 @@ import InkReveal from "@/components/ui/InkReveal.astro";
 </script>
 
 <style>
+	.demo-close {
+		display: none;
+	}
 	.demo-wrap.is-full {
 		position: fixed;
 		inset: 0;
@@ -196,9 +181,13 @@ import InkReveal from "@/components/ui/InkReveal.astro";
 		aspect-ratio: auto;
 		border: 0;
 		border-radius: 0;
+		box-shadow: none;
 	}
 	.demo-wrap.is-full .demo-close {
 		display: block !important;
+	}
+	.step-n {
+		color: var(--color-foreground);
 	}
 </style>
 

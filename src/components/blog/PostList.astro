@@ -1,0 +1,103 @@
+---
+import type { CollectionEntry } from "astro:content";
+import PremiereCountdown from "@/components/blog/PremiereCountdown";
+import List from "@/components/editorial/List.astro";
+import ListRow from "@/components/editorial/ListRow.astro";
+import { getReadingTime } from "@/config/reading-time";
+
+// Editorial post rows: title (with Newest / Premiere marks), mono meta on the
+// right (views, reading time, DD/MM). A premiere before its date is not a link
+// and shows a countdown instead of the date.
+interface Props {
+	posts: CollectionEntry<"blog">[];
+	/** Slug that gets the "Newest" mark. */
+	newestSlug?: string;
+	/** Empty span the page's views script fills in (data-views-slug). */
+	views?: boolean;
+	readingTime?: boolean;
+	/** Year in the index column on each row (for a mixed-year list). */
+	yearIndex?: boolean;
+	class?: string;
+}
+
+const {
+	posts,
+	newestSlug,
+	views = false,
+	readingTime = false,
+	yearIndex = false,
+	class: className,
+} = Astro.props;
+
+const formatDate = (date: Date) => {
+	const day = date.getDate().toString().padStart(2, "0");
+	const month = (date.getMonth() + 1).toString().padStart(2, "0");
+	return `${day}/${month}`;
+};
+const now = new Date();
+---
+
+<List class={className}>
+	{
+		posts.map((post, i) => {
+			const isPremiere = post.data.status === "premiere" && now < post.data.pubDate;
+			const year = post.data.pubDate.getFullYear();
+			const showYear = yearIndex && (i === 0 || posts[i - 1].data.pubDate.getFullYear() !== year);
+			return (
+				<ListRow
+					href={isPremiere ? undefined : `/blog/${post.slug}`}
+					index={yearIndex ? (showYear ? String(year) : " ") : undefined}
+					class={isPremiere ? "post-premiere" : undefined}
+					arrow={false}
+				>
+					<Fragment slot="title">
+						{post.data.title}
+						{isPremiere ? (
+							<span class="post-mark">Premiere</span>
+						) : post.slug === newestSlug ? (
+							<span class="post-mark">Newest</span>
+						) : null}
+					</Fragment>
+					<span slot="meta" class="post-meta">
+						{isPremiere ? (
+							<PremiereCountdown pubDate={post.data.pubDate.toISOString()} client:load />
+						) : (
+							<>
+								{views && <span data-views-slug={post.slug} class="hidden sm:inline" />}
+								{readingTime && <span class="hidden sm:inline">{getReadingTime(post.body || "").text}</span>}
+								<span>{formatDate(post.data.pubDate)}</span>
+							</>
+						)}
+					</span>
+				</ListRow>
+			);
+		})
+	}
+</List>
+
+<style is:global>
+	.post-mark {
+		margin-left: 0.625rem;
+		padding: 0.0625rem 0.375rem;
+		border: 1px solid var(--ed-line-2);
+		border-radius: 3px;
+		font-family: var(--font-mono);
+		font-size: 10.5px;
+		font-weight: 400;
+		letter-spacing: 0.02em;
+		color: var(--color-foreground-2);
+		vertical-align: 0.1em;
+		white-space: nowrap;
+	}
+	.post-premiere .ed-row-text {
+		color: var(--color-foreground-3);
+	}
+	.post-meta {
+		display: inline-flex;
+		align-items: baseline;
+		gap: 0.875rem;
+	}
+	.post-meta [data-views-slug]:empty {
+		display: none;
+	}
+</style>

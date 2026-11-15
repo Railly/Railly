@@ -1,40 +1,24 @@
+/* Shiki code blocks in the editorial look: hairline tile, 3px offset shadow,
+   faint wash, Commit Mono, faded line numbers. Wide lines scroll inside the block. */
 @layer base {
 	.astro-code span {
 		background-color: transparent !important;
 	}
 
 	.astro-code {
-		border: 1px solid var(--color-ui) !important;
-		font-size: 13px;
-		scrollbar-width: none !important;
-
-		&::-webkit-scrollbar {
-			display: none !important;
-		}
 		position: relative !important;
 		isolation: isolate !important;
-		background-color: transparent !important;
-		background-image: linear-gradient(
-			45deg,
-			rgba(128, 128, 128, 0.06) 25%,
-			transparent 25%,
-			transparent 50%,
-			rgba(128, 128, 128, 0.06) 50%,
-			rgba(128, 128, 128, 0.06) 75%,
-			transparent 75%,
-			transparent
-		) !important;
-		background-size: 8px 8px !important;
-		background-attachment: local !important;
-	}
-
-	.astro-code::after {
-		content: "" !important;
-		position: absolute !important;
-		inset: 0 !important;
-		opacity: 0.985 !important;
-		z-index: 0 !important;
-		pointer-events: none !important;
+		border: 1px solid var(--ed-line) !important;
+		border-radius: 4px;
+		box-shadow: 3px 3px 0 var(--ed-shadow);
+		background-color: var(--ed-wash) !important;
+		padding: 1rem 1.125rem;
+		font-family: var(--font-mono);
+		font-size: 13px;
+		line-height: 1.65;
+		overflow-x: auto;
+		scrollbar-width: thin;
+		scrollbar-color: var(--ed-line-2) transparent;
 	}
 
 	.astro-code code {
@@ -42,17 +26,19 @@
 		counter-increment: step calc(var(--start, 1) - 1) !important;
 		position: relative !important;
 		z-index: 1 !important;
+		font-family: inherit;
+		font-size: inherit;
 	}
 
 	.astro-code code .line::before {
 		content: counter(step) !important;
 		counter-increment: step !important;
-		width: 1rem !important;
-		margin-right: 1.5rem !important;
+		width: 1.25rem !important;
+		margin-right: 1.25rem !important;
 		display: inline-block !important;
 		text-align: right !important;
-		color: var(--color-foreground-2) !important;
-		opacity: 0.5 !important;
+		color: var(--color-foreground-3) !important;
+		opacity: 0.6 !important;
 	}
 
 	@media (prefers-color-scheme: dark) {

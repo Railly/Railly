@@ -1,9 +1,22 @@
 ---
+import List from "@/components/editorial/List.astro";
+import ListRow from "@/components/editorial/ListRow.astro";
+import PageHero from "@/components/editorial/PageHero.astro";
+import Section from "@/components/editorial/Section.astro";
 import PageLayout from "@/components/layout/PageLayout.astro";
 import { ogUrl } from "@/config/site";
 import Layout from "@/layouts/Layout.astro";
 
 Astro.response.status = 404;
+
+const links = [
+	{ title: "Home", href: "/" },
+	{ title: "Developer resources", href: "/developers" },
+	{ title: "Projects", href: "/projects" },
+	{ title: "Writing", href: "/writing" },
+	{ title: "llms.txt", href: "/llms.txt" },
+	{ title: "Sitemap", href: "/sitemap-index.xml" },
+];
 ---
 
 <Layout
@@ -11,24 +24,20 @@ Astro.response.status = 404;
 	title="Page not found | Railly Hugo"
 	description="That URL does not match a public page on railly.dev. Use the recovery links to continue."
 >
-	<PageLayout class="flex flex-col gap-10">
-		<header class="space-y-4">
-			<p class="font-mono text-xs text-foreground-3">404</p>
-			<h1 class="text-2xl font-semibold tracking-tight">Page not found</h1>
-			<p class="max-w-2xl text-sm leading-relaxed text-foreground-2">
+	<PageLayout class="flex flex-col">
+		<PageHero eyebrow="404" title="Page not found">
+			<Fragment slot="lede">
 				That URL does not match a public page on railly.dev. Agents can request this
-				same URL with <code>Accept: text/markdown</code> for a compact recovery response.
-			</p>
-		</header>
-		<nav aria-label="Recovery links">
-			<ul class="space-y-3 text-sm">
-				<li><a class="underline" href="/">Home</a></li>
-				<li><a class="underline" href="/developers">Developer resources</a></li>
-				<li><a class="underline" href="/projects">Projects</a></li>
-				<li><a class="underline" href="/writing">Writing</a></li>
-				<li><a class="underline" href="/llms.txt">llms.txt</a></li>
-				<li><a class="underline" href="/sitemap-index.xml">Sitemap</a></li>
-			</ul>
-		</nav>
+				same URL with <code class="ed-num text-foreground">Accept: text/markdown</code> for a compact recovery response.
+			</Fragment>
+		</PageHero>
+
+		<Section id="h-recovery" number={1} title="Recovery links" class="mt-16">
+			<nav aria-label="Recovery links">
+				<List>
+					{links.map((l) => <ListRow href={l.href} title={l.title} meta={l.href} arrow />)}
+				</List>
+			</nav>
+		</Section>
 	</PageLayout>
 </Layout>

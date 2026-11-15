@@ -18,11 +18,17 @@ const defaultOptions: CrafterMermaidOptions = {
 
 const svg = render(chart.trim(), defaultOptions);
 ---
-<div class:list={["mermaid-diagram my-8 overflow-x-auto", className]} set:html={svg} />
+<div class:list={["mermaid-diagram not-prose my-10 overflow-x-auto", className]} set:html={svg} />
 
 <style>
   .mermaid-diagram {
     -webkit-overflow-scrolling: touch;
+    padding: 1.25rem;
+    border: 1px solid var(--ed-line);
+    border-radius: 4px;
+    box-shadow: 3px 3px 0 var(--ed-shadow);
+    background-image: radial-gradient(color-mix(in oklab, var(--color-foreground) 10%, transparent) 1px, transparent 1.2px);
+    background-size: 8px 8px;
   }
   .mermaid-diagram :global(svg) {
     max-width: 100%;
@@ -34,8 +40,8 @@ const svg = render(chart.trim(), defaultOptions);
     --_text: var(--color-foreground) !important;
     --_line: var(--color-foreground-3) !important;
     --_arrow: var(--color-foreground-3) !important;
-    --_node-fill: var(--color-background-2) !important;
-    --_node-stroke: var(--color-ui-3) !important;
+    --_node-fill: var(--color-background) !important;
+    --_node-stroke: var(--ed-line-2) !important;
     --_muted: var(--color-foreground-3) !important;
     --_group-fill: var(--color-background-2) !important;
     --_group-stroke: var(--color-ui-2) !important;

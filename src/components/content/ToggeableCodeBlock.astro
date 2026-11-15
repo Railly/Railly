@@ -40,20 +40,20 @@ const processKatex = (content: string) => {
 const renderedContent = processKatex(await marked.parse(rawContent));
 ---
 
-<div class="toggleable-content space-y-4">
+<div class="ed toggleable-content space-y-4">
   <div class="flex justify-between items-center">
     <h2 class="text-lg font-medium text-foreground my-0">
       {title}
     </h2>
     <div class="flex gap-2">
       <button
-        class="toggle-button inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium text-foreground-2/70 hover:text-foreground transition-colors rounded-full border border-ui hover:border-foreground-2 bg-background/50 hover:bg-background cursor-pointer"
+        class="toggle-button inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap px-2.5 py-1 font-mono text-[11px] text-foreground-2 hover:text-foreground transition-colors rounded-[4px] border border-[var(--ed-line-2)] hover:border-foreground bg-background shadow-[2px_2px_0_var(--ed-shadow)] cursor-pointer"
         type="button"
       >
-        <span class="toggle-label text-[13px]">View Raw</span>
+        <span class="toggle-label ">View Raw</span>
       </button>
       <button
-        class="expand-button inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium text-foreground-2/70 hover:text-foreground transition-colors rounded-full border border-ui hover:border-foreground-2 bg-background/50 hover:bg-background cursor-pointer"
+        class="expand-button inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap px-2.5 py-1 font-mono text-[11px] text-foreground-2 hover:text-foreground transition-colors rounded-[4px] border border-[var(--ed-line-2)] hover:border-foreground bg-background shadow-[2px_2px_0_var(--ed-shadow)] cursor-pointer"
       >
         <svg
           class="w-3.5 h-3.5 transition-transform duration-200"
@@ -68,7 +68,7 @@ const renderedContent = processKatex(await marked.parse(rawContent));
             stroke-width="2"
             d="M4 6h16M4 12h16m-7 6h7"></path>
         </svg>
-        <span class="expand-label text-[13px]">View Full</span>
+        <span class="expand-label ">View Full</span>
       </button>
     </div>
   </div>
@@ -87,7 +87,7 @@ const renderedContent = processKatex(await marked.parse(rawContent));
     </div>
     <!-- Rendered view (initially hidden) -->
     <div
-      class="rendered-view border border-ui rounded-lg markdown-view w-full flex-1 p-6 [font-size:85%] prose-theme prose !max-w-none prose-pre:!w-full prose-pre:!max-w-none prose-pre:!overflow-x-auto preview-wrapper mask-b-from-20% mask-b-to-80%"
+      class="rendered-view border border-[var(--ed-line)] rounded-[4px] shadow-[3px_3px_0_var(--ed-shadow)] markdown-view w-full flex-1 p-6 [font-size:85%] prose-theme prose !max-w-none prose-pre:!w-full prose-pre:!max-w-none prose-pre:!overflow-x-auto preview-wrapper mask-b-from-20% mask-b-to-80%"
       style={`max-height: ${previewHeight};`}
       set:html={renderedContent}
     />

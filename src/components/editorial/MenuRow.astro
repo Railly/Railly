@@ -1,0 +1,37 @@
+---
+// Name ........ value, like a menu. `lg` is the pricing row (Redaction name,
+// large mono value); `sm` is a compact line for specs and inventories.
+// Extra body (description, bullets, buttons) goes in the default slot.
+interface Props {
+	name: string;
+	value: string;
+	index?: string;
+	/** Mono line under the name, e.g. "60 min · 1:1". */
+	meta?: string;
+	size?: "lg" | "sm";
+	level?: 2 | 3 | 4;
+	class?: string;
+}
+
+const {
+	name,
+	value,
+	index,
+	meta,
+	size = "lg",
+	level = 3,
+	class: className,
+} = Astro.props;
+const Tag = size === "sm" ? "span" : (`h${level}` as "h3");
+---
+
+<div class:list={["ed ed-menu", className]} data-size={size}>
+	{index && <span class="ed-label">{index}</span>}
+	<div class="ed-menu-line">
+		<Tag class="ed-menu-name">{name}</Tag>
+		<span aria-hidden="true" class="ed-leader"></span>
+		<span class="ed-menu-value">{value}</span>
+	</div>
+	{meta && <span class="ed-label -mt-1.5">{meta}</span>}
+	<slot />
+</div>

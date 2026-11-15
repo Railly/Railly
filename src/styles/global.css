@@ -1,9 +1,12 @@
+/* ui-sdk injects a little behavior CSS into this layer; declaring it first lets site styles win. */
+@layer ui-sdk;
 @import "tailwindcss";
 @import "katex/dist/katex.min.css";
 @import "./reset.css";
 @import "./fonts.css";
 @import "./code.css";
 @import "./system.css";
+@import "./editorial.css";
 
 @plugin "@midudev/tailwind-animations";
 @plugin "@tailwindcss/typography";
@@ -158,8 +161,9 @@
 }
 
 
-/* Page titles in Redaction, like the home sentence. Unlayered so it wins over utility classes. */
-main:not(.home) h1:not(.sr-only),
+/* Page titles in Redaction, like the home sentence. Unlayered so it wins over utility classes.
+   Editorial primitives (.ed) set their own title, so they are skipped. */
+main:not(.home) h1:not(.sr-only):not(:where(.ed, .ed *)),
 article h1,
 .page-title {
     font-family: var(--font-serif);

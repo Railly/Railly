@@ -1,71 +1,77 @@
 /*
- * Inner pages speak the home's language: serif titles, 15px medium section
- * labels, hairline rows, faded secondary ink and small pixel-offset cards.
- * Unlayered so it wins over per-page utility classes. /agents opts out.
+ * Legacy normalization for pages not yet on the editorial primitives
+ * (src/components/editorial). It flattens older markup into the home's
+ * language: 15px sans section labels, no uppercase or italics, hairline rows,
+ * small pixel-offset cards. Unlayered so it wins over per-page utility classes.
+ *
+ * Every rule skips editorial zones: `:not(:where(.ed, .ed *))` matches nothing
+ * inside an element with `.ed` (every primitive root has it), and `:where`
+ * keeps the specificity unchanged. So editorial is the default wherever a
+ * primitive is used, and older markup around it keeps its normalization.
+ * Delete this file once every page is migrated. /agents opts out with `bare`.
  */
 .page {
-    --ink-line: color-mix(in oklab, currentColor 10%, transparent);
+	--ink-line: color-mix(in oklab, currentColor 10%, transparent);
 }
-.page h2:not(.sr-only) {
-    font-family: var(--font-sans);
-    font-size: 15px;
-    font-weight: 500;
-    font-style: normal;
-    letter-spacing: 0;
-    text-transform: none;
-    line-height: 1.4;
-    color: var(--color-foreground);
+.page h2:not(.sr-only):not(:where(.ed, .ed *)) {
+	font-family: var(--font-sans);
+	font-size: 15px;
+	font-weight: 500;
+	font-style: normal;
+	letter-spacing: 0;
+	text-transform: none;
+	line-height: 1.4;
+	color: var(--color-foreground);
 }
 /* Labels: no shouting, no italics, no mono badges. */
-.page .uppercase {
-    text-transform: none;
-    letter-spacing: 0;
+.page .uppercase:not(:where(.ed, .ed *)) {
+	text-transform: none;
+	letter-spacing: 0;
 }
-.page .italic {
-    font-style: normal;
+.page .italic:not(:where(.ed, .ed *)) {
+	font-style: normal;
 }
-.page .font-mono:is(.text-xs, .text-\[10px\], .text-\[11px\]) {
-    font-family: var(--font-sans);
-    font-size: 12px;
+.page .font-mono:is(.text-xs, .text-\[10px\], .text-\[11px\]):not(:where(.ed, .ed *)) {
+	font-family: var(--font-sans);
+	font-size: 12px;
 }
-.page th {
-    font-size: 12px;
-    font-weight: 400;
-    text-transform: none;
-    letter-spacing: 0;
-    color: var(--color-foreground-3);
+.page th:not(:where(.ed, .ed *)) {
+	font-size: 12px;
+	font-weight: 400;
+	text-transform: none;
+	letter-spacing: 0;
+	color: var(--color-foreground-3);
 }
-.page :is(td, th),
-.page .border-b,
-.page .border-t {
-    border-color: var(--ink-line);
+.page :is(td, th):not(:where(.ed, .ed *)),
+.page :is(.border-b, .border-t):not(:where(.ed, .ed *)) {
+	border-color: var(--ink-line);
 }
 /* Boxes become the home's tile: hairline edge and a 3px offset shadow. */
-.page :is(.rounded, .rounded-md, .rounded-lg, .rounded-xl, .rounded-2xl):is(.border) {
-    border-radius: 4px;
-    border-color: var(--ink-line);
-    box-shadow: 3px 3px 0 color-mix(in oklab, currentColor 7%, transparent);
+.page :is(.rounded, .rounded-md, .rounded-lg, .rounded-xl, .rounded-2xl):is(.border):not(:where(.ed, .ed *)) {
+	border-radius: 4px;
+	border-color: var(--ink-line);
+	box-shadow: 3px 3px 0 color-mix(in oklab, currentColor 7%, transparent);
 }
-.page a:is(.rounded, .rounded-md, .rounded-lg, .rounded-xl):is(.border):hover {
-    border-color: color-mix(in oklab, currentColor 20%, transparent);
-    background: transparent;
+.page a:is(.rounded, .rounded-md, .rounded-lg, .rounded-xl):is(.border):not(:where(.ed, .ed *)):hover {
+	border-color: color-mix(in oklab, currentColor 20%, transparent);
+	background: transparent;
 }
 /* Primary actions: ink outline instead of a filled pill. */
-.page a.bg-foreground {
-    background: transparent;
-    color: var(--color-foreground);
-    border: 1px solid color-mix(in oklab, currentColor 30%, transparent);
-    border-radius: 4px;
-    box-shadow: 3px 3px 0 color-mix(in oklab, currentColor 14%, transparent);
+.page a.bg-foreground:not(:where(.ed, .ed *)) {
+	background: transparent;
+	color: var(--color-foreground);
+	border: 1px solid color-mix(in oklab, currentColor 30%, transparent);
+	border-radius: 4px;
+	box-shadow: 3px 3px 0 color-mix(in oklab, currentColor 14%, transparent);
 }
-.page a.bg-foreground:hover {
-    opacity: 1;
-    border-color: currentColor;
+.page a.bg-foreground:not(:where(.ed, .ed *)):hover {
+	opacity: 1;
+	border-color: currentColor;
 }
 nav a:focus-visible,
 .page a:focus-visible,
 .page button:focus-visible {
-    outline: 2px solid currentColor;
-    outline-offset: 3px;
-    border-radius: 2px;
+	outline: 2px solid currentColor;
+	outline-offset: 3px;
+	border-radius: 2px;
 }

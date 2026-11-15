@@ -1,0 +1,234 @@
+---
+// Editorial article body for blog posts, newsletter issues and drafts.
+// Geist for prose, Redaction for H2s (numbered like editorial Sections),
+// Commit Mono for code, table heads, captions and list numbers. Hairlines and
+// the 3px offset shadow come from the editorial tokens (--ed-line, --ed-shadow).
+interface Props {
+	class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<div class:list={["article-prose prose max-w-none dark:prose-invert", className]}>
+	<slot />
+</div>
+
+<style is:global>
+	.article-prose {
+		counter-reset: article-h2 sidenote;
+		overflow: visible;
+		font-family: var(--font-sans);
+		font-size: 16px;
+		line-height: 1.7;
+		color: color-mix(in oklab, var(--color-foreground) 92%, transparent);
+	}
+
+	/* Same palette for the article and any nested .prose block (rendered previews). */
+	.article-prose,
+	.article-prose .prose {
+		--tw-prose-body: currentColor;
+		--tw-prose-headings: var(--color-foreground);
+		--tw-prose-bold: var(--color-foreground);
+		--tw-prose-links: var(--color-foreground);
+		--tw-prose-bullets: var(--color-foreground-3);
+		--tw-prose-counters: var(--color-foreground-3);
+		--tw-prose-hr: var(--ed-line);
+		--tw-prose-th-borders: var(--ed-line-2);
+		--tw-prose-td-borders: var(--ed-line);
+		--tw-prose-captions: var(--color-foreground-3);
+		--tw-prose-code: var(--color-foreground);
+		--tw-prose-quotes: var(--color-foreground);
+		--tw-prose-lead: var(--color-foreground-2);
+		--tw-prose-pre-bg: transparent;
+		--tw-prose-pre-code: var(--color-foreground);
+	}
+
+	.article-prose :where(p, li) {
+		text-wrap: pretty;
+	}
+
+	.article-prose > p {
+		margin: 0 0 1.15em;
+	}
+
+	/* Headings: H2 is a numbered Redaction title, H3/H4 stay in Geist. */
+	.article-prose > :is(h2, h3, h4) {
+		scroll-margin-top: 2.5rem;
+		color: var(--color-foreground);
+	}
+	.article-prose > h2 {
+		counter-increment: article-h2;
+		margin: 3.5rem 0 1rem;
+		font-family: var(--font-serif);
+		font-weight: 400;
+		font-size: 26px;
+		line-height: 1.25;
+		letter-spacing: -0.01em;
+		text-wrap: balance;
+	}
+	.article-prose > h2::before {
+		content: counter(article-h2, decimal-leading-zero);
+		display: inline-block;
+		margin-right: 0.75rem;
+		font-family: var(--font-mono);
+		font-size: 11px;
+		letter-spacing: 0.02em;
+		color: var(--color-foreground-3);
+		vertical-align: 0.35em;
+	}
+	.article-prose > h3 {
+		margin: 2.25rem 0 0.5rem;
+		font-size: 17px;
+		font-weight: 600;
+		line-height: 1.4;
+		letter-spacing: -0.01em;
+	}
+	.article-prose > h4 {
+		margin: 1.75rem 0 0.5rem;
+		font-size: 15px;
+		font-weight: 600;
+		line-height: 1.45;
+	}
+	.article-prose > :is(h2, h3, h4) + * {
+		margin-top: 0;
+	}
+
+	/* Links and emphasis */
+	.article-prose a:not(:where(.not-prose, .not-prose *)) {
+		color: var(--color-foreground);
+		font-weight: inherit;
+		text-decoration: underline;
+		text-decoration-color: color-mix(in oklab, currentColor 30%, transparent);
+		text-decoration-thickness: 1px;
+		text-underline-offset: 0.22em;
+		transition: text-decoration-color 0.2s ease;
+	}
+	.article-prose a:not(:where(.not-prose, .not-prose *)):hover {
+		text-decoration-color: currentColor;
+	}
+	.article-prose strong {
+		font-weight: 600;
+		color: var(--color-foreground);
+	}
+
+	/* Lists */
+	.article-prose > :is(ul, ol) {
+		margin: 0 0 1.25em;
+		padding-left: 1.35em;
+	}
+	.article-prose :is(ul, ol) li {
+		margin: 0.35em 0;
+		padding-left: 0.25em;
+	}
+	.article-prose :is(ul, ol) li > p {
+		margin: 0;
+	}
+	.article-prose ol > li::marker {
+		font-family: var(--font-mono);
+		font-size: 12px;
+		color: var(--color-foreground-3);
+	}
+	.article-prose ul > li::marker {
+		color: var(--color-foreground-3);
+	}
+
+	/* Rules */
+	.article-prose > hr {
+		margin: 3rem 0;
+		border: 0;
+		border-top: 1px solid var(--ed-line);
+	}
+
+	/* Inline code (not code inside pre blocks) */
+	.article-prose :not(pre) > code {
+		padding: 0.1em 0.35em;
+		border: 1px solid var(--ed-line);
+		border-radius: 3px;
+		background: var(--ed-wash);
+		font-family: var(--font-mono);
+		font-size: 0.84em;
+		font-weight: 400;
+		color: var(--color-foreground);
+		overflow-wrap: anywhere;
+	}
+	.article-prose code::before,
+	.article-prose code::after {
+		content: none;
+	}
+
+	/* Code blocks (Shiki). Shared look lives in styles/code.css. */
+	.article-prose pre {
+		margin: 1.75rem 0;
+		padding: 1rem 1.125rem;
+		border-radius: 4px;
+		font-size: 13px;
+		line-height: 1.65;
+	}
+	.article-prose pre code {
+		font-family: var(--font-mono);
+		font-size: inherit;
+		font-weight: 400;
+	}
+
+	/* Tables: hairlines only, mono heads. */
+	.article-prose table {
+		width: 100%;
+		margin: 2rem 0;
+		border-collapse: collapse;
+		font-size: 14px;
+		line-height: 1.55;
+	}
+	.article-prose thead th {
+		padding: 0 0.75rem 0.5rem 0;
+		border-bottom: 1px solid var(--ed-line-2);
+		font-family: var(--font-mono);
+		font-size: 11px;
+		font-weight: 400;
+		letter-spacing: 0.02em;
+		color: var(--color-foreground-3);
+		text-align: left;
+		vertical-align: bottom;
+	}
+	.article-prose tbody tr {
+		border-bottom: 1px solid var(--ed-line);
+	}
+	.article-prose tbody td {
+		padding: 0.625rem 0.75rem 0.625rem 0;
+		color: var(--color-foreground-2);
+		vertical-align: top;
+		overflow-wrap: anywhere;
+	}
+	.article-prose tbody td:first-child {
+		color: var(--color-foreground);
+	}
+	.article-prose :is(th, td):last-child {
+		padding-right: 0;
+	}
+
+	/* Images and figures */
+	.article-prose img:not(:where(.not-prose, .not-prose *)) {
+		border: 1px solid var(--ed-line);
+		border-radius: 4px;
+		box-shadow: 3px 3px 0 var(--ed-shadow);
+	}
+	.article-prose figcaption:not(:where(.not-prose, .not-prose *)) {
+		margin-top: 0.75rem;
+		font-family: var(--font-mono);
+		font-size: 11px;
+		letter-spacing: 0.02em;
+		color: var(--color-foreground-3);
+		text-align: center;
+	}
+
+	/* KaTeX: long display math scrolls inside itself on phones. */
+	.article-prose .katex-display {
+		margin: 1.5rem 0;
+		padding: 0.25rem 0;
+		overflow-x: auto;
+		overflow-y: hidden;
+	}
+	.article-prose .katex {
+		font-size: 1.05em;
+	}
+</style>
