@@ -12,7 +12,7 @@ import { compact, homeData } from "@/lib/home-data";
 
 const { projects, posts, appearances, achievements, videos } = await homeData();
 const featured = ["petdex", "makeables"];
-const tools = projects.filter((p) => !featured.includes(p.slug));
+const tools = projects.filter((p) => !featured.includes(p.slug)).slice(0, 4);
 const year = (d: Date) => d.getFullYear();
 
 const experience = [
@@ -110,10 +110,18 @@ const markFor = (...texts: (string | undefined)[]) => {
 			</div>
 		</section>
 
+		<section aria-labelledby="h-notes">
+			<h2 data-ink-view data-ink="agents" id="h-notes">Notes</h2>
+			{posts.map((p) => (
+				<a href={p.href} class="r note" {...(p.external ? { target: "_blank", rel: "noopener" } : {})}><span class="n"><span>{p.title}{p.external && <span class="tag" title="Substack, in Spanish"><BrandIcon name="substack" width={9} height={9} class="sub" />ES</span>}</span></span><span class="m">{year(p.date)}</span></a>
+			))}
+			<a href="https://railly.substack.com" class="r note" target="_blank" rel="noopener"><span class="n">Beskar on Substack</span><span class="m">→</span></a>
+		</section>
+
 		<section aria-labelledby="h-tools">
 			<h2 data-ink-view data-ink="agents" id="h-tools">Tools agents can use</h2>
 			{tools.map((p) => (
-				<a href={p.url} class="r">
+				<a href={p.url} class="r tool">
 					<span class="n"><BrandIcon name={p.icon} width={14} height={14} class="logo" />{p.name}</span><span class="d">{p.description}</span><span class="m">{p.stars >= 100 ? compact.format(p.stars) : ""}</span>
 				</a>
 			))}
@@ -146,12 +154,6 @@ const markFor = (...texts: (string | undefined)[]) => {
 			))}
 		</section>
 
-		<section aria-labelledby="h-notes">
-			<h2 data-ink-view data-ink="agents" id="h-notes">Notes</h2>
-			{posts.map((p) => (
-				<a href={`/blog/${p.slug}`} class="r note"><span class="n">{p.data.title}</span><span class="m">{year(p.data.pubDate)}</span></a>
-			))}
-		</section>
 
 		<section aria-labelledby="h-lab">
 			<h2 data-ink-view data-ink="agents" id="h-lab">Lab</h2>
@@ -389,6 +391,28 @@ const markFor = (...texts: (string | undefined)[]) => {
 	.r.note {
 		grid-template-columns: minmax(0, 1fr) 3rem;
 	}
+	.r .tag {
+		margin-left: 0.5rem;
+		padding: 0.05rem 0.35rem;
+		border: 1px solid color-mix(in oklab, currentColor 18%, transparent);
+		border-radius: 3px;
+		font-size: 11px;
+		letter-spacing: 0.02em;
+		opacity: 0.55;
+		white-space: nowrap;
+		vertical-align: 0.1em;
+		display: inline-flex;
+		align-items: center;
+		gap: 0.3rem;
+	}
+	.r.tool {
+		grid-template-columns: 8.5rem minmax(0, 1fr) 2.5rem;
+	}
+	.r.tool .d {
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
 	.r .m.w {
 		white-space: nowrap;
 	}
@@ -466,7 +490,8 @@ const markFor = (...texts: (string | undefined)[]) => {
 		.vg {
 			grid-template-columns: repeat(2, minmax(0, 1fr));
 		}
-		.r {
+		.r,
+		.r.tool {
 			grid-template-columns: minmax(0, 1fr) auto;
 		}
 		.r .d {
