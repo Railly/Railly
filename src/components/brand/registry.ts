@@ -46,6 +46,7 @@ export type BrandName =
 	| "petdex"
 	| "dotframe"
 	| "makeables"
+	| "ojito"
 	| "peruGov"
 	| "aiHackPeru"
 	| "platanusHack";
@@ -421,6 +422,12 @@ export const brandRegistry: Record<BrandName, BrandEntry> = {
 		src: "/images/makeables-icon.png",
 		alt: "Makeables",
 		label: "Makeables",
+	},
+	ojito: {
+		kind: "image",
+		src: "/images/ojito-icon.png",
+		alt: "Ojito",
+		label: "Ojito",
 	},
 	peruGov: {
 		kind: "image",

@@ -11,7 +11,7 @@ import Layout from "@/layouts/Layout.astro";
 import { compact, homeData } from "@/lib/home-data";
 
 const { projects, posts, appearances, achievements, videos } = await homeData();
-const featured = ["petdex", "makeables"];
+const featured = ["petdex", "ojito"];
 const tools = projects.filter((p) => !featured.includes(p.slug)).slice(0, 4);
 const year = (d: Date) => d.getFullYear();
 
@@ -100,12 +100,12 @@ const markFor = (...texts: (string | undefined)[]) => {
 					<h3><img src="/images/brand/petdex-mark.svg" alt="" width="16" height="16" class="mark" />Petdex</h3>
 					<p>Animated pets for your coding agent. Built in a day, now 4,000+ stars, 78k npm downloads, and a dependency of Hermes Agent.</p>
 				</a>
-				<a href="https://makeables.dev" class="card">
-					<div class="art art-make" aria-hidden="true">
-						<span class="bit"></span>
+				<a href="https://ojito.dev" class="card">
+					<div class="art art-ojito" aria-hidden="true">
+						<img src="/images/brand/ojito-wordmark-dark.svg" alt="" class="ojito-word" />
 					</div>
-					<h3><img src="/images/brand/makeables-symbol.svg" alt="" width="16" height="16" class="mark dark:hidden" /><img src="/images/brand/makeables-symbol-light.svg" alt="" width="16" height="16" class="mark hidden dark:inline-block" />Makeables</h3>
-					<p>Cards, badges and stickers that feel like you. Tell an agent what you want, get a print-ready object.</p>
+					<h3><img src="/images/brand/ojito-mark.svg" alt="" width="16" height="16" class="mark dark:hidden" /><img src="/images/brand/ojito-mark-light.svg" alt="" width="16" height="16" class="mark hidden dark:inline-block" />Ojito</h3>
+					<p>Your screen memory, readable by your agents. ⌘⌘ saves any window with its full content, ⌥⌥ finds it, and an MCP lets coding agents read what you read.</p>
 				</a>
 			</div>
 		</section>
@@ -260,23 +260,16 @@ const markFor = (...texts: (string | undefined)[]) => {
 	.art-pet {
 		background-color: #ece4f4;
 	}
-	/* Makeables keeps its brand tile: acid Bit on near-black, in both themes. */
-	.art-make {
+	/* Ojito keeps its night tile in both themes, like the ojito.dev hero. */
+	.art-ojito {
 		align-items: center;
-		padding: 0;
-		background-color: #0f0f0e;
-		color: #d7ff3c;
+		padding: 0 14%;
+		background-color: #121110;
+		color: #ece6dc;
 	}
-	.bit {
-		width: 34%;
-		aspect-ratio: 108 / 112;
-		background: #d7ff3c;
-		-webkit-mask: url(/images/brand/makeables-symbol.svg) center / contain no-repeat;
-		mask: url(/images/brand/makeables-symbol.svg) center / contain no-repeat;
-		animation: bob 1.6s steps(2) infinite;
-	}
-	@keyframes bob {
-		50% { transform: translateY(-4%); }
+	.ojito-word {
+		width: 100%;
+		height: auto;
 	}
 	@media (prefers-color-scheme: dark) {
 		.art-pet {
@@ -499,8 +492,7 @@ const markFor = (...texts: (string | undefined)[]) => {
 		}
 	}
 	@media (prefers-reduced-motion: reduce) {
-		.sprite,
-		.bit {
+		.sprite {
 			animation: none;
 		}
 	}
