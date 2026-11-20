@@ -64,6 +64,15 @@ export const projects: Project[] = [
 		role: "Created it. One TypeScript codebase for web and native.",
 	},
 	{
+		slug: "ojito",
+		name: "Ojito",
+		description: "Your screen memory, readable by your agents",
+		url: "https://ojito.dev",
+		icon: "ojito",
+		featured: true,
+		role: "Created it. A macOS app with an MCP for coding agents.",
+	},
+	{
 		slug: "makeables",
 		name: "Makeables",
 		description: "Cards, badges and stickers that feel like you",
