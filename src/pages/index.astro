@@ -90,6 +90,16 @@ const markFor = (...texts: (string | undefined)[]) => {
 
 		<section aria-labelledby="h-now">
 			<h2 data-ink-view data-ink="agents" id="h-now">What I've been working on</h2>
+			<a href="https://tastehacking.dev" class="card lab feature">
+				<div class="art art-taste" aria-hidden="true">
+					<img src="/images/brand/tastehacking-mark.svg" alt="" class="taste-mark" />
+				</div>
+				<div class="lab-text">
+					<p class="lab-meta">New course</p>
+					<h3><img src="/images/brand/tastehacking-mark.svg" alt="" width="16" height="16" class="mark" />Taste Hacking</h3>
+					<p>My design engineering course in Spanish, about naming what you see so your agent can build it. Edition 01 opened hack0's workshops, and edition 02 has a waitlist.</p>
+				</div>
+			</a>
 			<div class="grid gap-6 sm:grid-cols-2">
 				<a href="/work/petdex" class="card">
 					<div class="art art-pet" aria-hidden="true">
@@ -270,6 +280,47 @@ const markFor = (...texts: (string | undefined)[]) => {
 	.ojito-word {
 		width: 100%;
 		height: auto;
+	}
+	/* Taste Hacking: the bitten coral card on a milk tile, ink at night, like tastehacking.dev. */
+	.feature {
+		margin-bottom: 1.5rem;
+	}
+	.art-taste {
+		align-items: center;
+		padding: 0;
+		background-color: #fbfaf7;
+		color: #1f1a17;
+	}
+	.taste-mark {
+		width: 34%;
+		height: auto;
+		filter: drop-shadow(0 10px 16px rgb(31 26 23 / 0.18));
+		transition: transform 0.25s ease;
+	}
+	.card:hover .taste-mark {
+		transform: rotate(-4deg) scale(1.03);
+	}
+	@media (prefers-color-scheme: dark) {
+		.art-taste {
+			background-color: #1f1a17;
+			color: #fbfaf7;
+		}
+	}
+	@media (max-width: 640px) {
+		.feature .lab-meta {
+			margin-top: 0.85rem;
+		}
+		.feature .lab-text h3 {
+			margin-top: 0.2rem;
+		}
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.taste-mark {
+			transition: none;
+		}
+		.card:hover .taste-mark {
+			transform: none;
+		}
 	}
 	@media (prefers-color-scheme: dark) {
 		.art-pet {
