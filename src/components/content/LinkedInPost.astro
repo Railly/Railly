@@ -1,0 +1,68 @@
+---
+// A static LinkedIn post card. No embed script, no tracking: the data lives in the MDX.
+interface Props {
+	href: string;
+	name: string;
+	headline: string;
+	avatar: string;
+	date: string;
+	text: string;
+	media?: string;
+	mediaAlt?: string;
+	video?: boolean;
+	likes?: number;
+	comments?: number;
+	reposts?: number;
+}
+
+const { href, name, headline, avatar, date, text, media, mediaAlt = "", video = false, likes, comments, reposts } = Astro.props;
+const dateLabel = new Intl.DateTimeFormat("en", { year: "numeric", month: "short", day: "numeric", timeZone: "UTC" }).format(new Date(date));
+const counts = [
+	[likes, "reactions"],
+	[comments, "comments"],
+	[reposts, "reposts"],
+].filter(([value]) => value !== undefined) as [number, string][];
+---
+
+<figure class="not-prose mx-auto my-10 max-w-[560px] border border-foreground/10 bg-background-2 text-[15px] leading-relaxed">
+	<header class="flex items-start justify-between gap-4 px-5 pt-5">
+		<a href={href} target="_blank" rel="noreferrer" class="group flex min-w-0 gap-3 no-underline">
+			<img src={avatar} alt="" width="48" height="48" class="size-12 flex-none self-start aspect-square rounded-full object-cover" style="width:48px;height:48px" loading="lazy" />
+			<span class="flex min-w-0 flex-col">
+				<span class="font-semibold text-foreground group-hover:underline">{name}</span>
+				<span class="truncate text-[13px] text-foreground-2">{headline}</span>
+				<time datetime={date} class="text-[13px] text-foreground-2">{dateLabel}</time>
+			</span>
+		</a>
+		<a href={href} target="_blank" rel="noreferrer" aria-label="View on LinkedIn" class="flex-none text-[#0a66c2] dark:text-[#71b7fb]">
+			<svg viewBox="0 0 24 24" class="size-[22px]" aria-hidden="true" focusable="false"><path fill="currentColor" d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.56V9h3.56v11.45ZM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0Z" /></svg>
+		</a>
+	</header>
+	<div class="flex flex-col gap-3 px-5 pb-4 pt-3 text-foreground" lang="es">
+		{text.split(/\n{2,}/).map((paragraph) => (
+			<p class="m-0">{paragraph}</p>
+		))}
+	</div>
+	{
+		media && (
+			<a href={href} target="_blank" rel="noreferrer" aria-label={video ? "Watch the video on LinkedIn" : "View on LinkedIn"} class="group relative block overflow-hidden border-y border-foreground/10">
+				<img src={media} alt={mediaAlt} class="block h-auto w-full" loading="lazy" />
+				{video && (
+					<span aria-hidden="true" class="absolute inset-0 m-auto grid size-16 place-items-center rounded-full bg-black/60 text-white transition-transform group-hover:scale-105 motion-reduce:transition-none motion-reduce:group-hover:scale-100">
+						<svg viewBox="0 0 24 24" class="ml-[3px] size-7" focusable="false"><path fill="currentColor" d="M8 5.5v13l10.5-6.5L8 5.5Z" /></svg>
+					</span>
+				)}
+			</a>
+		)
+	}
+	<footer class="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 px-5 py-3 text-[13px] text-foreground-2">
+		<span class="flex flex-wrap gap-x-3.5 gap-y-1">
+			{counts.map(([value, label]) => (
+				<span>
+					<strong class="font-semibold text-foreground">{value}</strong> {label}
+				</span>
+			))}
+		</span>
+		<a href={href} target="_blank" rel="noreferrer" class="text-foreground underline decoration-foreground-2/60 underline-offset-4">View on LinkedIn</a>
+	</footer>
+</figure>
