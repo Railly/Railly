@@ -75,7 +75,7 @@ const ogDate = post.data.pubDate.toLocaleDateString("en-US", {
 	month: "short",
 	day: "numeric",
 });
-const ogImage = `/api/og?title=${encodeURIComponent(post.data.title)}&description=${encodeURIComponent(post.data.description || "")}&tag=blog&date=${encodeURIComponent(ogDate)}`;
+const ogImage = post.data.image ?? `/api/og?title=${encodeURIComponent(post.data.title)}&description=${encodeURIComponent(post.data.description || "")}&tag=blog&date=${encodeURIComponent(ogDate)}`;
 
 const {
 	words,
