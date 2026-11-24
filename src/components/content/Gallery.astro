@@ -1,0 +1,36 @@
+---
+// Two or more images side by side, each cropped to the same ratio.
+interface Item {
+	src: string;
+	alt: string;
+	caption?: string;
+}
+
+interface Props {
+	items: Item[];
+	ratio?: string;
+}
+
+const { items, ratio = "4 / 5" } = Astro.props;
+---
+
+<div class="not-prose my-10 grid grid-cols-1 gap-6 sm:grid-cols-2">
+	{
+		items.map((item) => (
+			<figure>
+				<img
+					src={item.src}
+					alt={item.alt}
+					class="ed-tile w-full bg-background-2 object-cover"
+					style={`aspect-ratio: ${ratio}`}
+					loading="lazy"
+				/>
+				{item.caption && (
+					<figcaption class="ed-label mt-3 text-center [text-wrap:balance]">
+						{item.caption}
+					</figcaption>
+				)}
+			</figure>
+		))
+	}
+</div>

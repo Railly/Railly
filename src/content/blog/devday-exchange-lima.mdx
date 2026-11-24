@@ -1,0 +1,74 @@
+---
+title: "What I Learned Hosting DevDay Exchange in Lima"
+description: "A DevDay recap at San Marcos, a deck built with Codex, a live demo, and the build session we never got to."
+slug: "devday-exchange-lima"
+pubDate: "2026-11-24"
+tags: ["codex", "openai", "community", "events", "crafter-station", "peru"]
+heroImage:
+  src: "/images/blog/devday-lima/hero.webp"
+  alt: "Group photo of attendees and the Crafter Station team on stage at FISI"
+image: "/images/blog/devday-lima/og.jpg"
+category: "personal"
+status: "published"
+---
+
+import Figure from "../../components/content/Figure.astro";
+import Gallery from "../../components/content/Gallery.astro";
+
+On October 21 I hosted DevDay Exchange Community: Lima at FISI, the systems engineering faculty of Universidad Nacional Mayor de San Marcos. 86 people were approved on Luma, most of them students, and the room was close to full.
+
+<Gallery items={[
+  { src: "/images/blog/devday-lima/totem.webp", alt: "DevDay Exchange Community: Lima event totem at the FISI entrance", caption: "The event totem at the FISI entrance." },
+  { src: "/images/blog/devday-lima/audience-tall.webp", alt: "The FISI auditorium with the audience seated facing the stage", caption: "The auditorium during the talks." },
+]} />
+
+## The deck was built with Codex
+
+<Figure src="/images/blog/devday-lima/podium.webp" alt="Railly Hugo at the podium in front of the projected event title slide" caption="Opening the night." size="full" />
+
+OpenAI shipped about twenty launches in one DevDay keynote. Nobody in that room needed all twenty. So I picked the ones that change how we build and split them with Edward Ramos, one of my Crafter Station co-founders.
+
+I opened with Crafter Station and Makeables. Edward took always-on agents: Dots, ChatGPT Space, AppShots and the new platform pieces. We split models and APIs half and half: GPT-6.1 Sol, Ultrafast, Decisions and the Agents API. I came back to close with Codex: Cloud, the new CLI and code review.
+
+The deck itself is a web app, and agents wrote most of it. Each slide has speaker notes and an owner, so the split between the three of us lived in the code. It's at [devday.crafter.run](https://devday.crafter.run), and the source is in [Railly/talks](https://github.com/Railly/talks).
+
+<Figure src="/images/blog/devday-lima/crafter-talk.webp" alt="Railly Hugo speaking into a microphone next to the UNMSM and Peruvian flags" caption="On stage at FISI." size="full" />
+
+## The live demo
+
+For the demo I typed one prompt into Codex, in Spanish: build an app for DevDay at San Marcos. While I talked through what it was doing, Codex wrote a raffle wheel for the attendees. Watching an agent work in a terminal is a strange thing to put on a big screen, but the room followed along.
+
+<Gallery ratio="3 / 2" items={[
+  { src: "/images/blog/devday-lima/stage-back.webp", alt: "Railly seen from behind at the podium, facing the auditorium during the demo", caption: "Facing the room during the demo." },
+  { src: "/images/blog/devday-lima/codex-demo.webp", alt: "A laptop on the stage table with Codex working in the terminal, facing the auditorium", caption: "The view from the stage table." },
+]} />
+
+To close, we did a second demo on [makeables.dev/play](https://makeables.dev/play): we prompted a few small games in a couple of minutes and played them right there.
+
+Everyone also got an OpenAI API credit code. People really valued that.
+
+## What didn't work
+
+The plan was a short recap, a demo, then an hour of people building with Codex and showing it in two minutes. We never got to the building part.
+
+- **The opening was formal.** A university event comes with an emcee, opening words and speaker introductions. All of that is fair, but it ate the build block. Next time I'll agree on a short opening in advance and have one person own the clock.
+- **The room wasn't made for laptops.** A lecture hall has great seats and almost no outlets. People moved to the sides to charge their phones. If the point is building, the venue has to have power and stable internet.
+- **I didn't know who actually came.** We didn't check people in on Luma, so I can say 86 approved but only estimate how many walked in. Some left after the food. Check-in at the door is the first thing I'm fixing.
+- **I designed for the wrong crowd.** At Hot Reload, our previous event, most people already shipped software. Here most were students. Students need something more guided, like a prepared exercise and facilitators walking the rows. Experienced builders want pitches and people to partner with.
+
+## What worked
+
+The talks landed. After the closing, people came up for photos and LinkedIn, and the conversation kept going during the food. The FISI staff helped us all night. And the crowd was great: people lined up for food without anyone asking.
+
+<Gallery items={[
+  { src: "/images/blog/devday-lima/buffet.webp", alt: "The reception table with sandwiches, croissants, desserts and juice", caption: "The food, right before the break." },
+  { src: "/images/blog/devday-lima/catering-tall.webp", alt: "Attendees serving themselves at the reception in the hall", caption: "And the line, a few minutes later." },
+]} />
+
+<Figure src="/images/blog/devday-lima/group.webp" alt="Group photo of attendees on the stage of the FISI auditorium" caption="The group photo at the end." size="full" />
+
+## Next
+
+The next one will be a build & ship night: a short intro, a timed block to build with Codex, two-minute demos, and a venue with outlets. If you're in Lima and want to come or help, join [Crafter Station](https://crafters.chat).
+
+Thanks to FISI, to the OpenAI Codex Community team for the credits and swag, and to Edward, Carlos, Liz, Jibaru and everyone on the Crafter team who made the night happen.
