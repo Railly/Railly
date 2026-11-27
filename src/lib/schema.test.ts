@@ -18,18 +18,18 @@ describe("buildSchemaGraph", () => {
 		);
 
 		expect(person).toMatchObject({
+			"@id": "https://www.railly.dev/#person",
 			name: "Railly Hugo",
 			url: "https://www.railly.dev",
 			jobTitle: "Software Engineer",
+			founder: { "@id": "https://crafter.run/#organization" },
 		});
 		expect(person?.sameAs).toBeArray();
-		expect(organization).toMatchObject({
+		expect(organization).toEqual({
+			"@type": "Organization",
+			"@id": "https://crafter.run/#organization",
 			name: "Crafter Station",
-			contactPoint: {
-				email: "hi@railly.dev",
-				contactType: "general inquiries",
-			},
-			address: { addressLocality: "Buenos Aires", addressCountry: "AR" },
+			url: "https://crafter.run",
 		});
 	});
 });

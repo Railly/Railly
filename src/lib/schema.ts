@@ -24,27 +24,9 @@ export function buildSchemaGraph(props: SchemaProps): object {
 		},
 		{
 			"@type": "Organization",
-			"@id": `${siteConfig.url}/#organization`,
+			"@id": "https://crafter.run/#organization",
 			name: "Crafter Station",
 			url: "https://crafter.run",
-			description:
-				"Non-profit community of 1,000+ builders building Peru's tech ecosystem.",
-			founder: { "@id": `${siteConfig.url}/#person` },
-			contactPoint: {
-				"@type": "ContactPoint",
-				contactType: "general inquiries",
-				email: siteConfig.email,
-				availableLanguage: ["English", "Spanish"],
-			},
-			address: {
-				"@type": "PostalAddress",
-				addressLocality: "Buenos Aires",
-				addressCountry: "AR",
-			},
-			sameAs: [
-				"https://github.com/crafter-station",
-				"https://crafterstation.com",
-			],
 		},
 		{
 			"@type": "Person",
@@ -79,7 +61,7 @@ export function buildSchemaGraph(props: SchemaProps): object {
 				name: "Vercel",
 				url: "https://vercel.com",
 			},
-			founder: { "@id": `${siteConfig.url}/#organization` },
+			founder: { "@id": "https://crafter.run/#organization" },
 			alumniOf: {
 				"@type": "CollegeOrUniversity",
 				name: "Universidad Nacional Mayor de San Marcos",
